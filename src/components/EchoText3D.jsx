@@ -117,7 +117,7 @@ export default function EchoText3D() {
                     strokeWidth={layer.strokeWidth || 0}
                     strokeColor={layer.color}
                 >
-                    YACKO
+                    YAAKOB
                     {layer.useShader ? (
                         <techLineMaterial
                             ref={(el) => materialRefs.current[index] = el}
@@ -194,7 +194,7 @@ export default function EchoText3D() {
                 position={[0, -0.5, -0.15]}
                 fontSize={0.35}
             >
-                YACKO
+                YAAKOB
                 <meshBasicMaterial
                     color="#4a6878"
                     transparent

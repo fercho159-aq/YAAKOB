@@ -20,35 +20,58 @@ const Terrain = () => {
     meshRef.current.material.uniforms.uTime.value = clock.getElapsedTime() * 0.15
   })
 
-  // Vertex Shader - Soft flowing feather waves from bottom-right corner
+  // Vertex Shader - Organic flow using Simplex Noise
   const vertexShader = `
     varying vec2 vUv;
     varying float vElevation;
     varying vec3 vPosition;
     uniform float uTime;
 
+    // Simplex 2D noise
+    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+    float snoise(vec2 v) {
+      const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+               -0.577350269189626, 0.024390243902439);
+      vec2 i  = floor(v + dot(v, C.yy) );
+      vec2 x0 = v - i + dot(i, C.xx);
+      vec2 i1;
+      i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+      vec4 x12 = x0.xyxy + C.xxzz;
+      x12.xy -= i1;
+      i = mod(i, 289.0);
+      vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+      + i.x + vec3(0.0, i1.x, 1.0 ));
+      vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+      m = m*m ;
+      m = m*m ;
+      vec3 x = 2.0 * fract(p * C.www) - 1.0;
+      vec3 h = abs(x) - 0.5;
+      vec3 ox = floor(x + 0.5);
+      vec3 a0 = x - ox;
+      m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+      vec3 g;
+      g.x  = a0.x  * x0.x  + h.x  * x0.y;
+      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+      return 130.0 * dot(m, g);
+    }
+
     void main() {
       vUv = uv;
       vec3 pos = position;
       
-      // Origin point for waves (bottom-right corner)
+      // Center of the flow/organic movement (bottom-right ish)
       vec2 origin = vec2(6.0, -6.0);
-      float distFromOrigin = length(pos.xy - origin);
+      float dist = length(pos.xy - origin);
       
-      // Soft flowing waves emanating from corner - like silk or feathers
-      float wave1 = sin(distFromOrigin * 0.4 + uTime * 0.8) * 0.6;
-      float wave2 = sin(distFromOrigin * 0.25 + uTime * 0.5 + 1.0) * 0.8;
-      float wave3 = sin(distFromOrigin * 0.6 + uTime * 0.3) * 0.3;
+      // Layered noise for organic wave shape
+      float noise1 = snoise(vec2(pos.x * 0.15 + uTime * 0.2, pos.y * 0.15 - uTime * 0.1));
+      float noise2 = snoise(vec2(dist * 0.1 - uTime * 0.3, pos.y * 0.2));
       
-      // Directional flow towards top-left
-      float flowAngle = atan(pos.y - origin.y, pos.x - origin.x);
-      float directionalWave = sin(flowAngle * 3.0 + distFromOrigin * 0.3 + uTime * 0.2) * 0.4;
+      // Combine for elevation
+      float elevation = (noise1 * 1.5 + noise2 * 1.0);
       
-      // Combine waves with smooth falloff
-      float elevation = (wave1 + wave2 + wave3 + directionalWave) * 0.5;
-      
-      // Smooth intensity based on distance from origin
-      elevation *= smoothstep(0.0, 8.0, distFromOrigin) * smoothstep(20.0, 5.0, distFromOrigin);
+      // Smooth falloff
+      elevation *= smoothstep(0.0, 10.0, dist) * smoothstep(25.0, 5.0, dist);
       
       pos.z += elevation;
       vElevation = elevation;
@@ -58,7 +81,7 @@ const Terrain = () => {
     }
   `
 
-  // Fragment Shader - Delicate flowing lines like feathers/silk fibers
+  // Fragment Shader - High frequency fibers
   const fragmentShader = `
     varying vec2 vUv;
     varying float vElevation;
@@ -67,60 +90,86 @@ const Terrain = () => {
     uniform vec3 uColor;
     uniform vec3 uLineColor;
     uniform vec3 uAccentColor;
+    
+    // Simplex 2D noise (repeated for fragment)
+    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+    float snoise(vec2 v) {
+      const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+               -0.577350269189626, 0.024390243902439);
+      vec2 i  = floor(v + dot(v, C.yy) );
+      vec2 x0 = v - i + dot(i, C.xx);
+      vec2 i1;
+      i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+      vec4 x12 = x0.xyxy + C.xxzz;
+      x12.xy -= i1;
+      i = mod(i, 289.0);
+      vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+      + i.x + vec3(0.0, i1.x, 1.0 ));
+      vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+      m = m*m ;
+      m = m*m ;
+      vec3 x = 2.0 * fract(p * C.www) - 1.0;
+      vec3 h = abs(x) - 0.5;
+      vec3 ox = floor(x + 0.5);
+      vec3 a0 = x - ox;
+      m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+      vec3 g;
+      g.x  = a0.x  * x0.x  + h.x  * x0.y;
+      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+      return 130.0 * dot(m, g);
+    }
 
     void main() {
-      // Origin for the feather effect (bottom-right)
+      // Flow coordinates
+      vec2 flowUv = vUv;
+      
+      // Distort UVs slightly with elevation for depth illusion
+      flowUv += vElevation * 0.02;
+      
+      // High frequency noise stretched to look like fibers/silk
+      // We stretch X much more than Y (or radial)
+      
       vec2 origin = vec2(0.85, 0.15);
-      vec2 toOrigin = vUv - origin;
-      float distFromOrigin = length(toOrigin);
+      vec2 toOrigin = flowUv - origin;
+      float dist = length(toOrigin);
       float angle = atan(toOrigin.y, toOrigin.x);
       
-      // Main flowing fiber lines - radiate from corner
-      float fibers1 = sin(angle * 60.0 + distFromOrigin * 25.0 - uTime * 0.3);
-      fibers1 = smoothstep(0.75, 1.0, fibers1);
+      // Fiber Pattern: mixture of radial sin waves and noise
+      float fibers = sin(angle * 300.0 + dist * 50.0 - uTime * 0.5); // High frequency radial
       
-      // Secondary fibers - slightly offset
-      float fibers2 = sin(angle * 45.0 + distFromOrigin * 18.0 + uTime * 0.2 + 2.0);
-      fibers2 = smoothstep(0.8, 1.0, fibers2) * 0.7;
+      // Add noise to break up the perfect lines
+      float noiseVal = snoise(vec2(angle * 20.0, dist * 10.0 - uTime * 0.2));
+      fibers += noiseVal * 0.5;
       
-      // Fine detail fibers
-      float fibers3 = sin(angle * 80.0 + distFromOrigin * 35.0 - uTime * 0.15);
-      fibers3 = smoothstep(0.88, 1.0, fibers3) * 0.4;
+      // Sharpen the fibers
+      float fiberSharp = smoothstep(0.5, 1.0, fibers);
       
-      // Subtle contour lines following elevation
-      float contour = sin(vElevation * 12.0 + uTime * 0.1);
-      contour = smoothstep(0.9, 1.0, contour) * 0.3;
+      // Secondary finer fibers
+      float fineFibers = sin(angle * 600.0 + dist * 80.0 - uTime * 0.3);
+      fiberSharp += smoothstep(0.8, 1.0, fineFibers) * 0.5;
       
-      // Combine all fibers
-      float allFibers = fibers1 + fibers2 + fibers3 + contour;
-      allFibers = clamp(allFibers, 0.0, 1.0);
+      // Clamp
+      float alpha = clamp(fiberSharp, 0.0, 1.0);
       
-      // Fade fibers near the origin (cleaner look at the source)
-      allFibers *= smoothstep(0.05, 0.25, distFromOrigin);
+      // Softness/Fade
+      alpha *= smoothstep(0.05, 0.2, dist); // Fade center
       
-      // Base color - light and clean
-      vec3 baseColor = uColor;
+      // Color mixing
+      vec3 col = mix(uColor, uLineColor, alpha);
       
-      // Apply fiber lines with soft coloring
-      vec3 finalColor = mix(baseColor, uLineColor, allFibers * 0.45);
-      
-      // Subtle depth shading based on elevation
-      float depth = smoothstep(-1.0, 1.0, vElevation);
-      finalColor *= (0.92 + 0.08 * depth);
-      
-      // Soft accent in the flowing areas
-      float accentArea = smoothstep(0.2, 0.5, distFromOrigin) * smoothstep(1.0, 0.4, distFromOrigin);
-      finalColor = mix(finalColor, uAccentColor, accentArea * 0.15);
-      
-      // Gentle vignette - fade edges
-      float edgeDist = length(vUv - vec2(0.5));
-      float vignette = 1.0 - smoothstep(0.4, 0.75, edgeDist);
-      finalColor = mix(uColor, finalColor, vignette);
-      
-      // Alpha fade at edges
-      float alphaFade = 1.0 - smoothstep(0.5, 0.75, edgeDist);
+      // Highlights based on elevation peaks
+      float highlight = smoothstep(0.5, 1.5, vElevation);
+      col = mix(col, uAccentColor, highlight * 0.5);
 
-      gl_FragColor = vec4(finalColor, alphaFade);
+      // Vignette
+      float vignette = 1.0 - smoothstep(0.4, 0.8, length(vUv - 0.5));
+      
+      // Final alpha
+      float finalAlpha = alpha * 0.8 + 0.2; // Keep some base opacity? Or fully transparent?
+      // For "silk" usually the gaps are transparent or semi-transparent
+      finalAlpha *= vignette;
+      
+      gl_FragColor = vec4(col, finalAlpha);
       
       #include <tonemapping_fragment>
       #include <colorspace_fragment>
@@ -129,7 +178,7 @@ const Terrain = () => {
 
   return (
     <mesh ref={meshRef} rotation={[Math.PI / -2, 0, .25]} position={[-1.5, -2.3, -1]}>
-      <planeGeometry args={[18, 18, 128, 128]} />
+      <planeGeometry args={[18, 18, 256, 256]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
