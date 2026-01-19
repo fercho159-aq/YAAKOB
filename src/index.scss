@@ -1,0 +1,58 @@
+:root {
+  --color-bg: #c5d3da;
+  --color-text: #1a2e38;
+  --color-accent: #1a2e38;
+  --font-logo: 'Orbitron', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  /* Background */
+  pointer-events: auto;
+  /* For interactivity */
+}
+
+.ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  /* Above canvas */
+  pointer-events: none;
+  /* Let clicks pass through to canvas where empty */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+
+  * {
+    pointer-events: auto;
+  }
+}
