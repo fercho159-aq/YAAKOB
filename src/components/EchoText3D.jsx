@@ -61,7 +61,16 @@ export default function EchoText3D() {
     const materialRefs = useRef([])
     const outlineRefs = useRef([])
 
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime()
 
+        // Update shader uniforms
+        materialRefs.current.forEach((mat) => {
+            if (mat) {
+                mat.uTime = time
+            }
+        })
+    })
 
     const textProps = {
         font: "/fonts/Audiowide,Zen_Dots/Zen_Dots/ZenDots-Regular.ttf",

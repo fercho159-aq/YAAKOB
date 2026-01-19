@@ -128,7 +128,7 @@ const Terrain = () => {
   `
 
   return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 1.5, 0, .25]} position={[-1.5, -2.3, -1]}>
+    <mesh ref={meshRef} rotation={[Math.PI / -1.5, 0, .25]} position={[-1.5, -2.3, -1]}>
       <planeGeometry args={[18, 18, 128, 128]} />
       <shaderMaterial
         vertexShader={vertexShader}
