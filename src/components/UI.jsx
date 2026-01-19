@@ -79,14 +79,13 @@ export default function UI() {
                 </div>
 
                 <h2 className="subtitle stagger-anim">
-                    <span>ENHANCED</span>
-                    <span>COGNITIVE</span>
-                    <span>HUMAN</span>
-                    <span>OPS</span>
+                    <span>BE</span>
+                    <span>FREE</span>
+
                 </h2>
 
                 <button className="signin-btn stagger-anim">
-                    SIGN IN
+                    INICIO
                 </button>
             </main>
 

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E.C.H.O. 3D Terrain Effect</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #e0e5ec;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .ui-layer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            width: 100%;
+            color: #2c3e50;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            letter-spacing: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            margin-top: 3rem;
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid #2c3e50;
+            color: #2c3e50;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #2c3e50;
+            color: #fff;
+        }
+    </style>
+    <!-- Importar Three.js desde CDN -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="ui-layer">
+        <h1>E.C.H.O.</h1>
+        <div class="subtitle">Enhanced Cognitive Human Ops</div>
+        <button class="btn">ENTER SYSTEM</button>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // Escena, Cámara y Renderer
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        // Color de fondo similar al ejemplo React (#d0dce4 es el base color, usaremos algo neutro o transparente)
+        scene.background = new THREE.Color('#e0e5ec');
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // Posicionar cámara similar al ejemplo: position={[3, 0, -4]} -> pero ajustado para vista frontal
+        camera.position.set(0, 0, 8);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // --- SHADER CODE (Portado desde el snippet del usuario) ---
+
+        const vertexShader = `
+            varying vec2 vUv;
+            varying vec3 vPosition;
+            varying vec3 vNormal;
+
+            void main() {
+                vUv = uv;
+                vNormal = normal;
+                vPosition = position;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            varying vec2 vUv;
+            varying vec3 vPosition;
+            varying vec3 vNormal;
+            uniform float uTime;
+            uniform vec3 uBaseColor;
+            uniform vec3 uLineColor;
+
+            void main() {
+                // === LÍNEAS ULTRA FINAS TIPO SEDA ===
+                // Usamos uv.x para líneas que fluyen alrededor del tubo
+                // Multiplicamos uv.x para que se repita más veces si es necesario
+                float coord = vUv.x;
+                
+                // Animación muy suave
+                float animatedCoord = coord - uTime * 0.05; // Velocidad ajustada
+                
+                // === MUCHAS CAPAS DE LÍNEAS ULTRA FINAS ===
+                // Capa 1 - Líneas principales finas
+                float line1 = sin(animatedCoord * 200.0);
+                line1 = smoothstep(0.92, 0.99, line1) * 0.35;
+                
+                // Capa 2 - Líneas más finas
+                float line2 = sin(animatedCoord * 350.0 + 0.5);
+                line2 = smoothstep(0.94, 0.995, line2) * 0.28;
+                
+                // Capa 3 - Líneas muy finas
+                float line3 = sin(animatedCoord * 500.0 + 1.2);
+                line3 = smoothstep(0.95, 0.998, line3) * 0.22;
+                
+                // Capa 4 - Líneas ultra finas
+                float line4 = sin(animatedCoord * 700.0 + 2.0);
+                line4 = smoothstep(0.96, 0.999, line4) * 0.18;
+                
+                // Capa 5 - Líneas como cabello
+                float line5 = sin(animatedCoord * 1000.0 + 3.0);
+                line5 = smoothstep(0.97, 0.9995, line5) * 0.15;
+                
+                // Capa 6 - Líneas como seda
+                float line6 = sin(animatedCoord * 1400.0 + 4.0);
+                line6 = smoothstep(0.98, 0.9998, line6) * 0.12;
+                
+                // Combinar todas las líneas
+                float allLines = line1 + line2 + line3 + line4 + line5 + line6;
+                // Clamp para evitar saturación excesiva
+                allLines = clamp(allLines, 0.0, 0.8);
+                
+                // Color suave
+                vec3 col = mix(uBaseColor, uLineColor, allLines);
+                
+                // Iluminación muy suave (Simple Diffuse)
+                vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
+                float diffuse = max(dot(vNormal, lightDir), 0.0);
+                col *= 0.9 + 0.1 * diffuse;
+                
+                // === OPACIDAD BASADA EN DIRECCIÓN Y FRESNEL ===
+                // El código original usaba vNormal.y para alpha
+                float upFacing = vNormal.y;
+                float alpha = smoothstep(-0.3, 0.5, upFacing);
+                
+                // Añadimos un poco de opacidad base para que no desaparezca totalmente
+                alpha = max(alpha, 0.1);
+                
+                gl_FragColor = vec4(col, alpha);
+                
+                // Tone mapping manual simple si es necesario, o confiar en Three.js output encoding
+                // gl_FragColor.rgb = pow(gl_FragColor.rgb, vec3(1.0/2.2));
+            }
+        `;
+
+        // --- MESH SETUP ---
+
+        // TorusGeometry args: radius, tube, radialSegments, tubularSegments
+        const geometry = new THREE.TorusGeometry(4, 1.5, 128, 512);
+
+        const uniforms = {
+            uTime: { value: 0 },
+            uBaseColor: { value: new THREE.Color('#d0dce4') }, // Gris-azul muy claro
+            uLineColor: { value: new THREE.Color('#7a9aaa') }, // Tono más oscuro para líneas
+        };
+
+        const material = new THREE.ShaderMaterial({
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            uniforms: uniforms,
+            transparent: true,
+            side: THREE.DoubleSide,
+            depthWrite: false // Importante para transparencias superpuestas
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+
+        // Rotación inicial similar al ejemplo: rotation={[-4, .15, .75]}
+        // En Three.js vanilla:
+        mesh.rotation.set(-4, 0.15, 0.75);
+        // Posición
+        mesh.position.set(2, 0, 0); // Lo centro un poco más para mobile
+
+        scene.add(mesh);
+
+        // --- ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            // Actualizar uniform uTime
+            material.uniforms.uTime.value = elapsedTime;
+
+            // Rotación suave adicional (opcional, para darle más vida)
+            mesh.rotation.z += 0.001;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // --- RESIZE HANDLE ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+    </script>
+</body>
+
+</html>
