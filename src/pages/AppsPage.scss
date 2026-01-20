@@ -7,6 +7,7 @@
     background: transparent;
     font-family: var(--font-body);
     z-index: 10;
+    opacity: 0; // Start hidden, GSAP will animate in
 }
 
 // Override global overflow hidden for apps page

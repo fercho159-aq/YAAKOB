@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import './AppsPage.scss';
@@ -6,41 +6,59 @@ import './AppsPage.scss';
 export default function AppsPage() {
     const containerRef = useRef(null);
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            // Animate header
-            gsap.fromTo('.apps-header',
-                { y: -50, opacity: 0 },
-                { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-            );
+    useLayoutEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
 
-            // Animate cards with stagger
-            gsap.fromTo('.app-card',
-                { y: 80, opacity: 0, scale: 0.9 },
-                {
-                    y: 0,
-                    opacity: 1,
-                    scale: 1,
-                    duration: 1.2,
-                    stagger: 0.3,
-                    delay: 0.4,
-                    ease: 'power3.out'
-                }
-            );
+        // Set initial states
+        gsap.set(container, { opacity: 1 });
+        gsap.set('.apps-header', { y: -30, opacity: 0 });
+        gsap.set('.app-card', { y: 50, opacity: 0 });
+        gsap.set('.apps-footer', { opacity: 0 });
 
-            // Floating animation for mockups
+        // Create a timeline for better sequencing
+        const tl = gsap.timeline({
+            defaults: { ease: 'power2.out' },
+            delay: 0.2
+        });
+
+        // Animate header
+        tl.to('.apps-header', {
+            y: 0,
+            opacity: 1,
+            duration: 0.8
+        });
+
+        // Animate cards with stagger
+        tl.to('.app-card', {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.2,
+            clearProps: 'transform'
+        }, '-=0.4');
+
+        // Animate footer
+        tl.to('.apps-footer', {
+            opacity: 1,
+            duration: 0.5
+        }, '-=0.3');
+
+        // Start floating animation after entrance is complete
+        tl.add(() => {
             gsap.to('.app-mockup', {
-                y: -15,
-                duration: 3,
+                y: -10,
+                duration: 2.5,
                 repeat: -1,
                 yoyo: true,
                 ease: 'sine.inOut',
-                stagger: 0.5
+                stagger: 0.3
             });
+        });
 
-        }, containerRef);
-
-        return () => ctx.revert();
+        return () => {
+            tl.kill();
+        };
     }, []);
 
     return (

@@ -1,5 +1,5 @@
 import { PerspectiveCamera } from '@react-three/drei'
-import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
+import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import TerrainApps from './TerrainApps'
 import { useEffect, useRef } from 'react'
@@ -10,17 +10,17 @@ export default function ExperienceApps() {
 
     useEffect(() => {
         if (cameraRef.current) {
-            // Subtle zoom animation for apps page
+            // Smoother, slower zoom animation
             gsap.fromTo(cameraRef.current.position,
-                { x: 0, y: 2, z: 7 },
-                { x: 0, y: 0.8, z: 5.5, duration: 3, ease: 'power2.out' }
+                { x: 0, y: 1.2, z: 6 },
+                { x: 0, y: 0.8, z: 5.5, duration: 4, ease: 'power1.out', delay: 0.2 }
             )
         }
     }, [])
 
     return (
         <>
-            <PerspectiveCamera makeDefault position={[0, 1.5, 6]} ref={cameraRef} fov={50} />
+            <PerspectiveCamera makeDefault position={[0, 1.2, 6]} ref={cameraRef} fov={50} />
 
             {/* Light fog matching home page */}
             <fog attach="fog" args={['#c5d3da', 6, 16]} />
@@ -32,9 +32,8 @@ export default function ExperienceApps() {
             <TerrainApps />
 
             <EffectComposer disableNormalPass>
-                <Bloom luminanceThreshold={0.5} mipmapBlur intensity={0.8} radius={0.6} />
-                <Noise opacity={0.03} blendFunction={BlendFunction.OVERLAY} />
-                <Vignette eskil={false} offset={0.1} darkness={0.8} />
+                <Bloom luminanceThreshold={0.8} mipmapBlur intensity={0.4} radius={0.4} />
+                <Noise opacity={0.02} blendFunction={BlendFunction.OVERLAY} />
             </EffectComposer>
         </>
     )
