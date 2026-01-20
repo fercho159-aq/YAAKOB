@@ -1,18 +1,32 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 const TerrainApps = () => {
     const meshRef = useRef()
     const mouseRef = useRef({ x: 0, y: 0 })
+    const positionRef = useRef({ y: -15 }) // Start below viewport
 
     // Mouse tracking for tilt effect
-    if (typeof window !== 'undefined') {
-        window.addEventListener('mousemove', (e) => {
+    useEffect(() => {
+        const handleMouseMove = (e) => {
             mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
             mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1
+        }
+
+        window.addEventListener('mousemove', handleMouseMove)
+
+        // Animate terrain rising up after texts appear
+        gsap.to(positionRef.current, {
+            y: -5,
+            duration: 2,
+            delay: 1, // Wait 1 second for texts to appear first
+            ease: 'power2.out'
         })
-    }
+
+        return () => window.removeEventListener('mousemove', handleMouseMove)
+    }, [])
 
     const uniforms = useMemo(
         () => ({
@@ -30,7 +44,12 @@ const TerrainApps = () => {
     const baseRotation = [-3.8, -0.3, 0.7]
 
     useFrame((state) => {
+        if (!meshRef.current) return
+
         meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
+
+        // Update position from animated ref
+        meshRef.current.position.y = positionRef.current.y
 
         // Tilt effect following mouse
         const targetRotationX = baseRotation[0] + mouseRef.current.y * 0.15
@@ -126,7 +145,7 @@ const TerrainApps = () => {
 `
 
     return (
-        <mesh ref={meshRef} rotation={baseRotation} position={[3, -5, -12]}>
+        <mesh ref={meshRef} rotation={baseRotation} position={[3, -15, -12]}>
             {/* High resolution torus for smooth lines */}
             <torusGeometry args={[10, 7, 1000, 3500]} />
             <shaderMaterial
