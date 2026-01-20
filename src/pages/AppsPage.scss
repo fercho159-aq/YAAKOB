@@ -233,12 +233,14 @@ html:has(.apps-page) #app {
         pointer-events: none;
     }
 
+    // Glow removed
     &.soy-corazon .card-glow {
-        background: linear-gradient(180deg, rgba(232, 164, 184, 0.2) 0%, transparent 100%);
+        background: none;
     }
 
+    // Glow removed
     &.mente-abundante .card-glow {
-        background: linear-gradient(180deg, rgba(124, 77, 255, 0.2) 0%, transparent 100%);
+        background: none;
     }
 
     .card-content {
@@ -330,19 +332,15 @@ html:has(.apps-page) #app {
     }
 
     .soy-corazon & {
-        background: linear-gradient(135deg, #8a3050 0%, #c06080 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: none;
+        background: none;
+        -webkit-text-fill-color: initial;
+        color: #1a2a3a;
     }
 
     .mente-abundante & {
-        background: linear-gradient(135deg, #4a2080 0%, #7040b0 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: none;
+        background: none;
+        -webkit-text-fill-color: initial;
+        color: #1a2a3a;
     }
 }
 
