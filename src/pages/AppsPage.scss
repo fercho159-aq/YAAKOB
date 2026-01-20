@@ -245,17 +245,43 @@ html:has(.apps-page) #app {
 
     .card-content {
         display: grid;
-        grid-template-columns: 1fr 1.5fr;
+        grid-template-columns: 1fr 1fr;
         gap: 3rem;
         // Removed padding from grid container
         padding: 0;
         position: relative;
         z-index: 1;
+        align-items: center;
+
+        // Reversed layout: text first, mockup second
+        &.reversed {
+            grid-template-columns: 1.2fr 1fr;
+
+            .mockup-container {
+                order: 2;
+            }
+
+            .app-info-tilt {
+                order: 1;
+            }
+        }
 
         @media (max-width: 900px) {
             grid-template-columns: 1fr;
             gap: 2rem;
             padding: 2rem;
+
+            &.reversed {
+                grid-template-columns: 1fr;
+
+                .mockup-container {
+                    order: 1;
+                }
+
+                .app-info-tilt {
+                    order: 2;
+                }
+            }
         }
     }
 }

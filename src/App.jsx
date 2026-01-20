@@ -6,6 +6,7 @@ import ExperienceApps from './components/ExperienceApps'
 import UI from './components/UI'
 import HexagonBackground from './components/HexagonBackground'
 import AppsPage from './pages/AppsPage'
+import ContactPage from './pages/ContactPage'
 
 function HomePage() {
   return (
@@ -45,12 +46,32 @@ function AppsPageWithBackground() {
   )
 }
 
+function ContactPageWithBackground() {
+  return (
+    <>
+      <HexagonBackground />
+      <Canvas
+        camera={{ position: [0, 0, 5], fov: 45 }}
+        dpr={[1, 2]}
+        gl={{ alpha: true, antialias: true }}
+        style={{ background: '#c5d3da', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
+      >
+        <Suspense fallback={null}>
+          <ExperienceApps />
+        </Suspense>
+      </Canvas>
+      <ContactPage />
+    </>
+  )
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/apps" element={<AppsPageWithBackground />} />
+        <Route path="/contacto" element={<ContactPageWithBackground />} />
       </Routes>
     </BrowserRouter>
   )

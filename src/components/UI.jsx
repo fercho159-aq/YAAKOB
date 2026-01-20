@@ -64,12 +64,11 @@ export default function UI() {
     return (
         <div className="ui-layer" ref={containerRef}>
             <header className="ui-header stagger-anim">
-                <div className="top-links">
-                    <span>COOKIES</span>
-                    <span>ACCESSIBILITY</span>
-                    <span className="dots">........</span>
-                    <button className="cc-btn">CC</button>
-                </div>
+                <nav className="nav-links">
+                    <Link to="/" className="nav-link active">Inicio</Link>
+                    <Link to="/apps" className="nav-link">Apps</Link>
+                    <Link to="/contacto" className="nav-link">Contacto</Link>
+                </nav>
             </header>
 
             <main className="ui-main">

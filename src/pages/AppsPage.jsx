@@ -92,16 +92,7 @@ export default function AppsPage() {
                 <article className="app-card soy-corazon">
                     {/* Glow removed via CSS, no need to render div if CSS handles it or empty */}
                     <div className="card-glow"></div>
-                    <div className="card-content">
-                        <div className="mockup-container">
-                            <ParallaxTilt options={{ max: 15, scale: 1.05 }}>
-                                <img
-                                    src="/soy_corazon_v2.png"
-                                    alt="Soy Corazón App"
-                                    className="app-mockup"
-                                />
-                            </ParallaxTilt>
-                        </div>
+                    <div className="card-content reversed">
                         <ParallaxTilt className="app-info-tilt" options={{ max: 8, scale: 1.01 }}>
                             <div className="app-info">
                                 <div className="app-badge">
@@ -154,6 +145,15 @@ export default function AppsPage() {
                                 </div>
                             </div>
                         </ParallaxTilt>
+                        <div className="mockup-container">
+                            <ParallaxTilt options={{ max: 15, scale: 1.05 }}>
+                                <img
+                                    src="/soy_corazon_login_mockup.png"
+                                    alt="Soy Corazón App"
+                                    className="app-mockup"
+                                />
+                            </ParallaxTilt>
+                        </div>
                     </div>
                 </article>
 
