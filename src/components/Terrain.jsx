@@ -79,8 +79,8 @@ const Terrain = () => {
     // Frecuencia alta para muchas líneas finas
     // Frecuencia MUCHO mas alta para mas hilos finos
     // Aumentamos de 400 a 1600 para cuadruplicar la cantidad de hilos aproximadamente
-    float lines = sin(flow * 3200.0); 
-    lines += sin(flow * 4800.0) * 0.4; // Capa de detalle extra mas fina
+    float lines = sin(flow * 1600.0); 
+    lines += sin(flow * 2400.0) * 0.4; // Capa de detalle extra mas fina
     
     // Definición de la línea (mas fino)
     // Subimos el umbral inferior de 0.7 a 0.95 para que solo queden las crestas muy finas
@@ -116,7 +116,7 @@ const Terrain = () => {
   return (
     <mesh ref={meshRef} rotation={[-4.2, 0.5, 0.5]} position={[2, -6, -15]}>
       {/* Más resolución para evitar dientes de sierra */}
-      <torusGeometry args={[8, 6, 128, 512]} />
+      <torusGeometry args={[10, 6, 128, 512]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
