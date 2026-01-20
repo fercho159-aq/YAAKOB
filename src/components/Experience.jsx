@@ -1,5 +1,5 @@
 import { PerspectiveCamera } from '@react-three/drei'
-import { EffectComposer, Bloom, ChromaticAberration, Noise } from '@react-three/postprocessing'
+import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import Terrain from './Terrain'
 import EchoText3D from './EchoText3D'
@@ -23,11 +23,12 @@ export default function Experience() {
         <>
             <PerspectiveCamera makeDefault position={[0, 2, 6]} ref={cameraRef} fov={50} />
 
-            {/* Light grey-blue background matching reference */}
-            <color attach="background" args={['#c5d3da']} />
+            {/* Background removed to allow CSS background to show through */}
+            {/* <color attach="background" args={['#c5d3da']} /> */}
 
-            {/* Fog to hide edges of the plane */}
-            <fog attach="fog" args={['#c5d3da', 4, 14]} />
+            {/* Fog to hide edges of the plane - using transparent-ish color */}
+            <fog attach="fog" args={['#c5d3da', 6, 16]} />
+
 
             <ambientLight intensity={1.2} />
             <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" />
@@ -40,7 +41,6 @@ export default function Experience() {
             <EffectComposer disableNormalPass>
                 {/* Subtle effects for clean look */}
                 <Bloom luminanceThreshold={0.9} mipmapBlur intensity={0.3} radius={0.4} />
-                <ChromaticAberration offset={[0.001, 0.001]} />
                 <Noise opacity={0.02} blendFunction={BlendFunction.OVERLAY} />
             </EffectComposer>
         </>

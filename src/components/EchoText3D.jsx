@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef } from 'react'
 import { useFrame, extend } from '@react-three/fiber'
 import { Text, shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -59,7 +59,15 @@ extend({ TechLineMaterial })
 export default function EchoText3D() {
     const groupRef = useRef()
     const materialRefs = useRef([])
-    const outlineRefs = useRef([])
+    const mouseRef = useRef({ x: 0, y: 0 })
+
+    // Mouse tracking for tilt effect
+    if (typeof window !== 'undefined') {
+        window.addEventListener('mousemove', (e) => {
+            mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
+            mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1
+        })
+    }
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime()
@@ -70,11 +78,26 @@ export default function EchoText3D() {
                 mat.uTime = time
             }
         })
+
+        // Tilt effect following mouse - synced with UI
+        if (groupRef.current) {
+            // 3 degrees = ~0.052 radians to match UI
+            const targetRotationX = mouseRef.current.y * 0.052
+            const targetRotationY = mouseRef.current.x * 0.052
+
+            // Faster lerp to match GSAP speed
+            groupRef.current.rotation.x += (targetRotationX - groupRef.current.rotation.x) * 0.12
+            groupRef.current.rotation.y += (targetRotationY - groupRef.current.rotation.y) * 0.12
+        }
     })
+
+    // Responsive font size based on screen width
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    const fontSize = isMobile ? 0.22 : 0.42
 
     const textProps = {
         font: "/fonts/Audiowide,Zen_Dots/Zen_Dots/ZenDots-Regular.ttf",
-        fontSize: 0.42,
+        fontSize: fontSize,
         letterSpacing: 0.06,
         anchorX: "center",
         anchorY: "middle",
@@ -98,15 +121,6 @@ export default function EchoText3D() {
 
     return (
         <group ref={groupRef} position={[0, 0.5, 2.6]}>
-            {/* Tech blueprint grid decoration behind text */}
-            <mesh position={[0, 0, -0.3]}>
-                <planeGeometry args={[3.5, 1.2]} />
-                <meshBasicMaterial
-                    transparent
-                    opacity={0.03}
-                    color="#4a6878"
-                />
-            </mesh>
 
             {/* Render each layer */}
             {layers.map((layer, index) => (

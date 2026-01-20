@@ -6,17 +6,92 @@
   --font-body: 'Rajdhani', sans-serif;
 }
 
+// User provided styles
 body,
-html {
+html,
+#app {
   margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
+  // Combined existing variable with new radial gradient request
+  // The user asked for this specific background:
+  background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(0, 0, 0, 0.5) 200%);
+}
+
+#app {
+  height: 100%;
+  font-family: "Montserrat", serif;
+}
+
+body {
   overflow: hidden;
-  background: var(--color-bg);
   font-family: var(--font-body);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none; // let clicks pass through to canvas if needed, or buttons handle it
+}
+
+h1,
+h2 {
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 1);
+  line-height: 100%;
+  user-select: none;
+}
+
+h1 {
+  font-size: 80px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 60px;
+  font-weight: 500;
+}
+
+#webgl-canvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: 1; // Behind content
+}
+
+.buttons {
+  position: fixed;
+  width: 100%;
+  bottom: 15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  z-index: 20;
+}
+
+button {
+  font-family: "Montserrat", serif;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  border: 1px solid grey;
+  padding: 4px 8px;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 #root {
@@ -25,16 +100,20 @@ html {
   position: relative;
 }
 
+// Existing canvas styles from project (for the R3F canvas presumably)
 canvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
-  /* Background */
+  // z-index: 1; // Conflict with #webgl-canvas? 
+  // We want the hexagon background at the very back.
+  // We'll let #webgl-canvas be z-index 1.
+  // The R3F canvas should probably be transparent or on top if it has content?
+  // User didn't specify interaction between new background and old canvas.
+  // Assuming the new background replaces the old one or sits behind.
   pointer-events: auto;
-  /* For interactivity */
 }
 
 .ui-layer {
@@ -44,9 +123,7 @@ canvas {
   width: 100%;
   height: 100%;
   z-index: 10;
-  /* Above canvas */
   pointer-events: none;
-  /* Let clicks pass through to canvas where empty */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -55,4 +132,16 @@ canvas {
   * {
     pointer-events: auto;
   }
+
+  img.wings-icon {
+    padding-bottom: 134px !important;
+  }
+
+  h2.subtitle.stagger-anim {
+    font-size: 25px;
+    text-shadow: none !important;
+    font-weight: 700;
+  }
+
+
 }
