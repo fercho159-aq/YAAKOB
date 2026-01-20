@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import '../styles/ui.scss';
 
@@ -94,9 +95,9 @@ export default function UI() {
                         <span>FREE</span>
                     </h2>
 
-                    <button className="signin-btn stagger-anim">
+                    <Link to="/apps" className="signin-btn stagger-anim">
                         INICIO
-                    </button>
+                    </Link>
                 </div>
             </main>
 
