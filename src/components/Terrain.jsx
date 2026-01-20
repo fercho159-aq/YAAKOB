@@ -77,11 +77,14 @@ const Terrain = () => {
     float flow = verticalCoord + (vUv.y * 0.1) - uTime * 0.05;
 
     // Frecuencia alta para muchas líneas finas
-    float lines = sin(flow * 400.0); 
-    lines += sin(flow * 800.0) * 0.5; // Capa de detalle extra
+    // Frecuencia MUCHO mas alta para mas hilos finos
+    // Aumentamos de 400 a 1600 para cuadruplicar la cantidad de hilos aproximadamente
+    float lines = sin(flow * 1600.0); 
+    lines += sin(flow * 2400.0) * 0.4; // Capa de detalle extra mas fina
     
-    // Definición de la línea (mantiene el aspecto de seda)
-    float pattern = smoothstep(0.7, 1.0, lines);
+    // Definición de la línea (mas fino)
+    // Subimos el umbral inferior de 0.7 a 0.95 para que solo queden las crestas muy finas
+    float pattern = smoothstep(0.95, 1.0, lines);
     
     // Opacidad: desvanecer en los extremos Y ADEMAS en la parte inferior
     // vUv.y va de 0 a 1 alrededor del tubo del toroide
@@ -113,7 +116,7 @@ const Terrain = () => {
   return (
     <mesh ref={meshRef} rotation={[-4.2, 0.5, 0.5]} position={[2, -6, -15]}>
       {/* Más resolución para evitar dientes de sierra */}
-      <torusGeometry args={[10, 6, 128, 512]} />
+      <torusGeometry args={[6, 6, 128, 512]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
