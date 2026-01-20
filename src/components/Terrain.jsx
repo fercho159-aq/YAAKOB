@@ -116,7 +116,7 @@ const Terrain = () => {
   return (
     <mesh ref={meshRef} rotation={[-4.2, 0.5, 0.5]} position={[2, -6, -15]}>
       {/* Más resolución para evitar dientes de sierra */}
-      <torusGeometry args={[8, 6, 256, 1024]} />
+      <torusGeometry args={[8, 6, 1200, 4000]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
