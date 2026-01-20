@@ -81,9 +81,9 @@ export default function EchoText3D() {
 
         // Tilt effect following mouse - synced with UI
         if (groupRef.current) {
-            // 3 degrees = ~0.052 radians to match UI
-            const targetRotationX = mouseRef.current.y * 0.052
-            const targetRotationY = mouseRef.current.x * 0.052
+            // ~4.5 degrees = ~0.08 radians to match UI
+            const targetRotationX = mouseRef.current.y * 0.08
+            const targetRotationY = mouseRef.current.x * 0.08
 
             // Faster lerp to match GSAP speed
             groupRef.current.rotation.x += (targetRotationX - groupRef.current.rotation.x) * 0.12

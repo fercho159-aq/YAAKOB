@@ -28,10 +28,10 @@ export default function UI() {
             const x = (e.clientX / window.innerWidth - 0.5) * 2;
             const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-            // Apply tilt - mild effect (max 3 degrees)
+            // Apply tilt - moderate effect
             gsap.to(tiltElement, {
-                rotateX: -y * 3,
-                rotateY: x * 3,
+                rotateX: -y * 10,
+                rotateY: x * 10,
                 duration: 0.5,
                 ease: 'power2.out',
                 transformPerspective: 1000,

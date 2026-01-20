@@ -30,9 +30,9 @@ const Terrain = () => {
   useFrame((state) => {
     meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
 
-    // Tilt effect following mouse - synced with other elements (subtle)
-    const targetRotationX = baseRotation[0] + mouseRef.current.y * 0.05
-    const targetRotationY = baseRotation[1] + mouseRef.current.x * 0.05
+    // Tilt effect following mouse - synced with other elements
+    const targetRotationX = baseRotation[0] + mouseRef.current.y * 0.2
+    const targetRotationY = baseRotation[1] + mouseRef.current.x * 0.2
 
     meshRef.current.rotation.x += (targetRotationX - meshRef.current.rotation.x) * 0.08
     meshRef.current.rotation.y += (targetRotationY - meshRef.current.rotation.y) * 0.08
