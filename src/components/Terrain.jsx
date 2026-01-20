@@ -4,6 +4,15 @@ import * as THREE from 'three'
 
 const Terrain = () => {
   const meshRef = useRef()
+  const mouseRef = useRef({ x: 0, y: 0 })
+
+  // Mouse tracking for tilt effect
+  if (typeof window !== 'undefined') {
+    window.addEventListener('mousemove', (e) => {
+      mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
+      mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1
+    })
+  }
 
   const uniforms = useMemo(
     () => ({
@@ -15,8 +24,18 @@ const Terrain = () => {
     []
   )
 
+  // Base rotation values
+  const baseRotation = [-4.2, 0.5, 0.5]
+
   useFrame((state) => {
     meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
+
+    // Tilt effect following mouse - synced with other elements (subtle)
+    const targetRotationX = baseRotation[0] + mouseRef.current.y * 0.05
+    const targetRotationY = baseRotation[1] + mouseRef.current.x * 0.05
+
+    meshRef.current.rotation.x += (targetRotationX - meshRef.current.rotation.x) * 0.08
+    meshRef.current.rotation.y += (targetRotationY - meshRef.current.rotation.y) * 0.08
   })
 
   const vertexShader = `

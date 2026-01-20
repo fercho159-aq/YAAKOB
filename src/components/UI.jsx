@@ -24,18 +24,14 @@ export default function UI() {
         const handleMouseMove = (e) => {
             if (!tiltElement) return;
 
-            const rect = tiltElement.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+            // Calculate distance from center (normalized to window size)
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
 
-            // Calculate distance from center
-            const x = (e.clientX - centerX) / (rect.width / 2);
-            const y = (e.clientY - centerY) / (rect.height / 2);
-
-            // Apply tilt - subtle effect
+            // Apply tilt - mild effect (max 3 degrees)
             gsap.to(tiltElement, {
-                rotateX: -y * 3,  // Tilt up/down (reduced)
-                rotateY: x * 3,   // Tilt left/right (reduced)
+                rotateX: -y * 3,
+                rotateY: x * 3,
                 duration: 0.5,
                 ease: 'power2.out',
                 transformPerspective: 1000,
