@@ -93,7 +93,7 @@ export default function EchoText3D() {
 
     // Responsive font size based on screen width
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-    const fontSize = isMobile ? 0.22 : 0.42
+    const fontSize = isMobile ? 0.15 : 0.42
 
     const textProps = {
         font: "/fonts/Audiowide,Zen_Dots/Zen_Dots/ZenDots-Regular.ttf",
