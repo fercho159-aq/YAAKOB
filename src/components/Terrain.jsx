@@ -83,9 +83,18 @@ const Terrain = () => {
     // Definición de la línea (mantiene el aspecto de seda)
     float pattern = smoothstep(0.7, 1.0, lines);
     
-    // Opacidad: desvanecer en los extremos para que no se corte abruptamente
-    float edgeMask = smoothstep(0.0, 0.1, vUv.y) * smoothstep(1.0, 0.9, vUv.y);
-    float alpha = pattern * edgeMask * 0.6;
+    // Opacidad: desvanecer en los extremos Y ADEMAS en la parte inferior
+    // vUv.y va de 0 a 1 alrededor del tubo del toroide
+    // Agregamos un fade mas fuerte en la mitad inferior para que se pierda
+    
+    // Suavizado general en extremos
+    float edge = smoothstep(0.0, 0.1, vUv.y) * smoothstep(1.0, 0.9, vUv.y);
+    
+    // Máscara para borrar la parte "inferior" o trasera visualmente
+    // Ajusta el 0.4 y 0.6 para controlar dónde empieza y termina el desvanecido
+    float bottomMask = smoothstep(0.5, 0.7, vUv.y); 
+    
+    float alpha = pattern * edge * bottomMask * 0.6;
 
     // Color final
     vec3 finalColor = mix(uBaseColor, uLineColor, pattern);
