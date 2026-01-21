@@ -1,19 +1,28 @@
 import { useRef, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import gsap from 'gsap'
 
 /**
- * E.C.H.O.-Style Energy Fiber Lines Effect
+ * TerrainApps - E.C.H.O.-Style Energy Fiber Lines Effect
  * 
  * Creates flowing parallel curved lines using a torus geometry
  * with custom shaders for the fiber/line effect.
  */
-const TerrainApps = () => {
+const TerrainApps = ({
+    position = [2, -1, -5],
+    scale = 1,
+    fiberColor = '#5a7a9a',   // Gris-azul sutil
+    innerColor = '#f0f2f5',   // Gris muy claro (centro)
+    suctionSpeed = 0.12,      // Velocidad de flujo
+    rotationSpeed = 0.05,
+    // Torus params
+    torusRadius = 10,
+    tubeRadius = 3,
+    radialSegments = 64,
+    tubularSegments = 200
+}) => {
     const meshRef = useRef()
     const mouseRef = useRef({ x: 0, y: 0 })
-    const smoothMouseRef = useRef({ x: 0, y: 0 })
-    const opacityRef = useRef({ value: 0 })
 
     useEffect(() => {
         const handleMouseMove = (e) => {
@@ -22,13 +31,6 @@ const TerrainApps = () => {
         }
 
         window.addEventListener('mousemove', handleMouseMove)
-
-        gsap.to(opacityRef.current, {
-            value: 1,
-            duration: 2.5,
-            ease: 'power2.out'
-        })
-
         return () => window.removeEventListener('mousemove', handleMouseMove)
     }, [])
 
@@ -36,41 +38,25 @@ const TerrainApps = () => {
         () => ({
             uTime: { value: 0 },
             uMouse: { value: new THREE.Vector2(0, 0) },
-            uOpacity: { value: 0 },
-            uLineColor: { value: new THREE.Color('#5a7a9a') },    // Gris-azul sutil
-            uInnerColor: { value: new THREE.Color('#8fa4b8') },   // Más claro adentro
-            uFlowSpeed: { value: 0.12 },
+            uFiberColor: { value: new THREE.Color(fiberColor) },
+            uInnerColor: { value: new THREE.Color(innerColor) },
+            uSuctionSpeed: { value: suctionSpeed },
+            uRotationSpeed: { value: rotationSpeed },
         }),
-        []
+        [fiberColor, innerColor, suctionSpeed, rotationSpeed]
     )
 
     useFrame((state) => {
         if (!meshRef.current) return
 
-        const elapsed = state.clock.getElapsedTime()
-        meshRef.current.material.uniforms.uTime.value = elapsed
-        meshRef.current.material.uniforms.uOpacity.value = opacityRef.current.value
-
-        // Smooth mouse interpolation
-        const lerpFactor = 0.02
-        smoothMouseRef.current.x = THREE.MathUtils.lerp(
-            smoothMouseRef.current.x,
-            mouseRef.current.x,
-            lerpFactor
-        )
-        smoothMouseRef.current.y = THREE.MathUtils.lerp(
-            smoothMouseRef.current.y,
-            mouseRef.current.y,
-            lerpFactor
-        )
-
+        meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
         meshRef.current.material.uniforms.uMouse.value.set(
-            smoothMouseRef.current.x,
-            smoothMouseRef.current.y
+            mouseRef.current.x,
+            mouseRef.current.y
         )
 
-        // Subtle rotation
-        meshRef.current.rotation.z += smoothMouseRef.current.x * 0.0005
+        // Subtle rotation based on mouse
+        meshRef.current.rotation.z += mouseRef.current.x * 0.0008
     })
 
     const vertexShader = `
@@ -87,7 +73,7 @@ const TerrainApps = () => {
             vec3 pos = position;
             
             // Subtle breathing/pulsing effect
-            float pulse = sin(uTime * 0.3) * 0.03;
+            float pulse = sin(uTime * 0.4) * 0.03;
             pos *= 1.0 + pulse;
             
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
@@ -100,12 +86,10 @@ const TerrainApps = () => {
         varying vec3 vNormal;
         uniform float uTime;
         uniform vec2 uMouse;
-        uniform float uOpacity;
-        uniform vec3 uLineColor;
+        uniform vec3 uFiberColor;
         uniform vec3 uInnerColor;
-        uniform float uFlowSpeed;
+        uniform float uSuctionSpeed;
 
-        // Simple hash-based noise
         float hash(float n) {
             return fract(sin(n) * 43758.5453123);
         }
@@ -143,88 +127,78 @@ const TerrainApps = () => {
         void main() {
             // === 1. FLOW COORDINATES ===
             vec2 flowUv = vUv;
-            
-            // Continuous flow
-            flowUv.y -= uTime * uFlowSpeed;
+            flowUv.y -= uTime * uSuctionSpeed;
             flowUv.y = fract(flowUv.y);
             
-            // === 2. PARALLEL LINE GENERATION ===
-            // Create many thin parallel lines
-            float lineColumns = 180.0; // Number of lines
-            float columnIndex = floor(flowUv.x * lineColumns);
+            // === 2. ENERGY FIBER GENERATION ===
+            float fiberColumns = 250.0;
+            float columnIndex = floor(flowUv.x * fiberColumns);
             
-            // Each line has unique properties
-            float lineNoise = hash(columnIndex);
-            float lineBrightness = 0.4 + lineNoise * 0.6;
+            float fiberNoise = hash(columnIndex);
+            float fiberBrightness = fiberNoise;
+            float fiberWidth = 0.3 + fiberNoise * 0.7;
             
-            // Line width variation
-            float lineWidth = 0.2 + lineNoise * 0.4;
+            float fiberX = fract(flowUv.x * fiberColumns);
+            float fiber = smoothstep(0.5 - fiberWidth * 0.5, 0.5, fiberX) * 
+                          smoothstep(0.5 + fiberWidth * 0.5, 0.5, fiberX);
             
-            // Create sharp line edges
-            float lineX = fract(flowUv.x * lineColumns);
-            float line = smoothstep(0.5 - lineWidth * 0.5, 0.5, lineX) * 
-                        smoothstep(0.5 + lineWidth * 0.5, 0.5, lineX);
+            // === 3. INTENSITY FLICKERING ===
+            float flickerSpeed = 2.0 + fiberNoise * 3.0;
+            float flicker = sin(uTime * flickerSpeed + columnIndex * 0.5) * 0.5 + 0.5;
+            float wavePattern = sin(flowUv.y * 30.0 + columnIndex * 2.0 + uTime * 2.0) * 0.5 + 0.5;
+            float intensity = fiber * fiberBrightness * flicker * wavePattern;
             
-            // === 3. WAVE PATTERNS ===
-            float wavePattern = sin(flowUv.y * 20.0 + columnIndex * 1.5 + uTime * 1.5) * 0.5 + 0.5;
-            
-            // Combine intensity
-            float intensity = line * lineBrightness * wavePattern;
-            
-            // === 4. SECONDARY FINER LINES ===
-            float fineColumns = 350.0;
+            // === 4. SECONDARY FIBER LAYER ===
+            float fineColumns = 500.0;
             float fineColumnIndex = floor(flowUv.x * fineColumns);
-            float fineNoise = hash(fineColumnIndex + 500.0);
-            float fineLine = smoothstep(0.45, 0.5, fract(flowUv.x * fineColumns)) * 
-                            smoothstep(0.55, 0.5, fract(flowUv.x * fineColumns));
-            float fineIntensity = fineLine * fineNoise * 0.25;
+            float fineNoise = hash(fineColumnIndex + 1000.0);
+            float fineFiber = smoothstep(0.4, 0.5, fract(flowUv.x * fineColumns)) * 
+                              smoothstep(0.6, 0.5, fract(flowUv.x * fineColumns));
+            float fineIntensity = fineFiber * fineNoise * 0.3;
             
-            // === 5. DEPTH/TUNNEL EFFECT ===
+            // === 5. DEPTH GRADIENT ===
             float depth = 1.0 - abs(vUv.y - 0.5) * 2.0;
-            depth = pow(depth, 1.2);
-            
-            float tunnelDepth = smoothstep(0.0, 0.25, vUv.y) * smoothstep(1.0, 0.75, vUv.y);
+            depth = pow(depth, 1.5);
+            float tunnelDepth = smoothstep(0.0, 0.3, vUv.y) * smoothstep(1.0, 0.7, vUv.y);
             
             // === 6. ORGANIC VARIATION ===
-            float organic = fbm(flowUv * vec2(2.0, 8.0) + uTime * 0.08);
-            intensity *= 0.7 + organic * 0.5;
+            float organic = fbm(flowUv * vec2(2.0, 10.0) + uTime * 0.1);
+            intensity *= 0.7 + organic * 0.6;
             
-            // === 7. COLOR ===
-            float totalIntensity = (intensity + fineIntensity) * 0.85;
-            vec3 baseColor = uLineColor * totalIntensity;
+            // === 7. COLOR COMPOSITION ===
+            float softIntensity = (intensity + fineIntensity) * 0.8;
+            vec3 baseGlow = uFiberColor * softIntensity;
+            vec3 colorVariation = uFiberColor * sin(flowUv.y * 6.28 + uTime * 0.3) * 0.1;
+            vec3 core = vec3(0.3, 0.4, 0.5) * pow(intensity, 3.0) * 0.5;
             
-            // Subtle color variation
-            vec3 colorVar = uLineColor * sin(flowUv.y * 6.28 + uTime * 0.2) * 0.08;
+            // === 8. DEPTH & ATMOSPHERE ===
+            float centerFade = smoothstep(0.3, 0.5, abs(vUv.y - 0.5));
+            float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.5);
+            vec3 fresnelGlow = uFiberColor * fresnel * 0.3;
             
-            // Inner glow
-            vec3 core = uInnerColor * pow(intensity, 2.5) * 0.3;
-            
-            // === 8. FRESNEL EDGE ===
-            float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.0);
-            vec3 fresnelGlow = uLineColor * fresnel * 0.2;
-            
-            // === 9. COMBINE ===
-            float centerFade = smoothstep(0.2, 0.5, abs(vUv.y - 0.5));
-            vec3 finalColor = (baseColor + colorVar + core + fresnelGlow) * centerFade;
+            vec3 finalColor = (baseGlow + colorVariation + core + fresnelGlow) * centerFade;
             finalColor *= depth * tunnelDepth;
             
-            // === 10. ALPHA ===
-            float alpha = smoothstep(0.0, 0.15, intensity + fineIntensity) * tunnelDepth * uOpacity * 0.8;
-            alpha = clamp(alpha, 0.0, 0.85);
-            alpha = max(alpha, tunnelDepth * 0.03);
+            // === 9. ALPHA ===
+            float alpha = smoothstep(0.0, 0.2, intensity + fineIntensity) * tunnelDepth * 0.7;
+            alpha = clamp(alpha, 0.0, 0.9);
+            alpha = max(alpha, tunnelDepth * 0.04);
             
             gl_FragColor = vec4(finalColor, alpha);
+            
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
         }
     `
 
     return (
         <mesh
             ref={meshRef}
-            position={[2, -1, -5]}
-            scale={1}
+            position={position}
+            scale={scale}
             rotation={[Math.PI / 2.2, 0.1, 0.3]}
         >
-            <torusGeometry args={[10, 3, 64, 200]} />
+            <torusGeometry args={[torusRadius, tubeRadius, radialSegments, tubularSegments]} />
             <shaderMaterial
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
@@ -239,5 +213,4 @@ const TerrainApps = () => {
 }
 
 export default TerrainApps
-
 
