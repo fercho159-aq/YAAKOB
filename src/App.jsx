@@ -7,6 +7,7 @@ import UI from './components/UI'
 import HexagonBackground from './components/HexagonBackground'
 import AppsPage from './pages/AppsPage'
 import ContactPage from './pages/ContactPage'
+import IrisDemoPage from './pages/IrisDemoPage'
 
 function HomePage() {
   return (
@@ -72,6 +73,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/apps" element={<AppsPageWithBackground />} />
         <Route path="/contacto" element={<ContactPageWithBackground />} />
+        <Route path="/iris-demo" element={<IrisDemoPage />} />
       </Routes>
     </BrowserRouter>
   )

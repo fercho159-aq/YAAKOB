@@ -3,12 +3,18 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import gsap from 'gsap'
 
+/**
+ * E.C.H.O.-Style Energy Fiber Lines Effect
+ * 
+ * Creates flowing parallel curved lines using a torus geometry
+ * with custom shaders for the fiber/line effect.
+ */
 const TerrainApps = () => {
     const meshRef = useRef()
     const mouseRef = useRef({ x: 0, y: 0 })
-    const positionRef = useRef({ y: -15 }) // Start below viewport
+    const smoothMouseRef = useRef({ x: 0, y: 0 })
+    const opacityRef = useRef({ value: 0 })
 
-    // Mouse tracking for tilt effect
     useEffect(() => {
         const handleMouseMove = (e) => {
             mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
@@ -17,11 +23,9 @@ const TerrainApps = () => {
 
         window.addEventListener('mousemove', handleMouseMove)
 
-        // Animate terrain rising up after texts appear
-        gsap.to(positionRef.current, {
-            y: -5,
-            duration: 2,
-            delay: 1, // Wait 1 second for texts to appear first
+        gsap.to(opacityRef.current, {
+            value: 1,
+            duration: 2.5,
             ease: 'power2.out'
         })
 
@@ -31,123 +35,196 @@ const TerrainApps = () => {
     const uniforms = useMemo(
         () => ({
             uTime: { value: 0 },
-            // Colores con mayor contraste - líneas más oscuras
-            uBaseColor: { value: new THREE.Color('#d8e2e8') },
-            uLineColor: { value: new THREE.Color('#1a3040') }, // Azul muy oscuro
-            uAccentColor: { value: new THREE.Color('#2a4050') }, // Azul oscuro
-            uGlowColor: { value: new THREE.Color('#0a2030') }, // Azul profundo
+            uMouse: { value: new THREE.Vector2(0, 0) },
+            uOpacity: { value: 0 },
+            uLineColor: { value: new THREE.Color('#5a7a9a') },    // Gris-azul sutil
+            uInnerColor: { value: new THREE.Color('#8fa4b8') },   // Más claro adentro
+            uFlowSpeed: { value: 0.12 },
         }),
         []
     )
 
-    // Base rotation - diferente ángulo para la página de apps
-    const baseRotation = [-3.8, -0.3, 0.7]
-
     useFrame((state) => {
         if (!meshRef.current) return
 
-        meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
+        const elapsed = state.clock.getElapsedTime()
+        meshRef.current.material.uniforms.uTime.value = elapsed
+        meshRef.current.material.uniforms.uOpacity.value = opacityRef.current.value
 
-        // Update position from animated ref
-        meshRef.current.position.y = positionRef.current.y
+        // Smooth mouse interpolation
+        const lerpFactor = 0.02
+        smoothMouseRef.current.x = THREE.MathUtils.lerp(
+            smoothMouseRef.current.x,
+            mouseRef.current.x,
+            lerpFactor
+        )
+        smoothMouseRef.current.y = THREE.MathUtils.lerp(
+            smoothMouseRef.current.y,
+            mouseRef.current.y,
+            lerpFactor
+        )
 
-        // Tilt effect following mouse
-        const targetRotationX = baseRotation[0] + mouseRef.current.y * 0.15
-        const targetRotationY = baseRotation[1] + mouseRef.current.x * 0.15
+        meshRef.current.material.uniforms.uMouse.value.set(
+            smoothMouseRef.current.x,
+            smoothMouseRef.current.y
+        )
 
-        meshRef.current.rotation.x += (targetRotationX - meshRef.current.rotation.x) * 0.06
-        meshRef.current.rotation.y += (targetRotationY - meshRef.current.rotation.y) * 0.06
+        // Subtle rotation
+        meshRef.current.rotation.z += smoothMouseRef.current.x * 0.0005
     })
 
     const vertexShader = `
-    varying vec2 vUv;
-    varying vec3 vNormal;
-    varying vec3 vPosition;
-    uniform float uTime;
+        varying vec2 vUv;
+        varying vec3 vPosition;
+        varying vec3 vNormal;
+        uniform float uTime;
 
-    void main() {
-      vUv = uv;
-      vPosition = position;
-      vec3 pos = position;
-
-      // Slower, more ethereal twist
-      float twist = pos.z * 0.3;
-      float s = sin(twist + uTime * 0.25);
-      float c = cos(twist + uTime * 0.25);
-      mat2 m = mat2(c, -s, s, c);
-      pos.xy = m * pos.xy;
-
-      // Add subtle wave distortion
-      pos.y += sin(pos.x * 2.0 + uTime * 0.5) * 0.1;
-
-      vNormal = normalMatrix * normal;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-    }
-  `
+        void main() {
+            vUv = uv;
+            vPosition = position;
+            vNormal = normalMatrix * normal;
+            
+            vec3 pos = position;
+            
+            // Subtle breathing/pulsing effect
+            float pulse = sin(uTime * 0.3) * 0.03;
+            pos *= 1.0 + pulse;
+            
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+        }
+    `
 
     const fragmentShader = `
-  varying vec2 vUv;
-  varying vec3 vNormal;
-  varying vec3 vPosition;
-  uniform float uTime;
-  uniform vec3 uBaseColor;
-  uniform vec3 uLineColor;
-  uniform vec3 uAccentColor;
-  uniform vec3 uGlowColor;
+        varying vec2 vUv;
+        varying vec3 vPosition;
+        varying vec3 vNormal;
+        uniform float uTime;
+        uniform vec2 uMouse;
+        uniform float uOpacity;
+        uniform vec3 uLineColor;
+        uniform vec3 uInnerColor;
+        uniform float uFlowSpeed;
 
-  void main() {
-    // Grid-like pattern for digital feel
-    float verticalCoord = vUv.x;
-    float flow = verticalCoord + (vUv.y * 0.15) - uTime * 0.03;
+        // Simple hash-based noise
+        float hash(float n) {
+            return fract(sin(n) * 43758.5453123);
+        }
+        
+        float noise(vec2 p) {
+            return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+        }
+        
+        float smoothNoise(vec2 p) {
+            vec2 i = floor(p);
+            vec2 f = fract(p);
+            f = f * f * (3.0 - 2.0 * f);
+            
+            float a = noise(i);
+            float b = noise(i + vec2(1.0, 0.0));
+            float c = noise(i + vec2(0.0, 1.0));
+            float d = noise(i + vec2(1.0, 1.0));
+            
+            return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+        }
+        
+        float fbm(vec2 p) {
+            float value = 0.0;
+            float amplitude = 0.5;
+            float frequency = 1.0;
+            
+            for(int i = 0; i < 4; i++) {
+                value += amplitude * smoothNoise(p * frequency);
+                amplitude *= 0.5;
+                frequency *= 2.0;
+            }
+            return value;
+        }
 
-    // Multiple line layers for depth
-    float lines1 = sin(flow * 800.0);
-    float lines2 = sin(flow * 1200.0 + uTime * 0.5) * 0.6;
-    float lines3 = sin(vUv.y * 600.0) * 0.3; // Cross lines
-    
-    float pattern = smoothstep(0.92, 1.0, lines1);
-    float pattern2 = smoothstep(0.94, 1.0, lines2);
-    float gridPattern = smoothstep(0.96, 1.0, lines3);
-    
-    // Combine patterns
-    float combinedPattern = max(pattern, max(pattern2 * 0.7, gridPattern * 0.4));
-    
-    // Edge fading
-    float edge = smoothstep(0.0, 0.15, vUv.y) * smoothstep(1.0, 0.85, vUv.y);
-    float bottomMask = smoothstep(0.4, 0.7, vUv.y);
-    
-    // Pulsing glow effect
-    float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
-    float glowIntensity = smoothstep(0.3, 0.7, vUv.y) * pulse * 0.3;
-    
-    // Alpha with glow
-    float alpha = (combinedPattern * edge * bottomMask * 0.8) + glowIntensity * 0.2;
-
-    // Color mixing with gradient based on position
-    vec3 gradientColor = mix(uLineColor, uAccentColor, vUv.y);
-    gradientColor = mix(gradientColor, uGlowColor, sin(vUv.x * 3.14159 + uTime * 0.5) * 0.3 + 0.3);
-    
-    vec3 finalColor = mix(uBaseColor, gradientColor, combinedPattern + glowIntensity);
-
-    // Fresnel glow effect for edge lighting
-    float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0,0,1))), 3.0);
-    finalColor += fresnel * uGlowColor * 0.4;
-    
-    // Add subtle scanline effect
-    float scanline = sin(vUv.y * 400.0 + uTime * 2.0) * 0.05;
-    finalColor += scanline;
-
-    gl_FragColor = vec4(finalColor, alpha);
-    
-    #include <tonemapping_fragment>
-    #include <colorspace_fragment>
-  }
-`
+        void main() {
+            // === 1. FLOW COORDINATES ===
+            vec2 flowUv = vUv;
+            
+            // Continuous flow
+            flowUv.y -= uTime * uFlowSpeed;
+            flowUv.y = fract(flowUv.y);
+            
+            // === 2. PARALLEL LINE GENERATION ===
+            // Create many thin parallel lines
+            float lineColumns = 180.0; // Number of lines
+            float columnIndex = floor(flowUv.x * lineColumns);
+            
+            // Each line has unique properties
+            float lineNoise = hash(columnIndex);
+            float lineBrightness = 0.4 + lineNoise * 0.6;
+            
+            // Line width variation
+            float lineWidth = 0.2 + lineNoise * 0.4;
+            
+            // Create sharp line edges
+            float lineX = fract(flowUv.x * lineColumns);
+            float line = smoothstep(0.5 - lineWidth * 0.5, 0.5, lineX) * 
+                        smoothstep(0.5 + lineWidth * 0.5, 0.5, lineX);
+            
+            // === 3. WAVE PATTERNS ===
+            float wavePattern = sin(flowUv.y * 20.0 + columnIndex * 1.5 + uTime * 1.5) * 0.5 + 0.5;
+            
+            // Combine intensity
+            float intensity = line * lineBrightness * wavePattern;
+            
+            // === 4. SECONDARY FINER LINES ===
+            float fineColumns = 350.0;
+            float fineColumnIndex = floor(flowUv.x * fineColumns);
+            float fineNoise = hash(fineColumnIndex + 500.0);
+            float fineLine = smoothstep(0.45, 0.5, fract(flowUv.x * fineColumns)) * 
+                            smoothstep(0.55, 0.5, fract(flowUv.x * fineColumns));
+            float fineIntensity = fineLine * fineNoise * 0.25;
+            
+            // === 5. DEPTH/TUNNEL EFFECT ===
+            float depth = 1.0 - abs(vUv.y - 0.5) * 2.0;
+            depth = pow(depth, 1.2);
+            
+            float tunnelDepth = smoothstep(0.0, 0.25, vUv.y) * smoothstep(1.0, 0.75, vUv.y);
+            
+            // === 6. ORGANIC VARIATION ===
+            float organic = fbm(flowUv * vec2(2.0, 8.0) + uTime * 0.08);
+            intensity *= 0.7 + organic * 0.5;
+            
+            // === 7. COLOR ===
+            float totalIntensity = (intensity + fineIntensity) * 0.85;
+            vec3 baseColor = uLineColor * totalIntensity;
+            
+            // Subtle color variation
+            vec3 colorVar = uLineColor * sin(flowUv.y * 6.28 + uTime * 0.2) * 0.08;
+            
+            // Inner glow
+            vec3 core = uInnerColor * pow(intensity, 2.5) * 0.3;
+            
+            // === 8. FRESNEL EDGE ===
+            float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 2.0);
+            vec3 fresnelGlow = uLineColor * fresnel * 0.2;
+            
+            // === 9. COMBINE ===
+            float centerFade = smoothstep(0.2, 0.5, abs(vUv.y - 0.5));
+            vec3 finalColor = (baseColor + colorVar + core + fresnelGlow) * centerFade;
+            finalColor *= depth * tunnelDepth;
+            
+            // === 10. ALPHA ===
+            float alpha = smoothstep(0.0, 0.15, intensity + fineIntensity) * tunnelDepth * uOpacity * 0.8;
+            alpha = clamp(alpha, 0.0, 0.85);
+            alpha = max(alpha, tunnelDepth * 0.03);
+            
+            gl_FragColor = vec4(finalColor, alpha);
+        }
+    `
 
     return (
-        <mesh ref={meshRef} rotation={baseRotation} position={[3, -15, -12]}>
-            {/* High resolution torus for smooth lines */}
-            <torusGeometry args={[10, 7, 1000, 3500]} />
+        <mesh
+            ref={meshRef}
+            position={[2, -1, -5]}
+            scale={1}
+            rotation={[Math.PI / 2.2, 0.1, 0.3]}
+        >
+            <torusGeometry args={[10, 3, 64, 200]} />
             <shaderMaterial
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
@@ -162,3 +239,5 @@ const TerrainApps = () => {
 }
 
 export default TerrainApps
+
+
