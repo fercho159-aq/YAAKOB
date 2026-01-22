@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Html, Center } from '@react-three/drei'
 import * as THREE from 'three'
 import gsap from 'gsap'
+import ParticleLogo from './ParticleLogo'
 
 // El objeto 3D hecho de puntos (ahora un Recuadro/Caja)
 const PointsMesh = () => {
@@ -164,20 +165,24 @@ export default function BeFreePopup({ onClose }) {
                     Lleva la experiencia inmersiva a donde vayas. <br /> Disponible ahora.
                 </p>
 
+
+
                 <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
                     {/* App Store Button */}
                     <button
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '10px',
+                            gap: '15px',
                             background: 'rgba(0, 0, 0, 0.6)',
                             border: '1px solid #00ffff',
-                            padding: '12px 24px',
+                            padding: '10px 24px', // Reduced vertical padding slightly
                             borderRadius: '12px',
                             color: '#fff',
                             cursor: 'pointer',
-                            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                            height: '70px', // Fixed height for consistency
+                            minWidth: '220px'
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.transform = 'translateY(-3px)';
@@ -188,10 +193,17 @@ export default function BeFreePopup({ onClose }) {
                             e.currentTarget.style.boxShadow = 'none';
                         }}
                     >
-                        <span style={{ fontSize: '24px' }}></span>
+                        {/* 3D Apple Logo */}
+                        <div style={{ width: '40px', height: '40px', position: 'relative' }}>
+                            <Canvas camera={{ position: [0, 0, 3] }} gl={{ alpha: true }} dpr={[1, 2]}>
+                                <ambientLight intensity={1} />
+                                <ParticleLogo type="apple" />
+                            </Canvas>
+                        </div>
+
                         <div style={{ textAlign: 'left' }}>
                             <div style={{ fontSize: '10px', textTransform: 'uppercase' }}>Download on the</div>
-                            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>App Store</div>
+                            <div style={{ fontSize: '18px', fontWeight: 'bold' }}>App Store</div>
                         </div>
                     </button>
 
@@ -200,14 +212,16 @@ export default function BeFreePopup({ onClose }) {
                         style={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '10px',
+                            gap: '15px',
                             background: 'rgba(0, 0, 0, 0.6)',
                             border: '1px solid #00ffff',
-                            padding: '12px 24px',
+                            padding: '10px 24px',
                             borderRadius: '12px',
                             color: '#fff',
                             cursor: 'pointer',
-                            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                            height: '70px',
+                            minWidth: '220px'
                         }}
                         onMouseEnter={(e) => {
                             e.currentTarget.style.transform = 'translateY(-3px)';
@@ -218,10 +232,17 @@ export default function BeFreePopup({ onClose }) {
                             e.currentTarget.style.boxShadow = 'none';
                         }}
                     >
-                        <span style={{ fontSize: '20px' }}>▶</span>
+                        {/* 3D Play Logo */}
+                        <div style={{ width: '40px', height: '40px', position: 'relative' }}>
+                            <Canvas camera={{ position: [0, 0, 3] }} gl={{ alpha: true }} dpr={[1, 2]}>
+                                <ambientLight intensity={1} />
+                                <ParticleLogo type="google" />
+                            </Canvas>
+                        </div>
+
                         <div style={{ textAlign: 'left' }}>
                             <div style={{ fontSize: '10px', textTransform: 'uppercase' }}>Get it on</div>
-                            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Google Play</div>
+                            <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Google Play</div>
                         </div>
                     </button>
                 </div>
