@@ -53,8 +53,9 @@ const HumanoidParticles = () => {
                             // We must safeguard against interleaved buffers or missing attributes
                             if (attr.array) {
                                 // Sample every 3rd vertex to reduce density
-                                // i += 9 because each vertex has 3 components (x,y,z)
-                                for (let i = 0; i < attr.array.length; i += 30) {
+                                // Sample every 45th vertex (Balanced density)
+                                // i += 45 because each vertex has 3 components (x,y,z)
+                                for (let i = 0; i < attr.array.length; i += 45) {
                                     // Add vertex (3 values)
                                     allPositions.push(attr.array[i])
                                     allPositions.push(attr.array[i + 1])
@@ -112,7 +113,36 @@ const HumanoidParticles = () => {
     }
 
     void main() {
-      vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+      // 1. Copia local para aplicar Físicas de Viento (antes de transformar al mundo)
+      vec3 pos = position;
+
+      // === INTERACCIÓN MOUSE (VIENTO) ===
+      // uMouse viene en coordenadas locales gracias al raycaster en JS
+      float dMouse = distance(pos, uMouse);
+      float radius = 0.5; 
+      float influence = smoothstep(radius, 0.0, dMouse); 
+
+      if (influence > 0.001) {
+          // ELEGANCIA: En lugar de explotar, ondulamos como agua/energía
+          
+          // 1. Ondulación concéntrica suave
+          float wave = sin(dMouse * 15.0 - uTime * 8.0);
+          
+          // 2. Ruido sutil para "vida"
+          float turb = snoise(vec2(pos.x * 2.0, pos.y * 2.0 + uTime));
+
+          // Desplazamiento PRINCIPAL en Z (hacia el usuario, sin romper silueta lateral)
+          pos.z += influence * 0.4; 
+          
+          // Vibración sutil
+          pos.x += turb * influence * 0.05;
+          pos.y += turb * influence * 0.05;
+          
+          // Modulación del tamaño (puntos activos crecen un poco)
+          gl_PointSize *= (1.0 + influence * 0.5);
+      }
+
+      vec4 modelPosition = modelMatrix * vec4(pos, 1.0);
 
       // Glitch / Cyber effect
       // Displace XZ based on Y height + Time
@@ -136,21 +166,20 @@ const HumanoidParticles = () => {
           mouthRegion = smoothstep(1.0, 0.2, ellipseCheck); 
       }
       
-      // Movimiento
+      // Movimiento Boca
       if (mouthRegion > 0.01 && uAudioVolume > 0.01) {
           modelPosition.z += mouthRegion * uAudioVolume * 2.5; 
           modelPosition.y -= mouthRegion * uAudioVolume * 0.5;
           gl_PointSize *= 2.0; 
       }
-
       
       // Calculate elevation equivalent for coloring (relative to center)
       vElevation = modelPosition.y;
 
       vec4 viewPosition = viewMatrix * modelPosition;
       
-      // Size attenuation
-      gl_PointSize = 100.0 * (1.0 / -viewPosition.z);
+      // Size attenuation - TAMAÑO EQUILIBRADO (130.0)
+      gl_PointSize = 130.0 * (1.0 / -viewPosition.z);
       
       gl_Position = projectionMatrix * viewPosition;
     }
@@ -222,12 +251,15 @@ const HumanoidParticles = () => {
             const localRay = raycaster.ray.clone()
             localRay.applyMatrix4(groupMatrixInv)
 
-            // Get closest point on ray to origin (center of model)
-            const closestPoint = new THREE.Vector3()
-            localRay.closestPointToPoint(new THREE.Vector3(0, 0, 0), closestPoint)
+            // Intersectamos con un PLANO imaginario en Z=0 (frente del modelo)
+            // Esto nos da la coordenada precisa donde el mouse "toca" el cristal
+            const planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0)
+            const target = new THREE.Vector3()
 
-            // Smooth lerp
-            mousePosition.current.lerp(closestPoint, 0.1)
+            // Si el rayo corta el plano, usamos ese punto
+            if (localRay.intersectPlane(planeZ, target)) {
+                mousePosition.current.lerp(target, 0.15) // Lerp más rápido para respuesta ágil
+            }
 
             // Update uniform
             uniforms.uMouse.value.copy(mousePosition.current)
