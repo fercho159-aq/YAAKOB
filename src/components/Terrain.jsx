@@ -88,12 +88,12 @@ const fbm = (x, y, z, octaves = 3) => {
  */
 const Terrain = ({
   position = [2, -2.5, -10],
-  rotation = [-1.2, -0.2, Math.PI],
+  rotation = [-1.1, -0.2, Math.PI],
   torusRadius = 7, // Wider, more expansive
   tubeRadius = 5,   // Flatter
-  numLines = 300,   // Much more sparse (E.C.H.O. style is clean)
-  pointsPerLine = 500, // Very smooth curves
-  lineWidth = 2.8,  // Thinner lines
+  numLines = 200,   // Much more sparse (E.C.H.O. style is clean)
+  pointsPerLine = 200, // Very smooth curves
+  lineWidth = 4,  // Thinner lines
   minZ = 2.9, // Altura mínima para que las líneas se vean (corte inferior)
 }) => {
   const groupRef = useRef()
@@ -122,7 +122,7 @@ const Terrain = ({
 
     const colorBg = new THREE.Color('#FFD700')
     const colorRed = new THREE.Color('#ff3300')
-    const colorYellow = new THREE.Color('rgba(255, 221, 0, 1)')
+    const colorYellow = new THREE.Color('#ffdd00')
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
@@ -207,9 +207,51 @@ const Terrain = ({
         linewidth: lineWidth,
         dashed: false,
         alphaToCoverage: true,
-        transparent: false, // Solid lines for clarity, fade handled by color
-        depthWrite: true,
+        transparent: true, // Enable transparency
+        depthWrite: false, // Prevents z-fighting with transparency
         worldUnits: false,
+        onBeforeCompile: (shader) => {
+          shader.vertexShader = `
+            varying float vLocalZ;
+            varying float vRadius;
+            ${shader.vertexShader}
+          `.replace(
+            'void main() {',
+            `
+            void main() {
+              vLocalZ = (instanceStart.z + instanceEnd.z) * 0.5;
+              vRadius = length((instanceStart.xy + instanceEnd.xy) * 0.5);
+            `
+          )
+
+          shader.fragmentShader = `
+            varying float vLocalZ;
+            varying float vRadius;
+            ${shader.fragmentShader}
+          `.replace(
+            /gl_FragColor = vec4\( diffuseColor.rgb, alpha \);/g,
+            `
+            // Custom height-based transparency
+            float heightAlpha = smoothstep(2.8, 5.0, vLocalZ); 
+            
+            // Radial Transparency
+            
+            // 1. Center Emergence: Fade from 0.0 (Invisible) -> 0.9 (90% Visible)
+            // This ensures it looks like it's "forming" without being ghostly
+            float centerFactor = smoothstep(2.0, 7.0, vRadius);
+            float centerAlpha = mix(0.0, 0.9, centerFactor);
+
+            // 2. Edge Fade: Fade from centerAlpha down to 0.4 (40% Visible)
+            float edgeFactor = smoothstep(25.0, 45.0, vRadius);
+            float finalRadialAlpha = mix(centerAlpha, 0.4, edgeFactor);
+            
+            // Apply all factors
+            float finalAlpha = alpha * heightAlpha * finalRadialAlpha;
+
+            gl_FragColor = vec4( diffuseColor.rgb, finalAlpha );
+            `
+          )
+        }
       })
 
       material.resolution.set(size.width, size.height)
@@ -254,8 +296,8 @@ const Terrain = ({
       const flowTime = time * 0.5
 
       // Large soft noise
-      const noiseScale = 0.2
-      const waveAmp = 1.0
+      const noiseScale = 0.4
+      const waveAmp = 0.3
 
       for (let i = 0; i < originalPositions.length; i += 3) {
         const x = originalPositions[i]
@@ -270,30 +312,9 @@ const Terrain = ({
         // FBM for detail using very smooth settings
         const displacement = fbm(nX, nY, nZ, 2) * waveAmp
 
-        // === RAIN / GLASS EFFECT ===
-        // Simulates water droplets degrading the view
-
-        // 1. Moving "patches" of rain (simulating streaks sliding down)
-        // We move along Z to simulate flow
-        const rainTime = time * 0.4
-        const rainPatchNoise = perlin3D(x * 0.3, y * 0.3, z * 0.2 + rainTime)
-
-        let rainDistortion = 0
-
-        // Only distort inside the "droplets" (where noise is high)
-        if (rainPatchNoise > 0.3) {
-          // High frequency wobble to simulate refraction/glass distortion
-          // "Degrade" the line quality locally
-          const wobbleFreq = 12.0
-          const wobbleSpeed = time * 1.5
-
-          // Creates a chaotic, high-freq wiggle
-          rainDistortion = Math.sin(z * wobbleFreq - wobbleSpeed) * Math.cos(x * wobbleFreq) * 0.08 * (rainPatchNoise)
-        }
-
         newPositions.push(
-          x + displacement * 0.5 + rainDistortion,
-          y + displacement * 0.5 + rainDistortion,
+          x + displacement * 0.5,
+          y + displacement * 0.5,
           z + displacement
         )
       }
