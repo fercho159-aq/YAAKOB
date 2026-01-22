@@ -12,9 +12,9 @@ const TerrainApps = ({
     position = [3, -2, -3],
     innerRadius = 1.0,      // Pupila - centro vacío
     outerRadius = 12.0,     // Radio exterior
-    radialLines = 150,      // Número de líneas radiales
+    radialLines = 1500,      // Número de líneas radiales
     pointsPerLine = 100,    // Puntos por línea
-    lineColor = '#5a7082',  // Color gris-azul
+    lineColor = '#2d3b48',  // Color azul oscuro tipo E.C.H.O.
 }) => {
     const pointsRef = useRef()
     const mouseRef = useRef({ x: 0, y: 0 })
@@ -37,19 +37,20 @@ const TerrainApps = ({
         const lineIndices = new Float32Array(totalPoints)
         const radiusProgress = new Float32Array(totalPoints)
         const randoms = new Float32Array(totalPoints)
+        const indices = [] // Indices for LineSegments
 
         let idx = 0
         for (let line = 0; line < radialLines; line++) {
-            // Ángulo fijo para cada línea radial
             const angle = (line / radialLines) * Math.PI * 2
             const lineRandom = Math.random()
 
+            // Index offsets for this line
+            const startIdx = idx
+
             for (let point = 0; point < pointsPerLine; point++) {
-                // Progreso a lo largo de la línea (0 = centro, 1 = borde)
                 const t = point / (pointsPerLine - 1)
                 const radius = innerRadius + t * (outerRadius - innerRadius)
 
-                // Posición en el disco plano
                 const x = Math.cos(angle) * radius
                 const y = Math.sin(angle) * radius
                 const z = 0
@@ -62,6 +63,11 @@ const TerrainApps = ({
                 radiusProgress[idx] = t
                 randoms[idx] = lineRandom
 
+                // Create segment indices (connecting point i to i+1)
+                if (point < pointsPerLine - 1) {
+                    indices.push(idx, idx + 1)
+                }
+
                 idx++
             }
         }
@@ -71,6 +77,7 @@ const TerrainApps = ({
         geo.setAttribute('aLineIndex', new THREE.BufferAttribute(lineIndices, 1))
         geo.setAttribute('aRadiusProgress', new THREE.BufferAttribute(radiusProgress, 1))
         geo.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
+        geo.setIndex(indices) // Set indices for line segments
 
         return geo
     }, [radialLines, pointsPerLine, innerRadius, outerRadius])
@@ -109,9 +116,9 @@ const TerrainApps = ({
             smoothMouseRef.current.y
         )
 
-        // Rotación sutil basada en mouse
-        pointsRef.current.rotation.x = -0.35 + smoothMouseRef.current.y * 0.1
-        pointsRef.current.rotation.y = smoothMouseRef.current.x * 0.08
+        // Rotación sutil - Mantenlo mayormente plano para efecto 'disco'
+        pointsRef.current.rotation.x = -0.2 + smoothMouseRef.current.y * 0.05
+        pointsRef.current.rotation.y = smoothMouseRef.current.x * 0.05
     })
 
     const vertexShader = `
@@ -182,58 +189,40 @@ const TerrainApps = ({
             float radius = length(pos.xy);
             float angle = atan(pos.y, pos.x);
             
-            // === ONDAS RADIALES ===
-            // Ondas que pulsan desde el centro hacia afuera
-            float waveSpeed = 0.3;
-            float waveFreq = 3.0;
-            float wavePhase = radius * waveFreq - uTime * waveSpeed;
-            float radialWave = sin(wavePhase) * 0.3;
-            
-            // Ruido orgánico por línea
+            // === ONDAS RADIALES MUY SUTILES EN Z ===
+            // Flatten Z to ensure disc look
             float noiseVal = snoise(vec3(
                 aLineIndex * 8.0,
                 aRadiusProgress * 2.0 + uTime * 0.1,
                 aRandom * 5.0
-            )) * 0.2;
+            ));
             
-            // Onda lenta secundaria
-            float slowWave = sin(radius * 1.2 - uTime * 0.15) * 0.1;
+            // Deformación Z pequeña para dar "vida" pero mantener plano
+            pos.z = noiseVal * 0.2 * (aRadiusProgress * 0.5 + 0.5);
             
-            // Combinar ondas - afecta Z (profundidad)
-            float totalWave = (radialWave + noiseVal + slowWave) * (0.2 + aRadiusProgress * 0.8);
-            pos.z = totalWave;
+            // Distorsión lateral (XY) ondulada
+            // Hace que las líneas vibren como un iris
+            float wave = sin(aRadiusProgress * 15.0 - uTime * 2.0) * 0.02;
+            float distort = snoise(vec3(pos.xy * 0.5, uTime * 0.2)) * 0.1;
             
-            // Distorsión sutil del radio
-            float lineDistort = snoise(vec3(
-                aLineIndex * 4.0,
-                aRadiusProgress * 1.5 + uTime * 0.02,
-                0.0
-            )) * 0.05 * aRadiusProgress;
-            
-            float newRadius = radius * (1.0 + lineDistort);
+            float newRadius = radius + wave + distort;
             pos.x = cos(angle) * newRadius;
             pos.y = sin(angle) * newRadius;
             
-            // Interacción con mouse
-            float mouseInfluence = 1.0 - aRadiusProgress * 0.6;
-            pos.x += uMouse.x * mouseInfluence * 0.4;
-            pos.y += uMouse.y * mouseInfluence * 0.4;
+            // Mouse influence
+            float mouseInfluence = smoothstep(1.0, 0.0, aRadiusProgress);
+            pos.x += uMouse.x * mouseInfluence * 0.5;
+            pos.y += uMouse.y * mouseInfluence * 0.5;
             
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
             
-            // Tamaño de punto - más grande hacia afuera
-            float dist = length(mvPosition.xyz);
-            float baseSize = 1.2 + aRadiusProgress * 0.8;
-            gl_PointSize = baseSize * (1.0 / (dist * 0.08 + 1.0));
-            gl_PointSize = max(gl_PointSize, 1.0);
-            
             vRadiusProgress = aRadiusProgress;
             vLineIndex = aLineIndex;
             
-            // Fade en pupila y borde externo
-            float innerFade = smoothstep(0.0, 0.08, aRadiusProgress);
-            float outerFade = smoothstep(1.0, 0.92, aRadiusProgress);
+            // Fade en extremos
+            float innerFade = smoothstep(0.0, 0.15, aRadiusProgress);
+            float outerFade = smoothstep(1.0, 0.8, aRadiusProgress);
             vAlpha = innerFade * outerFade;
         }
     `
@@ -246,30 +235,25 @@ const TerrainApps = ({
         varying float vAlpha;
 
         void main() {
-            vec2 uv = gl_PointCoord - 0.5;
-            float dist = length(uv);
-            float strength = 1.0 - smoothstep(0.0, 0.5, dist);
-            strength = pow(strength, 1.3);
+            // Gradiente simple
+            vec3 color = uLineColor;
             
-            // Gradiente radial (centro más claro, exterior más oscuro)
-            vec3 innerColor = uLineColor + vec3(0.2);
-            vec3 outerColor = uLineColor - vec3(0.1);
-            vec3 color = mix(innerColor, outerColor, vRadiusProgress);
+            // Brillo pulsante
+            float pulse = 0.8 + 0.2 * sin(vRadiusProgress * 20.0 - 0.0);
             
-            // Variación sutil entre líneas
-            float lineVar = sin(vLineIndex * 62.8318) * 0.06;
-            color += lineVar;
+            // Variación por línea
+            float lineVar = 0.1 * sin(vLineIndex * 100.0);
             
-            float alpha = strength * vAlpha * 0.75;
+            float alpha = vAlpha * (0.6 + lineVar);
             
             if (alpha < 0.01) discard;
             
-            gl_FragColor = vec4(color, alpha);
+            gl_FragColor = vec4(color * pulse, alpha);
         }
     `
 
     return (
-        <points ref={pointsRef} position={position} rotation={[-0.35, 0, 0.2]}>
+        <lineSegments ref={pointsRef} position={position} rotation={[-0.2, 0, 0.0]}>
             <primitive object={geometry} attach="geometry" />
             <shaderMaterial
                 vertexShader={vertexShader}
@@ -279,7 +263,7 @@ const TerrainApps = ({
                 depthWrite={false}
                 blending={THREE.NormalBlending}
             />
-        </points>
+        </lineSegments>
     )
 }
 

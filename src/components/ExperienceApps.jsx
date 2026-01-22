@@ -23,7 +23,7 @@ export default function ExperienceApps() {
             <PerspectiveCamera makeDefault position={[0, 1.2, 6]} ref={cameraRef} fov={50} />
 
             {/* Light fog matching home page */}
-            <fog attach="fog" args={['#c5d3da', 6, 16]} />
+            <fog attach="fog" args={['#A8B6BD', 6, 16]} />
 
             {/* Bright, clean lighting */}
             <ambientLight intensity={1.2} />

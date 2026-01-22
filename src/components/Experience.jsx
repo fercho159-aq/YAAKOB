@@ -24,10 +24,10 @@ export default function Experience() {
             <PerspectiveCamera makeDefault position={[0, 2, 6]} ref={cameraRef} fov={50} />
 
             {/* Background removed to allow CSS background to show through */}
-            {/* <color attach="background" args={['#c5d3da']} /> */}
+            {/* <color attach="background" args={['#A8B6BD']} /> */}
 
             {/* Fog to hide edges of the plane - using transparent-ish color */}
-            <fog attach="fog" args={['#c5d3da', 6, 16]} />
+            <fog attach="fog" args={['#A8B6BD', 6, 16]} />
 
 
             <ambientLight intensity={1.2} />

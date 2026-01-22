@@ -1,32 +1,28 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise, Vignette } from '@react-three/postprocessing'
-import IrisEffect from '../components/IrisEffect'
+import TerrainApps from '../components/TerrainApps'
 
 const IrisDemoPage = () => {
     return (
         <div className="iris-demo-page">
             <div className="iris-canvas-container">
                 <Canvas
-                    camera={{ position: [0, 0, 20], fov: 60 }}
+                    camera={{ position: [0, 0, 18], fov: 60 }} // Camera slightly closer for disc
                     gl={{ alpha: true, antialias: true }}
                 >
                     {/* Ambient lighting */}
                     <ambientLight intensity={0.2} />
                     <pointLight position={[0, 0, 10]} intensity={0.5} />
 
-                    {/* The Iris/Tunnel Effect */}
-                    <IrisEffect
+                    {/* The Radial Iris Disc Effect */}
+                    <TerrainApps
                         position={[0, 0, 0]}
-                        scale={1}
-                        fiberColor="#5a7a9a"      // Gris-azul sutil YAAKOB
-                        innerColor="#f0f2f5"      // Gris muy claro (centro)
-                        suctionSpeed={0.15}       // Más lento para efecto sereno
-                        rotationSpeed={0.03}      // Rotación muy sutil
-                        torusRadius={12}          // Outer radius
-                        tubeRadius={4}            // Tube thickness
-                        radialSegments={64}       // Quality around tube
-                        tubularSegments={300}     // Quality around ring
+                        outerRadius={11}
+                        innerRadius={0.5}
+                        radialLines={180}
+                        pointsPerLine={120}
+                        lineColor="#5a7a9a" // Gris-azul YAAKOB
                     />
 
                     {/* Post-processing - más sutil para tema claro */}
