@@ -2,6 +2,7 @@ import { useRef, useMemo, useEffect, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 /**
  * HumanoidParticles
@@ -14,7 +15,7 @@ import * as THREE from 'three'
  * 
  * While the model is missing, it renders a TorusKnot as a placeholder.
  */
-const HumanoidParticles = () => {
+const HumanoidParticles = ({ isTransitioning }) => {
     const pointsRef = useRef()
     const groupRef = useRef()
     const raycaster = useMemo(() => new THREE.Raycaster(), [])
@@ -80,6 +81,7 @@ const HumanoidParticles = () => {
     uniform float uTime;
     uniform vec3 uMouse;
     uniform float uAudioVolume;
+    uniform float uTransition; // 0.0 to 1.0
     
     varying float vElevation;
 
@@ -176,6 +178,25 @@ const HumanoidParticles = () => {
       // Calculate elevation equivalent for coloring (relative to center)
       vElevation = modelPosition.y;
 
+      // === EXPLOSION TRANSITION ===
+      if (uTransition > 0.0) {
+          // Explode outwards from center (0, y, 0)
+          vec3 center = vec3(0.0, position.y, 0.0);
+          vec3 dir = normalize(position - center + vec3(0.001)); // Avoid div by zero
+          
+          float explosionSpeed = 15.0; // Fast explosion
+          float randomDelay = snoise(position.xy * 10.0) * 0.5 + 0.5; // 0..1
+          
+          // Disperse mainly outwards and slightly upwards
+          vec3 explosionVec = dir * uTransition * explosionSpeed * (0.5 + randomDelay);
+          explosionVec.y += uTransition * 5.0 * randomDelay; // Upward drift
+          
+          modelPosition.xyz += explosionVec;
+          
+          // Fade out size
+          gl_PointSize *= (1.0 - uTransition); 
+      }
+
       vec4 viewPosition = viewMatrix * modelPosition;
       
       // Size attenuation - TAMAÑO REDUCIDO para nitidez holográfica (85.0)
@@ -208,7 +229,8 @@ const HumanoidParticles = () => {
         () => ({
             uTime: { value: 0 },
             uMouse: { value: new THREE.Vector3(9999, 9999, 9999) },
-            uAudioVolume: { value: 0 }
+            uAudioVolume: { value: 0 },
+            uTransition: { value: 0 }
         }),
         []
     )
@@ -266,6 +288,17 @@ const HumanoidParticles = () => {
             uniforms.uMouse.value.copy(mousePosition.current)
         }
     })
+
+    // Animation Effect for Explosion
+    useEffect(() => {
+        if (isTransitioning) {
+            gsap.to(uniforms.uTransition, {
+                value: 1,
+                duration: 2.0,
+                ease: "power2.inOut"
+            })
+        }
+    }, [isTransitioning, uniforms.uTransition])
 
     // If no positions (loading or error), render nothing or fallback
     if (!geometricData) return null

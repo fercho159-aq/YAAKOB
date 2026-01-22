@@ -33,7 +33,7 @@ export default function ExperienceApps({ isTransitioning, onTransitionComplete }
             <TerrainApps isTransitioning={isTransitioning} onTransitionComplete={onTransitionComplete} />
 
             <Suspense fallback={null}>
-                <HumanoidParticles />
+                <HumanoidParticles isTransitioning={isTransitioning} />
             </Suspense>
 
             <EffectComposer disableNormalPass>

@@ -87,13 +87,13 @@ const fbm = (x, y, z, octaves = 3) => {
  * - "Ink on Paper" aesthetic (Dark lines, Light background)
  */
 const Terrain = ({
-  position = [2, -2.5, -10],
-  rotation = [-1.1, -0.2, Math.PI],
+  position = [2, -3.5, -10],
+  rotation = [-1.3, -0.2, Math.PI],
   torusRadius = 7, // Wider, more expansive
   tubeRadius = 5,   // Flatter
-  numLines = 200,   // Much more sparse (E.C.H.O. style is clean)
+  numLines = 1600,   // Much more sparse (E.C.H.O. style is clean)
   pointsPerLine = 200, // Very smooth curves
-  lineWidth = 4,  // Thinner lines
+  lineWidth = 1,  // Thinner lines
   minZ = 2.9, // Altura mínima para que las líneas se vean (corte inferior)
 }) => {
   const groupRef = useRef()
