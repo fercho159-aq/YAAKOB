@@ -1,46 +1,89 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AppsPage.scss';
 
 export default function AppsPage() {
     const [audioPlaying, setAudioPlaying] = useState(false);
     const audioRef = useRef(null);
     const audioContextRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Crear audio y conectar al window para que HumanoidParticles pueda acceder
+        // Crear audio
         const audio = new Audio('/YTDown.com_Shorts_LA-MEJOR-FRASE-DE-ADAM-SANDLER-Garra-Mot_Media_MtwBVhkLd3s_007_48k.m4a');
-        audio.loop = true;
         audioRef.current = audio;
 
-        // Exponer audio al window para sincronización
+        // Configuración para flujo automático
+        audio.loop = false; // Importante: NO loop para que termine
+
+        // Al terminar, ir a /contacto
+        audio.onended = () => {
+            console.log("Audio terminado. Navegando a contacto...");
+            navigate('/contacto');
+        };
+
+        // Exponer audio al window
         window.sharedAudio = audio;
 
-        return () => {
-            audio.pause();
-            window.sharedAudio = null;
-        };
-    }, []);
-
-    const handlePlayAudio = () => {
-        if (audioRef.current) {
-            // Crear AudioContext en respuesta a click del usuario
-            if (!audioContextRef.current) {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // Intentar AUTO-PLAY e inicializar AudioContext
+        const initAudio = async () => {
+            try {
+                // Crear Contexto de Audio
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const audioContext = new AudioContext();
                 audioContextRef.current = audioContext;
 
                 const analyser = audioContext.createAnalyser();
                 analyser.fftSize = 256;
 
-                const source = audioContext.createMediaElementSource(audioRef.current);
+                // Conectar nodos
+                const source = audioContext.createMediaElementSource(audio);
                 source.connect(analyser);
                 analyser.connect(audioContext.destination);
 
-                // Exponer analyser para HumanoidParticles
+                // Exponer analyser
+                window.sharedAnalyser = analyser;
+
+                // Reproducir
+                await audio.play();
+                setAudioPlaying(true);
+            } catch (err) {
+                console.warn("Autoplay bloqueado por el navegador. Se requiere interacción.", err);
+                // Si falla el autoplay, el botón manual sigue disponible
+            }
+        };
+
+        initAudio();
+
+        return () => {
+            audio.pause();
+            window.sharedAudio = null;
+            // Limpiar listener
+            audio.onended = null;
+        };
+    }, [navigate]);
+
+    const handlePlayAudio = () => {
+        if (audioRef.current) {
+            // Si el contexto existe pero está suspendido (browsers policy), reanudarlo
+            if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+                audioContextRef.current.resume();
+            }
+
+            // Si no existe (caso raro si el useEffect falló parcialmente), crearlo
+            if (!audioContextRef.current) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const audioContext = new AudioContext();
+                audioContextRef.current = audioContext;
+                const analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                const source = audioContext.createMediaElementSource(audioRef.current);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
                 window.sharedAnalyser = analyser;
             }
 
-            audioRef.current.play();
-            setAudioPlaying(true);
+            audioRef.current.play().then(() => setAudioPlaying(true)).catch(e => console.error(e));
         }
     };
 
