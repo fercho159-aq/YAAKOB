@@ -6,7 +6,7 @@ import HumanoidParticles from './HumanoidParticles'
 import { useEffect, useRef, Suspense } from 'react'
 import gsap from 'gsap'
 
-export default function ExperienceApps() {
+export default function ExperienceApps({ isTransitioning, onTransitionComplete }) {
     const cameraRef = useRef()
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export default function ExperienceApps() {
             <ambientLight intensity={1.2} />
             <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" />
 
-            <TerrainApps />
+            <TerrainApps isTransitioning={isTransitioning} onTransitionComplete={onTransitionComplete} />
 
             <Suspense fallback={null}>
                 <HumanoidParticles />

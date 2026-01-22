@@ -1,20 +1,26 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import gsap from 'gsap'
 
-const TerrainApps = () => {
+const TerrainApps = ({ isTransitioning, onTransitionComplete }) => {
     // 1. Setup refs
     const pointsRef = useRef()
 
     // 2. Setup Geometry
     //    Use a PlaneGeometry with high segments to get a lot of vertices (points)
-    const { positions, uvs } = useMemo(() => {
+    const { positions, uvs, randoms } = useMemo(() => {
         // Width, Height, SegmentsW, SegmentsH
         // 50 x 50 size, with 128 segments = ~16k points
         const geo = new THREE.PlaneGeometry(50, 50, 128, 128)
         const pos = geo.attributes.position.array
         const uv = geo.attributes.uv.array
-        return { positions: pos, uvs: uv }
+        const count = pos.length / 3
+        const rands = new Float32Array(count)
+        for (let i = 0; i < count; i++) {
+            rands[i] = Math.random()
+        }
+        return { positions: pos, uvs: uv, randoms: rands }
     }, [])
 
     // Raycaster for interaction
@@ -28,7 +34,8 @@ const TerrainApps = () => {
     const vertexShader = `
     uniform float uTime;
     uniform vec3 uMouse;
-    attribute float aScale;
+    uniform float uTransition; // 0.0 to 1.0
+    attribute float aRandom;
     
     varying float vElevation;
 
@@ -90,6 +97,22 @@ const TerrainApps = () => {
       elevation += interaction * 0.5; 
       // Movimiento fluido principal
       elevation += wave * 0.8; 
+      
+      // --- EXPLOSION TRANSITION ---
+      // When uTransition increases, animate particles upwards wildly
+      if (uTransition > 0.0) {
+        float explosionSpeed = 40.0;
+        // Randomize speed based on aRandom attribute
+        float randomSpeed = 10.0 + aRandom * 30.0;
+        
+        // Upward movement
+        elevation += uTransition * randomSpeed; 
+        
+        // Add some random scatter in XZ
+        float scatter = snoise(vec2(modelPosition.x + uTime, modelPosition.z)) * uTransition * 15.0;
+        modelPosition.x += scatter * 0.5;
+        modelPosition.z += scatter * 0.5;
+      }
 
       modelPosition.y += elevation;
       
@@ -126,8 +149,6 @@ const TerrainApps = () => {
       // Low: Deep Blue abyss
       vec3 colorLow = vec3(0.0, 0.1, 0.2); 
 
-
-
       // Mix based on elevation (range approx -1.5 to 1.5)
       float mixStrength = (vElevation + 1.0) * 0.5;
       vec3 color = mix(colorLow, colorHigh, mixStrength);
@@ -142,7 +163,8 @@ const TerrainApps = () => {
     const uniforms = useMemo(
         () => ({
             uTime: { value: 0 },
-            uMouse: { value: new THREE.Vector3(9999, 9999, 9999) }
+            uMouse: { value: new THREE.Vector3(9999, 9999, 9999) },
+            uTransition: { value: 0 }
         }),
         []
     )
@@ -178,6 +200,21 @@ const TerrainApps = () => {
         }
     })
 
+    // Animation Effect
+    useEffect(() => {
+        if (isTransitioning) {
+            console.log("Starting particles explosion!");
+            gsap.to(uniforms.uTransition, {
+                value: 1,
+                duration: 2.5,
+                ease: "power2.in",
+                onComplete: () => {
+                    if (onTransitionComplete) onTransitionComplete()
+                }
+            })
+        }
+    }, [isTransitioning, onTransitionComplete, uniforms.uTransition])
+
     return (
         <points ref={pointsRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, -10]} renderOrder={0}>
             {/* 
@@ -196,6 +233,12 @@ const TerrainApps = () => {
                     count={uvs.length / 2}
                     array={uvs}
                     itemSize={2}
+                />
+                <bufferAttribute
+                    attach="attributes-aRandom"
+                    count={randoms.length}
+                    array={randoms}
+                    itemSize={1}
                 />
             </bufferGeometry>
 

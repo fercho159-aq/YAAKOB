@@ -8,7 +8,7 @@ import HexagonBackground from './components/HexagonBackground'
 import AppsPage from './pages/AppsPage'
 import ContactPage from './pages/ContactPage'
 import IrisDemoPage from './pages/IrisDemoPage'
-import { TransitionProvider } from './context/TransitionContext'
+import { TransitionProvider, useTransition } from './context/TransitionContext'
 
 function HomePage() {
   return (
@@ -52,17 +52,8 @@ function AppsPageWithBackground() {
 function ContactPageWithBackground() {
   return (
     <>
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#02050a', zIndex: -1 }} />
       <HexagonBackground />
-      <Canvas
-        camera={{ position: [0, 0, 5], fov: 45 }}
-        dpr={[1, 2]}
-        gl={{ alpha: true, antialias: true }}
-        style={{ background: '#02050a', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
-      >
-        <Suspense fallback={null}>
-          <ExperienceApps />
-        </Suspense>
-      </Canvas>
       <ContactPage />
     </>
   )

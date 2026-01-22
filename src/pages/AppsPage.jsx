@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTransition } from '../context/TransitionContext';
 import './AppsPage.scss';
 
 export default function AppsPage() {
-    const [audioPlaying, setAudioPlaying] = useState(false);
-    const audioRef = useRef(null);
-    const audioContextRef = useRef(null);
-    const navigate = useNavigate();
+    const { startTransition } = useTransition();
 
     useEffect(() => {
         // Crear audio
@@ -18,8 +16,10 @@ export default function AppsPage() {
 
         // Al terminar, ir a /contacto
         audio.onended = () => {
-            console.log("Audio terminado. Navegando a contacto...");
-            navigate('/contacto');
+            console.log("Audio terminado. Iniciando transición a contacto...");
+            startTransition(() => {
+                navigate('/contacto');
+            });
         };
 
         // Exponer audio al window
