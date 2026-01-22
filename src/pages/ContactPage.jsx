@@ -1,13 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import BeFreePopup from '../components/BeFreePopup';
+import ContactAppPopup from '../components/ContactAppPopup';
 import './ContactPage.scss';
 
 export default function ContactPage() {
     const wrapperRef = useRef(null);
     const containerRef = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
+    const [showContactPopup, setShowContactPopup] = useState(false);
 
     useEffect(() => {
         // Entrance animation
@@ -42,6 +43,7 @@ export default function ContactPage() {
     return (
         <div ref={containerRef} className="contact-page game-ui">
             {showPopup && <BeFreePopup onClose={() => setShowPopup(false)} />}
+            {showContactPopup && <ContactAppPopup onClose={() => setShowContactPopup(false)} />}
 
             <div className="content-wrapper" ref={wrapperRef} style={{ transition: 'transform 0.1s ease-out' }}>
 
@@ -57,13 +59,18 @@ export default function ContactPage() {
                             e.preventDefault();
                             setShowPopup(true);
                         }}
-                        style={{ cursor: 'pointer' /* ensure pointer cursor since it is a button now */ }}
                     >
                         BE FREE
                     </button>
-                    <Link to="/contacto-form" className="action-btn outline">
+                    <button
+                        className="action-btn outline"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            setShowContactPopup(true);
+                        }}
+                    >
                         CONTACTO
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>

@@ -15,7 +15,7 @@ const GooglePlayLogo = () => (
     </svg>
 )
 
-export default function BeFreePopup({ onClose }) {
+export default function ContactAppPopup({ onClose }) {
     const containerRef = useRef()
 
     useEffect(() => {
@@ -82,26 +82,26 @@ export default function BeFreePopup({ onClose }) {
                 gap: '30px',
                 textAlign: 'center',
                 color: '#fff',
-                fontFamily: "'Orbitron', sans-serif"
+                fontFamily: "'Outfit', sans-serif"
             }}>
                 <h2 style={{
                     fontSize: '2.5rem',
                     fontWeight: '700',
-                    letterSpacing: '0.3rem',
+                    letterSpacing: '0.1rem',
                     marginBottom: '10px',
                     textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
                     margin: 0
                 }}>
-                    YAAKOB APP
+                    CONTACTO APP
                 </h2>
                 <p style={{
                     fontSize: '1rem',
-                    letterSpacing: '0.1rem',
+                    letterSpacing: '0.05rem',
                     color: '#a0a0a0',
                     maxWidth: '400px',
-                    lineHeight: '1.5'
+                    lineHeight: '1.6'
                 }}>
-                    Lleva la experiencia inmersiva a donde vayas. <br /> Disponible ahora.
+                    Mantente conectado con nosotros. <br /> Descarga nuestra app de contacto.
                 </p>
 
                 <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>

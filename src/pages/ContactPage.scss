@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 .contact-page {
     min-height: 100vh;
@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    font-family: 'Share Tech Mono', monospace, sans-serif;
+    font-family: 'Outfit', sans-serif;
     color: #e0faff;
 }
 
@@ -26,46 +26,18 @@
 
 // Main Title: COMIENZA AHORA
 .main-title {
-    font-size: 6rem; // Un poco mas pequeño para que quepa bien
-    line-height: 0.9;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-shadow:
-        4px 4px 0px rgba(0, 0, 0, 0.5),
-        -1px -1px 0 rgba(255, 255, 255, 0.1);
+    font-size: 5.5rem;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
     margin: 0;
     position: relative;
     text-transform: uppercase;
-
-    // Glitch Layers
-    &::before {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        color: transparent;
-        -webkit-text-stroke: 1px rgba(224, 250, 255, 0.15);
-        transform: translate(-6px, -6px); // Sutil
-        z-index: -1;
-    }
-
-    &::after {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        color: transparent;
-        -webkit-text-stroke: 1px rgba(224, 250, 255, 0.1);
-        transform: translate(6px, 6px);
-        z-index: -2;
-    }
+    color: #ffffff;
 
     @media (max-width: 768px) {
-        font-size: 3.5rem;
+        font-size: 3rem;
     }
 }
 
@@ -103,33 +75,35 @@
 // Action Buttons
 .action-btn {
     padding: 1rem 2.5rem;
-    background: #e0faff;
-    border: 1px solid #e0faff;
+    background: rgba(224, 250, 255, 0.95);
+    border: none;
     color: #02050a;
     text-decoration: none;
-    font-size: 1rem;
-    letter-spacing: 0.1em;
-    font-weight: 700;
+    font-size: 0.9rem;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.05em;
+    font-weight: 600;
     transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     position: relative;
     overflow: hidden;
     min-width: 160px;
+    border-radius: 4px;
+    cursor: pointer;
 
     // Outline variant
     &.outline {
         background: transparent;
-        color: #e0faff;
-        border: 1px solid rgba(224, 250, 255, 0.5);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     &:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3),
-            0 0 15px rgba(224, 250, 255, 0.4);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 
         &.outline {
-            border-color: #e0faff;
-            background: rgba(224, 250, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.08);
         }
     }
 
