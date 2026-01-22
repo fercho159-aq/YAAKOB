@@ -1,11 +1,32 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
+import { useTransition } from '../context/TransitionContext';
 import '../styles/ui.scss';
 
 export default function UI() {
     const containerRef = useRef(null);
     const tiltRef = useRef(null);
+    const navigate = useNavigate();
+    const { startTransition, isTransitioning } = useTransition();
+
+    useEffect(() => {
+        if (isTransitioning) {
+            // Fade out UI when transition starts
+            gsap.to(containerRef.current, {
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.inOut'
+            });
+        }
+    }, [isTransitioning]);
+
+    const handleStartClick = (e) => {
+        e.preventDefault();
+        startTransition(() => {
+            navigate('/apps');
+        });
+    };
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -94,9 +115,9 @@ export default function UI() {
                         <span>FREE</span>
                     </h2>
 
-                    <Link to="/apps" className="signin-btn stagger-anim">
+                    <a href="/apps" onClick={handleStartClick} className="signin-btn stagger-anim">
                         INICIO
-                    </Link>
+                    </a>
                 </div>
             </main>
 

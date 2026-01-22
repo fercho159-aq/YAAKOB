@@ -8,6 +8,7 @@ import HexagonBackground from './components/HexagonBackground'
 import AppsPage from './pages/AppsPage'
 import ContactPage from './pages/ContactPage'
 import IrisDemoPage from './pages/IrisDemoPage'
+import { TransitionProvider } from './context/TransitionContext'
 
 function HomePage() {
   return (
@@ -69,12 +70,14 @@ function ContactPageWithBackground() {
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/apps" element={<AppsPageWithBackground />} />
-        <Route path="/contacto" element={<ContactPageWithBackground />} />
-        <Route path="/iris-demo" element={<IrisDemoPage />} />
-      </Routes>
+      <TransitionProvider>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/apps" element={<AppsPageWithBackground />} />
+          <Route path="/contacto" element={<ContactPageWithBackground />} />
+          <Route path="/iris-demo" element={<IrisDemoPage />} />
+        </Routes>
+      </TransitionProvider>
     </BrowserRouter>
   )
 }

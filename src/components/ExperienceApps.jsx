@@ -2,7 +2,8 @@ import { PerspectiveCamera } from '@react-three/drei'
 import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing'
 import { BlendFunction } from 'postprocessing'
 import TerrainApps from './TerrainApps'
-import { useEffect, useRef } from 'react'
+import HumanoidParticles from './HumanoidParticles'
+import { useEffect, useRef, Suspense } from 'react'
 import gsap from 'gsap'
 
 export default function ExperienceApps() {
@@ -30,6 +31,10 @@ export default function ExperienceApps() {
             <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" />
 
             <TerrainApps />
+
+            <Suspense fallback={null}>
+                <HumanoidParticles />
+            </Suspense>
 
             <EffectComposer disableNormalPass>
                 <Bloom luminanceThreshold={0.8} mipmapBlur intensity={0.4} radius={0.4} />

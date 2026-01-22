@@ -79,24 +79,21 @@ const fbm = (x, y, z, octaves = 3) => {
 // ============ END PERLIN NOISE ============
 
 /**
- * Terrain - Organic Fiber Flow Effect with THICK lines
+ * Terrain - E.C.H.O. Style
  * Features:
- * - Real line width control with Line2/LineMaterial
- * - Radial breathing animation (in/out of torus)
- * - Mouse physics interaction
- * - Bottom fade gradient
+ * - Sparse, organic fibers (hair-like)
+ * - Gentle flow and breathing
+ * - High elegance, low noise
+ * - "Ink on Paper" aesthetic (Dark lines, Light background)
  */
 const Terrain = ({
-  position = [6, -5, -13],
+  position = [4, -5, -13],
   rotation = [-1.2, -0.2, Math.PI],
-  torusRadius = 10,
-  tubeRadius = 6,
-  numLines = 300,
-  pointsPerLine = 75, // Aumentado para eliminar los "puntos" y suavizar las curvas
-  lineWidth = 2.8,
-  shadowColor = '#3a4a52',
-  midColor = '#5a6a72',
-  highlightColor = '#A8B6BD',
+  torusRadius = 10, // Wider, more expansive
+  tubeRadius = 5,   // Flatter
+  numLines = 200,   // Much more sparse (E.C.H.O. style is clean)
+  pointsPerLine = 100, // Very smooth curves
+  lineWidth = 1.6,  // Thinner lines
 }) => {
   const groupRef = useRef()
   const mouseRef = useRef({ x: 0, y: 0 })
@@ -117,68 +114,69 @@ const Terrain = ({
   const linesData = useMemo(() => {
     const lines = []
 
-    // Colores para el degradado estilo "Tinta sobre Papel" (E.C.H.O. style)
-    // Líneas oscuras sobre fondo claro para máximo contraste y elegancia
-    const colorInside = new THREE.Color('#0f172a')  // Dark Slate / Casi negro
-    const colorOutside = new THREE.Color('#A8B6BD') // Color EXACTO del fondo (NO TRANSPARENTE)
-    const maxRadius = torusRadius + tubeRadius + 2
+    // Paleta E.C.H.O. Refinada
+    // Fondo: #A8B6BD (Gris Azulado Claro)
+    // Líneas: #1e293b (Slate oscuro) a #A8B6BD (Fade)
+    const colorInside = new THREE.Color('#1e293b')  // Dark, but not pitch black
+    const colorOutside = new THREE.Color('#A8B6BD') // Matches background exactly
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
-      const lineRandom2 = Math.random()
-      const lineRandom3 = Math.random()
 
       const startToroidal = (i / numLines) * Math.PI * 2
-      const toroidalOffset = (Math.random() - 0.5) * 0.25
-      // Aumentamos longitud para asegurar que salgan bien del centro hacia afuera
-      const lineLength = 0.6 + lineRandom2 * 0.45
-      const lineNoiseOffset = (lineRandom3 - 0.5) * 0.5
+      const toroidalOffset = (Math.random() - 0.5) * 0.5 // More random distribution
+
+      const lineLength = 0.7 + Math.random() * 0.3 // Long, flowing lines
 
       const points = []
-      const colors = []  // Array para vertex colors [r, g, b, r, g, b...]
+      const colors = []
       const zPositions = []
 
       for (let j = 0; j < pointsPerLine; j++) {
         const t = j / (pointsPerLine - 1)
 
-        const noiseOffset = (Math.sin(i * 0.1 + t * 4) * 0.06) + lineNoiseOffset * t
+        // De PI (Centro) hacia afuera, suave
+        const poloidalAngle = Math.PI - (t * Math.PI * lineLength)
 
-        // De PI (Centro) hacia afuera
-        const poloidalAngle = Math.PI - (t * Math.PI * lineLength) + noiseOffset
-
-        const toroidalDrift = Math.sin(t * Math.PI * 2) * 0.05 + (lineRandom - 0.5) * 0.06 * t
+        // Less jitter, more flow
+        const toroidalDrift = Math.sin(t * Math.PI) * 0.1 * (lineRandom - 0.5)
         const toroidalAngle = startToroidal + toroidalOffset + toroidalDrift
 
-        const resultRadius = torusRadius + (tubeRadius + (Math.sin(i * 0.3 + t * 3) * 0.15) * lineRandom) * Math.cos(poloidalAngle)
+        // Radius variation - organic swelling
+        const resultRadius = torusRadius + (tubeRadius * Math.cos(poloidalAngle))
 
         const x = resultRadius * Math.cos(toroidalAngle)
         const y = resultRadius * Math.sin(toroidalAngle)
         const z = tubeRadius * Math.sin(poloidalAngle)
 
-        // === RECORTE GEOMÉTRICO ===
-        // Si el punto está muy abajo, NO lo agregamos a la línea.
-        // Esto hace que la línea "empiece" físicamente más arriba.
-        if (z < 1.0) continue; // Cortar todo lo que esté debajo de Z=1.0
+        // Recorte MENOS agresivo para permitir fade progresivo desde abajo
+        if (z < 0.5) continue;
 
         points.push(x, y, z)
         zPositions.push(z)
 
-        // Colores: Como ya cortamos la parte baja, podemos usar un degradado suave
-        // desde el "inicio visible" de la línea hacia arriba
+        // Degradado muy suave y PROGRESIVO
+        // z va de ~0.5 a 5 (tubeRadius)
+        // tColor 0 = abajo (fade), 1 = arriba (oscuro)
 
-        // Degradado basado en altura restante
-        const tColor = Math.min(1, (z - 1.0) / 4.0)
-        const pixelColor = new THREE.Color().lerpColors(colorOutside, colorInside, Math.min(1, tColor + 0.2))
+        let tColor = (z - 0.5) / 3.0
+        tColor = Math.max(0, Math.min(1, tColor))
+
+        // "Menor transparencia" -> Llevar a color full más rápido
+        // "Aparecer progresivamente" -> Empieza suave, pero la curva se satura rápido
+        // Power < 1 hace que llegue a oscuro mas rapido (ej. sqrt)
+        // Power > 1 hace que se mantenga claro mas tiempo
+
+        // Usamos power pequeño (0.4) para que sea "progressivo" al inicio pero gane opacidad rapido
+        const mixFactor = Math.pow(tColor, 0.4)
+
+        // Lerp from Background (invisible) to Dark
+        const pixelColor = new THREE.Color().lerpColors(colorOutside, colorInside, mixFactor)
 
         colors.push(pixelColor.r, pixelColor.g, pixelColor.b)
       }
 
-      // Si la línea quedó muy corta o vacía tras el recorte, la ignoramos
-      if (points.length < 6) continue;
-
-      // Calculate average Z (ya no es tan crítico para fade, pero útil)
-      const avgZ = zPositions.reduce((a, b) => a + b, 0) / zPositions.length
-      const normalizedZ = avgZ / tubeRadius
+      if (points.length < 10) continue;
 
       lines.push({
         points,
@@ -186,33 +184,27 @@ const Terrain = ({
         zPositions,
         random: lineRandom,
         phase: lineRandom * Math.PI * 2,
-        bottomFade: 1, // Ya no necesitamos fade por opacidad
-        avgZ: normalizedZ
       })
     }
 
     return lines
   }, [numLines, pointsPerLine, torusRadius, tubeRadius])
 
-  // Create Line2 instances with VERTEX COLORS
+  // Create Line2 instances
   const lineObjects = useMemo(() => {
     return linesData.map((lineData) => {
       const geometry = new LineGeometry()
       geometry.setPositions(lineData.points)
-      geometry.setColors(lineData.colors)  // Aplicar colores por vértice
-
-      // Opacity for bottom fade (still useful for hiding bottom lines)
-      const baseOpacity = 0.8 + lineData.random * 0.2
-      const fadedOpacity = baseOpacity * lineData.bottomFade
+      geometry.setColors(lineData.colors)
 
       const material = new LineMaterial({
         color: 0xffffff,
         vertexColors: true,
         linewidth: lineWidth,
         dashed: false,
-        alphaToCoverage: true, // Ayuda con los bordes suaves
-        transparent: false, // CLAVE: Desactivar transparencia real elimina los "nudos"
-        depthWrite: true,   // CLAVE: Las líneas se ocluyen correctamente entre sí
+        alphaToCoverage: true,
+        transparent: false, // Solid lines for clarity, fade handled by color
+        depthWrite: true,
         worldUnits: false,
       })
 
@@ -227,7 +219,6 @@ const Terrain = ({
         material,
         data: lineData,
         originalPositions: [...lineData.points],
-        baseOpacity
       }
     })
   }, [linesData, lineWidth, size])
@@ -238,96 +229,54 @@ const Terrain = ({
     })
   }, [size, lineObjects])
 
-  // Animation with mouse physics and radial breathing
   useFrame((state) => {
     if (!groupRef.current) return
 
     const time = state.clock.getElapsedTime()
 
-    // Smooth mouse with faster response
-    const lerpFactor = 0.06
+    const lerpFactor = 0.05
     smoothMouseRef.current.x = THREE.MathUtils.lerp(smoothMouseRef.current.x, mouseRef.current.x, lerpFactor)
     smoothMouseRef.current.y = THREE.MathUtils.lerp(smoothMouseRef.current.y, mouseRef.current.y, lerpFactor)
 
-    // Parallax tilt
-    const tiltStrength = 0.15
-    groupRef.current.rotation.x = rotation[0] + smoothMouseRef.current.y * tiltStrength
-    groupRef.current.rotation.y = rotation[1] + smoothMouseRef.current.x * tiltStrength
+    // Gentle Sway
+    groupRef.current.rotation.x = rotation[0] + Math.sin(time * 0.2) * 0.02 + smoothMouseRef.current.y * 0.05
+    groupRef.current.rotation.y = rotation[1] + Math.cos(time * 0.15) * 0.02 + smoothMouseRef.current.x * 0.05
     groupRef.current.rotation.z = rotation[2]
 
-    // Animate each line with DIRECTIONAL PERLIN NOISE
-    lineObjects.forEach(({ geometry, material, data, originalPositions, baseOpacity }) => {
+    lineObjects.forEach(({ geometry, material, data, originalPositions }) => {
       const newPositions = []
 
-      // Flow direction - constant direction for waves
-      const flowSpeed = 0.25  // Speed of wave travel
-      const flowDirection = time * flowSpeed  // Waves travel in one direction
+      // Extremely slow, graceful flow
+      const flowTime = time * 0.1
 
-      // Noise parameters
-      const noiseScale = 0.10  // Scale of noise features
-      const waveAmplitude = 2  // Strength of displacement
+      // Large soft noise
+      const noiseScale = 0.04
+      const waveAmp = 1.0
 
       for (let i = 0; i < originalPositions.length; i += 3) {
         const x = originalPositions[i]
         const y = originalPositions[i + 1]
         const z = originalPositions[i + 2]
 
-        const progress = (i / 3) / (originalPositions.length / 3)
+        // Directional Noise Flow
+        const nX = x * noiseScale + flowTime
+        const nY = y * noiseScale
+        const nZ = z * noiseScale
 
-        // Calculate direction from center for radial displacement
-        const centerDist = Math.sqrt(x * x + y * y)
-        const normalizedX = centerDist > 0 ? x / centerDist : 0
-        const normalizedY = centerDist > 0 ? y / centerDist : 0
+        // FBM for detail using very smooth settings
+        const displacement = fbm(nX, nY, nZ, 2) * waveAmp
 
-        // === DIRECTIONAL PERLIN NOISE ===
-        // Noise coordinates travel in one direction over time
-        const noiseX = x * noiseScale + flowDirection
-        const noiseY = y * noiseScale + flowDirection * 0.5
-        const noiseZ = z * noiseScale + data.phase * 0.1
-
-        // Multi-octave noise for organic waves
-        const primaryNoise = fbm(noiseX, noiseY, noiseZ, 3) * waveAmplitude
-        const secondaryNoise = fbm(noiseX * 2, noiseY * 2, noiseZ + time * 0.1, 2) * waveAmplitude * 0.3
-
-        // Combine noise layers
-        const totalNoise = primaryNoise + secondaryNoise
-
-        // Bell curve - stronger displacement at middle of fiber
-        const bellCurve = Math.sin(progress * Math.PI)
-
-        // Radial displacement based on noise
-        const radialDisplacement = totalNoise * bellCurve
-
-        // === SUBTLE MOUSE INFLUENCE ===
-        const mouseInfluence = progress * 0.3
-        const mouseX = smoothMouseRef.current.x * mouseInfluence
-        const mouseY = smoothMouseRef.current.y * mouseInfluence
-
-        // Z displacement using noise (directional flow)
-        const zNoise = fbm(noiseX * 0.5, noiseY * 0.5, flowDirection * 0.3, 2) * 0.4 * bellCurve
+        // Apply displacement mostly in Z/Normal direction to simulate "breathing" or "swelling"
+        // Also a bit of lateral movement
 
         newPositions.push(
-          x + normalizedX * radialDisplacement + mouseX,
-          y + normalizedY * radialDisplacement + mouseY,
-          z + zNoise + smoothMouseRef.current.y * 0.05 * mouseInfluence
+          x + displacement * 0.5,
+          y + displacement * 0.5,
+          z + displacement
         )
       }
 
       geometry.setPositions(newPositions)
-
-      // Dynamic opacity based on Z position (real-time fade)
-      // Calculate current average Z
-      let totalZ = 0
-      for (let i = 2; i < newPositions.length; i += 3) {
-        totalZ += newPositions[i]
-      }
-      const currentAvgZ = totalZ / (newPositions.length / 3)
-      const normalizedCurrentZ = currentAvgZ / tubeRadius
-
-      // Top-only: hide lines with negative Z completely (ajustado para cortar más arriba)
-      const fadeThreshold = 0.4 // Sincronizado con el valor de arriba
-      const dynamicFade = normalizedCurrentZ < fadeThreshold ? 0 : Math.max(0.3, Math.min(1, (normalizedCurrentZ - fadeThreshold) * 2 + 0.3))
-      material.opacity = baseOpacity * dynamicFade
     })
   })
 

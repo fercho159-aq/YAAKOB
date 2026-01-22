@@ -1,260 +1,203 @@
-import { useRef, useMemo, useEffect } from 'react'
+import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-/**
- * TerrainApps - Iris/Radial Disc Effect
- * 
- * Creates a flat disc with radial lines emanating from the center
- * (pupil) outward like an eye iris or sun rays.
- */
-const TerrainApps = ({
-    position = [3, -2, -3],
-    innerRadius = 1.0,      // Pupila - centro vacío
-    outerRadius = 12.0,     // Radio exterior
-    radialLines = 1500,      // Número de líneas radiales
-    pointsPerLine = 100,    // Puntos por línea
-    lineColor = '#2d3b48',  // Color azul oscuro tipo E.C.H.O.
-}) => {
+const TerrainApps = () => {
+    // 1. Setup refs
     const pointsRef = useRef()
-    const mouseRef = useRef({ x: 0, y: 0 })
-    const smoothMouseRef = useRef({ x: 0, y: 0 })
 
-    useEffect(() => {
-        const handleMouseMove = (e) => {
-            mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
-            mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1
-        }
-
-        window.addEventListener('mousemove', handleMouseMove)
-        return () => window.removeEventListener('mousemove', handleMouseMove)
+    // 2. Setup Geometry
+    //    Use a PlaneGeometry with high segments to get a lot of vertices (points)
+    const { positions, uvs } = useMemo(() => {
+        // Width, Height, SegmentsW, SegmentsH
+        // 50 x 50 size, with 128 segments = ~16k points
+        const geo = new THREE.PlaneGeometry(50, 50, 128, 128)
+        const pos = geo.attributes.position.array
+        const uv = geo.attributes.uv.array
+        return { positions: pos, uvs: uv }
     }, [])
 
-    // Generate radial lines geometry - rays from center outward
-    const geometry = useMemo(() => {
-        const totalPoints = radialLines * pointsPerLine
-        const positions = new Float32Array(totalPoints * 3)
-        const lineIndices = new Float32Array(totalPoints)
-        const radiusProgress = new Float32Array(totalPoints)
-        const randoms = new Float32Array(totalPoints)
-        const indices = [] // Indices for LineSegments
+    // Raycaster for interaction
+    const raycaster = useMemo(() => new THREE.Raycaster(), [])
+    const interactionPlane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), [])
+    const mousePosition = useRef(new THREE.Vector3(9999, 9999, 9999)) // Start far away
 
-        let idx = 0
-        for (let line = 0; line < radialLines; line++) {
-            const angle = (line / radialLines) * Math.PI * 2
-            const lineRandom = Math.random()
+    // 3. Setup Shaders
+    //    Vertex Shader: Displaces points Z based on noise/time
+    //    Fragment Shader: Renders circular points with softer edges
+    const vertexShader = `
+    uniform float uTime;
+    uniform vec3 uMouse;
+    attribute float aScale;
+    
+    varying float vElevation;
 
-            // Index offsets for this line
-            const startIdx = idx
+    // Classic Perlin/Simplex Noise function (simplified)
+    // Source: https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+    vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
+    float snoise(vec2 v){
+      const vec4 C = vec4(0.211324865405187, 0.366025403784439,
+               -0.577350269189626, 0.024390243902439);
+      vec2 i  = floor(v + dot(v, C.yy) );
+      vec2 x0 = v - i + dot(i, C.xx);
+      vec2 i1;
+      i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+      vec4 x12 = x0.xyxy + C.xxzz;
+      x12.xy -= i1;
+      i = mod(i, 289.0);
+      vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+      + i.x + vec3(0.0, i1.x, 1.0 ));
+      vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+      m = m*m ;
+      m = m*m ;
+      vec3 x = 2.0 * fract(p * C.www) - 1.0;
+      vec3 h = abs(x) - 0.5;
+      vec3 ox = floor(x + 0.5);
+      vec3 a0 = x - ox;
+      m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+      vec3 g;
+      g.x  = a0.x  * x0.x  + h.x  * x0.y;
+      g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+      return 130.0 * dot(m, g);
+    }
 
-            for (let point = 0; point < pointsPerLine; point++) {
-                const t = point / (pointsPerLine - 1)
-                const radius = innerRadius + t * (outerRadius - innerRadius)
+    void main() {
+      vec4 modelPosition = modelMatrix * vec4(position, 1.0);
 
-                const x = Math.cos(angle) * radius
-                const y = Math.sin(angle) * radius
-                const z = 0
+      // Create elevation based on Noise
+      // Frequency (position * 0.2)
+      // Speed (uTime * 0.2)
+      // Amplitude ( * 1.5 )
+      float elevation = snoise(modelPosition.xz * 0.15 + uTime * 0.15) * 1.5;
+      
+      // Secondary layer of noise for detail
+      elevation += snoise(modelPosition.xz * 0.6 + uTime * 0.05) * 0.2;
 
-                positions[idx * 3] = x
-                positions[idx * 3 + 1] = y
-                positions[idx * 3 + 2] = z
+      // --- MOUSE INTERACTION ---
+      // Distancia entre el punto y el mouse (en espacio local o mundo relativo)
+      // Como uMouse ya viene transformado al espacio local del plano en el JS, podemos
+      // comparar directamente con 'position' (que es local)
+      
+      float dist = distance(position.xy, uMouse.xy);
+      float radius = 6.0; // Radio más suave
+      float interaction = smoothstep(radius, 0.0, dist);
+      
+      // Ondulatorio orgánico
+      // Menos frecuencia espacial (dist * 1.0) para ondas más largas
+      float wave = sin(dist * 1.0 - uTime * 5.0) * interaction;
+      
+      // "Magnetismo" muy sutil (base lift)
+      elevation += interaction * 0.5; 
+      // Movimiento fluido principal
+      elevation += wave * 0.8; 
 
-                lineIndices[idx] = line / radialLines
-                radiusProgress[idx] = t
-                randoms[idx] = lineRandom
+      modelPosition.y += elevation;
+      
+      // Pass elevation to fragment for coloring
+      vElevation = elevation;
 
-                // Create segment indices (connecting point i to i+1)
-                if (point < pointsPerLine - 1) {
-                    indices.push(idx, idx + 1)
-                }
+      vec4 viewPosition = viewMatrix * modelPosition;
+      
+      // Size attenuation: Points further away appear smaller
+      // 100.0 is base size factor
+      gl_PointSize = 150.0 * (1.0 / -viewPosition.z);
+      
+      gl_Position = projectionMatrix * viewPosition;
+    }
+  `
 
-                idx++
-            }
-        }
+    const fragmentShader = `
+    varying float vElevation;
 
-        const geo = new THREE.BufferGeometry()
-        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-        geo.setAttribute('aLineIndex', new THREE.BufferAttribute(lineIndices, 1))
-        geo.setAttribute('aRadiusProgress', new THREE.BufferAttribute(radiusProgress, 1))
-        geo.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1))
-        geo.setIndex(indices) // Set indices for line segments
+    void main() {
+      // 1. Make points circular
+      // distance from center of point (0.5, 0.5)
+      float d = distance(gl_PointCoord, vec2(0.5));
+      
+      // If outside circle, discard
+      // Use smoothstep for soft edges
+      float alpha = 1.0 - smoothstep(0.3, 0.5, d);
+      
+      if(alpha < 0.01) discard;
 
-        return geo
-    }, [radialLines, pointsPerLine, innerRadius, outerRadius])
+      // 2. Coloring
+      // Base color: VERY DARK Slate/Black (for high visibility on light bg)
+      vec3 colorHigh = vec3(0.1, 0.2, 0.3); // Dark Slate Blue
+      vec3 colorLow = vec3(0.0, 0.0, 0.0);  // Pure Black
+
+
+
+      // Mix based on elevation (range approx -1.5 to 1.5)
+      float mixStrength = (vElevation + 1.0) * 0.5;
+      vec3 color = mix(colorLow, colorHigh, mixStrength);
+
+      gl_FragColor = vec4(color, alpha * 0.8);
+      
+      // Optional: Add simple fog manually if needed, or rely on scene fog (handled by transparent materials usually)
+      #include <fog_fragment>
+    }
+  `
 
     const uniforms = useMemo(
         () => ({
             uTime: { value: 0 },
-            uMouse: { value: new THREE.Vector2(0, 0) },
-            uLineColor: { value: new THREE.Color(lineColor) },
-            uInnerRadius: { value: innerRadius },
-            uOuterRadius: { value: outerRadius },
+            uMouse: { value: new THREE.Vector3(9999, 9999, 9999) }
         }),
-        [lineColor, innerRadius, outerRadius]
+        []
     )
 
     useFrame((state) => {
-        if (!pointsRef.current) return
+        if (pointsRef.current) {
+            pointsRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
 
-        pointsRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
+            // Raycasting logic
+            // 1. Setup raycaster from camera
+            raycaster.setFromCamera(state.pointer, state.camera)
 
-        // Smooth mouse
-        const lerpFactor = 0.03
-        smoothMouseRef.current.x = THREE.MathUtils.lerp(
-            smoothMouseRef.current.x,
-            mouseRef.current.x,
-            lerpFactor
-        )
-        smoothMouseRef.current.y = THREE.MathUtils.lerp(
-            smoothMouseRef.current.y,
-            mouseRef.current.y,
-            lerpFactor
-        )
+            // 2. We need to intersect with the ANALYTICAL plane of our terrain
+            // The terrain is at position [0, -2, -10] and rotated [-Math.PI / 2.5, 0, 0]
+            // It's easier to create a temporary Invisible Mesh for raycasting or do math
+            // Let's use the math way: transform ray to local space of the points object
 
-        pointsRef.current.material.uniforms.uMouse.value.set(
-            smoothMouseRef.current.x,
-            smoothMouseRef.current.y
-        )
+            const pointsLocalMatrixInv = pointsRef.current.matrixWorld.clone().invert()
+            raycaster.ray.applyMatrix4(pointsLocalMatrixInv)
 
-        // Rotación sutil - Mantenlo mayormente plano para efecto 'disco'
-        pointsRef.current.rotation.x = -0.2 + smoothMouseRef.current.y * 0.05
-        pointsRef.current.rotation.y = smoothMouseRef.current.x * 0.05
+            // intersect with local plane Z=0 (since PlaneGeometry is on XY locally)
+            const target = new THREE.Vector3()
+            // Plane defined by normal (0,0,1) because PlaneGeometry is created on XY plane
+            const localPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0)
+
+            const intersection = raycaster.ray.intersectPlane(localPlane, target)
+
+            if (intersection) {
+                // Lerp for smooth movement
+                mousePosition.current.lerp(intersection, 0.1)
+                pointsRef.current.material.uniforms.uMouse.value.copy(mousePosition.current)
+            }
+        }
     })
 
-    const vertexShader = `
-        attribute float aLineIndex;
-        attribute float aRadiusProgress;
-        attribute float aRandom;
-        
-        uniform float uTime;
-        uniform vec2 uMouse;
-        uniform float uInnerRadius;
-        uniform float uOuterRadius;
-        
-        varying float vRadiusProgress;
-        varying float vLineIndex;
-        varying float vAlpha;
-
-        // Simplex noise
-        vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-        vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
-        vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
-        vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
-        
-        float snoise(vec3 v) {
-            const vec2 C = vec2(1.0/6.0, 1.0/3.0);
-            const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
-            vec3 i = floor(v + dot(v, C.yyy));
-            vec3 x0 = v - i + dot(i, C.xxx);
-            vec3 g = step(x0.yzx, x0.xyz);
-            vec3 l = 1.0 - g;
-            vec3 i1 = min(g.xyz, l.zxy);
-            vec3 i2 = max(g.xyz, l.zxy);
-            vec3 x1 = x0 - i1 + C.xxx;
-            vec3 x2 = x0 - i2 + C.yyy;
-            vec3 x3 = x0 - D.yyy;
-            i = mod289(i);
-            vec4 p = permute(permute(permute(
-                i.z + vec4(0.0, i1.z, i2.z, 1.0))
-              + i.y + vec4(0.0, i1.y, i2.y, 1.0))
-              + i.x + vec4(0.0, i1.x, i2.x, 1.0));
-            float n_ = 0.142857142857;
-            vec3 ns = n_ * D.wyz - D.xzx;
-            vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
-            vec4 x_ = floor(j * ns.z);
-            vec4 y_ = floor(j - 7.0 * x_);
-            vec4 x = x_ *ns.x + ns.yyyy;
-            vec4 y = y_ *ns.x + ns.yyyy;
-            vec4 h = 1.0 - abs(x) - abs(y);
-            vec4 b0 = vec4(x.xy, y.xy);
-            vec4 b1 = vec4(x.zw, y.zw);
-            vec4 s0 = floor(b0)*2.0 + 1.0;
-            vec4 s1 = floor(b1)*2.0 + 1.0;
-            vec4 sh = -step(h, vec4(0.0));
-            vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
-            vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
-            vec3 p0 = vec3(a0.xy, h.x);
-            vec3 p1 = vec3(a0.zw, h.y);
-            vec3 p2 = vec3(a1.xy, h.z);
-            vec3 p3 = vec3(a1.zw, h.w);
-            vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
-            p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
-            vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
-            m = m * m;
-            return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
-        }
-
-        void main() {
-            vec3 pos = position;
-            float radius = length(pos.xy);
-            float angle = atan(pos.y, pos.x);
-            
-            // === ONDAS RADIALES MUY SUTILES EN Z ===
-            // Flatten Z to ensure disc look
-            float noiseVal = snoise(vec3(
-                aLineIndex * 8.0,
-                aRadiusProgress * 2.0 + uTime * 0.1,
-                aRandom * 5.0
-            ));
-            
-            // Deformación Z pequeña para dar "vida" pero mantener plano
-            pos.z = noiseVal * 0.2 * (aRadiusProgress * 0.5 + 0.5);
-            
-            // Distorsión lateral (XY) ondulada
-            // Hace que las líneas vibren como un iris
-            float wave = sin(aRadiusProgress * 15.0 - uTime * 2.0) * 0.02;
-            float distort = snoise(vec3(pos.xy * 0.5, uTime * 0.2)) * 0.1;
-            
-            float newRadius = radius + wave + distort;
-            pos.x = cos(angle) * newRadius;
-            pos.y = sin(angle) * newRadius;
-            
-            // Mouse influence
-            float mouseInfluence = smoothstep(1.0, 0.0, aRadiusProgress);
-            pos.x += uMouse.x * mouseInfluence * 0.5;
-            pos.y += uMouse.y * mouseInfluence * 0.5;
-            
-            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-            gl_Position = projectionMatrix * mvPosition;
-            
-            vRadiusProgress = aRadiusProgress;
-            vLineIndex = aLineIndex;
-            
-            // Fade en extremos
-            float innerFade = smoothstep(0.0, 0.15, aRadiusProgress);
-            float outerFade = smoothstep(1.0, 0.8, aRadiusProgress);
-            vAlpha = innerFade * outerFade;
-        }
-    `
-
-    const fragmentShader = `
-        uniform vec3 uLineColor;
-        
-        varying float vRadiusProgress;
-        varying float vLineIndex;
-        varying float vAlpha;
-
-        void main() {
-            // Gradiente simple
-            vec3 color = uLineColor;
-            
-            // Brillo pulsante
-            float pulse = 0.8 + 0.2 * sin(vRadiusProgress * 20.0 - 0.0);
-            
-            // Variación por línea
-            float lineVar = 0.1 * sin(vLineIndex * 100.0);
-            
-            float alpha = vAlpha * (0.6 + lineVar);
-            
-            if (alpha < 0.01) discard;
-            
-            gl_FragColor = vec4(color * pulse, alpha);
-        }
-    `
-
     return (
-        <lineSegments ref={pointsRef} position={position} rotation={[-0.2, 0, 0.0]}>
-            <primitive object={geometry} attach="geometry" />
+        <points ref={pointsRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, -10]} renderOrder={0}>
+            {/* 
+        Using bufferGeometry directly to pass attributes 
+        Instead of <planeGeometry> to make sure we have control
+      */}
+            <bufferGeometry>
+                <bufferAttribute
+                    attach="attributes-position"
+                    count={positions.length / 3}
+                    array={positions}
+                    itemSize={3}
+                />
+                <bufferAttribute
+                    attach="attributes-uv"
+                    count={uvs.length / 2}
+                    array={uvs}
+                    itemSize={2}
+                />
+            </bufferGeometry>
+
             <shaderMaterial
                 vertexShader={vertexShader}
                 fragmentShader={fragmentShader}
@@ -263,10 +206,8 @@ const TerrainApps = ({
                 depthWrite={false}
                 blending={THREE.NormalBlending}
             />
-        </lineSegments>
+        </points>
     )
 }
 
 export default TerrainApps
-
-
