@@ -1,4 +1,4 @@
-import { useRef, useMemo, useEffect } from 'react'
+import { useRef, useMemo, useEffect, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -15,7 +15,16 @@ import * as THREE from 'three'
  * While the model is missing, it renders a TorusKnot as a placeholder.
  */
 const HumanoidParticles = () => {
+    const pointsRef = useRef()
     const groupRef = useRef()
+    const raycaster = useMemo(() => new THREE.Raycaster(), [])
+    const mousePosition = useRef(new THREE.Vector3(9999, 9999, 9999))
+
+    // Audio Analysis State
+    const [audioVolume, setAudioVolume] = useState(0)
+    const audioRef = useRef(null)
+    const analyserRef = useRef(null)
+    const audioContextRef = useRef(null)
     const { nodes } = useGLTF('/human.glb', undefined, (error) => {
         // Error handling ignored to prevent crash loop, fallback logic handled by existence check
     })
@@ -43,9 +52,13 @@ const HumanoidParticles = () => {
 
                             // We must safeguard against interleaved buffers or missing attributes
                             if (attr.array) {
-                                // Add all vertices
-                                for (let i = 0; i < attr.array.length; i++) {
+                                // Sample every 3rd vertex to reduce density
+                                // i += 9 because each vertex has 3 components (x,y,z)
+                                for (let i = 0; i < attr.array.length; i += 30) {
+                                    // Add vertex (3 values)
                                     allPositions.push(attr.array[i])
+                                    allPositions.push(attr.array[i + 1])
+                                    allPositions.push(attr.array[i + 2])
                                 }
                             }
                         }
@@ -65,8 +78,10 @@ const HumanoidParticles = () => {
     const vertexShader = `
     uniform float uTime;
     uniform vec3 uMouse;
+    uniform float uAudioVolume;
     
     varying float vElevation;
+
 
     // Simplex Noise
     vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -109,6 +124,26 @@ const HumanoidParticles = () => {
       modelPosition.x += glitch + breath * position.x;
       modelPosition.z += glitch + breath * position.z;
       
+      // === AUDIO LIP SYNC ===
+      float mouthRegion = 0.0;
+      
+      // Elipse refinada
+      float dx = position.x;
+      float dy = position.y - 0.52; 
+      float ellipseCheck = (dx * dx) / (0.14 * 0.14) + (dy * dy) / (0.05 * 0.05);
+
+      if (ellipseCheck < 1.0 && position.z > 0.02) {
+          mouthRegion = smoothstep(1.0, 0.2, ellipseCheck); 
+      }
+      
+      // Movimiento
+      if (mouthRegion > 0.01 && uAudioVolume > 0.01) {
+          modelPosition.z += mouthRegion * uAudioVolume * 2.5; 
+          modelPosition.y -= mouthRegion * uAudioVolume * 0.5;
+          gl_PointSize *= 2.0; 
+      }
+
+      
       // Calculate elevation equivalent for coloring (relative to center)
       vElevation = modelPosition.y;
 
@@ -123,6 +158,7 @@ const HumanoidParticles = () => {
 
     const fragmentShader = `
     varying float vElevation;
+
 
     void main() {
       // Circular points
@@ -141,13 +177,61 @@ const HumanoidParticles = () => {
     const uniforms = useMemo(
         () => ({
             uTime: { value: 0 },
+            uMouse: { value: new THREE.Vector3(9999, 9999, 9999) },
+            uAudioVolume: { value: 0 }
         }),
         []
     )
 
+    // Audio now managed by AppsPage - we just read from window.sharedAnalyser
+
     useFrame((state) => {
         // Update uniforms directly on the material
         uniforms.uTime.value = state.clock.getElapsedTime()
+
+        // Audio Analysis - usando el analyser compartido desde AppsPage
+        if (window.sharedAnalyser) {
+            const dataArray = new Uint8Array(window.sharedAnalyser.frequencyBinCount)
+            window.sharedAnalyser.getByteFrequencyData(dataArray)
+
+            // Get average volume (focusing on voice frequencies 80-255Hz range)
+            let sum = 0
+            for (let i = 10; i < 30; i++) { // Voice range approximation
+                sum += dataArray[i]
+            }
+            const avgVolume = sum / 20 / 255 // Normalize to 0-1
+
+            // Smooth and amplify MUCHO MÁS para que sea visible
+            const smoothVolume = avgVolume * 8.0 // Amplify MUCH more for visible effect
+            uniforms.uAudioVolume.value = smoothVolume
+
+            // Debug: Log cuando hay volumen significativo
+            if (smoothVolume > 0.1) {
+                console.log('Audio Volume:', smoothVolume.toFixed(2))
+            }
+        }
+
+        if (pointsRef.current && groupRef.current) {
+            // Raycasting from camera
+            raycaster.setFromCamera(state.pointer, state.camera)
+
+            // We need to raycast against the humanoid positioned in 3D space
+            // Method: Create a bounding sphere around the model and get intersection point
+            // Transform ray to local space of the group
+            const groupMatrixInv = groupRef.current.matrixWorld.clone().invert()
+            const localRay = raycaster.ray.clone()
+            localRay.applyMatrix4(groupMatrixInv)
+
+            // Get closest point on ray to origin (center of model)
+            const closestPoint = new THREE.Vector3()
+            localRay.closestPointToPoint(new THREE.Vector3(0, 0, 0), closestPoint)
+
+            // Smooth lerp
+            mousePosition.current.lerp(closestPoint, 0.1)
+
+            // Update uniform
+            uniforms.uMouse.value.copy(mousePosition.current)
+        }
     })
 
     // If no positions (loading or error), render nothing or fallback
@@ -155,7 +239,7 @@ const HumanoidParticles = () => {
 
     return (
         <group ref={groupRef} position={[0, -1, -25]} scale={[3.0, 3.0, 3.0]}>
-            <points rotation={[-Math.PI / 2, 0, 0]} renderOrder={1}>
+            <points ref={pointsRef} rotation={[-Math.PI / 2, 0, 0]} renderOrder={1}>
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
