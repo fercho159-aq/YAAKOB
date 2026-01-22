@@ -61,7 +61,7 @@ export default function Experience() {
             {/* <color attach="background" args={['#A8B6BD']} /> */}
 
             {/* Fog to hide edges of the plane - using transparent-ish color */}
-            <fog attach="fog" args={['#A8B6BD', 6, 16]} />
+            <fog attach="fog" args={['#D4C5C5', 6, 16]} />
 
 
             <ambientLight intensity={1.2} />

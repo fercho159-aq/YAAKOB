@@ -1,7 +1,7 @@
 :root {
-  --color-bg: #A8B6BD;
-  --color-text: #1a2e38;
-  --color-accent: #1a2e38;
+  --color-bg: #D4C5C5;
+  --color-text: #2b1f1f;
+  --color-accent: #8a1c1c;
   --font-logo: 'Orbitron', sans-serif;
   --font-body: 'Rajdhani', sans-serif;
 }
@@ -28,7 +28,7 @@ body {
   font-family: var(--font-body);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
-  background: radial-gradient(circle, #CFD8DC 0%, #A8B6BD 100%);
+  background: radial-gradient(circle, #Efe9e9 0%, #D4C5C5 100%);
 }
 
 #root,

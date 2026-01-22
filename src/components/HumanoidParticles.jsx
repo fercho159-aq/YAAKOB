@@ -196,8 +196,8 @@ const HumanoidParticles = () => {
       
       if(alpha < 0.01) discard;
 
-      // Deep Electric Blue (Más oscuro base, brillante en suma)
-      vec3 color = vec3(0.1, 0.4, 0.8);
+      // Deep Fiery Red/Orange
+      vec3 color = vec3(1.0, 0.2, 0.05);
 
       // Alpha reducido para evitar saturación blanca
       gl_FragColor = vec4(color, alpha * 0.5);

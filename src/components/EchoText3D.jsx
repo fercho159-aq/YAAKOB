@@ -7,8 +7,8 @@ import * as THREE from 'three'
 const TechLineMaterial = shaderMaterial(
     {
         uTime: 0,
-        uColor: new THREE.Color('#1a2e3a'),
-        uLineColor: new THREE.Color('#4a6878'),
+        uColor: new THREE.Color('#3a0a0a'),
+        uLineColor: new THREE.Color('#ff4500'),
         uOpacity: 1.0,
     },
     // Vertex Shader
@@ -108,15 +108,15 @@ export default function EchoText3D() {
     // Configuration for tech line layers
     const layers = [
         // Deep shadow layer
-        { offset: [0.08, -0.08, -0.2], color: '#1a2533', opacity: 0.25 },
+        { offset: [0.08, -0.08, -0.2], color: '#1a0505', opacity: 0.25 },
         // Mid shadow 
-        { offset: [0.04, -0.04, -0.1], color: '#2a3d4d', opacity: 0.35 },
+        { offset: [0.04, -0.04, -0.1], color: '#2b0b0b', opacity: 0.35 },
         // Main fill with tech lines
-        { offset: [0, 0, 0], color: '#1a2e3a', opacity: 1.0, useShader: true },
+        { offset: [0, 0, 0], color: '#3a0a0a', opacity: 1.0, useShader: true },
         // Inner highlight
-        { offset: [-0.015, 0.015, 0.02], color: '#3a5565', opacity: 0.2 },
+        { offset: [-0.015, 0.015, 0.02], color: '#cc3300', opacity: 0.2 },
         // Edge outline - multiple for thickness
-        { offset: [0, 0, 0.01], color: '#0d1f2b', opacity: 1.0, strokeWidth: 0.008 },
+        { offset: [0, 0, 0.01], color: '#1a0000', opacity: 1.0, strokeWidth: 0.008 },
     ]
 
     return (
@@ -136,7 +136,7 @@ export default function EchoText3D() {
                         <techLineMaterial
                             ref={(el) => materialRefs.current[index] = el}
                             uColor={new THREE.Color(layer.color)}
-                            uLineColor={new THREE.Color('#4a6878')}
+                            uLineColor={new THREE.Color('#ff4500')}
                             uOpacity={layer.opacity}
                             transparent
                         />
@@ -156,49 +156,49 @@ export default function EchoText3D() {
                 {/* Top left corner accent */}
                 <mesh position={[-1.4, 0.22, 0]}>
                     <planeGeometry args={[0.15, 0.003]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
                 </mesh>
                 <mesh position={[-1.32, 0.18, 0]}>
                     <planeGeometry args={[0.003, 0.08]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
                 </mesh>
 
                 {/* Top right corner accent */}
                 <mesh position={[1.4, 0.22, 0]}>
                     <planeGeometry args={[0.15, 0.003]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
                 </mesh>
                 <mesh position={[1.32, 0.18, 0]}>
                     <planeGeometry args={[0.003, 0.08]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
                 </mesh>
 
                 {/* Bottom decorative elements */}
                 <mesh position={[-0.8, -0.3, 0]}>
                     <planeGeometry args={[0.2, 0.002]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.4} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.4} />
                 </mesh>
                 <mesh position={[0.8, -0.3, 0]}>
                     <planeGeometry args={[0.2, 0.002]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.4} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.4} />
                 </mesh>
 
                 {/* Small squares - tech style */}
                 <mesh position={[-1.5, 0.1, 0]}>
                     <planeGeometry args={[0.025, 0.025]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.3} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.3} />
                 </mesh>
                 <mesh position={[1.5, 0.1, 0]}>
                     <planeGeometry args={[0.025, 0.025]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.3} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.3} />
                 </mesh>
                 <mesh position={[-1.2, -0.15, 0]}>
                     <planeGeometry args={[0.02, 0.02]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.25} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.25} />
                 </mesh>
                 <mesh position={[1.2, -0.15, 0]}>
                     <planeGeometry args={[0.02, 0.02]} />
-                    <meshBasicMaterial color="#3a5060" transparent opacity={0.25} />
+                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.25} />
                 </mesh>
             </group>
 
@@ -210,7 +210,7 @@ export default function EchoText3D() {
             >
                 YAAKOB
                 <meshBasicMaterial
-                    color="#4a6878"
+                    color="#ff4500"
                     transparent
                     opacity={0.08}
                 />

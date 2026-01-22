@@ -143,11 +143,11 @@ const TerrainApps = ({ isTransitioning, onTransitionComplete }) => {
       
       if(alpha < 0.01) discard;
 
-      // 2. Coloring (DARK MODE)
-      // High: Bright Cyan glow
-      vec3 colorHigh = vec3(0.5, 0.9, 1.0); 
-      // Low: Deep Blue abyss
-      vec3 colorLow = vec3(0.0, 0.1, 0.2); 
+      // 2. Coloring (DARK MODE - FIERY)
+      // High: Bright Orange/Red glow
+      vec3 colorHigh = vec3(1.0, 0.4, 0.0); 
+      // Low: Deep Red abyss
+      vec3 colorLow = vec3(0.3, 0.0, 0.0); 
 
       // Mix based on elevation (range approx -1.5 to 1.5)
       float mixStrength = (vElevation + 1.0) * 0.5;

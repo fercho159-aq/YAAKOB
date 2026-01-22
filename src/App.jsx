@@ -29,6 +29,7 @@ function HomePage() {
   )
 }
 
+// AppsPageWithBackground
 function AppsPageWithBackground() {
   const { isTransitioning, completeTransition } = useTransition()
   return (
@@ -38,7 +39,7 @@ function AppsPageWithBackground() {
         camera={{ position: [0, 0, 5], fov: 45 }}
         dpr={[1, 2]}
         gl={{ alpha: true, antialias: true }}
-        style={{ background: '#02050a', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
+        style={{ background: '#050100', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
       >
         <Suspense fallback={null}>
           <ExperienceApps isTransitioning={isTransitioning} onTransitionComplete={completeTransition} />
@@ -52,7 +53,7 @@ function AppsPageWithBackground() {
 function ContactPageWithBackground() {
   return (
     <>
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#02050a', zIndex: -1 }} />
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: '#050100', zIndex: -1 }} />
       <HexagonBackground />
       <ContactPage />
     </>

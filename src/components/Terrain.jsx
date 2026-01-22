@@ -114,19 +114,22 @@ const Terrain = ({
   const linesData = useMemo(() => {
     const lines = []
 
-    // Paleta E.C.H.O. Refinada
-    // Fondo: #A8B6BD (Gris Azulado Claro)
-    // Líneas: #1e293b (Slate oscuro) a #A8B6BD (Fade)
-    const colorInside = new THREE.Color('#1e293b')  // Dark, but not pitch black
-    const colorOutside = new THREE.Color('#A8B6BD') // Matches background exactly
+    // Paleta SOLAR Avanzada (Gradiente de 3 etapas)
+    // 1. Fondo (Bordes lejanos): #D4C5C5
+    // 2. Medio (Corona solar): #ff3300 (Rojo Naranja Intenso)
+    // 3. Centro (Núcleo): #ffdd00 (Amarillo Dorado Brillante)
+
+    const colorBg = new THREE.Color('#D4C5C5')
+    const colorRed = new THREE.Color('#ff3300')
+    const colorYellow = new THREE.Color('#ffdd00')
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
 
       const startToroidal = (i / numLines) * Math.PI * 2
-      const toroidalOffset = (Math.random() - 0.5) * 0.5 // More random distribution
+      const toroidalOffset = (Math.random() - 0.5) * 0.5
 
-      const lineLength = 0.7 + Math.random() * 0.3 // Long, flowing lines
+      const lineLength = 0.7 + Math.random() * 0.3
 
       const points = []
       const colors = []
@@ -134,44 +137,42 @@ const Terrain = ({
 
       for (let j = 0; j < pointsPerLine; j++) {
         const t = j / (pointsPerLine - 1)
-
-        // De PI (Centro) hacia afuera, suave
         const poloidalAngle = Math.PI - (t * Math.PI * lineLength)
 
-        // Less jitter, more flow
         const toroidalDrift = Math.sin(t * Math.PI) * 0.1 * (lineRandom - 0.5)
         const toroidalAngle = startToroidal + toroidalOffset + toroidalDrift
 
-        // Radius variation - organic swelling
         const resultRadius = torusRadius + (tubeRadius * Math.cos(poloidalAngle))
 
         const x = resultRadius * Math.cos(toroidalAngle)
         const y = resultRadius * Math.sin(toroidalAngle)
         const z = tubeRadius * Math.sin(poloidalAngle)
 
-        // Recorte MENOS agresivo para permitir fade progresivo desde abajo
         if (z < 0.5) continue;
 
         points.push(x, y, z)
         zPositions.push(z)
 
-        // Degradado muy suave y PROGRESIVO
-        // z va de ~0.5 a 5 (tubeRadius)
-        // tColor 0 = abajo (fade), 1 = arriba (oscuro)
+        // Lógica de Gradiente Solar Invertida (Centro Amarillo -> Rojo Exterior)
+        // Usamos 't' (0 a 1) que representa el progreso de la línea desde el centro hacia afuera
+        // t=0 (Centro), t=1 (Afuera)
 
-        let tColor = (z - 0.5) / 3.0
-        tColor = Math.max(0, Math.min(1, tColor))
+        // Ajustamos la curva para controlar la distribución
+        const tGrad = Math.pow(t, 0.8)
 
-        // "Menor transparencia" -> Llevar a color full más rápido
-        // "Aparecer progresivamente" -> Empieza suave, pero la curva se satura rápido
-        // Power < 1 hace que llegue a oscuro mas rapido (ej. sqrt)
-        // Power > 1 hace que se mantenga claro mas tiempo
+        const pixelColor = new THREE.Color()
 
-        // Usamos power pequeño (0.4) para que sea "progressivo" al inicio pero gane opacidad rapido
-        const mixFactor = Math.pow(tColor, 0.4)
-
-        // Lerp from Background (invisible) to Dark
-        const pixelColor = new THREE.Color().lerpColors(colorOutside, colorInside, mixFactor)
+        if (tGrad < 0.4) {
+          // Centro (0.0) a Medio (0.4): Amarillo Brillante -> Rojo Intenso
+          // Normalizar 0.0-0.4 a 0-1
+          const localT = tGrad / 0.4
+          pixelColor.lerpColors(colorYellow, colorRed, localT)
+        } else {
+          // Medio (0.4) a Fin (1.0): Rojo Intenso -> Fondo (Fade)
+          // Normalizar 0.4-1.0 a 0-1
+          const localT = (tGrad - 0.4) / 0.6
+          pixelColor.lerpColors(colorRed, colorBg, localT)
+        }
 
         colors.push(pixelColor.r, pixelColor.g, pixelColor.b)
       }
