@@ -87,12 +87,12 @@ const fbm = (x, y, z, octaves = 3) => {
  * - Bottom fade gradient
  */
 const Terrain = ({
-  position = [6, -5, -18],
+  position = [6, -5, -13],
   rotation = [-1.2, -0.2, Math.PI],
-  torusRadius = 11,
-  tubeRadius = 5,
-  numLines = 450,
-  pointsPerLine = 150, // Aumentado para eliminar los "puntos" y suavizar las curvas
+  torusRadius = 10,
+  tubeRadius = 6,
+  numLines = 300,
+  pointsPerLine = 75, // Aumentado para eliminar los "puntos" y suavizar las curvas
   lineWidth = 2.8,
   shadowColor = '#3a4a52',
   midColor = '#5a6a72',
@@ -119,8 +119,8 @@ const Terrain = ({
 
     // Colores para el degradado estilo "Tinta sobre Papel" (E.C.H.O. style)
     // Líneas oscuras sobre fondo claro para máximo contraste y elegancia
-    const colorInside = new THREE.Color('#0f172a')  // Dark Slate / Casi negro (el color de las líneas fuertes)
-    const colorOutside = new THREE.Color('#A8B6BD') // Color del fondo (para que se desvanezca suavemente)
+    const colorInside = new THREE.Color('#0f172a')  // Dark Slate / Casi negro
+    const colorOutside = new THREE.Color('#A8B6BD') // Color EXACTO del fondo (NO TRANSPARENTE)
     const maxRadius = torusRadius + tubeRadius + 2
 
     for (let i = 0; i < numLines; i++) {
@@ -130,7 +130,8 @@ const Terrain = ({
 
       const startToroidal = (i / numLines) * Math.PI * 2
       const toroidalOffset = (Math.random() - 0.5) * 0.25
-      const lineLength = 0.35 + lineRandom2 * 0.5
+      // Aumentamos longitud para asegurar que salgan bien del centro hacia afuera
+      const lineLength = 0.6 + lineRandom2 * 0.45
       const lineNoiseOffset = (lineRandom3 - 0.5) * 0.5
 
       const points = []
@@ -141,53 +142,51 @@ const Terrain = ({
         const t = j / (pointsPerLine - 1)
 
         const noiseOffset = (Math.sin(i * 0.1 + t * 4) * 0.06) + lineNoiseOffset * t
-        // Limit poloidal angle to upper half (0 to PI) for top-only view
-        const poloidalAngle = t * Math.PI * lineLength + noiseOffset
+
+        // De PI (Centro) hacia afuera
+        const poloidalAngle = Math.PI - (t * Math.PI * lineLength) + noiseOffset
 
         const toroidalDrift = Math.sin(t * Math.PI * 2) * 0.05 + (lineRandom - 0.5) * 0.06 * t
         const toroidalAngle = startToroidal + toroidalOffset + toroidalDrift
 
-        const radiusNoise = (Math.sin(i * 0.3 + t * 3) * 0.15) * lineRandom
-        const effectiveRadius = torusRadius + (tubeRadius + radiusNoise) * Math.cos(poloidalAngle)
+        const resultRadius = torusRadius + (tubeRadius + (Math.sin(i * 0.3 + t * 3) * 0.15) * lineRandom) * Math.cos(poloidalAngle)
 
-        const x = effectiveRadius * Math.cos(toroidalAngle)
-        const y = effectiveRadius * Math.sin(toroidalAngle)
+        const x = resultRadius * Math.cos(toroidalAngle)
+        const y = resultRadius * Math.sin(toroidalAngle)
         const z = tubeRadius * Math.sin(poloidalAngle)
+
+        // === RECORTE GEOMÉTRICO ===
+        // Si el punto está muy abajo, NO lo agregamos a la línea.
+        // Esto hace que la línea "empiece" físicamente más arriba.
+        if (z < 1.0) continue; // Cortar todo lo que esté debajo de Z=1.0
 
         points.push(x, y, z)
         zPositions.push(z)
 
-        // === VERTEX COLOR CALCULATION ===
-        // Calcular distancia al centro (0,0) en el plano XY
-        const dist = Math.sqrt(x * x + y * y)
+        // Colores: Como ya cortamos la parte baja, podemos usar un degradado suave
+        // desde el "inicio visible" de la línea hacia arriba
 
-        // Normalizar distancia (0 = centro, 1 = borde)
-        const tColor = Math.min(1, dist / maxRadius)
+        // Degradado basado en altura restante
+        const tColor = Math.min(1, (z - 1.0) / 4.0)
+        const pixelColor = new THREE.Color().lerpColors(colorOutside, colorInside, Math.min(1, tColor + 0.2))
 
-        // Factor adicional basado en Z (puntos más altos = más brillantes)
-        const zFactor = Math.max(0, z / tubeRadius) * 0.3
-
-        // Interpolación de color (centro brillante → borde oscuro)
-        const pixelColor = new THREE.Color().lerpColors(colorInside, colorOutside, tColor - zFactor)
-
-        // Guardar colores en array plano
         colors.push(pixelColor.r, pixelColor.g, pixelColor.b)
       }
 
-      // Calculate average Z for this line (for visibility)
+      // Si la línea quedó muy corta o vacía tras el recorte, la ignoramos
+      if (points.length < 6) continue;
+
+      // Calculate average Z (ya no es tan crítico para fade, pero útil)
       const avgZ = zPositions.reduce((a, b) => a + b, 0) / zPositions.length
       const normalizedZ = avgZ / tubeRadius
 
-      // BOTTOM FADE: Hide lines below middle completely
-      const bottomFade = normalizedZ < 0 ? 0 : Math.max(0.3, Math.min(1, normalizedZ * 2 + 0.5))
-
       lines.push({
         points,
-        colors,  // Añadir array de colores
+        colors,
         zPositions,
         random: lineRandom,
         phase: lineRandom * Math.PI * 2,
-        bottomFade,
+        bottomFade: 1, // Ya no necesitamos fade por opacidad
         avgZ: normalizedZ
       })
     }
@@ -325,8 +324,9 @@ const Terrain = ({
       const currentAvgZ = totalZ / (newPositions.length / 3)
       const normalizedCurrentZ = currentAvgZ / tubeRadius
 
-      // Top-only: hide lines with negative Z completely
-      const dynamicFade = normalizedCurrentZ < 0 ? 0 : Math.max(0.3, Math.min(1, normalizedCurrentZ * 2 + 0.5))
+      // Top-only: hide lines with negative Z completely (ajustado para cortar más arriba)
+      const fadeThreshold = 0.4 // Sincronizado con el valor de arriba
+      const dynamicFade = normalizedCurrentZ < fadeThreshold ? 0 : Math.max(0.3, Math.min(1, (normalizedCurrentZ - fadeThreshold) * 2 + 0.3))
       material.opacity = baseOpacity * dynamicFade
     })
   })
