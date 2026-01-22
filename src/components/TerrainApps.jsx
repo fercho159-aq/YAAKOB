@@ -80,23 +80,26 @@ const TerrainApps = ({ isTransitioning, onTransitionComplete }) => {
       // Secondary layer of noise for detail
       elevation += snoise(modelPosition.xz * 0.6 + uTime * 0.05) * 0.2;
 
-      // --- MOUSE INTERACTION ---
-      // Distancia entre el punto y el mouse (en espacio local o mundo relativo)
-      // Como uMouse ya viene transformado al espacio local del plano en el JS, podemos
-      // comparar directamente con 'position' (que es local)
+      // --- CONCENTRIC WAVES FROM CENTER (Humanoid position) ---
+      // The humanoid is visually at center of terrain (0,0 in local XY)
+      vec2 center = vec2(0.0, 0.0);
+      float distFromCenter = distance(position.xy, center);
       
-      float dist = distance(position.xy, uMouse.xy);
-      float radius = 6.0; // Radio más suave
-      float interaction = smoothstep(radius, 0.0, dist);
+      // Multiple concentric wave rings emanating outward
+      float waveSpeed = 2.0;
+      float waveFrequency = 0.8; // Lower = wider waves
+      float waveAmplitude = 0.6;
       
-      // Ondulatorio orgánico
-      // Menos frecuencia espacial (dist * 1.0) para ondas más largas
-      float wave = sin(dist * 1.0 - uTime * 5.0) * interaction;
+      // Main concentric wave
+      float concentricWave = sin(distFromCenter * waveFrequency - uTime * waveSpeed) * waveAmplitude;
       
-      // "Magnetismo" muy sutil (base lift)
-      elevation += interaction * 0.5; 
-      // Movimiento fluido principal
-      elevation += wave * 0.8; 
+      // Secondary wave layer for complexity
+      float secondaryWave = sin(distFromCenter * 1.5 - uTime * 1.5) * 0.3;
+      
+      // Fade out waves at edges
+      float edgeFade = 1.0 - smoothstep(15.0, 25.0, distFromCenter);
+      
+      elevation += (concentricWave + secondaryWave) * edgeFade; 
       
       // --- EXPLOSION TRANSITION ---
       // When uTransition increases, animate particles upwards wildly
@@ -134,29 +137,24 @@ const TerrainApps = ({ isTransitioning, onTransitionComplete }) => {
 
     void main() {
       // 1. Make points circular
-      // distance from center of point (0.5, 0.5)
       float d = distance(gl_PointCoord, vec2(0.5));
       
-      // If outside circle, discard
-      // Use smoothstep for soft edges
+      // Soft edges
       float alpha = 1.0 - smoothstep(0.3, 0.5, d);
       
       if(alpha < 0.01) discard;
 
-      // 2. Coloring (DARK MODE - FIERY)
-      // High: Bright Orange/Red glow
-      vec3 colorHigh = vec3(1.0, 0.4, 0.0); 
-      // Low: Deep Red abyss
-      vec3 colorLow = vec3(0.3, 0.0, 0.0); 
+      // 2. Coloring - DARK RED PALETTE
+      // High elevation: Brighter wine red
+      vec3 colorHigh = vec3(0.5, 0.07, 0.0); // #800B00 approx
+      // Low elevation: Deep dark red/brown  
+      vec3 colorLow = vec3(0.2, 0.02, 0.0);  // Very dark
 
-      // Mix based on elevation (range approx -1.5 to 1.5)
-      float mixStrength = (vElevation + 1.0) * 0.5;
+      // Mix based on elevation
+      float mixStrength = clamp((vElevation + 1.5) * 0.35, 0.0, 1.0);
       vec3 color = mix(colorLow, colorHigh, mixStrength);
 
-      gl_FragColor = vec4(color, alpha * 0.8);
-      
-      // Optional: Add simple fog manually if needed, or rely on scene fog (handled by transparent materials usually)
-      #include <fog_fragment>
+      gl_FragColor = vec4(color, alpha * 0.9);
     }
   `
 

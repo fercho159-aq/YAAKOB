@@ -1,10 +1,11 @@
 import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Experience from './components/Experience'
 import ExperienceApps from './components/ExperienceApps'
 import UI from './components/UI'
 import HexagonBackground from './components/HexagonBackground'
+import Preloader from './components/Preloader'
 import AppsPage from './pages/AppsPage'
 import ContactPage from './pages/ContactPage'
 import IrisDemoPage from './pages/IrisDemoPage'
@@ -61,9 +62,16 @@ function ContactPageWithBackground() {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  const handlePreloaderComplete = () => {
+    setIsLoading(false)
+  }
+
   return (
     <BrowserRouter>
       <TransitionProvider>
+        {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/apps" element={<AppsPageWithBackground />} />
@@ -76,3 +84,4 @@ function App() {
 }
 
 export default App
+

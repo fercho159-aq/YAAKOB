@@ -217,13 +217,11 @@ const HumanoidParticles = ({ isTransitioning }) => {
       
       if(alpha < 0.01) discard;
 
-      // Deep Red - adjusted for visibility against black
-      // Original #651200 is too dark/brown with transparency. 
-      // Boosting Red slightly and killing Green to prevent orange.
-      vec3 color = vec3(0.55, 0.02, 0.0);
+      // Pure Red - No green component to prevent orange tint
+      vec3 color = vec3(0.5, 0.0, 0.0);
 
-      // Increase opacity so it stands out as RED not brown
-      gl_FragColor = vec4(color, alpha * 0.95);
+      // Full opacity
+      gl_FragColor = vec4(color, alpha);
     }
   `
 

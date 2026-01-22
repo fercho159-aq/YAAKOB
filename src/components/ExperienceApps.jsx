@@ -23,8 +23,8 @@ export default function ExperienceApps({ isTransitioning, onTransitionComplete }
         <>
             <PerspectiveCamera makeDefault position={[0, 1.2, 6]} ref={cameraRef} fov={50} />
 
-            {/* Light fog matching home page */}
-            <fog attach="fog" args={['#A8B6BD', 6, 16]} />
+            {/* Fog disabled to preserve true colors */}
+            {/* <fog attach="fog" args={['#A8B6BD', 6, 16]} /> */}
 
             {/* Bright, clean lighting */}
             <ambientLight intensity={1.2} />
@@ -37,7 +37,8 @@ export default function ExperienceApps({ isTransitioning, onTransitionComplete }
             </Suspense>
 
             <EffectComposer disableNormalPass>
-                <Bloom luminanceThreshold={0.8} mipmapBlur intensity={0.4} radius={0.4} />
+                {/* Bloom disabled to preserve true colors on humanoid */}
+                {/* <Bloom luminanceThreshold={0.8} mipmapBlur intensity={0.4} radius={0.4} /> */}
                 <Noise opacity={0.02} blendFunction={BlendFunction.OVERLAY} />
             </EffectComposer>
         </>
