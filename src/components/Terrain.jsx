@@ -87,13 +87,14 @@ const fbm = (x, y, z, octaves = 3) => {
  * - "Ink on Paper" aesthetic (Dark lines, Light background)
  */
 const Terrain = ({
-  position = [4, -5, -13],
+  position = [2, -2.5, -10],
   rotation = [-1.2, -0.2, Math.PI],
-  torusRadius = 10, // Wider, more expansive
+  torusRadius = 7, // Wider, more expansive
   tubeRadius = 5,   // Flatter
-  numLines = 200,   // Much more sparse (E.C.H.O. style is clean)
-  pointsPerLine = 100, // Very smooth curves
-  lineWidth = 1.6,  // Thinner lines
+  numLines = 300,   // Much more sparse (E.C.H.O. style is clean)
+  pointsPerLine = 500, // Very smooth curves
+  lineWidth = 2.8,  // Thinner lines
+  minZ = 2.9, // Altura mínima para que las líneas se vean (corte inferior)
 }) => {
   const groupRef = useRef()
   const mouseRef = useRef({ x: 0, y: 0 })
@@ -115,13 +116,13 @@ const Terrain = ({
     const lines = []
 
     // Paleta SOLAR Avanzada (Gradiente de 3 etapas)
-    // 1. Fondo (Bordes lejanos): #D4C5C5
+    // 1. Fondo (Bordes lejanos): #FFD700 (Amarillo Oro - Se funde con el Sol)
     // 2. Medio (Corona solar): #ff3300 (Rojo Naranja Intenso)
     // 3. Centro (Núcleo): #ffdd00 (Amarillo Dorado Brillante)
 
-    const colorBg = new THREE.Color('#D4C5C5')
+    const colorBg = new THREE.Color('#FFD700')
     const colorRed = new THREE.Color('#ff3300')
-    const colorYellow = new THREE.Color('#ffdd00')
+    const colorYellow = new THREE.Color('rgba(255, 221, 0, 1)')
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
@@ -148,7 +149,9 @@ const Terrain = ({
         const y = resultRadius * Math.sin(toroidalAngle)
         const z = tubeRadius * Math.sin(poloidalAngle)
 
-        if (z < 0.5) continue;
+        // Create a "funnel" effect: Allow lines to be seen deeper in the center
+        // If we are close to the center (radius < 4), we ignore the minZ cut-off to show the "source"
+        if (z < minZ && resultRadius > .5) continue;
 
         points.push(x, y, z)
         zPositions.push(z)
@@ -189,7 +192,7 @@ const Terrain = ({
     }
 
     return lines
-  }, [numLines, pointsPerLine, torusRadius, tubeRadius])
+  }, [numLines, pointsPerLine, torusRadius, tubeRadius, minZ])
 
   // Create Line2 instances
   const lineObjects = useMemo(() => {
@@ -247,11 +250,11 @@ const Terrain = ({
     lineObjects.forEach(({ geometry, material, data, originalPositions }) => {
       const newPositions = []
 
-      // Extremely slow, graceful flow
-      const flowTime = time * 0.1
+      // Faster, more intense flow
+      const flowTime = time * 0.5
 
       // Large soft noise
-      const noiseScale = 0.04
+      const noiseScale = 0.2
       const waveAmp = 1.0
 
       for (let i = 0; i < originalPositions.length; i += 3) {
@@ -267,12 +270,30 @@ const Terrain = ({
         // FBM for detail using very smooth settings
         const displacement = fbm(nX, nY, nZ, 2) * waveAmp
 
-        // Apply displacement mostly in Z/Normal direction to simulate "breathing" or "swelling"
-        // Also a bit of lateral movement
+        // === RAIN / GLASS EFFECT ===
+        // Simulates water droplets degrading the view
+
+        // 1. Moving "patches" of rain (simulating streaks sliding down)
+        // We move along Z to simulate flow
+        const rainTime = time * 0.4
+        const rainPatchNoise = perlin3D(x * 0.3, y * 0.3, z * 0.2 + rainTime)
+
+        let rainDistortion = 0
+
+        // Only distort inside the "droplets" (where noise is high)
+        if (rainPatchNoise > 0.3) {
+          // High frequency wobble to simulate refraction/glass distortion
+          // "Degrade" the line quality locally
+          const wobbleFreq = 12.0
+          const wobbleSpeed = time * 1.5
+
+          // Creates a chaotic, high-freq wiggle
+          rainDistortion = Math.sin(z * wobbleFreq - wobbleSpeed) * Math.cos(x * wobbleFreq) * 0.08 * (rainPatchNoise)
+        }
 
         newPositions.push(
-          x + displacement * 0.5,
-          y + displacement * 0.5,
+          x + displacement * 0.5 + rainDistortion,
+          y + displacement * 0.5 + rainDistortion,
           z + displacement
         )
       }

@@ -45,7 +45,7 @@ export default function Experience() {
 
             tl.to(cameraRef.current.position, {
                 x: 4,
-                y: -5,
+                y: -2.5,
                 z: -15, // Go inside/past it
                 duration: 2,
                 ease: 'expo.in'
@@ -61,7 +61,7 @@ export default function Experience() {
             {/* <color attach="background" args={['#A8B6BD']} /> */}
 
             {/* Fog to hide edges of the plane - using transparent-ish color */}
-            <fog attach="fog" args={['#D4C5C5', 6, 16]} />
+            <fog attach="fog" args={['#ffffff', 6, 16]} />
 
 
             <ambientLight intensity={1.2} />
