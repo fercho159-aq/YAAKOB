@@ -4,6 +4,10 @@ import { useTransition } from '../context/TransitionContext';
 import './AppsPage.scss';
 
 export default function AppsPage() {
+    const [audioPlaying, setAudioPlaying] = useState(false);
+    const audioRef = useRef(null);
+    const audioContextRef = useRef(null);
+    const navigate = useNavigate();
     const { startTransition } = useTransition();
 
     useEffect(() => {
