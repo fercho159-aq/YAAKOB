@@ -30,6 +30,7 @@ function HomePage() {
 }
 
 function AppsPageWithBackground() {
+  const { isTransitioning, completeTransition } = useTransition()
   return (
     <>
       <HexagonBackground />
@@ -40,13 +41,12 @@ function AppsPageWithBackground() {
         style={{ background: '#02050a', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
       >
         <Suspense fallback={null}>
-          <ExperienceApps />
+          <ExperienceApps isTransitioning={isTransitioning} onTransitionComplete={completeTransition} />
         </Suspense>
       </Canvas>
       <AppsPage />
     </>
   )
-
 }
 
 function ContactPageWithBackground() {
