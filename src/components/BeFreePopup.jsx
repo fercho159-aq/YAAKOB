@@ -4,18 +4,22 @@ import { Html, Center } from '@react-three/drei'
 import * as THREE from 'three'
 import gsap from 'gsap'
 
-// El objeto 3D hecho de puntos
+// El objeto 3D hecho de puntos (ahora un Recuadro/Caja)
 const PointsMesh = () => {
     const meshRef = useRef()
 
-    // Geometria: TorusKnot es visualmente interesante
-    // Radius, Tube, TubularSegments, RadialSegments
-    const geometry = useMemo(() => new THREE.TorusKnotGeometry(1, 0.3, 150, 20), [])
+    // Geometria: Caja rectangular plana (tipo ventana modal)
+    // Args: Width, Height, Depth, SegmentsWidth, SegmentsHeight, SegmentsDepth
+    // Aumentamos segmentos para que se vea tupido como un "panel de energia"
+    const geometry = useMemo(() => new THREE.BoxGeometry(3.5, 2, 0.5, 64, 32, 8), [])
 
     useFrame((state) => {
         if (meshRef.current) {
-            meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2
-            meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3
+            // Rotación sutil "respirando" o flotando, no girando locamente
+            const t = state.clock.getElapsedTime();
+            // Muy poca rotacion para que parezca una ventana UI flotante
+            meshRef.current.rotation.x = Math.sin(t * 0.5) * 0.05;
+            meshRef.current.rotation.y = Math.sin(t * 0.3) * 0.1;
         }
     })
 
