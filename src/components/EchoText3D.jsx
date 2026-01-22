@@ -7,8 +7,8 @@ import * as THREE from 'three'
 const TechLineMaterial = shaderMaterial(
     {
         uTime: 0,
-        uColor: new THREE.Color('#3a0a0a'),
-        uLineColor: new THREE.Color('#ff4500'),
+        uColor: new THREE.Color('#000000'),
+        uLineColor: new THREE.Color('#333333'),
         uOpacity: 1.0,
     },
     // Vertex Shader
@@ -108,15 +108,15 @@ export default function EchoText3D() {
     // Configuration for tech line layers
     const layers = [
         // Deep shadow layer
-        { offset: [0.08, -0.08, -0.2], color: '#1a0505', opacity: 0.25 },
+        { offset: [0.08, -0.08, -0.2], color: '#000000', opacity: 0.25 },
         // Mid shadow 
-        { offset: [0.04, -0.04, -0.1], color: '#2b0b0b', opacity: 0.35 },
+        { offset: [0.04, -0.04, -0.1], color: '#1a1a1a', opacity: 0.35 },
         // Main fill with tech lines
-        { offset: [0, 0, 0], color: '#3a0a0a', opacity: 1.0, useShader: true },
+        { offset: [0, 0, 0], color: '#000000', opacity: 1.0, useShader: true },
         // Inner highlight
-        { offset: [-0.015, 0.015, 0.02], color: '#cc3300', opacity: 0.2 },
+        { offset: [-0.015, 0.015, 0.02], color: '#333333', opacity: 0.2 },
         // Edge outline - multiple for thickness
-        { offset: [0, 0, 0.01], color: '#1a0000', opacity: 1.0, strokeWidth: 0.008 },
+        { offset: [0, 0, 0.01], color: '#000000', opacity: 1.0, strokeWidth: 0.008 },
     ]
 
     return (
@@ -136,7 +136,7 @@ export default function EchoText3D() {
                         <techLineMaterial
                             ref={(el) => materialRefs.current[index] = el}
                             uColor={new THREE.Color(layer.color)}
-                            uLineColor={new THREE.Color('#ff4500')}
+                            uLineColor={new THREE.Color('#333333')}
                             uOpacity={layer.opacity}
                             transparent
                         />
@@ -210,7 +210,7 @@ export default function EchoText3D() {
             >
                 YAAKOB
                 <meshBasicMaterial
-                    color="#ff4500"
+                    color="#000000"
                     transparent
                     opacity={0.08}
                 />

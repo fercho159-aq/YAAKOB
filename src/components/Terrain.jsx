@@ -120,9 +120,9 @@ const Terrain = ({
     // 2. Medio (Corona solar): #ff3300 (Rojo Naranja Intenso)
     // 3. Centro (Núcleo): #ffdd00 (Amarillo Dorado Brillante)
 
-    const colorBg = new THREE.Color('#FFD700')
-    const colorRed = new THREE.Color('#ff3300')
-    const colorYellow = new THREE.Color('#ffdd00')
+    const colorBg = new THREE.Color('#651200')
+    const colorRed = new THREE.Color('#651200')
+    const colorYellow = new THREE.Color('#651200')
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
