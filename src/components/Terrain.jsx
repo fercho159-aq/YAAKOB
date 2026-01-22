@@ -92,7 +92,7 @@ const Terrain = ({
   torusRadius = 11,
   tubeRadius = 5,
   numLines = 450,
-  pointsPerLine = 30,
+  pointsPerLine = 150, // Aumentado para eliminar los "puntos" y suavizar las curvas
   lineWidth = 2.8,
   shadowColor = '#3a4a52',
   midColor = '#5a6a72',
@@ -117,10 +117,11 @@ const Terrain = ({
   const linesData = useMemo(() => {
     const lines = []
 
-    // Colores para el degradado radial (centro → borde)
-    const colorInside = new THREE.Color('#a8c5ce')  // Cyan brillante del centro
-    const colorOutside = new THREE.Color('#A8B6BD') // Color exacto del fondo
-    const maxRadius = torusRadius + tubeRadius + 2  // Radio máximo para normalizar
+    // Colores para el degradado estilo "Tinta sobre Papel" (E.C.H.O. style)
+    // Líneas oscuras sobre fondo claro para máximo contraste y elegancia
+    const colorInside = new THREE.Color('#0f172a')  // Dark Slate / Casi negro (el color de las líneas fuertes)
+    const colorOutside = new THREE.Color('#A8B6BD') // Color del fondo (para que se desvanezca suavemente)
+    const maxRadius = torusRadius + tubeRadius + 2
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
@@ -206,12 +207,13 @@ const Terrain = ({
       const fadedOpacity = baseOpacity * lineData.bottomFade
 
       const material = new LineMaterial({
-        color: 0xffffff,  // Blanco base (los vertex colors lo sobrescriben)
-        vertexColors: true,  // ACTIVAR COLORES POR VÉRTICE
+        color: 0xffffff,
+        vertexColors: true,
         linewidth: lineWidth,
-        transparent: true,
-        opacity: fadedOpacity,
-        depthWrite: false,
+        dashed: false,
+        alphaToCoverage: true, // Ayuda con los bordes suaves
+        transparent: false, // CLAVE: Desactivar transparencia real elimina los "nudos"
+        depthWrite: true,   // CLAVE: Las líneas se ocluyen correctamente entre sí
         worldUnits: false,
       })
 
