@@ -178,8 +178,8 @@ const HumanoidParticles = () => {
 
       vec4 viewPosition = viewMatrix * modelPosition;
       
-      // Size attenuation - TAMAÑO EQUILIBRADO (130.0)
-      gl_PointSize = 130.0 * (1.0 / -viewPosition.z);
+      // Size attenuation - TAMAÑO REDUCIDO para nitidez holográfica (85.0)
+      gl_PointSize = 85.0 * (1.0 / -viewPosition.z);
       
       gl_Position = projectionMatrix * viewPosition;
     }
@@ -196,10 +196,11 @@ const HumanoidParticles = () => {
       
       if(alpha < 0.01) discard;
 
-      // Bright Cyan/White glow
-      vec3 color = vec3(0.6, 0.8, 0.9);
+      // Deep Electric Blue (Más oscuro base, brillante en suma)
+      vec3 color = vec3(0.1, 0.4, 0.8);
 
-      gl_FragColor = vec4(color, alpha * 0.95);
+      // Alpha reducido para evitar saturación blanca
+      gl_FragColor = vec4(color, alpha * 0.5);
     }
   `
 
