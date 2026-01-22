@@ -82,8 +82,27 @@ export default function UI() {
         };
     }, []);
 
+    // Format current date
+    const formatDate = () => {
+        const now = new Date();
+        const day = now.getDate();
+        const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+        const month = months[now.getMonth()];
+        const year = now.getFullYear();
+        return { day, month, year };
+    };
+
+    const { day, month, year } = formatDate();
+
     return (
         <div className="ui-layer" ref={containerRef}>
+            {/* Date display on top right */}
+            <div className="date-display stagger-anim">
+                <span className="date-day">{day}</span>
+                <span className="date-month">{month}</span>
+                <span className="date-year">{year}</span>
+            </div>
+
             <header className="ui-header stagger-anim">
                 <nav className="nav-links">
                     <Link to="/" className="nav-link active">Inicio</Link>
