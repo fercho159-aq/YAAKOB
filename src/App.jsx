@@ -37,7 +37,7 @@ function AppsPageWithBackground() {
         camera={{ position: [0, 0, 5], fov: 45 }}
         dpr={[1, 2]}
         gl={{ alpha: true, antialias: true }}
-        style={{ background: '#A8B6BD', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
+        style={{ background: '#02050a', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
       >
         <Suspense fallback={null}>
           <ExperienceApps />
@@ -46,6 +46,7 @@ function AppsPageWithBackground() {
       <AppsPage />
     </>
   )
+
 }
 
 function ContactPageWithBackground() {
@@ -56,7 +57,7 @@ function ContactPageWithBackground() {
         camera={{ position: [0, 0, 5], fov: 45 }}
         dpr={[1, 2]}
         gl={{ alpha: true, antialias: true }}
-        style={{ background: '#A8B6BD', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
+        style={{ background: '#02050a', position: 'fixed', top: 0, left: 0, zIndex: 0 }}
       >
         <Suspense fallback={null}>
           <ExperienceApps />

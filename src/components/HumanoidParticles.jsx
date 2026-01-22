@@ -196,8 +196,8 @@ const HumanoidParticles = () => {
       
       if(alpha < 0.01) discard;
 
-      // Solid black color
-      vec3 color = vec3(0.0, 0.0, 0.0);
+      // Bright Cyan/White glow
+      vec3 color = vec3(0.6, 0.8, 0.9);
 
       gl_FragColor = vec4(color, alpha * 0.95);
     }
@@ -286,7 +286,7 @@ const HumanoidParticles = () => {
                     fragmentShader={fragmentShader}
                     transparent={true}
                     depthWrite={false}
-                    blending={THREE.NormalBlending}
+                    blending={THREE.AdditiveBlending}
                 />
             </points>
         </group>

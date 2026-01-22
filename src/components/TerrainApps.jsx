@@ -120,10 +120,11 @@ const TerrainApps = () => {
       
       if(alpha < 0.01) discard;
 
-      // 2. Coloring
-      // Base color: VERY DARK Slate/Black (for high visibility on light bg)
-      vec3 colorHigh = vec3(0.1, 0.2, 0.3); // Dark Slate Blue
-      vec3 colorLow = vec3(0.0, 0.0, 0.0);  // Pure Black
+      // 2. Coloring (DARK MODE)
+      // High: Bright Cyan glow
+      vec3 colorHigh = vec3(0.5, 0.9, 1.0); 
+      // Low: Deep Blue abyss
+      vec3 colorLow = vec3(0.0, 0.1, 0.2); 
 
 
 
@@ -204,7 +205,7 @@ const TerrainApps = () => {
                 uniforms={uniforms}
                 transparent={true}
                 depthWrite={false}
-                blending={THREE.NormalBlending}
+                blending={THREE.AdditiveBlending}
             />
         </points>
     )
