@@ -114,14 +114,17 @@ export default function BeFreePopup({ onClose }) {
                         cursor: 'pointer',
                         fontSize: '14px',
                         textTransform: 'uppercase',
-                        letterSpacing: '2px'
+                        letterSpacing: '2px',
+                        transition: 'all 0.3s ease'
                     }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = '#00ffff'; e.currentTarget.style.color = '#000'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#00ffff'; }}
                 >
                     Cerrar
                 </button>
             </div>
 
-            <div style={{ width: '100%', height: '100%' }}>
+            <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
                 <Canvas camera={{ position: [0, 0, 4] }} gl={{ alpha: true }}>
                     <ambientLight intensity={0.5} />
                     <pointLight position={[10, 10, 10]} />
@@ -129,23 +132,98 @@ export default function BeFreePopup({ onClose }) {
                 </Canvas>
             </div>
 
-            {/* Optional text overlay */}
+            {/* Content Overlay */}
             <div style={{
-                position: 'absolute',
-                bottom: '10%',
-                color: '#fff',
+                zIndex: 3002,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '30px',
                 textAlign: 'center',
-                pointerEvents: 'none',
-                fontFamily: 'sans-serif'
+                color: '#fff',
+                fontFamily: "'Orbitron', sans-serif" // Assuming font is available or fallback
             }}>
                 <h2 style={{
-                    fontSize: '2rem',
-                    fontWeight: '100',
-                    letterSpacing: '0.5rem',
-                    textShadow: '0 0 20px #00ffff'
+                    fontSize: '2.5rem',
+                    fontWeight: '700',
+                    letterSpacing: '0.3rem',
+                    marginBottom: '10px',
+                    textShadow: '0 0 20px #00ffff',
+                    margin: 0
                 }}>
-                    YOU ARE FREE
+                    YAAKOB APP
                 </h2>
+                <p style={{
+                    fontSize: '1rem',
+                    letterSpacing: '0.1rem',
+                    color: '#a0a0a0',
+                    maxWidth: '400px',
+                    lineHeight: '1.5'
+                }}>
+                    Lleva la experiencia inmersiva a donde vayas. <br /> Disponible ahora.
+                </p>
+
+                <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+                    {/* App Store Button */}
+                    <button
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            background: 'rgba(0, 0, 0, 0.6)',
+                            border: '1px solid #00ffff',
+                            padding: '12px 24px',
+                            borderRadius: '12px',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-3px)';
+                            e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.4)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        <span style={{ fontSize: '24px' }}></span>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: '10px', textTransform: 'uppercase' }}>Download on the</div>
+                            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>App Store</div>
+                        </div>
+                    </button>
+
+                    {/* Google Play Button */}
+                    <button
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '10px',
+                            background: 'rgba(0, 0, 0, 0.6)',
+                            border: '1px solid #00ffff',
+                            padding: '12px 24px',
+                            borderRadius: '12px',
+                            color: '#fff',
+                            cursor: 'pointer',
+                            transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'translateY(-3px)';
+                            e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.4)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        <span style={{ fontSize: '20px' }}>▶</span>
+                        <div style={{ textAlign: 'left' }}>
+                            <div style={{ fontSize: '10px', textTransform: 'uppercase' }}>Get it on</div>
+                            <div style={{ fontSize: '16px', fontWeight: 'bold' }}>Google Play</div>
+                        </div>
+                    </button>
+                </div>
             </div>
         </div>
     )
