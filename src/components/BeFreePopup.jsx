@@ -124,13 +124,14 @@ export default function BeFreePopup({ onClose }) {
                 </button>
             </div>
 
-            <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
+            {/* 3D Background removed as requested */}
+            {/* <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}>
                 <Canvas camera={{ position: [0, 0, 4] }} gl={{ alpha: true }}>
                     <ambientLight intensity={0.5} />
                     <pointLight position={[10, 10, 10]} />
                     <Scene onClose={onClose} />
                 </Canvas>
-            </div>
+            </div> */}
 
             {/* Content Overlay */}
             <div style={{
