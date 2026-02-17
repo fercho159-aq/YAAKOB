@@ -6,27 +6,27 @@ import './SupportPage.scss';
 const faqs = [
     {
         q: '¿Qué es Yaakob?',
-        a: 'Yaakob es una plataforma de mensajería y consultoría profesional. Conecta usuarios con asesores y consultores certificados a través de chat en tiempo real, llamadas de voz y video.'
+        a: 'Yaakob es una plataforma de mensajería y consultoría profesional en desarrollo. Conectará a usuarios con asesores y consultores certificados a través de chat en tiempo real, llamadas de voz y video.'
     },
     {
-        q: '¿Cómo me registro como asesor o consultor?',
-        a: 'Descarga la app desde App Store o Google Play, selecciona el rol de asesor o consultor durante el registro y completa el proceso de verificación con tus credenciales profesionales.'
+        q: '¿Cuándo estará disponible la app?',
+        a: 'Estamos trabajando para lanzar la app próximamente en App Store y Google Play. Contáctanos en contacto@yaakob.com para recibir novedades sobre el lanzamiento.'
     },
     {
-        q: '¿Qué funciones incluye la app?',
+        q: '¿Qué funciones incluirá la app?',
         a: 'Chat en tiempo real, llamadas de voz y video, envío de archivos y documentos, escaneo OCR de documentos, integración fiscal (RFC y facturación), notificaciones push, tema claro/oscuro y configuración de privacidad.'
     },
     {
-        q: '¿En qué dispositivos está disponible?',
-        a: 'Yaakob está disponible para iOS (App Store) y Android (Google Play). Requiere iOS 15+ o Android 10+ para funcionar correctamente.'
+        q: '¿En qué dispositivos estará disponible?',
+        a: 'Yaakob estará disponible para iOS (App Store) y Android (Google Play). Requerirá iOS 15+ o Android 10+ para funcionar correctamente.'
     },
     {
         q: '¿Cómo puedo eliminar mi cuenta?',
-        a: 'Puedes solicitar la eliminación de tu cuenta desde Ajustes > Privacidad > Eliminar cuenta dentro de la app, o visitando nuestra página de eliminación de cuenta en yaakob.com.'
+        a: 'Podrás solicitar la eliminación de tu cuenta desde Ajustes > Privacidad > Eliminar cuenta dentro de la app, o visitando nuestra página de eliminación de cuenta en yaakob.com.'
     },
     {
-        q: '¿Mis conversaciones son seguras?',
-        a: 'Sí. Todas las comunicaciones en Yaakob están protegidas. Puedes configurar tu privacidad incluyendo última conexión, foto de perfil y confirmaciones de lectura desde los ajustes de la app.'
+        q: '¿Las conversaciones serán seguras?',
+        a: 'Sí. Todas las comunicaciones en Yaakob estarán protegidas. Podrás configurar tu privacidad incluyendo última conexión, foto de perfil y confirmaciones de lectura desde los ajustes de la app.'
     }
 ];
 
@@ -195,7 +195,7 @@ export default function SupportPage() {
                     <div className="support-card-icon"><ChatIcon /></div>
                     <h3>Chat en la App</h3>
                     <p>Soporte directo desde Yaakob</p>
-                    <span className="support-card-action">Abrir app</span>
+                    <span className="support-card-action">Próximamente</span>
                 </div>
                 <div className="support-card">
                     <div className="support-card-icon"><ShieldIcon /></div>

@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react'
 import './Preloader.scss'
 
 const WORDS = [
-    'FORTUNA',
-    'AMOR',
-    'ABUNDANCIA',
-    'PROSPERIDAD',
-    'ÉXITO',
-    'ARMONÍA',
-    'LIBERTAD',
-    'PODER'
+    'CONEXIÓN',
+    'CONFIANZA',
+    'CLARIDAD',
+    'SOPORTE',
+    'SERVICIO',
+    'SEGURIDAD',
+    'COMUNIDAD',
+    'SOLUCIÓN'
 ]
 
 export default function Preloader({ onComplete }) {

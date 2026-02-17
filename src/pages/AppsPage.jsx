@@ -12,7 +12,7 @@ export default function AppsPage() {
 
     useEffect(() => {
         // Crear audio
-        const audio = new Audio('/YTDown.com_Shorts_LA-MEJOR-FRASE-DE-ADAM-SANDLER-Garra-Mot_Media_MtwBVhkLd3s_007_48k.m4a');
+        const audio = new Audio('/audio-intro.m4a');
         audioRef.current = audio;
 
         // Configuración para flujo automático
