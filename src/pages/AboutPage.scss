@@ -513,18 +513,22 @@ $accent-soft: rgba(0, 0, 0, 0.03);
     }
 }
 
-// Override global html overflow for this page
+// Override global html overflow and background for this page
 html:has(.about-page) {
     overflow-y: auto;
     overflow-x: hidden;
+    background: $bg-page !important;
 
     body {
         overflow-y: auto;
         overflow-x: hidden;
-        background: $bg-page;
+        background: $bg-page !important;
+        background-color: $bg-page !important;
+        background-image: none !important;
     }
 
     #root {
         overflow: visible;
+        background: $bg-page;
     }
 }
