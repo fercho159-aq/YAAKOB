@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import './AboutPage.scss';
@@ -62,6 +62,17 @@ const MailIcon = () => (
 export default function AboutPage() {
     const pageRef = useRef(null);
 
+    const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => (
+        <div key={i} className="about-particle" style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 8}s`,
+            animationDuration: `${6 + Math.random() * 8}s`,
+            width: `${2 + Math.random() * 3}px`,
+            height: `${2 + Math.random() * 3}px`,
+        }} />
+    )), []);
+
     useEffect(() => {
         const ctx = gsap.context(() => {
             gsap.fromTo('.about-hero-title',
@@ -91,18 +102,9 @@ export default function AboutPage() {
 
     return (
         <div className="about-page" ref={pageRef}>
-            {/* Ambient particles */}
+            {/* Ambient particles - memoized to avoid regeneration on re-render */}
             <div className="about-particles">
-                {Array.from({ length: 20 }).map((_, i) => (
-                    <div key={i} className="about-particle" style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        animationDelay: `${Math.random() * 8}s`,
-                        animationDuration: `${6 + Math.random() * 8}s`,
-                        width: `${2 + Math.random() * 3}px`,
-                        height: `${2 + Math.random() * 3}px`,
-                    }} />
-                ))}
+                {particles}
             </div>
 
             {/* Navigation */}

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import './SupportPage.scss';
@@ -79,6 +79,17 @@ export default function SupportPage() {
     const [submitted, setSubmitted] = useState(false);
     const [sending, setSending] = useState(false);
 
+    const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => (
+        <div key={i} className="support-particle" style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 8}s`,
+            animationDuration: `${6 + Math.random() * 8}s`,
+            width: `${2 + Math.random() * 3}px`,
+            height: `${2 + Math.random() * 3}px`,
+        }} />
+    )), []);
+
     useEffect(() => {
         const ctx = gsap.context(() => {
             // Hero entrance
@@ -143,16 +154,7 @@ export default function SupportPage() {
         <div className="support-page" ref={pageRef}>
             {/* Ambient particles */}
             <div className="support-particles">
-                {Array.from({ length: 20 }).map((_, i) => (
-                    <div key={i} className="support-particle" style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        animationDelay: `${Math.random() * 8}s`,
-                        animationDuration: `${6 + Math.random() * 8}s`,
-                        width: `${2 + Math.random() * 3}px`,
-                        height: `${2 + Math.random() * 3}px`,
-                    }} />
-                ))}
+                {particles}
             </div>
 
             {/* Navigation */}

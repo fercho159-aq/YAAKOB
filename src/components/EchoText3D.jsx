@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import { useFrame, extend } from '@react-three/fiber'
 import { Text, shaderMaterial } from '@react-three/drei'
 import * as THREE from 'three'
@@ -61,13 +61,15 @@ export default function EchoText3D() {
     const materialRefs = useRef([])
     const mouseRef = useRef({ x: 0, y: 0 })
 
-    // Mouse tracking for tilt effect
-    if (typeof window !== 'undefined') {
-        window.addEventListener('mousemove', (e) => {
+    // Mouse tracking for tilt effect - properly cleaned up
+    useEffect(() => {
+        const handleMouseMove = (e) => {
             mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1
             mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1
-        })
-    }
+        }
+        window.addEventListener('mousemove', handleMouseMove)
+        return () => window.removeEventListener('mousemove', handleMouseMove)
+    }, [])
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime()
@@ -105,19 +107,20 @@ export default function EchoText3D() {
         lineHeight: 1,
     }
 
-    // Configuration for tech line layers
-    const layers = [
-        // Deep shadow layer
+    // Configuration for tech line layers - memoized to avoid recreation
+    const layers = useMemo(() => [
         { offset: [0.08, -0.08, -0.2], color: '#000000', opacity: 0.25 },
-        // Mid shadow 
         { offset: [0.04, -0.04, -0.1], color: '#1a1a1a', opacity: 0.35 },
-        // Main fill with tech lines
         { offset: [0, 0, 0], color: '#000000', opacity: 1.0, useShader: true },
-        // Inner highlight
         { offset: [-0.015, 0.015, 0.02], color: '#333333', opacity: 0.2 },
-        // Edge outline - multiple for thickness
         { offset: [0, 0, 0.01], color: '#000000', opacity: 1.0, strokeWidth: 0.008 },
-    ]
+    ], [])
+
+    // Pre-compute THREE.Color objects once
+    const shaderColors = useMemo(() => ({
+        black: new THREE.Color('#000000'),
+        lineColor: new THREE.Color('#333333'),
+    }), [])
 
     return (
         <group ref={groupRef} position={[0, 0.5, 2.6]}>
@@ -135,8 +138,8 @@ export default function EchoText3D() {
                     {layer.useShader ? (
                         <techLineMaterial
                             ref={(el) => materialRefs.current[index] = el}
-                            uColor={new THREE.Color(layer.color)}
-                            uLineColor={new THREE.Color('#333333')}
+                            uColor={shaderColors.black}
+                            uLineColor={shaderColors.lineColor}
                             uOpacity={layer.opacity}
                             transparent
                         />
@@ -156,49 +159,49 @@ export default function EchoText3D() {
                 {/* Top left corner accent */}
                 <mesh position={[-1.4, 0.22, 0]}>
                     <planeGeometry args={[0.15, 0.003]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.5} />
                 </mesh>
                 <mesh position={[-1.32, 0.18, 0]}>
                     <planeGeometry args={[0.003, 0.08]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.5} />
                 </mesh>
 
                 {/* Top right corner accent */}
                 <mesh position={[1.4, 0.22, 0]}>
                     <planeGeometry args={[0.15, 0.003]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.5} />
                 </mesh>
                 <mesh position={[1.32, 0.18, 0]}>
                     <planeGeometry args={[0.003, 0.08]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.5} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.5} />
                 </mesh>
 
                 {/* Bottom decorative elements */}
                 <mesh position={[-0.8, -0.3, 0]}>
                     <planeGeometry args={[0.2, 0.002]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.4} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.4} />
                 </mesh>
                 <mesh position={[0.8, -0.3, 0]}>
                     <planeGeometry args={[0.2, 0.002]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.4} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.4} />
                 </mesh>
 
                 {/* Small squares - tech style */}
                 <mesh position={[-1.5, 0.1, 0]}>
                     <planeGeometry args={[0.025, 0.025]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.3} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.3} />
                 </mesh>
                 <mesh position={[1.5, 0.1, 0]}>
                     <planeGeometry args={[0.025, 0.025]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.3} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.3} />
                 </mesh>
                 <mesh position={[-1.2, -0.15, 0]}>
                     <planeGeometry args={[0.02, 0.02]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.25} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.25} />
                 </mesh>
                 <mesh position={[1.2, -0.15, 0]}>
                     <planeGeometry args={[0.02, 0.02]} />
-                    <meshBasicMaterial color="#8a1c1c" transparent opacity={0.25} />
+                    <meshBasicMaterial color="#4a4a4a" transparent opacity={0.25} />
                 </mesh>
             </group>
 

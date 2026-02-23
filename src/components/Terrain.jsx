@@ -120,9 +120,10 @@ const Terrain = ({
     // 2. Medio (Corona solar): #ff3300 (Rojo Naranja Intenso)
     // 3. Centro (Núcleo): #ffdd00 (Amarillo Dorado Brillante)
 
-    const colorBg = new THREE.Color('#651200')
-    const colorRed = new THREE.Color('#651200')
-    const colorYellow = new THREE.Color('#651200')
+    const colorBg = new THREE.Color('#3c3c3c')
+    const colorRed = new THREE.Color('#3c3c3c')
+    const colorYellow = new THREE.Color('#3c3c3c')
+    const tempColor = new THREE.Color()
 
     for (let i = 0; i < numLines; i++) {
       const lineRandom = Math.random()
@@ -163,21 +164,15 @@ const Terrain = ({
         // Ajustamos la curva para controlar la distribución
         const tGrad = Math.pow(t, 0.8)
 
-        const pixelColor = new THREE.Color()
-
         if (tGrad < 0.4) {
-          // Centro (0.0) a Medio (0.4): Amarillo Brillante -> Rojo Intenso
-          // Normalizar 0.0-0.4 a 0-1
           const localT = tGrad / 0.4
-          pixelColor.lerpColors(colorYellow, colorRed, localT)
+          tempColor.lerpColors(colorYellow, colorRed, localT)
         } else {
-          // Medio (0.4) a Fin (1.0): Rojo Intenso -> Fondo (Fade)
-          // Normalizar 0.4-1.0 a 0-1
           const localT = (tGrad - 0.4) / 0.6
-          pixelColor.lerpColors(colorRed, colorBg, localT)
+          tempColor.lerpColors(colorRed, colorBg, localT)
         }
 
-        colors.push(pixelColor.r, pixelColor.g, pixelColor.b)
+        colors.push(tempColor.r, tempColor.g, tempColor.b)
       }
 
       if (points.length < 10) continue;
@@ -264,7 +259,8 @@ const Terrain = ({
         geometry,
         material,
         data: lineData,
-        originalPositions: [...lineData.points],
+        originalPositions: new Float64Array(lineData.points),
+        animPositions: new Float64Array(lineData.points.length),
       }
     })
   }, [linesData, lineWidth, size])
@@ -289,37 +285,24 @@ const Terrain = ({
     groupRef.current.rotation.y = rotation[1] + Math.cos(time * 0.15) * 0.02 + smoothMouseRef.current.x * 0.05
     groupRef.current.rotation.z = rotation[2]
 
-    lineObjects.forEach(({ geometry, material, data, originalPositions }) => {
-      const newPositions = []
+    const flowTime = time * 0.5
+    const noiseScale = 0.4
+    const waveAmp = 0.3
 
-      // Faster, more intense flow
-      const flowTime = time * 0.5
-
-      // Large soft noise
-      const noiseScale = 0.4
-      const waveAmp = 0.3
-
+    lineObjects.forEach(({ geometry, originalPositions, animPositions }) => {
       for (let i = 0; i < originalPositions.length; i += 3) {
         const x = originalPositions[i]
         const y = originalPositions[i + 1]
         const z = originalPositions[i + 2]
 
-        // Directional Noise Flow
-        const nX = x * noiseScale + flowTime
-        const nY = y * noiseScale
-        const nZ = z * noiseScale
+        const displacement = fbm(x * noiseScale + flowTime, y * noiseScale, z * noiseScale, 2) * waveAmp
 
-        // FBM for detail using very smooth settings
-        const displacement = fbm(nX, nY, nZ, 2) * waveAmp
-
-        newPositions.push(
-          x + displacement * 0.5,
-          y + displacement * 0.5,
-          z + displacement
-        )
+        animPositions[i] = x + displacement * 0.5
+        animPositions[i + 1] = y + displacement * 0.5
+        animPositions[i + 2] = z + displacement
       }
 
-      geometry.setPositions(newPositions)
+      geometry.setPositions(animPositions)
     })
   })
 

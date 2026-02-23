@@ -8,9 +8,9 @@ $border-hover: rgba(255, 255, 255, 0.12);
 $text-primary: #f5ede8;
 $text-secondary: rgba(245, 237, 232, 0.55);
 $text-muted: rgba(245, 237, 232, 0.3);
-$accent: #c45a3c;
-$accent-glow: rgba(196, 90, 60, 0.15);
-$accent-soft: rgba(196, 90, 60, 0.08);
+$accent: #6b6b6b;
+$accent-glow: rgba(100, 100, 100, 0.15);
+$accent-soft: rgba(100, 100, 100, 0.08);
 
 .support-page {
     min-height: 100vh;
@@ -436,7 +436,7 @@ $accent-soft: rgba(196, 90, 60, 0.08);
     align-self: flex-start;
 
     &:hover:not(:disabled) {
-        background: #d0654a;
+        background: #555555;
         transform: translateY(-2px);
         box-shadow: 0 8px 30px rgba($accent, 0.25);
     }

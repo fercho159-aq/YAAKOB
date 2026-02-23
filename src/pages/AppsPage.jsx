@@ -61,9 +61,14 @@ export default function AppsPage() {
 
         return () => {
             audio.pause();
-            window.sharedAudio = null;
-            // Limpiar listener
             audio.onended = null;
+            window.sharedAudio = null;
+            window.sharedAnalyser = null;
+            // Close AudioContext to free system audio resources
+            if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+                audioContextRef.current.close();
+            }
+            audioContextRef.current = null;
         };
     }, [navigate]);
 
