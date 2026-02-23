@@ -9,6 +9,7 @@ import Preloader from './components/Preloader'
 import AppsPage from './pages/AppsPage'
 import ContactPage from './pages/ContactPage'
 import SupportPage from './pages/SupportPage'
+import AboutPage from './pages/AboutPage'
 import IrisDemoPage from './pages/IrisDemoPage'
 import { TransitionProvider, useTransition } from './context/TransitionContext'
 
@@ -77,6 +78,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/apps" element={<AppsPageWithBackground />} />
           <Route path="/contacto" element={<ContactPageWithBackground />} />
+          <Route path="/nosotros" element={<AboutPage />} />
           <Route path="/soporte" element={<SupportPage />} />
           <Route path="/iris-demo" element={<IrisDemoPage />} />
         </Routes>

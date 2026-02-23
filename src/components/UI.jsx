@@ -107,6 +107,7 @@ export default function UI() {
                 <nav className="nav-links">
                     <Link to="/" className="nav-link active">Inicio</Link>
                     <Link to="/apps" className="nav-link">Apps</Link>
+                    <Link to="/nosotros" className="nav-link">Nosotros</Link>
                     <Link to="/contacto" className="nav-link">Contacto</Link>
                 </nav>
             </header>

@@ -163,6 +163,7 @@ export default function SupportPage() {
                 <div className="support-nav-links">
                     <Link to="/">Inicio</Link>
                     <Link to="/apps">Apps</Link>
+                    <Link to="/nosotros">Nosotros</Link>
                     <Link to="/contacto">Contacto</Link>
                 </div>
             </nav>
@@ -320,6 +321,8 @@ export default function SupportPage() {
                     </div>
                     <p>Be Heart — Conecta con tu corazón</p>
                     <div className="support-footer-links">
+                        <Link to="/nosotros">Nosotros</Link>
+                        <span className="support-footer-sep" />
                         <a href="/politica-privacidad.html">Privacidad</a>
                         <span className="support-footer-sep" />
                         <a href="/eliminar-cuenta.html">Eliminar cuenta</a>
