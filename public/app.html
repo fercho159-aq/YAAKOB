@@ -115,6 +115,180 @@
 
 	<div id="yaakob-blackout"></div>
 
+	<!-- Hebrew Splash Intro -->
+	<style>
+	@font-face {
+		font-family: 'SBLHebrew';
+		src: url('/fonts/SBL_Hbrw.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+		font-display: block;
+	}
+	#hebrew-splash {
+		position: fixed;
+		inset: 0;
+		z-index: 999999;
+		background: #b8b8b8;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: 'SBLHebrew', serif;
+		direction: rtl;
+		overflow: hidden;
+		transition: opacity 1s ease;
+	}
+	#hebrew-splash.fade-out {
+		opacity: 0;
+		pointer-events: none;
+	}
+	.hs-bg-glyph {
+		position: absolute;
+		top: 50%; left: 50%;
+		transform: translate(-50%, -50%);
+		font-family: 'SBLHebrew', serif;
+		font-size: min(45vw, 600px);
+		color: rgba(190, 190, 190, 0.25);
+		line-height: 1;
+		pointer-events: none;
+		user-select: none;
+	}
+	.hs-corner {
+		position: absolute;
+		width: 16px; height: 16px;
+		border: 1.5px solid #555;
+		opacity: 0;
+		transition: opacity 0.8s ease 0.3s;
+	}
+	.hs-corner.show { opacity: 1; }
+	.hs-corner::after {
+		content: "";
+		position: absolute;
+		top: 50%; left: 50%;
+		width: 4px; height: 4px;
+		background: #555;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.hs-corner--tl { top: 10%; left: 15%; }
+	.hs-corner--tr { top: 10%; right: 15%; }
+	.hs-corner--bl { bottom: 10%; left: 15%; }
+	.hs-corner--br { bottom: 10%; right: 15%; }
+	.hs-float {
+		position: absolute;
+		font-family: 'SBLHebrew', serif;
+		font-size: min(3vw, 32px);
+		color: rgba(100, 100, 100, 0.35);
+		pointer-events: none;
+		user-select: none;
+		opacity: 0;
+		transition: opacity 0.6s ease;
+		animation: hsFloatDrift 4s ease-in-out infinite alternate;
+	}
+	.hs-float.show { opacity: 1; }
+	@keyframes hsFloatDrift {
+		0% { transform: translateY(0) translateX(0); }
+		100% { transform: translateY(-12px) translateX(6px); }
+	}
+	.hs-center {
+		position: relative;
+		z-index: 10;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		opacity: 0;
+		transition: opacity 0.8s ease 0.2s;
+	}
+	.hs-center.show { opacity: 1; }
+	.hs-status {
+		font-family: 'SBLHebrew', serif;
+		font-size: min(3.5vw, 38px);
+		color: #4a4a4a;
+		margin: 0;
+		letter-spacing: 0.08em;
+		animation: hsStatusBlink 2.5s ease-in-out infinite;
+	}
+	@keyframes hsStatusBlink {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0.6; }
+	}
+	.hs-psalm {
+		position: absolute;
+		bottom: 12%;
+		left: 50%;
+		transform: translateX(-50%);
+		text-align: center;
+		direction: rtl;
+		opacity: 0;
+		transition: opacity 1.2s ease 0.6s;
+	}
+	.hs-psalm.show { opacity: 1; }
+	.hs-psalm p {
+		font-family: 'SBLHebrew', serif;
+		font-size: min(1.8vw, 20px);
+		color: rgba(70, 70, 70, 0.6);
+		margin: 4px 0;
+		line-height: 1.7;
+		white-space: nowrap;
+	}
+	@media (max-width: 768px) {
+		.hs-corner--tl { top: 6%; left: 8%; }
+		.hs-corner--tr { top: 6%; right: 8%; }
+		.hs-corner--bl { bottom: 6%; left: 8%; }
+		.hs-corner--br { bottom: 6%; right: 8%; }
+		.hs-psalm p { white-space: normal; max-width: 90vw; font-size: 14px; }
+		.hs-status { font-size: 24px; }
+	}
+	</style>
+
+	<div id="hebrew-splash">
+		<div class="hs-bg-glyph">מ</div>
+		<div class="hs-corner hs-corner--tl"></div>
+		<div class="hs-corner hs-corner--tr"></div>
+		<div class="hs-corner hs-corner--bl"></div>
+		<div class="hs-corner hs-corner--br"></div>
+		<span class="hs-float" style="top:15%;left:70%;animation-delay:0s;animation-duration:3s">נ</span>
+		<span class="hs-float" style="top:25%;left:72%;animation-delay:0.18s;animation-duration:4s">ח</span>
+		<span class="hs-float" style="top:38%;left:58%;animation-delay:0.36s;animation-duration:5s">ל</span>
+		<span class="hs-float" style="top:75%;left:30%;animation-delay:0.54s;animation-duration:3s">פ</span>
+		<span class="hs-float" style="top:20%;left:25%;animation-delay:0.72s;animation-duration:4s">כ</span>
+		<span class="hs-float" style="top:60%;left:78%;animation-delay:0.9s;animation-duration:5s">ע</span>
+		<span class="hs-float" style="top:80%;left:65%;animation-delay:1.08s;animation-duration:3s">ם</span>
+		<span class="hs-float" style="top:50%;left:15%;animation-delay:1.26s;animation-duration:4s">ד</span>
+		<span class="hs-float" style="top:68%;left:45%;animation-delay:1.44s;animation-duration:5s">ר</span>
+		<span class="hs-float" style="top:12%;left:48%;animation-delay:1.62s;animation-duration:3s">ב</span>
+		<span class="hs-float" style="top:45%;left:85%;animation-delay:1.8s;animation-duration:4s">א</span>
+		<span class="hs-float" style="top:85%;left:18%;animation-delay:1.98s;animation-duration:5s">י</span>
+		<div class="hs-center">
+			<p class="hs-status">מאתחל _</p>
+			<p class="hs-status">_ מערכת</p>
+		</div>
+		<div class="hs-psalm">
+			<p>אֱלֹהִים יְחָנֵּנוּ וִיבָרְכֵנוּ יָאֵר פָּנָיו אִתָּנוּ סֶלָה</p>
+			<p>לָדַעַת בָּאָרֶץ דַּרְכֶּךָ בְּכָל גּוֹיִם יְשׁוּעָתֶךָ</p>
+			<p>יוֹדוּךָ עַמִּים אֱלֹהִים יוֹדוּךָ עַמִּים כֻּלָּם</p>
+		</div>
+	</div>
+
+	<script>
+	(function() {
+		var splash = document.getElementById('hebrew-splash');
+		// Phase 1: show elements
+		setTimeout(function() {
+			var els = splash.querySelectorAll('.hs-corner, .hs-float, .hs-center, .hs-psalm');
+			for (var i = 0; i < els.length; i++) els[i].classList.add('show');
+		}, 100);
+		// Phase 2: fade out
+		setTimeout(function() {
+			splash.classList.add('fade-out');
+		}, 4500);
+		// Phase 3: remove
+		setTimeout(function() {
+			splash.parentNode.removeChild(splash);
+		}, 5500);
+	})();
+	</script>
+
 	<script>
 	window.__yaakobBegin = function() {
 		if (window.__yaakobRedirecting) return;

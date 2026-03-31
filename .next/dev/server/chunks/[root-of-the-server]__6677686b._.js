@@ -66,8 +66,17 @@ var __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$2
 ;
 ;
 ;
-async function GET() {
-    const html = await (0, __TURBOPACK__imported__module__$5b$externals$5d2f$fs$2f$promises__$5b$external$5d$__$28$fs$2f$promises$2c$__cjs$29$__["readFile"])((0, __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["join"])(process.cwd(), "public", "app.html"), "utf-8");
+async function GET(request) {
+    let html;
+    try {
+        // Try filesystem first (works locally and may work on some platforms)
+        html = await (0, __TURBOPACK__imported__module__$5b$externals$5d2f$fs$2f$promises__$5b$external$5d$__$28$fs$2f$promises$2c$__cjs$29$__["readFile"])((0, __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["join"])(process.cwd(), "public", "app.html"), "utf-8");
+    } catch  {
+        // Fallback: fetch from public URL (needed for Vercel serverless)
+        const url = new URL("/app.html", request.url);
+        const res = await fetch(url);
+        html = await res.text();
+    }
     return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](html, {
         headers: {
             "Content-Type": "text/html; charset=utf-8",
