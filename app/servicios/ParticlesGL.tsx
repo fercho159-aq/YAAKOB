@@ -65,15 +65,16 @@ ${NOISE_GLSL}
 void main(){
   vec3 seed = position;                       // 0..1 por partícula
   vRnd = seed.z;
-  vec3 base = (seed - 0.5) * vec3(56.0, 32.0, 26.0);
+  // relleno parejo y alto para que NO se formen bandas ancladas a la pantalla
+  vec3 base = (seed - 0.5) * vec3(66.0, 46.0, 24.0);
   float t = uTime * 0.05;
 
-  // advección por curl-noise en dos octavas → flujo turbulento
+  // advección por curl-noise (suave) → flujo orgánico sin grandes vacíos
   vec3 p = base;
-  vec3 c1 = curl(p*0.045 + vec3(0.0,0.0,t));
-  p += c1 * 4.2;
-  vec3 c2 = curl(p*0.11 - vec3(t*0.6,0.0,t*1.4));
-  p += c2 * 1.7;
+  vec3 c1 = curl(p*0.05 + vec3(0.0, t*0.35, t));
+  p += c1 * 2.6;
+  vec3 c2 = curl(p*0.12 - vec3(t*0.5, 0.0, t*1.2));
+  p += c2 * 1.0;
 
   // remolino global lento
   float a = t*0.25;
@@ -143,7 +144,7 @@ function FlowField({
       uMouseAmt: { value: 0 },
       uAccent: { value: new THREE.Color(accent[0] / 255, accent[1] / 255, accent[2] / 255) },
       uMonoMix: { value: mono ? 0 : 1 },
-      uOpacity: { value: 0.14 },
+      uOpacity: { value: 0.10 },
     }),
     [] // eslint-disable-line react-hooks/exhaustive-deps
   );
@@ -208,7 +209,7 @@ export default function ParticlesGL({
     >
       <FlowField density={density} accent={accent} mono={mono} />
       <EffectComposer>
-        <Bloom intensity={0.35} luminanceThreshold={0.45} luminanceSmoothing={0.8} mipmapBlur radius={0.4} />
+        <Bloom intensity={0.28} luminanceThreshold={0.5} luminanceSmoothing={0.8} mipmapBlur radius={0.38} />
       </EffectComposer>
     </Canvas>
   );

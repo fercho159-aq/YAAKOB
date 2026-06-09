@@ -369,7 +369,7 @@ export default function ServiciosPage() {
   useReveal("Por área");
   return (
     <div className="exp" data-glitch="on">
-      <ParticlesGL density={0.7} accent={MONO_RGB} mono />
+      <ParticlesGL density={0.95} accent={MONO_RGB} mono />
       <div className="bg-vignette" />
       <div className="bg-grain" />
 
