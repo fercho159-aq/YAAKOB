@@ -314,30 +314,51 @@
 		}, 1800);
 	};
 
-	// Intercept preloader "Click to begin"
+	// Auto-advance past the preloader "TOCA PARA COMENZAR" / tap-to-begin prompt.
+	// On mobile the tap prompt frequently never registered, leaving users stuck
+	// on a dead screen. Now we detect the prompt (any language) and trigger the
+	// begin transition automatically — no tap required.
 	(function() {
-		var intercepted = false;
-		var observer = new MutationObserver(function() {
-			if (intercepted) return;
-			var h1s = document.querySelectorAll('h1');
-			for (var i = 0; i < h1s.length; i++) {
-				var txt = h1s[i].textContent.toLowerCase();
-				if (txt.indexOf('click to begin') !== -1 || txt.indexOf('tap to begin') !== -1) {
-					intercepted = true;
-					document.addEventListener('click', function(e) {
-						if (window.__yaakobRedirecting) return;
-						if (e.target.tagName === 'BUTTON') return;
-						e.stopPropagation();
-						e.stopImmediatePropagation();
-						e.preventDefault();
-						window.__yaakobBegin();
-					}, true);
-					observer.disconnect();
-					return;
+		var triggered = false;
+		var KEYWORDS = ['comenzar', 'empezar', 'continuar', 'begin', 'tap to', 'click to'];
+
+		function promptVisible() {
+			var nodes = document.querySelectorAll('#Stage *, h1, h2, h3, button, a, p, span, div');
+			for (var i = 0; i < nodes.length; i++) {
+				var el = nodes[i];
+				if (el.children.length > 2) continue; // skip large containers
+				var txt = (el.textContent || '').toLowerCase();
+				if (!txt) continue;
+				for (var k = 0; k < KEYWORDS.length; k++) {
+					if (txt.indexOf(KEYWORDS[k]) !== -1) return true;
 				}
 			}
+			return false;
+		}
+
+		function autoBegin() {
+			if (triggered || window.__yaakobRedirecting) return;
+			triggered = true;
+			observer.disconnect();
+			// brief beat so the dissolve reads as intentional
+			setTimeout(function() { window.__yaakobBegin(); }, 600);
+		}
+
+		var observer = new MutationObserver(function() {
+			if (triggered) return;
+			if (promptVisible()) autoBegin();
 		});
 		observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+
+		// Tap anywhere advances immediately too (ignore the cookie consent UI).
+		document.addEventListener('click', function(e) {
+			if (window.__yaakobRedirecting) return;
+			if (e.target.closest && e.target.closest('#onetrust-consent-sdk, #onetrust-banner-sdk, #onetrust-pc-sdk')) return;
+			autoBegin();
+		}, true);
+
+		// Hard safety net: never let anyone sit on the splash forever.
+		setTimeout(function() { autoBegin(); }, 10000);
 	})();
 	</script>
 </body>
