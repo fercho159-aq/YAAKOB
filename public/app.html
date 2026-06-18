@@ -290,38 +290,17 @@
 	</script>
 
 	<script>
-	window.__yaakobBegin = function() {
-		if (window.__yaakobRedirecting) return;
-		window.__yaakobRedirecting = true;
-
-		var stage = document.getElementById('Stage');
-		var canvas = document.querySelector('canvas');
-		var target = stage || canvas || document.body;
-		var blackout = document.getElementById('yaakob-blackout');
-
-		// Dispersion: bright flash + blur dissolve
-		target.style.animation = 'particleDissolve 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
-
-		// Fade to dark underneath
-		setTimeout(function() {
-			blackout.style.transition = 'opacity 0.8s ease';
-			blackout.style.opacity = '1';
-		}, 600);
-
-		// Navigate
-		setTimeout(function() {
-			window.location.href = '/apps';
-		}, 1800);
-	};
-
-	// Auto-advance past the preloader "TOCA PARA COMENZAR" / tap-to-begin prompt.
-	// On mobile the tap prompt frequently never registered, leaving users stuck
-	// on a dead screen. Now we detect the prompt (any language) and trigger the
-	// begin transition automatically — no tap required.
+	// Auto-pass the preloader "TOCA PARA COMENZAR" gate WITHOUT leaving the home (/).
+	// The embedded experience advances on a tap (Mouse.input -> Interaction.END).
+	// On mobile that tap often never registered, leaving users stuck. Instead of
+	// navigating away, we synthesize a real tap on the canvas so the app starts
+	// its own home experience automatically — exactly as if the user had tapped.
 	(function() {
-		var triggered = false;
 		var KEYWORDS = ['comenzar', 'empezar', 'continuar', 'begin', 'tap to', 'click to'];
 
+		// Is the begin/comenzar prompt currently on screen?
+		// The preloader also injects a hidden <h1>Click to begin</h1>, so this is
+		// reliable even though the visible text is drawn on the canvas.
 		function promptVisible() {
 			var nodes = document.querySelectorAll('#Stage *, h1, h2, h3, button, a, p, span, div');
 			for (var i = 0; i < nodes.length; i++) {
@@ -336,29 +315,64 @@
 			return false;
 		}
 
-		function autoBegin() {
-			if (triggered || window.__yaakobRedirecting) return;
-			triggered = true;
-			observer.disconnect();
-			// brief beat so the dissolve reads as intentional
-			setTimeout(function() { window.__yaakobBegin(); }, 600);
+		function makeEvent(type, Ctor, x, y, extra) {
+			var base = { bubbles: true, cancelable: true, view: window, clientX: x, clientY: y, button: 0 };
+			if (extra) for (var k in extra) base[k] = extra[k];
+			try { return new Ctor(type, base); }
+			catch (e) {
+				var m = document.createEvent('MouseEvents');
+				m.initMouseEvent(type, true, true, window, 1, x, y, x, y, false, false, false, false, 0, null);
+				return m;
+			}
 		}
 
+		// Fire a full press-and-release on the canvas / document / window so the
+		// engine's Mouse.input picks up Interaction.START then Interaction.END.
+		function synthTap() {
+			var canvas = document.querySelector('#Stage canvas') || document.querySelector('canvas');
+			var rect = canvas ? canvas.getBoundingClientRect()
+				: { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight };
+			var x = rect.left + rect.width / 2, y = rect.top + rect.height / 2;
+			var PE = window.PointerEvent || MouseEvent;
+			var ptr = { pointerId: 1, pointerType: 'touch', isPrimary: true };
+			var targets = [canvas, document, window];
+			for (var i = 0; i < targets.length; i++) {
+				var t = targets[i];
+				if (!t) continue;
+				try {
+					t.dispatchEvent(makeEvent('pointerdown', PE, x, y, ptr));
+					t.dispatchEvent(makeEvent('mousedown', MouseEvent, x, y));
+					t.dispatchEvent(makeEvent('pointerup', PE, x, y, ptr));
+					t.dispatchEvent(makeEvent('mouseup', MouseEvent, x, y));
+					t.dispatchEvent(makeEvent('click', MouseEvent, x, y));
+				} catch (e) {}
+			}
+		}
+
+		var started = false, tries = 0, iv = null;
+
+		function pump() {
+			tries++;
+			if (!promptVisible()) { // gate cleared -> app advanced, we're in
+				if (iv) clearInterval(iv);
+				return;
+			}
+			synthTap();
+			if (tries > 30 && iv) clearInterval(iv); // ~15s ceiling, then stop trying
+		}
+
+		// Once the prompt shows up, keep tapping until the app accepts it (it
+		// ignores taps until textures are ready, so we retry).
 		var observer = new MutationObserver(function() {
-			if (triggered) return;
-			if (promptVisible()) autoBegin();
+			if (started) return;
+			if (promptVisible()) {
+				started = true;
+				observer.disconnect();
+				pump();
+				iv = setInterval(pump, 500);
+			}
 		});
 		observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-
-		// Tap anywhere advances immediately too (ignore the cookie consent UI).
-		document.addEventListener('click', function(e) {
-			if (window.__yaakobRedirecting) return;
-			if (e.target.closest && e.target.closest('#onetrust-consent-sdk, #onetrust-banner-sdk, #onetrust-pc-sdk')) return;
-			autoBegin();
-		}, true);
-
-		// Hard safety net: never let anyone sit on the splash forever.
-		setTimeout(function() { autoBegin(); }, 10000);
 	})();
 	</script>
 </body>
