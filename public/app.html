@@ -289,6 +289,326 @@
 	})();
 	</script>
 
+	<!-- Header: hamburger + clock (left) · nav + login (right) -->
+	<style>
+	#yk-hud {
+		position: fixed;
+		top: 0; left: 0; right: 0;
+		z-index: 999990;
+		padding: max(18px, env(safe-area-inset-top, 0px)) 26px 0 22px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 16px;
+		pointer-events: none;
+		font-family: 'TTMussels', sans-serif;
+		color: #1a1a1a;
+	}
+	#yk-hud > * { pointer-events: auto; }
+	/* time stacked over the hamburger, date stacked over the nav + button */
+	.yk-hud-side { display: flex; flex-direction: column; gap: 8px; }
+	.yk-hud-left { align-items: flex-start; }
+	.yk-hud-right { align-items: flex-end; }
+	.yk-hud-row { display: flex; align-items: center; gap: 14px; }
+
+	/* Hamburger button */
+	#yk-burger {
+		width: 46px; height: 46px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		background: rgba(255,255,255,0.18);
+		border: 1px solid rgba(26,26,26,0.45);
+		border-radius: 2px;
+		cursor: pointer;
+		padding: 0;
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+		transition: background .25s ease, border-color .25s ease;
+	}
+	#yk-burger:hover { background: rgba(255,255,255,0.35); border-color: #1a1a1a; }
+	#yk-burger span {
+		display: block;
+		width: 20px; height: 1.5px;
+		background: #1a1a1a;
+		transition: transform .3s ease, opacity .2s ease;
+	}
+	#yk-burger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+	#yk-burger.open span:nth-child(2) { opacity: 0; }
+	#yk-burger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+	/* Clock */
+	.yk-time {
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		user-select: none;
+	}
+	.yk-date {
+		font-size: 9px;
+		font-weight: 500;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		opacity: 0.6;
+		line-height: 1;
+		user-select: none;
+	}
+
+	/* Right nav */
+	#yk-nav { display: flex; align-items: center; gap: 22px; }
+	#yk-nav a.yk-navlink {
+		position: relative;
+		text-decoration: none;
+		color: #1a1a1a;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		opacity: 0.75;
+		transition: opacity .25s ease;
+	}
+	#yk-nav a.yk-navlink::after {
+		content: '';
+		position: absolute;
+		left: 0; right: 0; bottom: -6px;
+		height: 1px;
+		background: #1a1a1a;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform .3s ease;
+	}
+	#yk-nav a.yk-navlink:hover { opacity: 1; }
+	#yk-nav a.yk-navlink:hover::after { transform: scaleX(1); }
+	#yk-login {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 34px;
+		padding: 0 16px;
+		border: 1px solid rgba(26,26,26,0.4);
+		border-radius: 2px;
+		background: transparent;
+		color: #1a1a1a;
+		text-decoration: none;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		cursor: pointer;
+		transition: background .25s ease, border-color .25s ease, color .25s ease;
+	}
+	#yk-login:hover { background: #1a1a1a; border-color: #1a1a1a; color: #d8d8d8; }
+	@media (max-width: 900px) {
+		#yk-nav { gap: 16px; }
+		#yk-nav a.yk-navlink { font-size: 9px; letter-spacing: 0.1em; }
+	}
+	@media (max-width: 700px) {
+		#yk-nav { display: none; }
+	}
+	/* the drawer carries the full menu only where the header nav is hidden */
+	#yk-menu-wrap { display: none; }
+	@media (max-width: 700px) {
+		#yk-menu-wrap { display: block; }
+		#yk-social-title { padding-top: 30px; }
+	}
+
+	/* Drawer */
+	#yk-scrim {
+		position: fixed;
+		inset: 0;
+		z-index: 999991;
+		background: rgba(10,10,10,0.45);
+		backdrop-filter: blur(2px);
+		-webkit-backdrop-filter: blur(2px);
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity .35s ease, visibility 0s linear .35s;
+	}
+	#yk-scrim.open { opacity: 1; visibility: visible; transition: opacity .35s ease; }
+
+	#yk-drawer {
+		position: fixed;
+		top: 0; left: 0; bottom: 0;
+		z-index: 999992;
+		width: min(300px, 82vw);
+		background: rgba(184,184,184,0.96);
+		backdrop-filter: blur(14px);
+		-webkit-backdrop-filter: blur(14px);
+		border-right: 1px solid rgba(26,26,26,0.25);
+		transform: translateX(-102%);
+		transition: transform .45s cubic-bezier(0.4, 0, 0.2, 1);
+		display: flex;
+		flex-direction: column;
+		padding: max(84px, calc(env(safe-area-inset-top, 0px) + 84px)) 0 28px 0;
+		font-family: 'TTMussels', sans-serif;
+		color: #1a1a1a;
+		overflow-y: auto;
+	}
+	#yk-drawer.open { transform: translateX(0); }
+	#yk-drawer .yk-title {
+		font-size: 10px;
+		letter-spacing: 0.32em;
+		text-transform: uppercase;
+		opacity: 0.55;
+		padding: 0 28px 18px 28px;
+	}
+	#yk-drawer a.yk-link {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		padding: 14px 28px;
+		text-decoration: none;
+		color: #1a1a1a;
+		font-size: 13px;
+		font-weight: 500;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		border-top: 1px solid rgba(26,26,26,0.12);
+		transition: background .25s ease, padding-left .25s ease;
+	}
+	#yk-menu > a.yk-link:last-child,
+	#yk-links > a.yk-link:last-child { border-bottom: 1px solid rgba(26,26,26,0.12); }
+	#yk-drawer a.yk-link:hover { background: rgba(255,255,255,0.35); padding-left: 34px; }
+	#yk-drawer a.yk-link svg { width: 18px; height: 18px; flex: 0 0 18px; fill: currentColor; }
+	#yk-drawer .yk-foot {
+		margin-top: auto;
+		padding: 24px 28px 0 28px;
+		font-size: 9px;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		opacity: 0.45;
+	}
+	@media (max-width: 480px) {
+		#yk-hud { padding-left: 16px; padding-right: 18px; }
+		.yk-time { font-size: 12px; }
+	}
+	</style>
+
+	<div id="yk-hud">
+		<div class="yk-hud-side yk-hud-left">
+			<div class="yk-time" id="yk-time">--:--:--</div>
+			<button id="yk-burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="yk-drawer">
+				<span></span><span></span><span></span>
+			</button>
+		</div>
+		<div class="yk-hud-side yk-hud-right">
+			<div class="yk-date" id="yk-date"></div>
+			<div class="yk-hud-row">
+				<nav id="yk-nav" aria-label="Navegación"></nav>
+				<a id="yk-login" href="#">Consultores</a>
+			</div>
+		</div>
+	</div>
+
+	<div id="yk-scrim"></div>
+
+	<nav id="yk-drawer" aria-label="Menú">
+		<div id="yk-menu-wrap">
+			<div class="yk-title">Menú</div>
+			<div id="yk-menu"></div>
+		</div>
+		<div class="yk-title" id="yk-social-title">Síguenos</div>
+		<div id="yk-links"></div>
+		<div class="yk-foot">Yaakob · Consultores</div>
+	</nav>
+
+	<script>
+	(function() {
+		// ---- Menú principal: edita las URLs aquí ----
+		var MENU = [
+			{ name: 'Servicios', url: '/servicios' },
+			{ name: 'Contacto',  url: 'https://wa.me/5215500000000' }
+		];
+		var LOGIN = { name: 'Consultores', url: '/start' };
+		// ---- Social links: edit the URLs here ----
+		var SOCIAL = [
+			{ name: 'Instagram', url: 'https://instagram.com/yaakob',
+			  icon: '<path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.22 1 .48 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.8.07-1.1.05-1.7.24-2.1.4-.5.2-.9.44-1.3.83-.4.4-.63.8-.83 1.3-.16.4-.35 1-.4 2.1C2.5 8.5 2.5 8.9 2.5 12s0 3.5.07 4.8c.05 1.1.24 1.7.4 2.1.2.5.44.9.83 1.3.4.4.8.63 1.3.83.4.16 1 .35 2.1.4 1.3.07 1.7.07 4.8.07s3.5 0 4.8-.07c1.1-.05 1.7-.24 2.1-.4.5-.2.9-.44 1.3-.83.4-.4.63-.8.83-1.3.16-.4.35-1 .4-2.1.07-1.3.07-1.7.07-4.8s0-3.5-.07-4.8c-.05-1.1-.24-1.7-.4-2.1a3.5 3.5 0 0 0-.83-1.3 3.5 3.5 0 0 0-1.3-.83c-.4-.16-1-.35-2.1-.4C15.5 4 15.1 4 12 4Zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2Zm5.1-2.1a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/>' },
+			{ name: 'Facebook', url: 'https://facebook.com/yaakob',
+			  icon: '<path d="M13.5 21.9V13.9h2.7l.4-3.1h-3.1V8.8c0-.9.25-1.5 1.55-1.5h1.65V4.5c-.29-.04-1.27-.13-2.41-.13-2.39 0-4.02 1.46-4.02 4.13v2.3H7.5v3.1h2.77v8h3.23Z"/>' },
+			{ name: 'TikTok', url: 'https://tiktok.com/@yaakob',
+			  icon: '<path d="M16.6 2h-3.1v13.1a2.6 2.6 0 1 1-2.2-2.57v-3.15a5.75 5.75 0 1 0 5.3 5.73V8.87a6.9 6.9 0 0 0 4 1.28V7A3.93 3.93 0 0 1 16.6 2Z"/>' },
+			{ name: 'YouTube', url: 'https://youtube.com/@yaakob',
+			  icon: '<path d="M21.6 7.2a2.5 2.5 0 0 0-1.76-1.77C18.25 5 12 5 12 5s-6.25 0-7.84.43A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.76 1.77C5.75 19 12 19 12 19s6.25 0 7.84-.43a2.5 2.5 0 0 0 1.76-1.77A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15.2V8.8l5.2 3.2-5.2 3.2Z"/>' },
+			{ name: 'WhatsApp', url: 'https://wa.me/5215500000000',
+			  icon: '<path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.74.46 3.44 1.32 4.94L2.1 22l5.36-1.4a9.8 9.8 0 0 0 4.58 1.15h.01c5.43 0 9.84-4.4 9.84-9.84C21.89 6.4 17.48 2 12.04 2Zm0 17.98h-.01a8.2 8.2 0 0 1-4.16-1.14l-.3-.18-3.18.83.85-3.1-.2-.32a8.15 8.15 0 0 1-1.25-4.35c0-4.51 3.68-8.18 8.2-8.18a8.14 8.14 0 0 1 8.18 8.19c0 4.51-3.67 8.18-8.13 8.18Zm4.49-6.13c-.25-.13-1.45-.71-1.68-.79-.22-.08-.39-.13-.55.12-.16.25-.63.79-.77.95-.14.16-.28.18-.53.06-.25-.13-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.71-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.14.17-.25.25-.41.08-.16.04-.31-.02-.43-.06-.13-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.03s.87 2.35.99 2.51c.12.16 1.72 2.62 4.16 3.67.58.25 1.03.4 1.39.51.58.18 1.11.16 1.53.1.47-.07 1.45-.59 1.65-1.17.2-.57.2-1.06.14-1.16-.06-.11-.22-.17-.47-.29Z"/>' },
+			{ name: 'X', url: 'https://x.com/yaakob',
+			  icon: '<path d="M17.53 3h3.06l-6.69 7.64L21.75 21h-6.16l-4.83-6.3L5.24 21H2.18l7.15-8.17L2.25 3h6.31l4.36 5.77L17.53 3Zm-1.07 16.2h1.69L7.62 4.71H5.8l10.66 14.49Z"/>' }
+		];
+		// -----------------------------------------
+
+		var burger = document.getElementById('yk-burger');
+		var drawer = document.getElementById('yk-drawer');
+		var scrim  = document.getElementById('yk-scrim');
+		var links  = document.getElementById('yk-links');
+		var nav    = document.getElementById('yk-nav');
+		var menu   = document.getElementById('yk-menu');
+		var login  = document.getElementById('yk-login');
+
+		function isExternal(url) { return /^https?:/i.test(url); }
+		function attrs(url) {
+			return 'href="' + url + '"' + (isExternal(url) ? ' target="_blank" rel="noopener noreferrer"' : '');
+		}
+
+		// Header (derecha): links + botón de sesión
+		nav.innerHTML = MENU.map(function(m) {
+			return '<a class="yk-navlink" ' + attrs(m.url) + '>' + m.name + '</a>';
+		}).join('');
+		login.textContent = LOGIN.name;
+		login.setAttribute('href', LOGIN.url);
+		if (isExternal(LOGIN.url)) { login.target = '_blank'; login.rel = 'noopener noreferrer'; }
+
+		// Drawer: full menu (visible only on phones, where the header nav is hidden)
+		menu.innerHTML = MENU.concat([LOGIN]).map(function(m) {
+			return '<a class="yk-link" ' + attrs(m.url) + '><span>' + m.name + '</span></a>';
+		}).join('');
+
+		links.innerHTML = SOCIAL.map(function(s) {
+			return '<a class="yk-link" href="' + s.url + '" target="_blank" rel="noopener noreferrer">' +
+				'<svg viewBox="0 0 24 24" aria-hidden="true">' + s.icon + '</svg>' +
+				'<span>' + s.name + '</span></a>';
+		}).join('');
+
+		function setOpen(open) {
+			burger.classList.toggle('open', open);
+			drawer.classList.toggle('open', open);
+			scrim.classList.toggle('open', open);
+			burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+			burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+		}
+
+		burger.addEventListener('click', function(e) {
+			e.stopPropagation();
+			setOpen(!drawer.classList.contains('open'));
+		});
+		scrim.addEventListener('click', function() { setOpen(false); });
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape') setOpen(false);
+		});
+		links.addEventListener('click', function() { setOpen(false); });
+		menu.addEventListener('click', function() { setOpen(false); });
+
+		// Clock
+		var elTime = document.getElementById('yk-time');
+		var elDate = document.getElementById('yk-date');
+		var DAYS = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+		var MONTHS = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+		function pad(n) { return n < 10 ? '0' + n : '' + n; }
+		function tick() {
+			var d = new Date();
+			elTime.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+			elDate.textContent = DAYS[d.getDay()] + ' ' + d.getDate() + ' ' + MONTHS[d.getMonth()];
+		}
+		tick();
+		setInterval(tick, 1000);
+	})();
+	</script>
+
 	<script>
 	window.__yaakobBegin = function() {
 		if (window.__yaakobRedirecting) return;
@@ -330,10 +650,12 @@
 		// "COMENZAR" (the button). The gate's text is drawn on the canvas only,
 		// so this is a reliable "we've advanced past the gate" signal.
 		function onHome() {
+			// The home mirrors its GL text into the a11y DOM; the tagline under the
+			// logo ("ASESORÍA · …") only exists once we're past the gate.
 			var els = document.querySelectorAll('button, a, span, div');
 			for (var i = 0; i < els.length; i++) {
 				if (els[i].children.length === 0 &&
-				    (els[i].textContent || '').trim().toUpperCase() === 'COMENZAR') return true;
+				    /ASESOR[IÍ]A/i.test(els[i].textContent || '')) return true;
 			}
 			return false;
 		}
