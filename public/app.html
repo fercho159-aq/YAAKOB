@@ -483,6 +483,77 @@
 		text-transform: uppercase;
 		opacity: 0.45;
 	}
+	/* Floating social rail — desktop only, opens from the burger.
+	   Phones keep the drawer (it also carries the main menu there). */
+	#yk-rail {
+		position: fixed;
+		left: 22px;
+		top: max(104px, calc(env(safe-area-inset-top, 0px) + 104px));
+		z-index: 999992;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		font-family: 'TTMussels', sans-serif;
+	}
+	#yk-rail a.yk-rail-item {
+		display: flex;
+		align-items: center;
+		width: 46px;
+		height: 46px;
+		overflow: hidden;
+		background: rgba(255,255,255,0.18);
+		border: 1px solid rgba(26,26,26,0.45);
+		border-radius: 2px;
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+		color: #1a1a1a;
+		text-decoration: none;
+		opacity: 0;
+		visibility: hidden;
+		pointer-events: none;
+		transform: translateX(-18px);
+		transition: opacity .3s ease, transform .3s cubic-bezier(0.4, 0, 0.2, 1),
+		            visibility 0s linear .3s, width .3s cubic-bezier(0.4, 0, 0.2, 1),
+		            background .25s ease, border-color .25s ease;
+	}
+	#yk-rail.open a.yk-rail-item {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+		transform: translateX(0);
+		transition-delay: calc(var(--i) * 45ms), calc(var(--i) * 45ms), 0s, 0s, 0s, 0s;
+	}
+	#yk-rail a.yk-rail-item svg {
+		width: 18px; height: 18px;
+		flex: 0 0 18px;
+		margin: 0 13px;
+		fill: currentColor;
+	}
+	#yk-rail a.yk-rail-item span {
+		white-space: nowrap;
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		padding-right: 18px;
+		opacity: 0;
+		transition: opacity .2s ease;
+	}
+	#yk-rail.open a.yk-rail-item:hover {
+		width: 178px;
+		background: rgba(255,255,255,0.42);
+		border-color: rgba(26,26,26,0.7);
+	}
+	#yk-rail.open a.yk-rail-item:hover span { opacity: 1; transition-delay: .08s; }
+
+	/* One or the other, never both */
+	@media (max-width: 700px) {
+		#yk-rail { display: none; }
+	}
+	@media (min-width: 701px) {
+		#yk-drawer, #yk-scrim { display: none; }
+	}
+
 	@media (max-width: 480px) {
 		#yk-hud { padding-left: 16px; padding-right: 18px; }
 		.yk-time { font-size: 12px; }
@@ -506,6 +577,8 @@
 	</div>
 
 	<div id="yk-scrim"></div>
+
+	<div id="yk-rail" aria-label="Síguenos"></div>
 
 	<nav id="yk-drawer" aria-label="Menú">
 		<div id="yk-menu-wrap">
@@ -545,6 +618,7 @@
 		var burger = document.getElementById('yk-burger');
 		var drawer = document.getElementById('yk-drawer');
 		var scrim  = document.getElementById('yk-scrim');
+		var rail   = document.getElementById('yk-rail');
 		var links  = document.getElementById('yk-links');
 		var nav    = document.getElementById('yk-nav');
 		var menu   = document.getElementById('yk-menu');
@@ -574,17 +648,29 @@
 				'<span>' + s.name + '</span></a>';
 		}).join('');
 
+		// Desktop: the same links as a floating rail under the burger. --i drives
+		// the stagger so they cascade out instead of appearing all at once.
+		rail.innerHTML = SOCIAL.map(function(s, i) {
+			return '<a class="yk-rail-item" style="--i:' + i + '" href="' + s.url + '"' +
+				' target="_blank" rel="noopener noreferrer" title="' + s.name + '">' +
+				'<svg viewBox="0 0 24 24" aria-hidden="true">' + s.icon + '</svg>' +
+				'<span>' + s.name + '</span></a>';
+		}).join('');
+
+		// Both open together; CSS shows the drawer on phones and the rail above 700px.
 		function setOpen(open) {
 			burger.classList.toggle('open', open);
 			drawer.classList.toggle('open', open);
 			scrim.classList.toggle('open', open);
+			rail.classList.toggle('open', open);
 			burger.setAttribute('aria-expanded', open ? 'true' : 'false');
 			burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
 		}
+		function isOpen() { return burger.classList.contains('open'); }
 
 		burger.addEventListener('click', function(e) {
 			e.stopPropagation();
-			setOpen(!drawer.classList.contains('open'));
+			setOpen(!isOpen());
 		});
 		scrim.addEventListener('click', function() { setOpen(false); });
 		document.addEventListener('keydown', function(e) {
@@ -592,6 +678,11 @@
 		});
 		links.addEventListener('click', function() { setOpen(false); });
 		menu.addEventListener('click', function() { setOpen(false); });
+		rail.addEventListener('click', function() { setOpen(false); });
+		// The rail has no scrim, so clicking anywhere else closes it.
+		document.addEventListener('click', function(e) {
+			if (isOpen() && !rail.contains(e.target) && !burger.contains(e.target)) setOpen(false);
+		});
 
 		// Clock
 		var elTime = document.getElementById('yk-time');
