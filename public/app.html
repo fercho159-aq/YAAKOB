@@ -289,7 +289,7 @@
 	})();
 	</script>
 
-	<!-- Header: hamburger + clock (left) · nav + login (right) -->
+	<!-- Header: clock + social (left) · nav + login (right) -->
 	<style>
 	#yk-hud {
 		position: fixed;
@@ -298,46 +298,43 @@
 		background: #fff;
 		padding: max(10px, env(safe-area-inset-top, 0px)) 22px 10px 18px;
 		display: flex;
-		align-items: flex-start;
+		align-items: center;
 		justify-content: space-between;
-		gap: 16px;
+		flex-wrap: wrap;
+		gap: 10px 16px;
 		pointer-events: none;
 		font-family: 'TTMussels', sans-serif;
 		color: #1a1a1a;
 	}
 	#yk-hud > * { pointer-events: auto; }
-	/* one row per side keeps the band short: clock beside the burger,
+	/* one row per side keeps the band short: clock beside the social icons,
 	   date beside the nav + button */
 	.yk-hud-side { display: flex; flex-direction: row; align-items: center; gap: 14px; }
 	.yk-hud-row { display: flex; align-items: center; gap: 14px; }
 
-	/* Hamburger button */
-	#yk-burger {
-		width: 40px; height: 40px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 6px;
-		background: rgba(255,255,255,0.18);
-		border: 1px solid rgba(26,26,26,0.45);
-		border-radius: 6px;
-		cursor: pointer;
-		padding: 0;
-		backdrop-filter: blur(6px);
-		-webkit-backdrop-filter: blur(6px);
-		transition: background .25s ease, border-color .25s ease;
-	}
-	#yk-burger:hover { background: rgba(255,255,255,0.35); border-color: #1a1a1a; }
-	#yk-burger span {
+	/* Social icons — same language as the services page footer: a brand glyph
+	   inside a split ring that rotates on hover. */
+	#yk-social { display: flex; align-items: center; gap: 2px; }
+	#yk-social a.yk-soc {
 		display: block;
-		width: 20px; height: 1.5px;
-		background: #1a1a1a;
-		transition: transform .3s ease, opacity .2s ease;
+		width: 34px; height: 34px;
+		color: rgba(26,26,26,0.55);
+		transition: color .35s ease;
 	}
-	#yk-burger.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-	#yk-burger.open span:nth-child(2) { opacity: 0; }
-	#yk-burger.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+	#yk-social a.yk-soc:hover { color: #1a1a1a; }
+	#yk-social a.yk-soc.is-whatsapp { color: #25D366; }
+	#yk-social a.yk-soc.is-whatsapp:hover { color: #1DB954; }
+	#yk-social svg { display: block; width: 100%; height: 100%; }
+	#yk-social .yk-soc-glyph { fill: currentColor; }
+	#yk-social .yk-soc-ring {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.1;
+		stroke-miterlimit: 10;
+		transform-origin: 12px 12px;
+		transition: transform .4s ease-out;
+	}
+	#yk-social a.yk-soc:hover .yk-soc-ring { transform: rotate(90deg); }
 
 	/* Clock */
 	.yk-time {
@@ -411,162 +408,18 @@
 		#yk-nav { gap: 16px; }
 		#yk-nav a.yk-navlink { font-size: 9px; letter-spacing: 0.1em; }
 	}
+	/* No drawer any more: the header itself carries menu + social, so the nav
+	   has to survive on phones. It stacks under the icons via #yk-hud's wrap. */
 	@media (max-width: 700px) {
-		#yk-nav { display: none; }
+		#yk-nav a.yk-navlink { font-size: 8.5px; letter-spacing: 0.08em; }
+		#yk-nav { gap: 14px; }
+		.yk-hud-side { flex: 1 1 100%; }
+		.yk-hud-right { justify-content: flex-end; }
+		#yk-social a.yk-soc { width: 30px; height: 30px; }
 	}
-	/* the drawer carries the full menu only where the header nav is hidden */
-	#yk-menu-wrap { display: none; }
-	@media (max-width: 700px) {
-		#yk-menu-wrap { display: block; }
-		#yk-social-title { padding-top: 30px; }
-	}
-
-	/* Drawer */
-	#yk-scrim {
-		position: fixed;
-		inset: 0;
-		z-index: 999991;
-		background: rgba(10,10,10,0.45);
-		backdrop-filter: blur(2px);
-		-webkit-backdrop-filter: blur(2px);
-		opacity: 0;
-		visibility: hidden;
-		transition: opacity .35s ease, visibility 0s linear .35s;
-	}
-	#yk-scrim.open { opacity: 1; visibility: visible; transition: opacity .35s ease; }
-
-	#yk-drawer {
-		position: fixed;
-		top: 0; left: 0; bottom: 0;
-		z-index: 999992;
-		width: min(300px, 82vw);
-		background: rgba(184,184,184,0.96);
-		backdrop-filter: blur(14px);
-		-webkit-backdrop-filter: blur(14px);
-		border-right: 1px solid rgba(26,26,26,0.25);
-		transform: translateX(-102%);
-		transition: transform .45s cubic-bezier(0.4, 0, 0.2, 1);
-		display: flex;
-		flex-direction: column;
-		padding: max(84px, calc(env(safe-area-inset-top, 0px) + 84px)) 0 28px 0;
-		font-family: 'TTMussels', sans-serif;
-		color: #1a1a1a;
-		overflow-y: auto;
-	}
-	#yk-drawer.open { transform: translateX(0); }
-	#yk-drawer .yk-title {
-		font-size: 10px;
-		letter-spacing: 0.32em;
-		text-transform: uppercase;
-		opacity: 0.55;
-		padding: 0 28px 18px 28px;
-	}
-	#yk-drawer a.yk-link {
-		display: flex;
-		align-items: center;
-		gap: 14px;
-		padding: 14px 28px;
-		text-decoration: none;
-		color: #1a1a1a;
-		font-size: 13px;
-		font-weight: 500;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		border-top: 1px solid rgba(26,26,26,0.12);
-		transition: background .25s ease, padding-left .25s ease;
-	}
-	#yk-menu > a.yk-link:last-child,
-	#yk-links > a.yk-link:last-child { border-bottom: 1px solid rgba(26,26,26,0.12); }
-	#yk-drawer a.yk-link:hover { background: rgba(255,255,255,0.35); padding-left: 34px; }
-	#yk-drawer a.yk-link svg { width: 18px; height: 18px; flex: 0 0 18px; fill: currentColor; }
-	#yk-drawer .yk-foot {
-		margin-top: auto;
-		padding: 24px 28px 0 28px;
-		font-size: 9px;
-		letter-spacing: 0.22em;
-		text-transform: uppercase;
-		opacity: 0.45;
-	}
-	/* Floating social rail — desktop only, opens from the burger.
-	   Phones keep the drawer (it also carries the main menu there). */
-	#yk-rail {
-		position: fixed;
-		left: 22px;
-		top: max(72px, calc(env(safe-area-inset-top, 0px) + 72px));
-		z-index: 999992;
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		font-family: 'TTMussels', sans-serif;
-	}
-	#yk-rail a.yk-rail-item {
-		display: flex;
-		align-items: center;
-		width: 46px;
-		height: 46px;
-		overflow: hidden;
-		background: rgba(255,255,255,0.18);
-		border: 1px solid rgba(26,26,26,0.45);
-		border-radius: 6px;
-		backdrop-filter: blur(6px);
-		-webkit-backdrop-filter: blur(6px);
-		color: #1a1a1a;
-		text-decoration: none;
-		opacity: 0;
-		visibility: hidden;
-		pointer-events: none;
-		transform: translateX(-18px);
-		transition: opacity .3s ease, transform .3s cubic-bezier(0.4, 0, 0.2, 1),
-		            visibility 0s linear .3s, width .3s cubic-bezier(0.4, 0, 0.2, 1),
-		            background .25s ease, border-color .25s ease;
-	}
-	#yk-rail.open a.yk-rail-item {
-		opacity: 1;
-		visibility: visible;
-		pointer-events: auto;
-		transform: translateX(0);
-		transition-delay: calc(var(--i) * 45ms), calc(var(--i) * 45ms), 0s, 0s, 0s, 0s;
-	}
-	#yk-rail a.yk-rail-item svg {
-		width: 18px; height: 18px;
-		flex: 0 0 18px;
-		margin: 0 13px;
-		fill: currentColor;
-	}
-	#yk-rail a.yk-rail-item span {
-		white-space: nowrap;
-		font-size: 11px;
-		font-weight: 500;
-		letter-spacing: 0.18em;
-		text-transform: uppercase;
-		padding-right: 18px;
-		opacity: 0;
-		transition: opacity .2s ease;
-	}
-	#yk-rail.open a.yk-rail-item:hover {
-		width: 178px;
-		background: rgba(255,255,255,0.42);
-		border-color: rgba(26,26,26,0.7);
-	}
-	#yk-rail.open a.yk-rail-item:hover span { opacity: 1; transition-delay: .08s; }
-	/* WhatsApp keeps its brand green */
-	#yk-links a.yk-link.is-whatsapp svg { fill: #25D366; }
-	#yk-rail a.yk-rail-item.is-whatsapp {
-		background: #25D366;
-		border-color: #25D366;
-		color: #fff;
-	}
-	#yk-rail.open a.yk-rail-item.is-whatsapp:hover {
-		background: #1DB954;
-		border-color: #1DB954;
-	}
-
-	/* One or the other, never both */
-	@media (max-width: 700px) {
-		#yk-rail { display: none; }
-	}
-	@media (min-width: 701px) {
-		#yk-drawer, #yk-scrim { display: none; }
+	@media (max-width: 380px) {
+		#yk-social { gap: 0; }
+		#yk-social a.yk-soc { width: 27px; height: 27px; }
 	}
 
 	@media (max-width: 480px) {
@@ -577,9 +430,7 @@
 	<div id="yk-hud">
 		<div class="yk-hud-side yk-hud-left">
 			<div class="yk-time" id="yk-time">--:--:--</div>
-			<button id="yk-burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="yk-drawer">
-				<span></span><span></span><span></span>
-			</button>
+			<div id="yk-social" aria-label="Síguenos"></div>
 		</div>
 		<div class="yk-hud-side yk-hud-right">
 			<div class="yk-date" id="yk-date"></div>
@@ -589,20 +440,6 @@
 			</div>
 		</div>
 	</div>
-
-	<div id="yk-scrim"></div>
-
-	<div id="yk-rail" aria-label="Síguenos"></div>
-
-	<nav id="yk-drawer" aria-label="Menú">
-		<div id="yk-menu-wrap">
-			<div class="yk-title">Menú</div>
-			<div id="yk-menu"></div>
-		</div>
-		<div class="yk-title" id="yk-social-title">Síguenos</div>
-		<div id="yk-links"></div>
-		<div class="yk-foot">Yaakob · Consultores</div>
-	</nav>
 
 	<script>
 	(function() {
@@ -629,14 +466,14 @@
 		];
 		// -----------------------------------------
 
-		var burger = document.getElementById('yk-burger');
-		var drawer = document.getElementById('yk-drawer');
-		var scrim  = document.getElementById('yk-scrim');
-		var rail   = document.getElementById('yk-rail');
-		var links  = document.getElementById('yk-links');
+		var social = document.getElementById('yk-social');
 		var nav    = document.getElementById('yk-nav');
-		var menu   = document.getElementById('yk-menu');
 		var login  = document.getElementById('yk-login');
+
+		// Split ring from the services footer: two 150 degree arcs on r=10.5,
+		// leaving a gap top-right and bottom-left.
+		var RING = '<path class="yk-soc-ring" d="M10.18 22.34A10.5 10.5 0 0 1 8.41 2.13"/>' +
+		           '<path class="yk-soc-ring" d="M13.82 1.66A10.5 10.5 0 0 1 15.59 21.87"/>';
 
 		function isExternal(url) { return /^https?:/i.test(url); }
 		function attrs(url) {
@@ -651,54 +488,18 @@
 		login.setAttribute('href', LOGIN.url);
 		if (isExternal(LOGIN.url)) { login.target = '_blank'; login.rel = 'noopener noreferrer'; }
 
-		// Drawer: full menu (visible only on phones, where the header nav is hidden)
-		menu.innerHTML = MENU.concat([LOGIN]).map(function(m) {
-			return '<a class="yk-link" ' + attrs(m.url) + '><span>' + m.name + '</span></a>';
-		}).join('');
-
 		function brandClass(s) { return /whatsapp/i.test(s.name) ? ' is-whatsapp' : ''; }
 
-		links.innerHTML = SOCIAL.map(function(s) {
-			return '<a class="yk-link' + brandClass(s) + '" href="' + s.url + '" target="_blank" rel="noopener noreferrer">' +
-				'<svg viewBox="0 0 24 24" aria-hidden="true">' + s.icon + '</svg>' +
-				'<span>' + s.name + '</span></a>';
+		// Header (izquierda): the brand glyph is authored at 24x24, so scale it to
+		// ~47% and recentre it inside the ring.
+		social.innerHTML = SOCIAL.map(function(s) {
+			return '<a class="yk-soc' + brandClass(s) + '" href="' + s.url + '"' +
+				' target="_blank" rel="noopener noreferrer" title="' + s.name + '"' +
+				' aria-label="' + s.name + '">' +
+				'<svg viewBox="0 0 24 24" aria-hidden="true">' + RING +
+				'<g class="yk-soc-glyph" transform="translate(6.35 6.35) scale(0.47)">' + s.icon + '</g>' +
+				'</svg></a>';
 		}).join('');
-
-		// Desktop: the same links as a floating rail under the burger. --i drives
-		// the stagger so they cascade out instead of appearing all at once.
-		rail.innerHTML = SOCIAL.map(function(s, i) {
-			return '<a class="yk-rail-item' + brandClass(s) + '" style="--i:' + i + '" href="' + s.url + '"' +
-				' target="_blank" rel="noopener noreferrer" title="' + s.name + '">' +
-				'<svg viewBox="0 0 24 24" aria-hidden="true">' + s.icon + '</svg>' +
-				'<span>' + s.name + '</span></a>';
-		}).join('');
-
-		// Both open together; CSS shows the drawer on phones and the rail above 700px.
-		function setOpen(open) {
-			burger.classList.toggle('open', open);
-			drawer.classList.toggle('open', open);
-			scrim.classList.toggle('open', open);
-			rail.classList.toggle('open', open);
-			burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-			burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-		}
-		function isOpen() { return burger.classList.contains('open'); }
-
-		burger.addEventListener('click', function(e) {
-			e.stopPropagation();
-			setOpen(!isOpen());
-		});
-		scrim.addEventListener('click', function() { setOpen(false); });
-		document.addEventListener('keydown', function(e) {
-			if (e.key === 'Escape') setOpen(false);
-		});
-		links.addEventListener('click', function() { setOpen(false); });
-		menu.addEventListener('click', function() { setOpen(false); });
-		rail.addEventListener('click', function() { setOpen(false); });
-		// The rail has no scrim, so clicking anywhere else closes it.
-		document.addEventListener('click', function(e) {
-			if (isOpen() && !rail.contains(e.target) && !burger.contains(e.target)) setOpen(false);
-		});
 
 		// Clock
 		var elTime = document.getElementById('yk-time');
