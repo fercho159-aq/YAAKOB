@@ -3,7 +3,7 @@
 
 type AppRoutes = "/apps" | "/start"
 type AppRouteHandlerRoutes = "/" | "/api/[...path]" | "/api/gcs/[...path]"
-type PageRoutes = never
+type PageRoutes = "/servicios" | "/servicios/[slug]"
 type LayoutRoutes = "/"
 type RedirectRoutes = never
 type RewriteRoutes = never
@@ -15,6 +15,8 @@ interface ParamMap {
   "/api/[...path]": { "path": string[]; }
   "/api/gcs/[...path]": { "path": string[]; }
   "/apps": {}
+  "/servicios": {}
+  "/servicios/[slug]": { "slug": string; }
   "/start": {}
 }
 

@@ -650,12 +650,13 @@
 		// "COMENZAR" (the button). The gate's text is drawn on the canvas only,
 		// so this is a reliable "we've advanced past the gate" signal.
 		function onHome() {
-			// The home mirrors its GL text into the a11y DOM; the tagline under the
-			// logo ("ASESORÍA · …") only exists once we're past the gate.
+			// The home mirrors its GL text into the a11y DOM. The tagline is painted
+			// into the logo texture (no DOM text), so key off the logo's own a11y
+			// line instead — it only exists once we're past the gate.
 			var els = document.querySelectorAll('button, a, span, div');
 			for (var i = 0; i < els.length; i++) {
 				if (els[i].children.length === 0 &&
-				    /ASESOR[IÍ]A/i.test(els[i].textContent || '')) return true;
+				    /ABUNDANCIA, PROSPERIDAD/i.test(els[i].textContent || '')) return true;
 			}
 			return false;
 		}
@@ -691,5 +692,6 @@
 		}, 500);
 	})();
 	</script>
+
 </body>
 </html>

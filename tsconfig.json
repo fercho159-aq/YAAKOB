@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@servicios/*": ["./servicios-lib/*"]
     }
   },
   "include": [

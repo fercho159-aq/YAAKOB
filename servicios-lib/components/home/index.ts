@@ -1,0 +1,8 @@
+export { AnimatedHeading } from './AnimatedHeading'
+export { GameCarousel } from './GameCarousel'
+export { GameSlide } from './GameSlide'
+export { ScrambleText } from '@servicios/components/ui/ScrambleText'
+export { SlideCorners } from './SlideCorners'
+export type { GameCarouselProps } from './GameCarousel'
+export type { GameSlideProps } from './GameSlide'
+export type { CarouselItem, HomePageData } from './types'

@@ -1,0 +1,6 @@
+export { FacebookLogo } from './FacebookLogo'
+export { InstagramLogo } from './InstagramLogo'
+export { PlaceholderWordmark } from './PlaceholderWordmark'
+export { SocialIcon } from './SocialIcon'
+export { XLogo } from './XLogo'
+export { YoutubeLogo } from './YoutubeLogo'
