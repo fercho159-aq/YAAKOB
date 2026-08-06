@@ -357,6 +357,10 @@
 		line-height: 1;
 		user-select: none;
 	}
+	/* Clock + date are phone-only; the desktop header stays clean */
+	@media (min-width: 701px) {
+		.yk-time, .yk-date { display: none; }
+	}
 
 	/* Right nav */
 	#yk-nav { display: flex; align-items: center; gap: 22px; }
