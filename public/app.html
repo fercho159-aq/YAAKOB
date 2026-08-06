@@ -289,6 +289,21 @@
 	})();
 	</script>
 
+	<!-- Blue tint over the (grayscaled) WebGL stage. `color` blending keeps the
+	     scene's luminance and only swaps hue + saturation, so nothing darkens
+	     and the black logo stays black. Sits under the header (z 999990). -->
+	<style>
+	#yk-tint {
+		position: fixed;
+		inset: 0;
+		background: #a8b6bd;
+		mix-blend-mode: color;
+		pointer-events: none;
+		z-index: 5;
+	}
+	</style>
+	<div id="yk-tint" aria-hidden="true"></div>
+
 	<!-- Header: hamburger + clock (left) · nav + login (right) -->
 	<style>
 	#yk-hud {
