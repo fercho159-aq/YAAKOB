@@ -547,12 +547,15 @@
 	#yk-rail.open a.yk-rail-item:hover span { opacity: 1; transition-delay: .08s; }
 	/* WhatsApp keeps its brand green (the grayscale filter sits on #Stage,
 	   so the DOM chrome is free to carry colour) */
-	#yk-rail a.yk-rail-item.is-whatsapp svg,
 	#yk-links a.yk-link.is-whatsapp svg { fill: #25D366; }
-	#yk-rail a.yk-rail-item.is-whatsapp { border-color: rgba(37,211,102,0.75); }
-	#yk-rail.open a.yk-rail-item.is-whatsapp:hover {
-		background: rgba(37,211,102,0.16);
+	#yk-rail a.yk-rail-item.is-whatsapp {
+		background: #25D366;
 		border-color: #25D366;
+		color: #fff;
+	}
+	#yk-rail.open a.yk-rail-item.is-whatsapp:hover {
+		background: #1DB954;
+		border-color: #1DB954;
 	}
 
 	/* One or the other, never both */
