@@ -127,7 +127,7 @@
       "label": "Créditos Fiscales",
       "url": "/creditos-fiscales/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-6.svg",
+        "src": "/servicios/creditos-fiscales.jpg",
         "alt": "Créditos fiscales"
       },
       "tagline": "Estrategias de pago, garantía o impugnación",
@@ -150,7 +150,7 @@
       "label": "Sellos Digitales",
       "url": "/sellos-digitales/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-7.svg",
+        "src": "/servicios/sellos-digitales.jpg",
         "alt": "Restricción o cancelación de sellos digitales"
       },
       "tagline": "Recuperación del Certificado de Sello Digital",
@@ -173,7 +173,7 @@
       "label": "Defensa 69-B",
       "url": "/defensa-69b/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-8.svg",
+        "src": "/servicios/defensa-69b.jpg",
         "alt": "Defensa ante el listado 69-B"
       },
       "tagline": "Defensa legal ante el listado 69-B",
@@ -196,7 +196,7 @@
       "label": "UIF - FGR",
       "url": "/uif-fgr/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-12.svg",
+        "src": "/servicios/uif-fgr.jpg",
         "alt": "Debido proceso ante UIF y FGR"
       },
       "tagline": "Protección ante UIF y FGR",
@@ -219,7 +219,7 @@
       "label": "Regularización Fiscal",
       "url": "/regularizacion-fiscal/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-10.svg",
+        "src": "/servicios/regularizacion-fiscal.jpg",
         "alt": "Regularización fiscal"
       },
       "tagline": "Estrategias para poner al día su situación fiscal",
@@ -312,7 +312,7 @@
     "cookies": { "label": "Configuración de cookies" },
     "privacy": { "label": "Aviso de privacidad", "href": "https://example.com/privacidad" },
     "ads": { "label": "Términos", "href": "https://example.com/terminos" },
-    "logo": { "href": "https://example.com" },
+    "logo": { "href": "/" },
     "social": {
       "facebook": { "href": "https://example.com/facebook", "label": "Facebook" },
       "twitter": { "href": "https://example.com/x", "label": "X" },

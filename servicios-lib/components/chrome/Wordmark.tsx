@@ -1,41 +1,46 @@
-import { keyframes, type IconProps, type SystemStyleObject } from '@chakra-ui/react'
-import { PlaceholderWordmark } from '@servicios/components/svg'
+import { Box, type BoxProps } from '@chakra-ui/react'
+import Image from 'next/image'
 
-/**
- * The original reveals its wordmark glyph by glyph — each letter flips in from
- * `rotateY(90deg)` over 0.5s on a 0.05s stagger. `PlaceholderWordmark` draws a
- * single `<text>` between two bracket rules rather than per-letter paths, so
- * the same motion is applied to those three shapes instead.
- */
-const reveal = keyframes({
-  from: { opacity: 0, transform: 'rotateY(90deg)' },
-  to: { opacity: 1, transform: 'rotateY(0deg)' },
-})
-
-const revealStyles: SystemStyleObject = {
-  '& > g > path, & > text': { animation: `${reveal} 0.5s both` },
-  '& > g > path:nth-of-type(1)': { animationDelay: '0s' },
-  '& > text': { animationDelay: '0.15s' },
-  '& > g > path:nth-of-type(2)': { animationDelay: '0.3s' },
-}
-
-export interface AnimatedWordmarkProps extends IconProps {
+export interface AnimatedWordmarkProps extends BoxProps {
   animate?: boolean
-  label?: string
   title?: string
 }
 
-export function AnimatedWordmark({ animate = true, ...props }: AnimatedWordmarkProps) {
+/**
+ * The site mark, used in the header and in the mobile menu. The original
+ * revealed a lettered wordmark glyph by glyph; the mark is a single image, so
+ * it fades in over the same window instead.
+ *
+ * The file ships as black on white, so it is inverted for the dark chrome and
+ * screened to drop the square it sits on.
+ */
+export function AnimatedWordmark({
+  animate = true,
+  title = 'YAAKOB',
+  ...props
+}: AnimatedWordmarkProps) {
   return (
-    <PlaceholderWordmark
-      w="100%"
-      h="100%"
-      sx={{
-        // Matches `.css-lnibci *` in the compiled stylesheet.
-        '& *': { transformBox: 'fill-box', transformOrigin: 'left !important' },
-        ...(animate ? revealStyles : {}),
-      }}
+    <Box
+      pos="relative"
+      h="4.25rem"
+      w="auto"
+      opacity={animate ? 1 : 0}
+      transition="opacity 0.5s ease-out"
       {...props}
-    />
+    >
+      <Image
+        src="/logo.png"
+        alt={title}
+        width={512}
+        height={512}
+        sizes="80px"
+        style={{
+          width: 'auto',
+          height: '100%',
+          filter: 'invert(1)',
+          mixBlendMode: 'screen',
+        }}
+      />
+    </Box>
   )
 }
