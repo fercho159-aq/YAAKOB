@@ -3,7 +3,7 @@ import { Global } from '@emotion/react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { dinOT, gridnik } from '@servicios/fonts'
+import { dinOT, gridnik, wordmark } from '@servicios/fonts'
 import theme from '@servicios/theme'
 
 /** Keeps `--vh` in sync with the visual viewport, as the original site does. */
@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <Global
-        styles={`:root{--font-din-ot:${dinOT.style.fontFamily};--font-gridnik:${gridnik.style.fontFamily};}`}
+        styles={`:root{--font-din-ot:${dinOT.style.fontFamily};--font-gridnik:${gridnik.style.fontFamily};--font-wordmark:${wordmark.style.fontFamily};}`}
       />
       <Head>
         <meta charSet="utf-8" />

@@ -1,4 +1,4 @@
-import { Barlow, Archivo } from 'next/font/google'
+import { Barlow, Archivo, Chakra_Petch } from 'next/font/google'
 
 /**
  * The original ships licensed foundry fonts (DIN OT and Foundry Gridnik). This
@@ -16,5 +16,17 @@ export const gridnik = Archivo({
   subsets: ['latin'],
   weight: ['500', '600'],
   variable: '--font-gridnik',
+  display: 'swap',
+})
+
+/**
+ * Hero wordmark only: a squared face with chamfered corners, so the stacked
+ * outline/solid mark on the carousel reads as a logotype rather than as body
+ * copy set large.
+ */
+export const wordmark = Chakra_Petch({
+  subsets: ['latin'],
+  weight: ['600', '700'],
+  variable: '--font-wordmark',
   display: 'swap',
 })

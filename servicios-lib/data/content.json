@@ -12,8 +12,8 @@
       "label": "Diagnóstico Fiscal",
       "url": "/diagnostico-fiscal/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-1.svg",
-        "alt": "Diagnóstico de la situación fiscal"
+        "src": "/servicios/diagnostico-fiscal.jpg",
+        "alt": "Analista revisando un tablero de cumplimiento fiscal del SAT"
       },
       "tagline": "Panorama claro de su situación fiscal",
       "about": {
@@ -35,7 +35,7 @@
       "label": "Presuntiva Fiscal",
       "url": "/presuntiva-fiscal/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-2.svg",
+        "src": "/servicios/presuntiva-fiscal.jpg",
         "alt": "Presuntiva fiscal"
       },
       "tagline": "Revisión preventiva antes de la fiscalización",
@@ -58,7 +58,7 @@
       "label": "Requerimientos SAT",
       "url": "/requerimientos-sat/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-3.svg",
+        "src": "/servicios/requerimientos-sat.jpg",
         "alt": "Requerimientos del SAT"
       },
       "tagline": "Respuesta oportuna a cada notificación",
@@ -81,7 +81,7 @@
       "label": "Auditorías",
       "url": "/auditorias/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-4.svg",
+        "src": "/servicios/auditorias.jpg",
         "alt": "Acompañamiento en auditorías"
       },
       "tagline": "Acompañamiento en cada acto de fiscalización",
@@ -191,26 +191,26 @@
       }
     },
     {
-      "id": "derechos",
-      "slug": "derechos",
-      "label": "Derechos",
-      "url": "/derechos/view",
+      "id": "uif-fgr",
+      "slug": "uif-fgr",
+      "label": "UIF - FGR",
+      "url": "/uif-fgr/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-9.svg",
-        "alt": "Protección de derechos del contribuyente"
+        "src": "/placeholder/thumb-12.svg",
+        "alt": "Debido proceso ante UIF y FGR"
       },
-      "tagline": "Protección del debido proceso",
+      "tagline": "Protección ante UIF y FGR",
       "about": {
         "heading": "Resumen",
-        "description": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información.",
-        "tags": ["DERECHOS", "DEBIDO PROCESO", "CONFIDENCIALIDAD"]
+        "description": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la UIF y la FGR.",
+        "tags": ["UIF", "FGR", "LEGALIDAD", "SEGURIDAD"]
       },
       "description": {
-        "heading": "Protección del debido proceso",
-        "body": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información."
+        "heading": "Protección ante UIF y FGR",
+        "body": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la Unidad de Inteligencia Financiera y la Fiscalía General de la República."
       },
       "background": {
-        "fluxColor": "#a8a83a"
+        "fluxColor": "#7a3ac9"
       }
     },
     {
@@ -260,26 +260,26 @@
       }
     },
     {
-      "id": "uif-fgr",
-      "slug": "uif-fgr",
-      "label": "UIF - FGR",
-      "url": "/uif-fgr/view",
+      "id": "derechos",
+      "slug": "derechos",
+      "label": "Derechos",
+      "url": "/derechos/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-12.svg",
-        "alt": "Debido proceso ante UIF y FGR"
+        "src": "/placeholder/thumb-9.svg",
+        "alt": "Protección de derechos del contribuyente"
       },
-      "tagline": "Protección ante UIF y FGR",
+      "tagline": "Protección del debido proceso",
       "about": {
         "heading": "Resumen",
-        "description": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la UIF y la FGR.",
-        "tags": ["UIF", "FGR", "LEGALIDAD", "SEGURIDAD"]
+        "description": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información.",
+        "tags": ["DERECHOS", "DEBIDO PROCESO", "CONFIDENCIALIDAD"]
       },
       "description": {
-        "heading": "Protección ante UIF y FGR",
-        "body": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la Unidad de Inteligencia Financiera y la Fiscalía General de la República."
+        "heading": "Protección del debido proceso",
+        "body": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información."
       },
       "background": {
-        "fluxColor": "#7a3ac9"
+        "fluxColor": "#a8a83a"
       }
     }
   ],

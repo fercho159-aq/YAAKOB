@@ -2,7 +2,7 @@ import { Box, List, ListItem } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { PlaceholderWordmark } from '@servicios/components/svg'
+import { StackedWordmark } from '@servicios/components/svg'
 import { AnimatedHeading } from './AnimatedHeading'
 import { SLIDE_HEIGHT_XL, SLIDE_WIDTH_XL, VARIANTS, slideWidthPct } from './constants'
 import { useIsDesktop } from './hooks'
@@ -11,20 +11,12 @@ import { SlideCorners } from './SlideCorners'
 import type { CarouselItem } from './types'
 
 /**
- * The wordmark slot overhangs the thumbnail, and the layout gives each item a
- * differently proportioned one. Sizes are in content order and authored against
- * a 390px-wide slide; swap `PlaceholderWordmark` for a real mark per item and
- * the slots already fit.
+ * The wordmark slot overhangs the thumbnail. It is one width for every item —
+ * the mark is set at a fixed size and left-aligned, so rows end where the label
+ * ends instead of being fitted to a per-item box. Authored against a 390px-wide
+ * slide, sized for the longest label in the set.
  */
-const WORDMARK_SIZES: Array<{ widthXl: number; widthBase: string }> = [
-  { widthXl: 510, widthBase: '16.875rem' },
-  { widthXl: 482, widthBase: '12.3125rem' },
-  { widthXl: 565, widthBase: '14.375rem' },
-]
-
-function wordmarkSize(index: number) {
-  return WORDMARK_SIZES[index % WORDMARK_SIZES.length]
-}
+const WORDMARK_SLOT_XL = 565
 
 /** The slide itself: dims to 0.6 when it is not the active one. */
 const slideVariants: Variants = {
@@ -123,34 +115,26 @@ function Thumbnail({ src, alt, animate = true }: { src: string; alt: string; ani
 
 function WordmarkAndTagline({
   label,
-  index,
   tagline,
   isActive,
 }: {
   label: string
-  index: number
   tagline: string
   isActive: boolean
 }) {
-  const { widthXl, widthBase } = wordmarkSize(index)
-
   return (
     <Box
       pos="absolute"
       bottom={{ base: '0.9375rem', xl: 'auto' }}
       top={{ xl: '16.5rem' }}
       left={{ base: '-1.625rem', xl: '-16.125rem' }}
-      w={{ base: 'calc(100% + 3.25rem)', xl: slideWidthPct(widthXl) }}
+      w={{ base: 'calc(100% + 3.25rem)', xl: slideWidthPct(WORDMARK_SLOT_XL) }}
       pointerEvents={isActive ? undefined : 'none'}
     >
-      <Box overflow="hidden" w={{ base: widthBase, xl: '100%' }}>
+      {/* Clips the rise, so it has to stay wide enough for the longest label. */}
+      <Box overflow="hidden" w="100%">
         <MotionBox variants={riseVariants}>
-          <PlaceholderWordmark
-            w="100%"
-            h="100%"
-            label={label.toUpperCase()}
-            title={`${label} wordmark`}
-          />
+          <StackedWordmark label={label.toUpperCase()} title={`${label} wordmark`} />
         </MotionBox>
       </Box>
       <Box
@@ -312,7 +296,7 @@ export function GameSlide({
           animate={overlayState}
           pointerEvents="none"
         />
-        <WordmarkAndTagline label={label} index={index} tagline={tagline} isActive={isActive} />
+        <WordmarkAndTagline label={label} tagline={tagline} isActive={isActive} />
       </Box>
       <AboutPanel
         isActive={isActive}
