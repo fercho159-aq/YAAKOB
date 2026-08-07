@@ -1,12 +1,12 @@
 import { Button, Grid, GridItem, Link, type GridProps, type IconProps } from '@chakra-ui/react'
 import { useAnimation, type Variants } from 'framer-motion'
-import Image from 'next/image'
 import NextLink from 'next/link'
 import { useCallback, useEffect, useState, type ComponentType, type ElementType } from 'react'
 import { ScrambleText } from '@servicios/components/ui/ScrambleText'
 import {
   FacebookLogo,
   InstagramLogo,
+  PlaceholderWordmark,
   SocialIcon,
   XLogo,
   YoutubeLogo,
@@ -315,25 +315,18 @@ export function Footer({
             href={content.footer.logo.href}
             display="flex"
             justifyContent="center"
-            opacity={0.8}
-            transition="opacity 0.4s ease-out"
-            _hover={{ opacity: 1, textDecor: 'none' }}
+            _hover={{ color: 'gold', textDecor: 'none' }}
             aria-label="Ir al inicio del sitio"
           >
-            {/* The mark ships as black on white, so it is inverted for the dark
-                footer and screened to drop the square it sits on. */}
-            <Image
-              src="/logo.png"
-              alt="YAAKOB"
-              width={512}
-              height={512}
-              sizes="120px"
-              style={{
-                width: 'auto',
-                height: '4rem',
-                filter: 'invert(1)',
-                mixBlendMode: 'screen',
-              }}
+            <PlaceholderWordmark
+              w={['90%', null, '355px']}
+              maxW="355px"
+              h="auto"
+              color="white"
+              background="transparent"
+              opacity={0.8}
+              transition="opacity 0.4s ease-out"
+              _hover={{ opacity: 1 }}
             />
           </Link>
         </MotionBox>
