@@ -242,7 +242,7 @@
       "label": "Controles Volumétricos",
       "url": "/controles-volumetricos/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-11.svg",
+        "src": "/servicios/controles-volumetricos.jpg",
         "alt": "Controles volumétricos"
       },
       "tagline": "Subsanación de irregularidades",
@@ -265,7 +265,7 @@
       "label": "Derechos",
       "url": "/derechos/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-9.svg",
+        "src": "/servicios/derechos.jpg",
         "alt": "Protección de derechos del contribuyente"
       },
       "tagline": "Protección del debido proceso",

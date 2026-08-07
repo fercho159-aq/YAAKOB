@@ -1,8 +1,7 @@
-import { Button, Grid, GridItem, Link, type GridProps, type IconProps } from '@chakra-ui/react'
+import { Grid, GridItem, Link, type GridProps, type IconProps } from '@chakra-ui/react'
 import { useAnimation, type Variants } from 'framer-motion'
 import NextLink from 'next/link'
-import { useCallback, useEffect, useState, type ComponentType, type ElementType } from 'react'
-import { ScrambleText } from '@servicios/components/ui/ScrambleText'
+import { useEffect, useState, type ComponentType, type ElementType } from 'react'
 import {
   FacebookLogo,
   InstagramLogo,
@@ -24,26 +23,11 @@ import { MotionBox, MotionCenter, type MotionCenterProps } from './motion'
  */
 const FooterGrid = Grid as unknown as ComponentType<Omit<GridProps, 'as'> & { as?: ElementType }>
 
-declare global {
-  interface Window {
-    OneTrust?: { ToggleInfoDisplay?: () => void }
-  }
-}
-
 const IDLE = '#898989'
 const ACTIVE = '#FFFFFF'
 
-const GRIDNIK = 'var(--font-gridnik)'
-
 /** `FOOTER_HEIGHT` in the original's constants module. */
 const FOOTER_HEIGHT = '80px'
-
-/**
- * The consent SDK binds itself to this id/class. It is not part of this
- * rebuild, so the click handler is a guarded no-op until something provides it.
- */
-const CONSENT_BUTTON_ID = 'ot-sdk-btn'
-const CONSENT_BUTTON_CLASS = 'ot-sdk-show-settings'
 
 const iconVariants: Variants = {
   initial: { scale: 0.4, opacity: 0, transition: { type: 'tween', ease: 'easeOut' } },
@@ -162,12 +146,6 @@ export interface FooterProps extends GridProps {
   mobile?: boolean
   /** Bump to replay the reveal. */
   restartId?: number
-  /**
-   * The consent control. In the bundle this is gated only on the component
-   * having mounted, so it renders on every page; the prop is here because the
-   * hydrated site was observed without it on the detail pages.
-   */
-  cookieSettings?: boolean
 }
 
 export function Footer({
@@ -175,12 +153,10 @@ export function Footer({
   animate = true,
   mobile = false,
   restartId = 0,
-  cookieSettings = true,
   ...rest
 }: FooterProps) {
   const [mounted, setMounted] = useState(false)
   const logoControls = useAnimation()
-  const cookieControls = useAnimation()
 
   useEffect(() => {
     setMounted(true)
@@ -188,18 +164,11 @@ export function Footer({
 
   useEffect(() => {
     if (!mounted || !animate) return
-    const cookieDelay = mobile ? delay + 1.2 : delay
     const logoDelay = mobile ? delay + 0.8 : delay + 0.5
 
-    cookieControls.set({ opacity: 0 })
-    cookieControls.start({ opacity: 1, transition: { duration: 0.5, delay: cookieDelay } })
     logoControls.set({ opacity: 0 })
     logoControls.start({ opacity: 1, transition: { duration: 0.5, delay: logoDelay } })
-  }, [restartId, mounted, animate, mobile, delay, logoControls, cookieControls])
-
-  const openCookieSettings = useCallback(() => {
-    window.OneTrust?.ToggleInfoDisplay?.()
-  }, [])
+  }, [restartId, mounted, animate, mobile, delay, logoControls])
 
   const shouldAnimate = animate && mounted
 
@@ -211,7 +180,7 @@ export function Footer({
       py={[5, null, 2, null, null, 0]}
       px={[0, null, 5]}
       templateColumns="repeat(12, 1fr)"
-      templateRows={['repeat(3, 40px)', null, null, null, 'auto']}
+      templateRows={['repeat(2, 40px)', null, null, null, 'auto']}
       gap={[2, null, null, null, 6]}
       pos="relative"
       zIndex="footer"
@@ -219,91 +188,7 @@ export function Footer({
     >
       <GridItem
         colSpan={[12, null, null, null, 4]}
-        rowStart={[3, null, null, null, 'auto']}
-        display="flex"
-        maxW="480px"
-        minW={['initial', null, '420px']}
-        mx={['auto', null, null, null, 'initial']}
-        justifyContent={['space-around', null, 'space-between']}
-        alignItems="center"
-        pl={[0, null, null, null, null, '1.875rem']}
-        pr={{ base: 0, xl: '0.625rem' }}
-        fontSize={['12px', null, 'initial']}
-        fontFamily="var(--font-gridnik)"
-        gap={3}
-      >
-        {cookieSettings && mounted ? (
-          <MotionBox initial={{ opacity: 0 }} animate={cookieControls}>
-            <Button
-              id={CONSENT_BUTTON_ID}
-              className={CONSENT_BUTTON_CLASS}
-              opacity={0.8}
-              h="20px"
-              minW={['auto', null, '120px']}
-              maxW="170px"
-              textAlign={['center', null, 'left']}
-              style={{
-                fontSize: '1em',
-                fontWeight: 'normal',
-                fontFamily: GRIDNIK,
-                textTransform: 'none',
-                color: '#fff',
-                padding: 0,
-                border: 'none',
-                background: 'none',
-                backgroundColor: 'transparent',
-              }}
-              _hover={{ background: 'none', backgroundColor: 'transparent', opacity: 1, textDecor: 'none' }}
-              onClick={openCookieSettings}
-              aria-label={`Go to ${content.footer.cookies.label}`}
-            >
-              <ScrambleText
-                text={content.footer.cookies.label}
-                w="100%"
-                animate={shouldAnimate}
-                delay={mobile ? delay + 1.2 : delay}
-                restart={restartId}
-                pointerEvents="none"
-              />
-            </Button>
-          </MotionBox>
-        ) : null}
-        <Link
-          href={content.footer.privacy.href}
-          isExternal
-          textAlign={['center', null, 'left']}
-          opacity={0.8}
-          minW={['auto', null, '110px']}
-          _hover={{ opacity: 1, textDecor: 'none' }}
-          aria-label={`Go to ${content.footer.privacy.label}`}
-        >
-          <ScrambleText
-            text={content.footer.privacy.label}
-            animate={shouldAnimate}
-            delay={mobile ? delay + 1 : delay + 0.2}
-            restart={restartId}
-          />
-        </Link>
-        <Link
-          href={content.footer.ads.href}
-          isExternal
-          textAlign={['center', null, 'left']}
-          opacity={0.8}
-          minW={['auto', null, '113px']}
-          _hover={{ opacity: 1, textDecor: 'none' }}
-          aria-label={`Go to ${content.footer.ads.label}`}
-        >
-          <ScrambleText
-            text={content.footer.ads.label}
-            animate={shouldAnimate}
-            delay={mobile ? delay + 1.4 : delay + 0.4}
-            restart={restartId}
-          />
-        </Link>
-      </GridItem>
-
-      <GridItem
-        colSpan={[12, null, null, null, 4]}
+        colStart={['auto', null, null, null, 5]}
         rowStart={[2, null, null, null, 'auto']}
         display="flex"
         justifyContent="center"
