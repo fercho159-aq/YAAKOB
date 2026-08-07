@@ -10,8 +10,8 @@
   "static/chunks/node_modules_@chakra-ui_theme_dist_c7c1bcf0._.js",
   "static/chunks/node_modules_framer-motion_dist_es_0d6aa545._.js",
   "static/chunks/node_modules_76e0e950._.js",
-  "static/chunks/[root-of-the-server]__d689c661._.js",
-  "static/chunks/[next]_internal_font_google_8483ff2e._.css"
+  "static/chunks/[root-of-the-server]__7fc07b00._.js",
+  "static/chunks/[next]_internal_font_google_afbc5f99._.css"
 ],
     source: "entry"
 });

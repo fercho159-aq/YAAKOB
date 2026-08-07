@@ -1,5 +1,5 @@
 __turbopack_load_page_chunks__("/servicios", [
-  "static/chunks/[root-of-the-server]__45033820._.js",
+  "static/chunks/[root-of-the-server]__a904c262._.js",
   "static/chunks/node_modules_next_dist_compiled_4501ac73._.js",
   "static/chunks/node_modules_next_dist_shared_lib_d5f79ea0._.js",
   "static/chunks/node_modules_next_dist_client_8dd97e7a._.js",
@@ -15,5 +15,5 @@ __turbopack_load_page_chunks__("/servicios", [
   "static/chunks/node_modules_49e2a42b._.js",
   "static/chunks/node_modules_swiper_3aa8aed6._.css",
   "static/chunks/pages_servicios_index_tsx_2da965e7._.js",
-  "static/chunks/turbopack-pages_servicios_index_tsx_99ad83e6._.js"
+  "static/chunks/turbopack-pages_servicios_index_tsx_a9df0c2d._.js"
 ])
