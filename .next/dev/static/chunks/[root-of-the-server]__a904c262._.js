@@ -1017,9 +1017,15 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$icon$2f$dist$2f$chunk$2d$2GBDXOMA$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@chakra-ui/icon/dist/chunk-2GBDXOMA.mjs [client] (ecmascript)");
 ;
 ;
+const FONT_SIZE = 12;
+const TRACKING = 2;
+/** Rough advance per glyph of the wordmark face at `FONT_SIZE`, plus tracking. */ const GLYPH_ADVANCE = FONT_SIZE * 0.72 + TRACKING;
+/** Horizontal arm of each bracket, and the air between it and the word. */ const BRACKET_ARM = 5;
+const BRACKET_GAP = 26;
 function PlaceholderWordmark({ label = 'PLACEHOLDER', title = 'Placeholder wordmark', ...props }) {
+    const width = Math.round(label.length * GLYPH_ADVANCE) + 2 * (BRACKET_ARM + BRACKET_GAP) + 3;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$icon$2f$dist$2f$chunk$2d$2GBDXOMA$2e$mjs__$5b$client$5d$__$28$ecmascript$29$__["Icon"], {
-        viewBox: "0 0 193 23",
+        viewBox: `0 0 ${width} 23`,
         focusable: "false",
         ...props,
         children: [
@@ -1027,7 +1033,7 @@ function PlaceholderWordmark({ label = 'PLACEHOLDER', title = 'Placeholder wordm
                 children: title
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/svg/PlaceholderWordmark.tsx",
-                lineNumber: 21,
+                lineNumber: 31,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("g", {
@@ -1036,43 +1042,44 @@ function PlaceholderWordmark({ label = 'PLACEHOLDER', title = 'Placeholder wordm
                 strokeWidth: "1.5",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                        d: "M6.5 1.5H1.5v20h5"
+                        d: `M${1.5 + BRACKET_ARM} 1.5H1.5v20h${BRACKET_ARM}`
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/svg/PlaceholderWordmark.tsx",
-                        lineNumber: 23,
+                        lineNumber: 33,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                        d: "M186.5 1.5h5v20h-5"
+                        d: `M${width - 1.5 - BRACKET_ARM} 1.5h${BRACKET_ARM}v20h-${BRACKET_ARM}`
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/svg/PlaceholderWordmark.tsx",
-                        lineNumber: 24,
+                        lineNumber: 34,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/servicios-lib/components/svg/PlaceholderWordmark.tsx",
-                lineNumber: 22,
+                lineNumber: 32,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("text", {
-                x: "96.5",
+                x: width / 2,
                 y: "16",
                 textAnchor: "middle",
                 fill: "currentColor",
-                fontSize: "12",
-                fontFamily: "var(--font-gridnik), var(--font-din-ot), sans-serif",
-                letterSpacing: "2",
+                fontSize: FONT_SIZE,
+                fontFamily: "var(--font-wordmark), var(--font-gridnik), sans-serif",
+                fontWeight: "600",
+                letterSpacing: TRACKING,
                 children: label
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/svg/PlaceholderWordmark.tsx",
-                lineNumber: 26,
+                lineNumber: 36,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/servicios-lib/components/svg/PlaceholderWordmark.tsx",
-        lineNumber: 20,
+        lineNumber: 30,
         columnNumber: 5
     }, this);
 }
@@ -3155,7 +3162,9 @@ function Navigation({ animate = true, minimal = false, menuFooter }) {
                     xl: 'visible'
                 },
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$Wordmark$2e$tsx__$5b$client$5d$__$28$ecmascript$29$__["AnimatedWordmark"], {
-                    animate: animate
+                    animate: animate,
+                    label: "YAAKOB",
+                    title: "Yaakob"
                 }, void 0, false, {
                     fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
                     lineNumber: 169,
