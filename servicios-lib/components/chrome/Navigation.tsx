@@ -166,7 +166,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         zIndex="navigation"
         visibility={{ base: logoHiddenOnMobile ? 'hidden' : undefined, xl: 'visible' }}
       >
-        <AnimatedWordmark animate={animate} />
+        <AnimatedWordmark animate={animate} label="YAAKOB" title="Yaakob" />
       </NavLink>
 
       <MenuToggle animate={animate} minimal={minimal} onClick={() => setIsOpen((open) => !open)} />
