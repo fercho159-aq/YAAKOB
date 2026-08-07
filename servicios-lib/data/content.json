@@ -17,7 +17,7 @@
       },
       "tagline": "Panorama claro de su situación fiscal",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Análisis integral de obligaciones, expedientes, notificaciones y posibles riesgos fiscales.",
         "tags": ["DIAGNÓSTICO", "OBLIGACIONES", "EXPEDIENTES", "RIESGOS"]
       },
@@ -40,7 +40,7 @@
       },
       "tagline": "Revisión preventiva antes de la fiscalización",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Revisión preventiva para identificar errores, omisiones e inconsistencias que puedan originar multas, recargos o actos de fiscalización.",
         "tags": ["PREVENCIÓN", "ERRORES", "INCONSISTENCIAS", "FISCALIZACIÓN"]
       },
@@ -63,7 +63,7 @@
       },
       "tagline": "Respuesta oportuna a cada notificación",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Apoyo para analizar y contestar requerimientos, cartas invitación, avisos y solicitudes de información emitidas por la autoridad.",
         "tags": ["SAT", "REQUERIMIENTOS", "NOTIFICACIONES", "RESPUESTA"]
       },
@@ -86,7 +86,7 @@
       },
       "tagline": "Acompañamiento en cada acto de fiscalización",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Acompañamiento durante revisiones de gabinete, visitas domiciliarias, revisiones electrónicas y demás actos de fiscalización.",
         "tags": ["AUDITORÍA", "GABINETE", "VISITAS", "FISCALIZACIÓN"]
       },
@@ -104,12 +104,12 @@
       "label": "Multas Fiscales",
       "url": "/multas-fiscales/view",
       "thumbnail": {
-        "src": "/placeholder/thumb-5.svg",
+        "src": "/servicios/multas-fiscales.jpg",
         "alt": "Corrección de multas fiscales"
       },
       "tagline": "Corrección de sanciones y recargos",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente.",
         "tags": ["MULTAS", "RECARGOS", "SANCIONES", "CORRECCIÓN"]
       },
@@ -132,7 +132,7 @@
       },
       "tagline": "Estrategias de pago, garantía o impugnación",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Análisis de la determinación de contribuciones, accesorios y créditos fiscales, así como de las alternativas de pago, garantía o impugnación.",
         "tags": ["CRÉDITOS", "GARANTÍA", "IMPUGNACIÓN", "PAGO"]
       },
@@ -155,7 +155,7 @@
       },
       "tagline": "Recuperación del Certificado de Sello Digital",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Recuperación del certificado de sello digital, considerando la documentación e información requerida por la autoridad.",
         "tags": ["CSD", "SELLOS", "RECUPERACIÓN"]
       },
@@ -178,7 +178,7 @@
       },
       "tagline": "Defensa legal ante el listado 69-B",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Preparación de aclaraciones, solicitudes, pruebas, escritos, recursos administrativos y demás medios legales procedentes.",
         "tags": ["69-B", "DEFENSA", "RECURSOS", "PRUEBAS"]
       },
@@ -201,7 +201,7 @@
       },
       "tagline": "Protección ante UIF y FGR",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la UIF y la FGR.",
         "tags": ["UIF", "FGR", "LEGALIDAD", "SEGURIDAD"]
       },
@@ -224,7 +224,7 @@
       },
       "tagline": "Estrategias para poner al día su situación fiscal",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable.",
         "tags": ["REGULARIZACIÓN", "DICTAMEN", "CUMPLIMIENTO"]
       },
@@ -247,7 +247,7 @@
       },
       "tagline": "Subsanación de irregularidades",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Subsanar irregularidades detectadas en los controles volumétricos del contribuyente.",
         "tags": ["CONTROLES", "VOLUMÉTRICOS", "IRREGULARIDADES"]
       },
@@ -270,7 +270,7 @@
       },
       "tagline": "Protección del debido proceso",
       "about": {
-        "heading": "Resumen",
+        "heading": "Síntesis",
         "description": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información.",
         "tags": ["DERECHOS", "DEBIDO PROCESO", "CONFIDENCIALIDAD"]
       },
