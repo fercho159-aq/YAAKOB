@@ -180,12 +180,39 @@ export function Footer({
       py={[5, null, 2, null, null, 0]}
       px={[0, null, 5]}
       templateColumns="repeat(12, 1fr)"
-      templateRows={['repeat(2, 40px)', null, null, null, 'auto']}
+      templateRows={['repeat(3, 40px)', null, null, null, 'auto']}
       gap={[2, null, null, null, 6]}
       pos="relative"
       zIndex="footer"
       {...rest}
     >
+      <GridItem
+        colSpan={[12, null, null, null, 4]}
+        colStart={[ 'auto', null, null, null, 1]}
+        rowStart={[3, null, null, null, 'auto']}
+        display="flex"
+        justifyContent={['center', null, null, null, 'flex-start']}
+        alignItems="center"
+        pl={[0, null, null, null, null, '1.875rem']}
+      >
+        <MotionBox initial={{ opacity: 0 }} animate={logoControls}>
+          <Link
+            as={NextLink}
+            href={content.footer.contact.href}
+            fontSize="0.75rem"
+            lineHeight="100%"
+            letterSpacing="0.1em"
+            fontWeight="semibold"
+            textTransform="uppercase"
+            color={IDLE}
+            transition="color 0.4s ease-out"
+            _hover={{ color: ACTIVE, textDecor: 'none' }}
+          >
+            {content.footer.contact.label}
+          </Link>
+        </MotionBox>
+      </GridItem>
+
       <GridItem
         colSpan={[12, null, null, null, 4]}
         colStart={['auto', null, null, null, 5]}

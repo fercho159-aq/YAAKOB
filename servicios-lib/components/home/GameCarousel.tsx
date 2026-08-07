@@ -41,7 +41,9 @@ const swiperSx: SystemStyleObject = {
   },
   '& .swiper-pagination': {
     position: 'absolute',
-    bottom: 0,
+    // Sits in the gap between the top of the carousel and the slide image.
+    top: 0,
+    bottom: 'auto',
     width: '100%',
     textAlign: 'center',
     '& .swiper-pagination-bullet': {
