@@ -214,29 +214,6 @@
       }
     },
     {
-      "id": "regularizacion-fiscal",
-      "slug": "regularizacion-fiscal",
-      "label": "Regularización Fiscal",
-      "url": "/regularizacion-fiscal/view",
-      "thumbnail": {
-        "src": "/servicios/regularizacion-fiscal.jpg",
-        "alt": "Regularización fiscal"
-      },
-      "tagline": "Estrategias para poner al día su situación fiscal",
-      "about": {
-        "heading": "Síntesis",
-        "description": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable.",
-        "tags": ["REGULARIZACIÓN", "DICTAMEN", "CUMPLIMIENTO"]
-      },
-      "description": {
-        "heading": "Estrategias para poner al día su situación fiscal",
-        "body": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable."
-      },
-      "background": {
-        "fluxColor": "#3ac9a8"
-      }
-    },
-    {
       "id": "controles-volumetricos",
       "slug": "controles-volumetricos",
       "label": "Controles Volumétricos",
@@ -260,26 +237,26 @@
       }
     },
     {
-      "id": "derechos",
-      "slug": "derechos",
-      "label": "Derechos",
-      "url": "/derechos/view",
+      "id": "regularizacion-fiscal",
+      "slug": "regularizacion-fiscal",
+      "label": "Regularización Fiscal",
+      "url": "/regularizacion-fiscal/view",
       "thumbnail": {
-        "src": "/servicios/derechos.jpg",
-        "alt": "Protección de derechos del contribuyente"
+        "src": "/servicios/regularizacion-fiscal.jpg",
+        "alt": "Regularización fiscal"
       },
-      "tagline": "Protección del debido proceso",
+      "tagline": "Estrategias para poner al día su situación fiscal",
       "about": {
         "heading": "Síntesis",
-        "description": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información.",
-        "tags": ["DERECHOS", "DEBIDO PROCESO", "CONFIDENCIALIDAD"]
+        "description": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable.",
+        "tags": ["REGULARIZACIÓN", "DICTAMEN", "CUMPLIMIENTO"]
       },
       "description": {
-        "heading": "Protección del debido proceso",
-        "body": "Protección conforme al debido proceso, acceso a expedientes y confidencialidad de la información."
+        "heading": "Estrategias para poner al día su situación fiscal",
+        "body": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable."
       },
       "background": {
-        "fluxColor": "#a8a83a"
+        "fluxColor": "#3ac9a8"
       }
     }
   ],
