@@ -7,6 +7,8 @@ import {
   InstagramLogo,
   PlaceholderWordmark,
   SocialIcon,
+  TiktokLogo,
+  WhatsappLogo,
   XLogo,
   YoutubeLogo,
 } from '@servicios/components/svg'
@@ -28,6 +30,21 @@ const ACTIVE = '#FFFFFF'
 
 /** `FOOTER_HEIGHT` in the original's constants module. */
 const FOOTER_HEIGHT = '80px'
+
+/** Same set, in the same order, as the social row on the home page. */
+const SOCIALS: Array<{
+  key: keyof typeof content.footer.social
+  icon: ComponentType<IconProps>
+  iconProps?: IconProps
+}> = [
+  { key: 'instagram', icon: InstagramLogo },
+  { key: 'facebook', icon: FacebookLogo },
+  { key: 'tiktok', icon: TiktokLogo },
+  { key: 'youtube', icon: YoutubeLogo },
+  // X ships a 1200-wide viewBox and needs scaling down to match the rest.
+  { key: 'twitter', icon: XLogo, iconProps: { fill: 'none', transform: 'scale(0.4)' } },
+  { key: 'whatsapp', icon: WhatsappLogo },
+]
 
 const iconVariants: Variants = {
   initial: { scale: 0.4, opacity: 0, transition: { type: 'tween', ease: 'easeOut' } },
@@ -252,40 +269,19 @@ export function Footer({
         alignItems="center"
         pr={[0, null, null, null, null, '1.875rem']}
       >
-        <SocialLink
-          href={content.footer.social.facebook.href}
-          icon={FacebookLogo}
-          ariaLabel={`Go to ${content.footer.social.facebook.label}`}
-          animate={shouldAnimate}
-          delay={mobile ? delay : delay + 0.5}
-          restartId={restartId}
-          ml={0}
-        />
-        <SocialLink
-          href={content.footer.social.twitter.href}
-          icon={XLogo}
-          iconProps={{ fill: 'none', transform: 'scale(0.4)' }}
-          ariaLabel={`Go to ${content.footer.social.twitter.label}`}
-          animate={shouldAnimate}
-          delay={mobile ? delay + 0.2 : delay + 0.6}
-          restartId={restartId}
-        />
-        <SocialLink
-          href={content.footer.social.instagram.href}
-          icon={InstagramLogo}
-          ariaLabel={`Go to ${content.footer.social.instagram.label}`}
-          animate={shouldAnimate}
-          delay={mobile ? delay + 0.4 : delay + 0.7}
-          restartId={restartId}
-        />
-        <SocialLink
-          href={content.footer.social.youtube.href}
-          icon={YoutubeLogo}
-          ariaLabel={`Go to ${content.footer.social.youtube.label}`}
-          animate={shouldAnimate}
-          delay={mobile ? delay + 0.6 : delay + 0.8}
-          restartId={restartId}
-        />
+        {SOCIALS.map(({ key, icon, iconProps }, index) => (
+          <SocialLink
+            key={key}
+            href={content.footer.social[key].href}
+            icon={icon}
+            iconProps={iconProps}
+            ariaLabel={`Go to ${content.footer.social[key].label}`}
+            animate={shouldAnimate}
+            delay={(mobile ? delay : delay + 0.5) + index * 0.1}
+            restartId={restartId}
+            ml={index === 0 ? 0 : undefined}
+          />
+        ))}
       </GridItem>
     </FooterGrid>
   )

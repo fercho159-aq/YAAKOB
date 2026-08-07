@@ -290,12 +290,17 @@
     "privacy": { "label": "Aviso de privacidad", "href": "https://example.com/privacidad" },
     "ads": { "label": "Términos", "href": "https://example.com/terminos" },
     "logo": { "href": "/" },
-    "contact": { "label": "Contacto", "href": "https://example.com/contacto" },
+    "contact": { "label": "Contacto", "href": "https://wa.me/5215527416178" },
     "social": {
-      "facebook": { "href": "https://example.com/facebook", "label": "Facebook" },
-      "twitter": { "href": "https://example.com/x", "label": "X" },
-      "instagram": { "href": "https://example.com/instagram", "label": "Instagram" },
-      "youtube": { "href": "https://example.com/youtube", "label": "YouTube" }
+      "instagram": { "href": "https://www.instagram.com/yaakobeheart/", "label": "Instagram" },
+      "facebook": {
+        "href": "https://www.facebook.com/profile.php?id=61587552527813&locale=es_LA",
+        "label": "Facebook"
+      },
+      "tiktok": { "href": "https://www.tiktok.com/@yaakob_heart", "label": "TikTok" },
+      "youtube": { "href": "https://www.youtube.com/@YaakobBeHeart", "label": "YouTube" },
+      "twitter": { "href": "https://x.com/yaakob", "label": "X" },
+      "whatsapp": { "href": "https://wa.me/5215527416178", "label": "WhatsApp" }
     }
   }
 }
