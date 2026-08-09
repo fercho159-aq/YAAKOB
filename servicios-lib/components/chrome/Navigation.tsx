@@ -1,17 +1,12 @@
-import { Box, Flex, type IconProps } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useRouter } from 'next/router'
-import { useState, type ComponentType, type ReactNode } from 'react'
-import { PlaceholderWordmark } from '@servicios/components/svg'
-import content from '@servicios/data/content.json'
-import { MenuOverlay, type MenuItem } from './MenuOverlay'
+import { useState, type ReactNode } from 'react'
+import { MenuOverlay } from './MenuOverlay'
 import { AnimatedWordmark } from './Wordmark'
 import { MotionBox, MotionFlex, NavLink } from './motion'
 
 const EASE: [number, number, number, number] = [0.25, 0, 0, 1]
-
-/** Width the menu draws each item's wordmark at, in px (the original's per-game table). */
-const MENU_ICON_WIDTH = 168
 
 const buttonVariants: Variants = {
   hidden: { opacity: 0 },
@@ -36,29 +31,6 @@ const barVariants: Variants = {
   }),
   hover: (custom?: BarScale) => ({ scaleX: custom?.hover ?? 1 }),
 }
-
-/** Binds an item's label into the shared wordmark so the menu can render it as an icon. */
-function itemWordmark(label: string): ComponentType<IconProps> {
-  function ItemWordmark(props: IconProps) {
-    return <PlaceholderWordmark label={label.toUpperCase()} title={`${label} wordmark`} {...props} />
-  }
-  ItemWordmark.displayName = `ItemWordmark(${label})`
-  return ItemWordmark
-}
-
-const menuItems: MenuItem[] = content.items.map(({ id, slug, label, tagline }) => ({
-  id,
-  slug,
-  label,
-  tagline,
-  links: [
-    { label: content.nav.primary, href: `/servicios/${slug}` },
-    { label: content.nav.secondary, href: `/servicios/${slug}` },
-    { label: content.nav.tertiary, href: `/servicios/${slug}` },
-  ],
-  icon: itemWordmark(label),
-  iconWidth: MENU_ICON_WIDTH,
-}))
 
 interface MenuToggleProps {
   animate?: boolean
@@ -171,13 +143,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
 
       <MenuToggle animate={animate} minimal={minimal} onClick={() => setIsOpen((open) => !open)} />
 
-      <MenuOverlay
-        items={menuItems}
-        isOpen={isOpen}
-        activePath={router.asPath}
-        onClose={() => setIsOpen(false)}
-        footer={menuFooter}
-      />
+      <MenuOverlay isOpen={isOpen} onClose={() => setIsOpen(false)} footer={menuFooter} />
     </MotionBox>
   )
 }

@@ -3,6 +3,7 @@ import { Global } from '@emotion/react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { useEffect } from 'react'
+import { ContactModalProvider } from '@servicios/components/contact'
 import { dinOT, gridnik, wordmark } from '@servicios/fonts'
 import theme from '@servicios/theme'
 
@@ -34,7 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
       </Head>
-      <Component {...pageProps} />
+      <ContactModalProvider>
+        <Component {...pageProps} />
+      </ContactModalProvider>
     </ChakraProvider>
   )
 }

@@ -1,6 +1,7 @@
 import { Box, type BoxProps, Text } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import type { ReactNode } from 'react'
+import { useContactModal } from '@servicios/components/contact'
 import { ItemButton } from './ItemButton'
 import { MotionParagraph } from './motion'
 import { AnimatedHeading, ScrambleText, VARIANTS } from './shared'
@@ -74,6 +75,7 @@ export type ItemCopyProps = BoxProps & {
  */
 export function ItemCopy({ item, detail, animate = true, delay = 0, ...rest }: ItemCopyProps) {
   const loginDelay = delay + 0.6
+  const { open: openContact } = useContactModal()
 
   return (
     <Box as="section" pos="relative" minH="300px" {...rest}>
@@ -108,6 +110,7 @@ export function ItemCopy({ item, detail, animate = true, delay = 0, ...rest }: I
               bg="goldAlt"
               color="black"
               label={detail.login.ctas.login.label}
+              onClick={openContact}
               delay={loginDelay + 0.6}
             />
             <ItemButton

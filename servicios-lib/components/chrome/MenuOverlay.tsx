@@ -1,4 +1,5 @@
 import {
+  Box,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -6,41 +7,20 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
+  Link,
+  ListItem,
   UnorderedList,
-  type IconProps,
 } from '@chakra-ui/react'
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import content from '@servicios/data/content.json'
 import { AnimatedWordmark } from './Wordmark'
-import { MotionBox, MotionListItem, NavLink, type MotionBoxProps } from './motion'
+import { NavLink } from './motion'
 
 const HAIRLINE = '1px solid rgba(255,255,255,0.2)'
 const HIGHLIGHT = 'rgba(255,255,255,0.09)'
 
-export interface MenuItemLink {
-  label: string
-  href: string
-}
-
-export interface MenuItem {
-  id: string
-  slug: string
-  label: string
-  tagline: string
-  /**
-   * The item's three sub-routes, built as the compiled Navigation builds them.
-   * The original drawer never renders them — the whole row is a single link to
-   * `/${slug}` — but they are part of the item model, so they stay.
-   */
-  links: MenuItemLink[]
-  icon: ComponentType<IconProps>
-  iconWidth: number
-}
-
 export interface MenuOverlayProps {
-  items: MenuItem[]
   isOpen: boolean
-  /** `router.asPath`; an item is current when its slug appears in the path. */
-  activePath: string
   onClose: () => void
   /**
    * Bottom-right slot of the drawer. The original puts the "Background
@@ -49,39 +29,65 @@ export interface MenuOverlayProps {
   footer?: ReactNode
 }
 
-interface TaglineProps extends MotionBoxProps {
-  text: string
-  isSelected?: boolean
-}
-
-/** Game tagline with the gold rule underneath that stretches on hover. */
-function Tagline({ text, isSelected = false, ...rest }: TaglineProps) {
+/**
+ * The drawer's only list. The entries are external, so each row
+ * opens in its own tab and the drawer stays where the visitor left it.
+ */
+function NewsSection() {
   return (
-    <MotionBox
-      pos="relative"
-      letterSpacing="0.02em"
-      lineHeight="1.375rem"
-      pb="0.75rem"
-      sx={{ transition: 'background 0.2s linear' }}
-      {...rest}
-    >
-      {text}
-      <MotionBox
-        pos="absolute"
-        bottom="0"
-        w={isSelected ? '2.5rem' : '0.6875rem'}
-        h="0.125rem"
-        bg="gold"
-        variants={
-          isSelected ? undefined : { initial: { width: '0.6875rem' }, animate: { width: '2.5rem' } }
-        }
-        transition={{ type: 'tween', duration: 0.2, ease: 'easeInOut' }}
-      />
-    </MotionBox>
+    <Box as="section" borderTop={HAIRLINE}>
+      <Flex align="center" gap="0.5rem" px="1.125rem" pt="1.5rem" pb="0.875rem" color="gold">
+        <Box as="span" fontSize="0.75rem" lineHeight={1}>
+          [
+        </Box>
+        <Box
+          as="h2"
+          fontSize="0.625rem"
+          fontWeight="semibold"
+          letterSpacing="0.22em"
+          textTransform="uppercase"
+        >
+          {content.news.label}
+        </Box>
+        <Box as="span" fontSize="0.75rem" lineHeight={1}>
+          ]
+        </Box>
+      </Flex>
+
+      <UnorderedList m={0} p={0} listStyleType="none">
+        {content.news.items.map((entry) => (
+          <ListItem key={entry.id}>
+            <Link
+              href={entry.href}
+              isExternal
+              display="block"
+              px="1.125rem"
+              py="0.875rem"
+              borderTop={HAIRLINE}
+              transition="background 0.2s linear"
+              _hover={{ bg: HIGHLIGHT, textDecor: 'none' }}
+            >
+              <Box
+                fontSize="0.5625rem"
+                letterSpacing="0.18em"
+                textTransform="uppercase"
+                color="goldAlt"
+                mb="0.375rem"
+              >
+                {entry.source}
+              </Box>
+              <Box fontSize="0.8125rem" lineHeight="1.35" color="white">
+                {entry.title}
+              </Box>
+            </Link>
+          </ListItem>
+        ))}
+      </UnorderedList>
+    </Box>
   )
 }
 
-export function MenuOverlay({ items, isOpen, activePath, onClose, footer }: MenuOverlayProps) {
+export function MenuOverlay({ isOpen, onClose, footer }: MenuOverlayProps) {
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay>
@@ -122,38 +128,7 @@ export function MenuOverlay({ items, isOpen, activePath, onClose, footer }: Menu
           </DrawerHeader>
 
           <DrawerBody p="3px 0 0 0" display="flex" flexDir="column">
-            <UnorderedList m={0} p={0} listStyleType="none">
-              {items.map((item, index) => {
-                const isSelected = activePath.indexOf(item.slug) > -1
-                const Icon = item.icon
-
-                return (
-                  <MotionListItem key={item.id} initial="initial" whileHover="animate">
-                    <NavLink
-                      href={`/servicios/${item.slug}`}
-                      display="flex"
-                      flexDirection="column"
-                      alignItems="flex-start"
-                      pt="1.875rem"
-                      pb={isSelected ? '1.25rem' : '1.875rem'}
-                      px="1.125rem"
-                      textAlign="left"
-                      transition="background 0.2s linear"
-                      borderTop={HAIRLINE}
-                      borderBottom={index === items.length - 1 ? HAIRLINE : undefined}
-                      bg={isSelected ? HIGHLIGHT : undefined}
-                      _hover={{ bg: HIGHLIGHT }}
-                      onClick={onClose}
-                      aria-current={isSelected ? 'page' : undefined}
-                      aria-label={`Go to ${item.label} page`}
-                    >
-                      <Icon w={`${item.iconWidth / 16}rem`} h="auto" display="block" />
-                      <Tagline text={item.tagline} isSelected={isSelected} mt="1.125rem" />
-                    </NavLink>
-                  </MotionListItem>
-                )
-              })}
-            </UnorderedList>
+            <NewsSection />
 
             {footer ? (
               <Flex

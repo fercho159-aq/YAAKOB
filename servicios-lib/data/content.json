@@ -285,6 +285,111 @@
     "tertiary": "Servicios",
     "login": "Solicitar asesoría"
   },
+  "news": {
+    "label": "Noticias",
+    "items": [
+      {
+        "id": "visitas-domiciliarias",
+        "title": "Ya es oficial: el SAT visitará casa por casa con cámaras especiales y abogados para verificar el cumplimiento de las obligaciones fiscales",
+        "source": "El Cronista",
+        "href": "https://www.cronista.com/mexico/finanzas-economia/ya-es-oficial-el-sat-visitara-casa-por-casa-con-camaras-especiales-y-abogados-para-verificar-el-cumplimiento-de-las-obligaciones-fiscales/"
+      },
+      {
+        "id": "buzon-tributario",
+        "title": "¿No activaste tu Buzón Tributario? El SAT advierte sanciones desde enero de 2026",
+        "source": "Google Noticias",
+        "href": "https://share.google/ZPMBqvkB62SLh6M9u"
+      },
+      {
+        "id": "transferencias-familiares",
+        "title": "Oficial | El SAT te puede multar por hacer transferencias a familiares: este es el monto permitido y las sanciones",
+        "source": "Google Noticias",
+        "href": "https://share.google/MHcELoupohGI7YVWA"
+      },
+      {
+        "id": "huachicol-fiscal",
+        "title": "El SAT le declara la guerra al huachicol fiscal: qué cambia para los transportistas desde el 24 de abril de 2026",
+        "source": "Transporte.mx",
+        "href": "https://share.google/d6O8Pdp8RUJsqYk3W"
+      },
+      {
+        "id": "tarjetas-debito",
+        "title": "¿Tienes varias tarjetas de débito? Esto es lo que el SAT revisa en agosto de 2026 para no multarte",
+        "source": "El Informador",
+        "href": "https://share.google/XUO1Gu2VfrxoG1ZaO"
+      },
+      {
+        "id": "gastos-escolares",
+        "title": "SAT permite deducir estos gastos escolares: requisitos y monto máximo",
+        "source": "Google Noticias",
+        "href": "https://share.google/ZPtYClBoWl9e0EKEJ"
+      },
+      {
+        "id": "correo-declaracion-anual",
+        "title": "Qué pasa cuando el SAT te envía un correo por no presentar tu Declaración Anual",
+        "source": "Google Noticias",
+        "href": "https://share.google/UEjclZrcsEASdKdMW"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Yaakob Consultores SC",
+    "heading": "Hablemos sobre su situación fiscal",
+    "fields": [
+      { "id": "despacho", "icon": "building", "label": "Despacho", "lines": ["Yaakob Consultores S.C."] },
+      {
+        "id": "especialista",
+        "icon": "user",
+        "label": "Especialista",
+        "lines": ["L.C. Juan José de Anda González"]
+      },
+      {
+        "id": "telefono",
+        "icon": "phone",
+        "label": "Teléfono",
+        "lines": ["+52 55 9008 6360", "+52 55 9008 7881"],
+        "href": "tel:+525590086360"
+      },
+      {
+        "id": "whatsapp",
+        "icon": "chat",
+        "label": "WhatsApp",
+        "lines": ["+52 55 2741 6178"],
+        "href": "https://wa.me/5215527416178"
+      },
+      {
+        "id": "correo",
+        "icon": "mail",
+        "label": "Correo",
+        "lines": ["contacto@yaakob.com"],
+        "href": "mailto:contacto@yaakob.com"
+      },
+      {
+        "id": "sitio",
+        "icon": "globe",
+        "label": "Sitio web",
+        "lines": ["www.yaakob.com"],
+        "href": "https://www.yaakob.com"
+      },
+      {
+        "id": "direccion",
+        "icon": "pin",
+        "label": "Dirección",
+        "lines": ["Alica 40 Lomas de Chapultepec", "Miguel Hidalgo CDMX, CP 11000"]
+      },
+      { "id": "horarios", "icon": "clock", "label": "Horarios", "lines": ["9:00 A.M. a 6:00 P.M."] }
+    ],
+    "qr": {
+      "src": "/servicios/contacto-qr.svg",
+      "href": "https://wa.me/5215527416178",
+      "caption": "Escanea para agendar tu evaluación inicial"
+    },
+    "legal": {
+      "label": "Aviso legal",
+      "body": "Los servicios ofrecidos se desarrollan dentro del marco jurídico aplicable. Cada asunto se encuentra sujeto al análisis de sus antecedentes, documentación, plazos y circunstancias particulares. La contratación de servicios profesionales no garantiza un resultado determinado y no comprende actos de evasión fiscal, simulación de operaciones, ocultamiento de información ni cualquier otra conducta contraria a la ley."
+    },
+    "signature": "Yaakob Consultores SC · Protección y defensa fiscal"
+  },
   "footer": {
     "cookies": { "label": "Configuración de cookies" },
     "privacy": { "label": "Aviso de privacidad", "href": "https://example.com/privacidad" },

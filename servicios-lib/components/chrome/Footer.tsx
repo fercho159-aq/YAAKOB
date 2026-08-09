@@ -1,7 +1,7 @@
 import { Grid, GridItem, Link, type GridProps, type IconProps } from '@chakra-ui/react'
 import { useAnimation, type Variants } from 'framer-motion'
-import NextLink from 'next/link'
 import { useEffect, useState, type ComponentType, type ElementType } from 'react'
+import { useContactModal } from '@servicios/components/contact'
 import {
   FacebookLogo,
   InstagramLogo,
@@ -27,6 +27,9 @@ const FooterGrid = Grid as unknown as ComponentType<Omit<GridProps, 'as'> & { as
 
 const IDLE = '#898989'
 const ACTIVE = '#FFFFFF'
+/** WhatsApp is the one brand that keeps its own colour in the row. */
+const WHATSAPP = '#25D366'
+const WHATSAPP_ACTIVE = '#4AE98A'
 
 /** `FOOTER_HEIGHT` in the original's constants module. */
 const FOOTER_HEIGHT = '80px'
@@ -36,6 +39,8 @@ const SOCIALS: Array<{
   key: keyof typeof content.footer.social
   icon: ComponentType<IconProps>
   iconProps?: IconProps
+  /** Overrides the grey/white pair for a brand that keeps its own colour. */
+  colors?: { idle: string; active: string }
 }> = [
   { key: 'instagram', icon: InstagramLogo },
   { key: 'facebook', icon: FacebookLogo },
@@ -43,7 +48,7 @@ const SOCIALS: Array<{
   { key: 'youtube', icon: YoutubeLogo },
   // X ships a 1200-wide viewBox and needs scaling down to match the rest.
   { key: 'twitter', icon: XLogo, iconProps: { fill: 'none', transform: 'scale(0.4)' } },
-  { key: 'whatsapp', icon: WhatsappLogo },
+  { key: 'whatsapp', icon: WhatsappLogo, colors: { idle: WHATSAPP, active: WHATSAPP_ACTIVE } },
 ]
 
 const iconVariants: Variants = {
@@ -59,6 +64,7 @@ interface SocialLinkProps extends Omit<MotionCenterProps, 'variants' | 'animate'
   icon: ComponentType<IconProps>
   /** Per-brand SVG tweaks — X ships a 1200-wide viewBox and needs scaling down. */
   iconProps?: IconProps
+  colors?: { idle: string; active: string }
   ariaLabel: string
   delay: number
   animate?: boolean
@@ -69,6 +75,7 @@ function SocialLink({
   href,
   icon: Brand,
   iconProps,
+  colors,
   ariaLabel,
   delay,
   animate = true,
@@ -77,7 +84,8 @@ function SocialLink({
 }: SocialLinkProps) {
   const [isHovering, setIsHovering] = useState(false)
   const controls = useAnimation()
-  const color = isHovering ? ACTIVE : IDLE
+  const palette = colors ?? { idle: IDLE, active: ACTIVE }
+  const color = isHovering ? palette.active : palette.idle
 
   useEffect(() => {
     if (!animate) return
@@ -174,6 +182,7 @@ export function Footer({
 }: FooterProps) {
   const [mounted, setMounted] = useState(false)
   const logoControls = useAnimation()
+  const { open: openContact } = useContactModal()
 
   useEffect(() => {
     setMounted(true)
@@ -205,33 +214,6 @@ export function Footer({
     >
       <GridItem
         colSpan={[12, null, null, null, 4]}
-        colStart={[ 'auto', null, null, null, 1]}
-        rowStart={[3, null, null, null, 'auto']}
-        display="flex"
-        justifyContent={['center', null, null, null, 'flex-start']}
-        alignItems="center"
-        pl={[0, null, null, null, null, '1.875rem']}
-      >
-        <MotionBox initial={{ opacity: 0 }} animate={logoControls}>
-          <Link
-            as={NextLink}
-            href={content.footer.contact.href}
-            fontSize="0.75rem"
-            lineHeight="100%"
-            letterSpacing="0.1em"
-            fontWeight="semibold"
-            textTransform="uppercase"
-            color={IDLE}
-            transition="color 0.4s ease-out"
-            _hover={{ color: ACTIVE, textDecor: 'none' }}
-          >
-            {content.footer.contact.label}
-          </Link>
-        </MotionBox>
-      </GridItem>
-
-      <GridItem
-        colSpan={[12, null, null, null, 4]}
         colStart={['auto', null, null, null, 5]}
         rowStart={[2, null, null, null, 'auto']}
         display="flex"
@@ -240,14 +222,17 @@ export function Footer({
       >
         <MotionBox initial={{ opacity: 0 }} animate={logoControls}>
           <Link
-            as={NextLink}
-            href={content.footer.logo.href}
+            as="button"
+            type="button"
+            onClick={openContact}
             display="flex"
             justifyContent="center"
             _hover={{ color: 'gold', textDecor: 'none' }}
-            aria-label="Ir al inicio del sitio"
+            aria-label="Abrir la tarjeta de contacto"
           >
             <PlaceholderWordmark
+              label={content.footer.contact.label.toUpperCase()}
+              title="Contacto"
               w={['90%', null, '355px']}
               maxW="355px"
               h="auto"
@@ -269,12 +254,13 @@ export function Footer({
         alignItems="center"
         pr={[0, null, null, null, null, '1.875rem']}
       >
-        {SOCIALS.map(({ key, icon, iconProps }, index) => (
+        {SOCIALS.map(({ key, icon, iconProps, colors }, index) => (
           <SocialLink
             key={key}
             href={content.footer.social[key].href}
             icon={icon}
             iconProps={iconProps}
+            colors={colors}
             ariaLabel={`Go to ${content.footer.social[key].label}`}
             animate={shouldAnimate}
             delay={(mobile ? delay : delay + 0.5) + index * 0.1}
