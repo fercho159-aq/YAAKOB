@@ -15,15 +15,15 @@
         "src": "/servicios/diagnostico-fiscal.jpg",
         "alt": "Analista revisando un tablero de cumplimiento fiscal del SAT"
       },
-      "tagline": "Panorama claro de su situación fiscal",
+      "tagline": "Panorama real de su situación fiscal",
       "about": {
         "heading": "Síntesis",
-        "description": "Análisis integral de obligaciones, expedientes, notificaciones y posibles riesgos fiscales.",
-        "tags": ["DIAGNÓSTICO", "OBLIGACIONES", "EXPEDIENTES", "RIESGOS"]
+        "description": "Integración de las obligaciones del contribuyente bajo expedientes, notificaciones y posibles riesgos fiscales.",
+        "tags": ["DIAGNÓSTICO", "DICTAMEN", "EXPEDIENTE", "RIESGO"]
       },
       "description": {
-        "heading": "Panorama claro de su situación fiscal",
-        "body": "Análisis integral de obligaciones, expedientes, notificaciones y posibles riesgos fiscales, como punto de partida para cualquier estrategia de defensa o regularización."
+        "heading": "Panorama real de su situación fiscal",
+        "body": "Integración de las obligaciones del contribuyente bajo expedientes, notificaciones y posibles riesgos fiscales."
       },
       "background": {
         "fluxColor": "#c94f4f"
@@ -38,15 +38,15 @@
         "src": "/servicios/presuntiva-fiscal.jpg",
         "alt": "Presuntiva fiscal"
       },
-      "tagline": "Revisión preventiva antes de la fiscalización",
+      "tagline": "Modelo de vigilancia profunda",
       "about": {
         "heading": "Síntesis",
-        "description": "Revisión preventiva para identificar errores, omisiones e inconsistencias que puedan originar multas, recargos o actos de fiscalización.",
-        "tags": ["PREVENCIÓN", "ERRORES", "INCONSISTENCIAS", "FISCALIZACIÓN"]
+        "description": "Revisión preventiva para identificar diferencias, omisiones e inconsistencias que pueden originar requerimientos, multas, actualizaciones, recargos o actos de fiscalización.",
+        "tags": ["PREVENCIÓN", "ERRORES", "DIFERENCIAS", "SIMULACIÓN"]
       },
       "description": {
-        "heading": "Revisión preventiva antes de la fiscalización",
-        "body": "Revisión preventiva para identificar errores, omisiones, inconsistencias o prácticas que puedan originar multas, recargos, restricciones o actos de fiscalización."
+        "heading": "Modelo de vigilancia profunda",
+        "body": "Revisión preventiva para identificar diferencias, omisiones e inconsistencias que pueden originar requerimientos, multas, actualizaciones, recargos o actos de fiscalización."
       },
       "background": {
         "fluxColor": "#c98a3a"
@@ -61,15 +61,15 @@
         "src": "/servicios/requerimientos-sat.jpg",
         "alt": "Requerimientos del SAT"
       },
-      "tagline": "Respuesta oportuna a cada notificación",
+      "tagline": "Solución oportuna a cada notificación",
       "about": {
         "heading": "Síntesis",
-        "description": "Apoyo para analizar y contestar requerimientos, cartas invitación, avisos y solicitudes de información emitidas por la autoridad.",
-        "tags": ["SAT", "REQUERIMIENTOS", "NOTIFICACIONES", "RESPUESTA"]
+        "description": "Apoyo para analizar y solventar requerimientos, cartas invitación, avisos y solicitudes de información emitidas por la autoridad.",
+        "tags": ["SAT", "UIF", "FGR", "BANCOS"]
       },
       "description": {
-        "heading": "Respuesta oportuna a cada notificación",
-        "body": "Apoyo para analizar y contestar requerimientos, cartas invitación, avisos, comunicados, solicitudes de información y notificaciones emitidas."
+        "heading": "Solución oportuna a cada notificación",
+        "body": "Apoyo para analizar y solventar requerimientos, cartas invitación, avisos y solicitudes de información emitidas por la autoridad."
       },
       "background": {
         "fluxColor": "#3aa89e"
@@ -84,15 +84,15 @@
         "src": "/servicios/auditorias.jpg",
         "alt": "Acompañamiento en auditorías"
       },
-      "tagline": "Acompañamiento en cada acto de fiscalización",
+      "tagline": "Determinación del riesgo fiscal",
       "about": {
         "heading": "Síntesis",
-        "description": "Acompañamiento durante revisiones de gabinete, visitas domiciliarias, revisiones electrónicas y demás actos de fiscalización.",
+        "description": "Revisión de gabinete, visitas domiciliarias, revisiones electrónicas y demás actos de auditoría fiscal.",
         "tags": ["AUDITORÍA", "GABINETE", "VISITAS", "FISCALIZACIÓN"]
       },
       "description": {
-        "heading": "Acompañamiento en cada acto de fiscalización",
-        "body": "Acompañamiento durante revisiones de gabinete, visitas domiciliarias, revisiones electrónicas y demás actos de fiscalización."
+        "heading": "Determinación del riesgo fiscal",
+        "body": "Revisión de gabinete, visitas domiciliarias, revisiones electrónicas y demás actos de auditoría fiscal."
       },
       "background": {
         "fluxColor": "#4f74c9"
@@ -107,14 +107,14 @@
         "src": "/servicios/multas-fiscales.jpg",
         "alt": "Corrección de multas fiscales"
       },
-      "tagline": "Corrección de sanciones y recargos",
+      "tagline": "Disminución de sanciones y recargos",
       "about": {
         "heading": "Síntesis",
         "description": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente.",
         "tags": ["MULTAS", "RECARGOS", "SANCIONES", "CORRECCIÓN"]
       },
       "description": {
-        "heading": "Corrección de sanciones y recargos",
+        "heading": "Disminución de sanciones y recargos",
         "body": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente."
       },
       "background": {
@@ -130,14 +130,14 @@
         "src": "/servicios/creditos-fiscales.jpg",
         "alt": "Créditos fiscales"
       },
-      "tagline": "Estrategias de pago, garantía o impugnación",
+      "tagline": "Estrategia de pago, garantía o impugnación",
       "about": {
         "heading": "Síntesis",
         "description": "Análisis de la determinación de contribuciones, accesorios y créditos fiscales, así como de las alternativas de pago, garantía o impugnación.",
         "tags": ["CRÉDITOS", "GARANTÍA", "IMPUGNACIÓN", "PAGO"]
       },
       "description": {
-        "heading": "Estrategias de pago, garantía o impugnación",
+        "heading": "Estrategia de pago, garantía o impugnación",
         "body": "Análisis de la determinación de contribuciones, accesorios y créditos fiscales, así como de las alternativas de pago, garantía o impugnación."
       },
       "background": {
@@ -156,12 +156,12 @@
       "tagline": "Recuperación del Certificado de Sello Digital",
       "about": {
         "heading": "Síntesis",
-        "description": "Recuperación del certificado de sello digital, considerando la documentación e información requerida por la autoridad.",
-        "tags": ["CSD", "SELLOS", "RECUPERACIÓN"]
+        "description": "Reactivación del certificado de sello digital, considerando el requerimiento o documento emitido por la autoridad.",
+        "tags": ["CSD", "EFIRMA", "SELLOS", "RECUPERACIÓN"]
       },
       "description": {
         "heading": "Recuperación del Certificado de Sello Digital",
-        "body": "Restricción o cancelación de Sellos Digitales: recuperación del certificado de sello digital, considerando documentos."
+        "body": "Reactivación del certificado de sello digital, considerando el requerimiento o documento emitido por la autoridad."
       },
       "background": {
         "fluxColor": "#c9793a"
@@ -176,15 +176,15 @@
         "src": "/servicios/defensa-69b.jpg",
         "alt": "Defensa ante el listado 69-B"
       },
-      "tagline": "Defensa legal ante el listado 69-B",
+      "tagline": "Defensa legal ante el listado del 69-B",
       "about": {
         "heading": "Síntesis",
-        "description": "Preparación de aclaraciones, solicitudes, pruebas, escritos, recursos administrativos y demás medios legales procedentes.",
-        "tags": ["69-B", "DEFENSA", "RECURSOS", "PRUEBAS"]
+        "description": "Aclaración de presuntivas, preparación de pruebas, escritos y demás medios procedentes.",
+        "tags": ["69-B", "DEFENSA", "MATERIALIDAD", "CORRECCIÓN"]
       },
       "description": {
-        "heading": "Defensa legal ante el listado 69-B",
-        "body": "Preparación de aclaraciones, solicitudes, pruebas, escritos, recursos administrativos y demás medios legales procedentes."
+        "heading": "Defensa legal ante el listado del 69-B",
+        "body": "Aclaración de presuntivas, preparación de pruebas, escritos y demás medios procedentes."
       },
       "background": {
         "fluxColor": "#4f5fc9"
@@ -199,15 +199,15 @@
         "src": "/servicios/uif-fgr.jpg",
         "alt": "Debido proceso ante UIF y FGR"
       },
-      "tagline": "Protección ante UIF y FGR",
+      "tagline": "Prevención financiera y fiscal",
       "about": {
         "heading": "Síntesis",
-        "description": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la UIF y la FGR.",
-        "tags": ["UIF", "FGR", "LEGALIDAD", "SEGURIDAD"]
+        "description": "Resolución definitiva por derechos, legalidad, seguridad y acceso a información ante la UIF y la FGR.",
+        "tags": ["CNBV", "BLOQUEO", "GARANTÍA"]
       },
       "description": {
-        "heading": "Protección ante UIF y FGR",
-        "body": "Debido proceso: protección de los derechos, legalidad, seguridad y acceso a información ante la Unidad de Inteligencia Financiera y la Fiscalía General de la República."
+        "heading": "Prevención financiera y fiscal",
+        "body": "Resolución definitiva por derechos, legalidad, seguridad y acceso a información ante la Unidad de Inteligencia Financiera y la Fiscalía General de la República."
       },
       "background": {
         "fluxColor": "#7a3ac9"
@@ -225,12 +225,12 @@
       "tagline": "Subsanación de irregularidades",
       "about": {
         "heading": "Síntesis",
-        "description": "Subsanar irregularidades detectadas en los controles volumétricos del contribuyente.",
-        "tags": ["CONTROLES", "VOLUMÉTRICOS", "IRREGULARIDADES"]
+        "description": "Regularización sobre la Ley de Hidrocarburos, ANAM y AGASE.",
+        "tags": ["SOFTWARE", "PEDIMENTOS", "REGISTROS", "IRREGULARIDADES"]
       },
       "description": {
         "heading": "Subsanación de irregularidades",
-        "body": "Subsanar irregularidades detectadas en los controles volumétricos del contribuyente."
+        "body": "Regularización sobre la Ley de Hidrocarburos, ANAM y AGASE."
       },
       "background": {
         "fluxColor": "#c93a6f"
@@ -248,12 +248,12 @@
       "tagline": "Estrategias para poner al día su situación fiscal",
       "about": {
         "heading": "Síntesis",
-        "description": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable.",
-        "tags": ["REGULARIZACIÓN", "DICTAMEN", "CUMPLIMIENTO"]
+        "description": "Prevenir, identificar y corregir irregularidades, fraudes, incumplimientos y riesgos fiscales.",
+        "tags": ["DIAGNÓSTICO", "ANÁLISIS", "CUMPLIMIENTO"]
       },
       "description": {
         "heading": "Estrategias para poner al día su situación fiscal",
-        "body": "Dictamen y estrategias para corregir obligaciones, inconsistencias y actualizar la situación fiscal conforme a la legislación aplicable."
+        "body": "Prevenir, identificar y corregir irregularidades, fraudes, incumplimientos y riesgos fiscales."
       },
       "background": {
         "fluxColor": "#3ac9a8"
