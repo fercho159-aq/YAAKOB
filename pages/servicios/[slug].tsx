@@ -36,7 +36,7 @@ export default function ItemPage({ data }: ItemPageProps) {
         <title key="page-title">{title}</title>
         <meta key="page-title-meta" name="title" content={title} />
         <meta key="description" name="description" content={site.description} />
-        <link key="icon" rel="icon" href="/favicon.svg" />
+        <link key="icon" rel="icon" type="image/png" href="/favicon.png" />
         <meta key="twitter-card" property="twitter:card" content="summary_large_image" />
         <meta key="twitter-image" property="twitter:image" content={site.shareImage} />
         <meta key="twitter-image-alt" property="twitter:image:alt" content={site.description} />

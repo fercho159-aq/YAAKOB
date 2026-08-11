@@ -38,7 +38,7 @@ export default function Home({ data, animate = true }: HomeProps) {
         <title>{SITE_TITLE}</title>
         <meta name="title" content={SITE_TITLE} />
         <meta name="description" content={SITE_DESCRIPTION} />
-        <link rel="icon" href="/favicon.svg" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:title" content={SITE_TITLE} />
         <meta property="twitter:description" content={SITE_DESCRIPTION} />

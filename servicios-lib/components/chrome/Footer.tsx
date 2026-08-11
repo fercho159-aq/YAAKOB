@@ -214,10 +214,10 @@ export function Footer({
     >
       <GridItem
         colSpan={[12, null, null, null, 4]}
-        colStart={['auto', null, null, null, 5]}
+        colStart={['auto', null, null, null, 1]}
         rowStart={[2, null, null, null, 'auto']}
         display="flex"
-        justifyContent="center"
+        justifyContent={['center', null, null, null, 'flex-start']}
         alignItems="center"
       >
         <MotionBox initial={{ opacity: 0 }} animate={logoControls}>

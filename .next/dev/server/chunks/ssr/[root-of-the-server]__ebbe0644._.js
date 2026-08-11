@@ -1273,7 +1273,7 @@ function Footer({ delay = 0, animate = true, mobile = false, restartId = 0, ...r
                     null,
                     null,
                     null,
-                    5
+                    1
                 ],
                 rowStart: [
                     2,
@@ -1283,7 +1283,13 @@ function Footer({ delay = 0, animate = true, mobile = false, restartId = 0, ...r
                     'auto'
                 ],
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: [
+                    'center',
+                    null,
+                    null,
+                    null,
+                    'flex-start'
+                ],
                 alignItems: "center",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["MotionBox"], {
                     initial: {
@@ -1760,16 +1766,13 @@ var __TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/router.js [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$MenuOverlay$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/servicios-lib/components/chrome/MenuOverlay.tsx [ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$Wordmark$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/servicios-lib/components/chrome/Wordmark.tsx [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/servicios-lib/components/chrome/motion.ts [ssr] (ecmascript)");
 var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
     __TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__,
     __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$MenuOverlay$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__,
-    __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$Wordmark$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__,
     __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__
 ]);
-[__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$MenuOverlay$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$Wordmark$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__;
-;
+[__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$MenuOverlay$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__, __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__] = __turbopack_async_dependencies__.then ? (await __turbopack_async_dependencies__)() : __turbopack_async_dependencies__;
 ;
 ;
 ;
@@ -1862,15 +1865,15 @@ function MenuToggle({ animate = true, minimal = false, onClick }) {
                     as: "span",
                     display: "block",
                     variants: menuLabelVariants,
-                    children: "Menu"
+                    children: "Noticias"
                 }, void 0, false, {
                     fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                    lineNumber: 69,
+                    lineNumber: 68,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                lineNumber: 59,
+                lineNumber: 58,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["Flex"], {
@@ -1888,7 +1891,7 @@ function MenuToggle({ animate = true, minimal = false, onClick }) {
                         variants: barVariants
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                        lineNumber: 80,
+                        lineNumber: 79,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["MotionBox"], {
@@ -1903,7 +1906,7 @@ function MenuToggle({ animate = true, minimal = false, onClick }) {
                         }
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                        lineNumber: 81,
+                        lineNumber: 80,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["MotionBox"], {
@@ -1919,19 +1922,19 @@ function MenuToggle({ animate = true, minimal = false, onClick }) {
                         }
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                        lineNumber: 90,
+                        lineNumber: 89,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                lineNumber: 73,
+                lineNumber: 72,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-        lineNumber: 43,
+        lineNumber: 42,
         columnNumber: 5
     }, this);
 }
@@ -1969,25 +1972,45 @@ function Navigation({ animate = true, minimal = false, menuFooter }) {
                     base: '1.125rem',
                     xl: '1.875rem'
                 },
-                w: "8rem",
+                display: "flex",
+                alignItems: "center",
+                gap: 3,
                 mt: "-0.25rem",
                 zIndex: "navigation",
                 visibility: {
                     base: logoHiddenOnMobile ? 'hidden' : undefined,
                     xl: 'visible'
                 },
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$Wordmark$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["AnimatedWordmark"], {
-                    animate: animate,
-                    label: "YAAKOB",
-                    title: "Yaakob"
-                }, void 0, false, {
-                    fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                    lineNumber: 141,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["Image"], {
+                        src: "/favicon.png",
+                        alt: "",
+                        h: "2rem",
+                        w: "2rem",
+                        filter: "invert(1)",
+                        mixBlendMode: "screen"
+                    }, void 0, false, {
+                        fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
+                        lineNumber: 143,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["Box"], {
+                        as: "span",
+                        fontSize: "0.75rem",
+                        lineHeight: "100%",
+                        letterSpacing: "0.1em",
+                        fontWeight: "semibold",
+                        color: "white",
+                        children: "Yaakob Consultores, SC"
+                    }, void 0, false, {
+                        fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
+                        lineNumber: 151,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                lineNumber: 130,
+                lineNumber: 129,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(MenuToggle, {
@@ -1996,7 +2019,7 @@ function Navigation({ animate = true, minimal = false, menuFooter }) {
                 onClick: ()=>setIsOpen((open)=>!open)
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                lineNumber: 144,
+                lineNumber: 163,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$MenuOverlay$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__["MenuOverlay"], {
@@ -2005,13 +2028,13 @@ function Navigation({ animate = true, minimal = false, menuFooter }) {
                 footer: menuFooter
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-                lineNumber: 146,
+                lineNumber: 165,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/servicios-lib/components/chrome/Navigation.tsx",
-        lineNumber: 122,
+        lineNumber: 121,
         columnNumber: 5
     }, this);
 }
@@ -5280,7 +5303,8 @@ function Home({ data, animate = true }) {
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("link", {
                         rel: "icon",
-                        href: "/favicon.svg"
+                        type: "image/png",
+                        href: "/favicon.png"
                     }, void 0, false, {
                         fileName: "[project]/pages/servicios/index.tsx",
                         lineNumber: 41,

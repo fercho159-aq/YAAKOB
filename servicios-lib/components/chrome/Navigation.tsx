@@ -1,9 +1,8 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, Image } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState, type ReactNode } from 'react'
 import { MenuOverlay } from './MenuOverlay'
-import { AnimatedWordmark } from './Wordmark'
 import { MotionBox, MotionFlex, NavLink } from './motion'
 
 const EASE: [number, number, number, number] = [0.25, 0, 0, 1]
@@ -67,7 +66,7 @@ function MenuToggle({ animate = true, minimal = false, onClick }: MenuToggleProp
         textTransform="uppercase"
       >
         <MotionBox as="span" display="block" variants={menuLabelVariants}>
-          Menu
+          Noticias
         </MotionBox>
       </Box>
       <Flex
@@ -133,12 +132,32 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         pos="absolute"
         top={minimal ? { base: '0.9375rem', xl: '0.9375rem' } : { base: '1.375rem', xl: '1.875rem' }}
         left={{ base: '1.125rem', xl: '1.875rem' }}
-        w="8rem"
+        display="flex"
+        alignItems="center"
+        gap={3}
         mt="-0.25rem"
         zIndex="navigation"
         visibility={{ base: logoHiddenOnMobile ? 'hidden' : undefined, xl: 'visible' }}
       >
-        <AnimatedWordmark animate={animate} label="YAAKOB" title="Yaakob" />
+        {/* Black-on-white artwork: invert + screen makes it read white on the dark background. */}
+        <Image
+          src="/favicon.png"
+          alt=""
+          h="2rem"
+          w="2rem"
+          filter="invert(1)"
+          mixBlendMode="screen"
+        />
+        <Box
+          as="span"
+          fontSize="0.75rem"
+          lineHeight="100%"
+          letterSpacing="0.1em"
+          fontWeight="semibold"
+          color="white"
+        >
+          Yaakob Consultores, SC
+        </Box>
       </NavLink>
 
       <MenuToggle animate={animate} minimal={minimal} onClick={() => setIsOpen((open) => !open)} />

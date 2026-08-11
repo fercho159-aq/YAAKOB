@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "YAAKOB | Be Free - Bienestar, Desarrollo Personal y Crecimiento Espiritual",
+  title: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
   description:
-    "YAAKOB es una aplicación móvil legítima de bienestar y desarrollo personal disponible en App Store y Google Play. Ofrece herramientas de meditación, reflexión espiritual y crecimiento personal basadas en valores bíblicos. No vendemos productos físicos. Descarga gratuita.",
+    "Yaakob Consultores S.C.: despacho especializado en protección y defensa fiscal. Diagnóstico fiscal, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B, UIF-FGR, controles volumétricos y regularización fiscal. Asesoría con L.C. Juan José de Anda González en CDMX.",
   keywords:
-    "YAAKOB, bienestar, desarrollo personal, meditación, crecimiento espiritual, app móvil, aplicación gratuita, reflexión bíblica, salmos, prosperidad espiritual",
-  authors: [{ name: "YAAKOB", url: "https://yaakob.com" }],
+    "Yaakob Consultores, defensa fiscal, diagnóstico fiscal, auditorías SAT, créditos fiscales, multas fiscales, sellos digitales, defensa 69-B, UIF FGR, controles volumétricos, regularización fiscal, requerimientos SAT, abogado fiscalista CDMX",
+  authors: [{ name: "Yaakob Consultores S.C.", url: "https://yaakob.com" }],
   robots: "index, follow",
   icons: {
     icon: "/logo.png",
@@ -16,22 +16,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://yaakob.com",
   },
-  category: "lifestyle",
+  category: "legal services",
   openGraph: {
     type: "website",
     url: "https://yaakob.com/",
-    title: "YAAKOB | Be Free - Bienestar y Desarrollo Personal",
+    title: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
     description:
-      "Aplicación móvil gratuita de bienestar y desarrollo personal. Meditación, reflexión espiritual y crecimiento personal. Disponible en App Store y Google Play.",
+      "Despacho especializado en defensa fiscal: diagnóstico, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B y UIF-FGR.",
     images: "/logo.png",
-    siteName: "YAAKOB",
+    siteName: "Yaakob Consultores S.C.",
     locale: "es_MX",
   },
   twitter: {
     card: "summary_large_image",
-    title: "YAAKOB | Be Free - Bienestar y Desarrollo Personal",
+    title: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
     description:
-      "Aplicación móvil gratuita de bienestar y desarrollo personal. Disponible en App Store y Google Play.",
+      "Despacho especializado en defensa fiscal ante el SAT. Diagnóstico, auditorías, créditos fiscales, multas y más.",
     images: "/logo.png",
   },
   other: {
@@ -45,62 +45,73 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization",
+      "@type": "LegalService",
       "@id": "https://yaakob.com/#organization",
-      name: "YAAKOB",
+      name: "Yaakob Consultores S.C.",
+      alternateName: "Yaakob - XIX - XXIII",
       url: "https://yaakob.com",
       logo: "https://yaakob.com/logo.png",
+      image: "https://yaakob.com/logo.png",
       description:
-        "YAAKOB es un proyecto de desarrollo personal y bienestar espiritual. Ofrecemos una aplicación móvil gratuita con herramientas de meditación y reflexión basadas en valores bíblicos. No vendemos productos físicos ni servicios engañosos. Nuestra misión es promover el bienestar integral de las personas.",
-      foundingDate: "2024",
+        "Despacho especializado en protección y defensa fiscal ante el SAT, la UIF y la FGR. Diagnóstico fiscal, auditorías, créditos fiscales, multas, sellos digitales, defensa 69-B, controles volumétricos y regularización fiscal.",
+      areaServed: "MX",
+      telephone: "+52 55 9008 6360",
+      email: "contacto@yaakob.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Alica 40, Lomas de Chapultepec",
+        addressLocality: "Miguel Hidalgo, CDMX",
+        postalCode: "11000",
+        addressCountry: "MX",
+      },
+      openingHours: "Mo-Fr 09:00-18:00",
+      founder: { "@type": "Person", name: "L.C. Juan José de Anda González" },
       sameAs: [
-        "https://apps.apple.com/mx/app/yaakob/id6758861392",
-        "https://play.google.com/store/apps/details?id=com.fernandotrejo.consultora&hl=es_MX",
+        "https://www.instagram.com/yaakobeheart/",
+        "https://www.facebook.com/profile.php?id=61587552527813",
+        "https://www.tiktok.com/@yaakob_heart",
+        "https://www.youtube.com/@YaakobBeHeart",
+        "https://x.com/yaakob",
       ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Servicios de defensa fiscal",
+        itemListElement: [
+          "Diagnóstico Fiscal",
+          "Presuntiva Fiscal",
+          "Requerimientos SAT",
+          "Auditorías",
+          "Multas Fiscales",
+          "Créditos Fiscales",
+          "Sellos Digitales",
+          "Defensa 69-B",
+          "UIF - FGR",
+          "Controles Volumétricos",
+          "Regularización Fiscal",
+        ].map((name) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name },
+        })),
+      },
     },
     {
       "@type": "WebSite",
       "@id": "https://yaakob.com/#website",
       url: "https://yaakob.com",
-      name: "YAAKOB",
-      description: "Sitio web oficial de la aplicación YAAKOB - Bienestar y desarrollo personal",
+      name: "Yaakob - XIX - XXIII",
+      description: "Sitio web oficial de Yaakob Consultores S.C. - Protección y defensa fiscal",
       publisher: { "@id": "https://yaakob.com/#organization" },
       inLanguage: "es-MX",
-    },
-    {
-      "@type": "MobileApplication",
-      "@id": "https://yaakob.com/#app",
-      name: "YAAKOB",
-      operatingSystem: "iOS, Android",
-      applicationCategory: "LifestyleApplication",
-      description:
-        "Aplicación de bienestar y desarrollo personal con herramientas de meditación, reflexión espiritual y crecimiento personal basadas en textos bíblicos como los Salmos. Aplicación gratuita, sin contenido engañoso ni productos ilegales.",
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "MXN",
-        availability: "https://schema.org/InStock",
-      },
-      installUrl: [
-        "https://apps.apple.com/mx/app/yaakob/id6758861392",
-        "https://play.google.com/store/apps/details?id=com.fernandotrejo.consultora&hl=es_MX",
-      ],
-      creator: { "@id": "https://yaakob.com/#organization" },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        worstRating: 1,
-        bestRating: 5,
-      },
     },
     {
       "@type": "WebPage",
       "@id": "https://yaakob.com/#webpage",
       url: "https://yaakob.com",
-      name: "YAAKOB | Be Free",
+      name: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
       isPartOf: { "@id": "https://yaakob.com/#website" },
-      about: { "@id": "https://yaakob.com/#app" },
+      about: { "@id": "https://yaakob.com/#organization" },
       description:
-        "Página oficial de YAAKOB. Aplicación legítima de bienestar personal disponible en las tiendas oficiales de Apple y Google. No se venden productos ilegales ni se engaña a los usuarios. Contenido basado en reflexiones bíblicas y herramientas de desarrollo personal.",
+        "Página oficial de Yaakob Consultores S.C. Despacho de protección y defensa fiscal ante el SAT, la UIF y la FGR, con asesoría de L.C. Juan José de Anda González.",
       inLanguage: "es-MX",
     },
   ],
