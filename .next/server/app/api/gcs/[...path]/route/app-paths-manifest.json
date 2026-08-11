@@ -1,0 +1,3 @@
+{
+  "/api/gcs/[...path]/route": "app/api/gcs/[...path]/route.js"
+}
