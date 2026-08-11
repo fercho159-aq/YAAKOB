@@ -233,8 +233,8 @@ export function Footer({
             <PlaceholderWordmark
               label={content.footer.contact.label.toUpperCase()}
               title="Contacto"
-              w={['90%', null, '355px']}
-              maxW="355px"
+              w={['63%', null, '249px']}
+              maxW="159px"
               h="auto"
               color="white"
               background="transparent"
@@ -248,6 +248,7 @@ export function Footer({
 
       <GridItem
         colSpan={[12, null, null, null, 4]}
+        colStart={['auto', null, null, null, 9]}
         rowStart={[1, null, null, null, 'auto']}
         display="flex"
         justifyContent={['center', null, null, null, 'flex-end']}
