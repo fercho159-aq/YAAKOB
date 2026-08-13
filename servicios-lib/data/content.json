@@ -392,8 +392,8 @@
   },
   "footer": {
     "cookies": { "label": "Configuración de cookies" },
-    "privacy": { "label": "Aviso de privacidad", "href": "https://example.com/privacidad" },
-    "ads": { "label": "Términos", "href": "https://example.com/terminos" },
+    "privacy": { "label": "Aviso de privacidad", "href": "/privacidad" },
+    "ads": { "label": "Términos", "href": "/terminos" },
     "logo": { "href": "/" },
     "contact": { "label": "Contacto", "href": "https://wa.me/5215527416178" },
     "social": {

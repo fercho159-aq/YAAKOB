@@ -1,5 +1,6 @@
-import { Grid, GridItem, Link, type GridProps, type IconProps } from '@chakra-ui/react'
+import { Flex, Grid, GridItem, Link, type GridProps, type IconProps } from '@chakra-ui/react'
 import { useAnimation, type Variants } from 'framer-motion'
+import NextLink from 'next/link'
 import { useEffect, useState, type ComponentType, type ElementType } from 'react'
 import { useContactModal } from '@servicios/components/contact'
 import {
@@ -33,6 +34,12 @@ const WHATSAPP_ACTIVE = '#4AE98A'
 
 /** `FOOTER_HEIGHT` in the original's constants module. */
 const FOOTER_HEIGHT = '80px'
+
+/**
+ * Both entries are internal routes, so they use `NextLink` and stay in the tab —
+ * unlike the social row, which is external throughout.
+ */
+const LEGAL_LINKS = [content.footer.privacy, content.footer.ads]
 
 /** Same set, in the same order, as the social row on the home page. */
 const SOCIALS: Array<{
@@ -243,6 +250,36 @@ export function Footer({
               _hover={{ opacity: 1 }}
             />
           </Link>
+        </MotionBox>
+      </GridItem>
+
+      <GridItem
+        colSpan={[12, null, null, null, 4]}
+        colStart={['auto', null, null, null, 5]}
+        rowStart={[3, null, null, null, 'auto']}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <MotionBox initial={{ opacity: 0 }} animate={logoControls}>
+          <Flex align="center" gap={['0.75rem', null, '1.25rem']}>
+            {LEGAL_LINKS.map((entry) => (
+              <Link
+                key={entry.href}
+                as={NextLink}
+                href={entry.href}
+                fontSize={['0.5625rem', null, '0.625rem']}
+                letterSpacing="0.16em"
+                textTransform="uppercase"
+                color={IDLE}
+                whiteSpace="nowrap"
+                transition="color 0.4s ease-out"
+                _hover={{ color: ACTIVE, textDecor: 'none' }}
+              >
+                {entry.label}
+              </Link>
+            ))}
+          </Flex>
         </MotionBox>
       </GridItem>
 
