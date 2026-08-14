@@ -429,8 +429,17 @@ float msdf(sampler2D tex, vec2 uv) {
     return smoothstep(-d, d, signedDist);
 }
 
+float randomf(in float x) {
+    return fract(sin(x) * 1e4);
+}
+
 float randomf(in vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+float pattern(vec2 st, vec2 v, float t) {
+    vec2 p = floor(st + v);
+    return step(t, randomf(100.0 + p * 0.000001) + randomf(p.x) * 0.5);
 }
 
 void main() {
@@ -442,20 +451,27 @@ void main() {
     mixFluid = mix(mixFluid, 0.0, 0.3);
     mixFluid = max(fluidMask, mixFluid);
 
-    // Scanline glitch: screen-space bands shear the glyph lookup and drop out
-    // at random while the fluid is active, like the wordmark's dissolve.
-    float row = floor(gl_FragCoord.y / 5.0);
-    float tick = floor(time * 18.0);
-    float r1 = randomf(vec2(row, tick));
-    vec2 uv = vUv + vec2((r1 - 0.5) * 0.02, 0.0) * mixFluid;
+    float fill = msdf(tMap, vUv);
+    if (fill < 0.01) discard;
 
-    float alpha = msdf(tMap, uv);
-    float dropout = step(0.3, randomf(vec2(row * 1.7, tick + 3.0)));
-    alpha = mix(alpha, alpha * dropout, mixFluid);
-    if (alpha < 0.01) discard;
+    // The wordmark's dissolve, in screen space: the logo quad runs its
+    // 140x200 grid over roughly half the frame, so ~4x3 device-pixel cells
+    // reproduce the same grain here.
+    vec2 st = gl_FragCoord.xy * vec2(0.22, 0.31);
+    vec2 ipos = floor(st);
+    vec2 fpos = fract(st);
+    vec2 vel = vec2(time * 0.05 * 200.0);
+    vel *= vec2(-1.0, 0.0) * randomf(1.0 + ipos.y);
 
-    vec3 color = mix(uColor, vec3(1.0), mixFluid * step(0.85, r1));
-    gl_FragColor = vec4(color, alpha * uAlpha);
+    float c = clamp(pattern(st + vec2(0.1, -0.5), vel, 0.7), 0.0, 1.0);
+    float a = step(0.6, fpos.y);
+    float outline = c * a * fill;
+    fill = mix(fill, outline, mixFluid);
+
+    gl_FragColor.rgb = uColor;
+    gl_FragColor.a = fill * uAlpha;
+
+    gl_FragColor = mix(gl_FragColor, vec4(1.0), (1.0 - c) * a * fill * mixFluid);
 }
 `
 
