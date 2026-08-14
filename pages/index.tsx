@@ -1,3 +1,4 @@
+import { useIntroSfx } from '@home/audio/useIntroSfx'
 import { HebrewSplash, Hud, IntroVeil, Stage } from '@home/components'
 import Head from 'next/head'
 import Script from 'next/script'
@@ -106,6 +107,8 @@ function useHomeBodyClass() {
 
 export default function Home() {
   useHomeBodyClass()
+  // Whoosh under the dolly, hit on the wordmark, room tone on first gesture.
+  useIntroSfx()
 
   return (
     <>

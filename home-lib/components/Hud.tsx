@@ -1,6 +1,7 @@
 import { MenuDrawer } from '@servicios/components/chrome'
 import { useContactModal } from '@servicios/components/contact'
 import { useEffect, useState } from 'react'
+import { useUiSfx } from '../audio/useUiSfx'
 import content from '../data/content.json'
 
 // Split ring from the services footer: two 150 degree arcs on r=10.5,
@@ -47,9 +48,11 @@ export function Hud() {
   const { open } = useContactModal()
   const { time, date } = useClock()
   const [menuOpen, setMenuOpen] = useState(false)
+  // Hover and click sounds for every link and button in the bar.
+  const sfx = useUiSfx()
 
   return (
-    <div id="yk-hud">
+    <div id="yk-hud" {...sfx}>
       <div className="yk-hud-side yk-hud-left">
         <div className="yk-time" id="yk-time" suppressHydrationWarning>
           {time}
