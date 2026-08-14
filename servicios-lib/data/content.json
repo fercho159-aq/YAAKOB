@@ -341,7 +341,7 @@
         "id": "especialista",
         "icon": "user",
         "label": "Especialista",
-        "lines": ["L.C. Juan José de Anda González"]
+        "lines": ["L.C. Juan José de Anda G."]
       },
       {
         "id": "telefono",
@@ -375,9 +375,14 @@
         "id": "direccion",
         "icon": "pin",
         "label": "Dirección",
-        "lines": ["Alica 40 Lomas de Chapultepec", "Miguel Hidalgo CDMX, CP 11000"]
+        "lines": ["Alica 40 Lomas de Chapultepec", "Miguel Hidalgo CDMX, CP 11040"]
       },
-      { "id": "horarios", "icon": "clock", "label": "Horarios", "lines": ["9:00 A.M. a 6:00 P.M."] }
+      {
+        "id": "horarios",
+        "icon": "clock",
+        "label": "Horarios",
+        "lines": ["Lunes a Viernes", "9:00 A.M. a 6:00 P.M."]
+      }
     ],
     "qr": {
       "src": "/servicios/contacto-qr.svg",

@@ -327,8 +327,6 @@ export default function StartPage() {
           <span className="sp-title__line">AHORA</span>
         </h1>
 
-        <p className="sp-sub">BE FREE</p>
-
         <div className="sp-buttons">
           <button onClick={() => setShowDownload(true)} className="sp-btn">
             <span className="sp-btn__text">COMIENZA AHORA</span>

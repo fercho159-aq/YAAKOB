@@ -61,7 +61,7 @@ const jsonLd = {
         "@type": "PostalAddress",
         streetAddress: "Alica 40, Lomas de Chapultepec",
         addressLocality: "Miguel Hidalgo, CDMX",
-        postalCode: "11000",
+        postalCode: "11040",
         addressCountry: "MX",
       },
       openingHours: "Mo-Fr 09:00-18:00",

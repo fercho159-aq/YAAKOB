@@ -15,7 +15,7 @@ function Flower({ className }: { className: string }) {
 
 /**
  * Entry sequence, per the client's mocks:
- *  1. "intro" — flat grey-blue frame, flower mark + YAAKOB BE FREE.
+ *  1. "intro" — flat grey-blue frame, flower mark + YAAKOB.
  *  2. "hebrew" — the psalm frame: יה/סאל up top, the blessing over a faint 20,
  *     corner registration marks, drifting letters, the mark again at the foot.
  * Then the whole overlay fades and unmounts onto the WebGL scene.
@@ -49,7 +49,6 @@ export function HebrewSplash() {
         <Flower className="hs-flower hs-flower--intro" />
         <div className="hs-brand">
           <span className="hs-brand-name">YAAKOB</span>
-          <span className="hs-brand-tag">BE FREE</span>
         </div>
       </div>
 
@@ -80,7 +79,6 @@ export function HebrewSplash() {
           <Flower className="hs-flower hs-flower--foot" />
           <div className="hs-brand hs-brand--foot">
             <span className="hs-brand-name">YAAKOB</span>
-            <span className="hs-brand-tag">BE FREE</span>
           </div>
         </div>
       </div>
