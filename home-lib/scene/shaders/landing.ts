@@ -283,13 +283,17 @@ void main() {
 
     float clampAlpha = smoothstep(uClamp.x - 0.001, uClamp.x + 0.001, 1.0 - vUv.y)
         * smoothstep(uClamp.y + 0.001, uClamp.y - 0.001, 1.0 - vUv.y);
-    alpha *= mix(clampAlpha, 1.0 - clampAlpha, uFlipClamp);
+    float band = mix(clampAlpha, 1.0 - clampAlpha, uFlipClamp);
+    alpha *= band;
     alpha = mix(alpha, outline * alpha, smoothstep(0.8, 0.0, alpha));
 
     gl_FragColor.rgb = uColor;
     gl_FragColor.a = alpha * uAlpha;
 
-    gl_FragColor = mix(gl_FragColor, vec4(1.0), (1.0 - c) * a * fill * mixFluid * uTransition);
+    // The sparkle must respect the layer's atlas band: without the gate the
+    // fluid "reveals" artwork from the bands this layer is meant to clip out,
+    // leaving stray dark debris above and below the text.
+    gl_FragColor = mix(gl_FragColor, vec4(1.0), (1.0 - c) * a * fill * mixFluid * uTransition * band);
 }
 `
 
