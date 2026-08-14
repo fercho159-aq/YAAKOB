@@ -422,21 +422,33 @@ function TaglineLine({
   )
 }
 
-function Tagline({ onBegin }: { onBegin?: () => void }) {
+function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
   const layout = useText(tagline.font, tagline.text, tagline.letterSpacing)
   const atlas = useTexture(tagline.atlas)
   const size = useThree((state) => state.size)
   // The legacy engine's portrait breakpoint: phones get the stacked layout.
   const portrait = size.width < size.height
 
+  // One uniforms object shared by every line's material, so the per-frame
+  // update below reaches all of them at once.
   const uniforms = useMemo(
     () => ({
+      time: { value: 0 },
       tMap: { value: atlas },
+      tFluid: { value: fluid.texture },
+      uResolution: { value: new Vector2(1, 1) },
       uColor: { value: rawColor(tagline.color) },
       uAlpha: { value: tagline.alpha },
     }),
-    [atlas]
+    [atlas, fluid]
   )
+
+  useFrame(({ clock, size: frameSize, viewport }) => {
+    uniforms.time.value = clock.elapsedTime
+    uniforms.tFluid.value = fluid.texture
+    // Device pixels; see the note in Eye.
+    uniforms.uResolution.value.set(frameSize.width * viewport.dpr, frameSize.height * viewport.dpr)
+  })
 
   // The layout is in font units; scale the whole line to its world width. The
   // portrait lines reuse the same factor so every glyph keeps its size.
@@ -542,7 +554,7 @@ function Landing({ onBegin }: SceneProps) {
         <Splines fluid={fluid} />
       </group>
       <Logo fluid={fluid} />
-      <Tagline onBegin={onBegin} />
+      <Tagline onBegin={onBegin} fluid={fluid} />
 
       {/* The engine's post chain: UnrealBloom, then the Composite pass. */}
       <EffectComposer>

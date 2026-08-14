@@ -407,9 +407,16 @@ void main() {
 }
 `
 
-/** msdf.glsl, verbatim, wrapped in the engine's flat-colour text fragment. */
+/**
+ * msdf.glsl wrapped in the engine's flat-colour text fragment, plus the same
+ * pointer-fluid dissolve the logo runs: where the pointer has stirred the
+ * surface, scanline bands displace and drop out of the glyphs.
+ */
 export const textFragment = /* glsl */ `
+uniform float time;
 uniform sampler2D tMap;
+uniform sampler2D tFluid;
+uniform vec2 uResolution;
 uniform vec3 uColor;
 uniform float uAlpha;
 
@@ -419,13 +426,36 @@ float msdf(sampler2D tex, vec2 uv) {
     vec3 texel = texture2D(tex, uv).rgb;
     float signedDist = max(min(texel.r, texel.g), min(max(texel.r, texel.g), texel.b)) - 0.5;
     float d = fwidth(signedDist);
-    float alpha = smoothstep(-d, d, signedDist);
-    if (alpha < 0.01) discard;
-    return alpha;
+    return smoothstep(-d, d, signedDist);
+}
+
+float randomf(in vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
 }
 
 void main() {
-    gl_FragColor = vec4(uColor, msdf(tMap, vUv) * uAlpha);
+    vec2 fluidUV = gl_FragCoord.xy / uResolution;
+    float fluidMask = smoothstep(0.0, 0.1, texture2D(tFluid, fluidUV).z);
+    vec2 fluid = texture2D(tFluid, fluidUV).xy * fluidMask;
+
+    float mixFluid = smoothstep(0.0, 0.0005, fluid.x * fluid.y);
+    mixFluid = mix(mixFluid, 0.0, 0.3);
+    mixFluid = max(fluidMask, mixFluid);
+
+    // Scanline glitch: screen-space bands shear the glyph lookup and drop out
+    // at random while the fluid is active, like the wordmark's dissolve.
+    float row = floor(gl_FragCoord.y / 5.0);
+    float tick = floor(time * 18.0);
+    float r1 = randomf(vec2(row, tick));
+    vec2 uv = vUv + vec2((r1 - 0.5) * 0.02, 0.0) * mixFluid;
+
+    float alpha = msdf(tMap, uv);
+    float dropout = step(0.3, randomf(vec2(row * 1.7, tick + 3.0)));
+    alpha = mix(alpha, alpha * dropout, mixFluid);
+    if (alpha < 0.01) discard;
+
+    vec3 color = mix(uColor, vec3(1.0), mixFluid * step(0.85, r1));
+    gl_FragColor = vec4(color, alpha * uAlpha);
 }
 `
 
