@@ -44,7 +44,12 @@ const BLINK_MS = 420
 /** Total run, and the slice of it the counter takes to reach 99. */
 const COUNT_MS = 4200
 const FADE_AT = 4600
-const GONE_AT = 5600
+/** The hand-off to the scene: two seconds of blue and snow. */
+const HANDOFF_MS = 2000
+const GONE_AT = FADE_AT + HANDOFF_MS
+
+/** One flake per this many square pixels of viewport. */
+const FLAKE_DENSITY = 9000
 
 export function HebrewSplash() {
   const [shown, setShown] = useState(false)
@@ -53,6 +58,8 @@ export function HebrewSplash() {
   const [count, setCount] = useState(0)
   const [lit, setLit] = useState<Record<number, string>>({})
   const startRef = useRef(0)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const timers = [
@@ -88,6 +95,67 @@ export function HebrewSplash() {
     }
   }, [])
 
+  /**
+   * Hand-off to the scene: two seconds where the flat ground turns blue and
+   * clears off the WebGL page, with snow drifting down over it. The intro's
+   * own marks just fade; nothing happens to the lettering itself.
+   */
+  useEffect(() => {
+    if (!fading) return
+    const canvas = canvasRef.current
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx) return
+
+    const dpr = Math.min(2, window.devicePixelRatio || 1)
+    const w = window.innerWidth
+    const h = window.innerHeight
+    canvas.width = Math.round(w * dpr)
+    canvas.height = Math.round(h * dpr)
+    canvas.style.width = `${w}px`
+    canvas.style.height = `${h}px`
+    ctx.scale(dpr, dpr)
+
+    // Flakes start spread over the frame and a screen-height above it, so the
+    // fall reads as already under way when the veil turns.
+    const count = Math.round((w * h) / FLAKE_DENSITY)
+    const flakes = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h * 2 - h,
+      r: 1 + Math.random() * 2.2,
+      fall: 40 + Math.random() * 110,
+      sway: 6 + Math.random() * 22,
+      rate: 0.6 + Math.random() * 1.4,
+      phase: Math.random() * Math.PI * 2,
+      alpha: 0.45 + Math.random() * 0.55,
+    }))
+
+    const begin = performance.now()
+    let raf = 0
+    const draw = () => {
+      const t = (performance.now() - begin) / 1000
+      const p = Math.min(1, t / (HANDOFF_MS / 1000))
+      // In over the first fifth, out over the last third.
+      const envelope = Math.min(1, p / 0.2) * Math.min(1, (1 - p) / 0.35)
+
+      ctx.clearRect(0, 0, w, h)
+      ctx.fillStyle = '#ffffff'
+      for (const f of flakes) {
+        const x = f.x + Math.sin(f.phase + t * f.rate) * f.sway
+        const y = f.y + f.fall * t
+        if (y > h + 4) continue
+        ctx.globalAlpha = f.alpha * envelope
+        ctx.beginPath()
+        ctx.arc(x, y, f.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+      ctx.globalAlpha = 1
+      if (p < 1) raf = requestAnimationFrame(draw)
+    }
+    raf = requestAnimationFrame(draw)
+
+    return () => cancelAnimationFrame(raf)
+  }, [fading])
+
   if (gone) return null
 
   const show = shown ? ' show' : ''
@@ -95,7 +163,9 @@ export function HebrewSplash() {
   const units = count % 10
 
   return (
-    <div id="hebrew-splash" className={fading ? 'fade-out' : undefined}>
+    <div id="hebrew-splash" ref={rootRef} className={fading ? 'fade-out' : undefined}>
+      <div className="hs-bg" />
+
       <div className="hs-wrapper">
         <div className="hs-squares">
           <span className={`hs-square${show}`} />
@@ -132,6 +202,8 @@ export function HebrewSplash() {
         <p>יה</p>
         <p>סאל</p>
       </div>
+
+      <canvas className="hs-particles" ref={canvasRef} aria-hidden="true" />
     </div>
   )
 }

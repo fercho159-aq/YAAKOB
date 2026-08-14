@@ -158,14 +158,40 @@ input:-webkit-autofill:hover {
 		position: fixed;
 		inset: 0;
 		z-index: 999999;
-		background: #a8b6bd;
 		overflow: hidden;
 		direction: rtl;
-		transition: opacity 1s ease;
 	}
-	#hebrew-splash.fade-out {
-		opacity: 0;
+	#hebrew-splash.fade-out { pointer-events: none; }
+
+	/* The flat ground is its own plane: on the way out it turns blue and clears
+	   off the WebGL page underneath, over the two seconds of the hand-off. */
+	.hs-bg {
+		position: absolute;
+		inset: 0;
+		background: #a8b6bd;
+	}
+	#hebrew-splash.fade-out .hs-bg {
+		animation: hsBlueOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+	}
+	@keyframes hsBlueOut {
+		0% { background-color: #a8b6bd; opacity: 1; }
+		30% { background-color: #7d9cc4; opacity: 1; }
+		60% { background-color: #6188c4; opacity: 0.85; }
+		100% { background-color: #4f79bd; opacity: 0; }
+	}
+
+	/* Snow, painted on the canvas over the veil. */
+	.hs-particles {
+		position: absolute;
+		inset: 0;
 		pointer-events: none;
+	}
+
+	/* The intro's own marks simply step aside; no effect on the lettering. */
+	#hebrew-splash.fade-out .hs-wrapper,
+	#hebrew-splash.fade-out .hs-yhsal {
+		opacity: 0;
+		transition: opacity 0.7s ease;
 	}
 
 	.hs-wrapper {
