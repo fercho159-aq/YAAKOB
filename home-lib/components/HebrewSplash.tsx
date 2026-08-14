@@ -1,67 +1,136 @@
-import { useEffect, useState } from 'react'
-
-/** Drifting letters, at the positions and delays the legacy page shipped. */
-const FLOATS: Array<{ glyph: string; style: React.CSSProperties }> = [
-  { glyph: 'נ', style: { top: '15%', left: '70%', animationDelay: '0s', animationDuration: '3s' } },
-  { glyph: 'ח', style: { top: '25%', left: '72%', animationDelay: '0.18s', animationDuration: '4s' } },
-  { glyph: 'ל', style: { top: '38%', left: '58%', animationDelay: '0.36s', animationDuration: '5s' } },
-  { glyph: 'פ', style: { top: '75%', left: '30%', animationDelay: '0.54s', animationDuration: '3s' } },
-  { glyph: 'כ', style: { top: '20%', left: '25%', animationDelay: '0.72s', animationDuration: '4s' } },
-  { glyph: 'ע', style: { top: '60%', left: '78%', animationDelay: '0.9s', animationDuration: '5s' } },
-  { glyph: 'ם', style: { top: '80%', left: '65%', animationDelay: '1.08s', animationDuration: '3s' } },
-  { glyph: 'ד', style: { top: '50%', left: '15%', animationDelay: '1.26s', animationDuration: '4s' } },
-  { glyph: 'ר', style: { top: '68%', left: '45%', animationDelay: '1.44s', animationDuration: '5s' } },
-  { glyph: 'ב', style: { top: '12%', left: '48%', animationDelay: '1.62s', animationDuration: '3s' } },
-  { glyph: 'א', style: { top: '45%', left: '85%', animationDelay: '1.8s', animationDuration: '4s' } },
-  { glyph: 'י', style: { top: '85%', left: '18%', animationDelay: '1.98s', animationDuration: '5s' } },
-]
+import { useEffect, useRef, useState } from 'react'
 
 /**
- * Entry overlay: the psalm frame the site ran before the home was rebuilt on
- * react-three-fiber — grey field, big מ watermark, registration corners,
- * drifting letters, "booting" status and Psalm 67 at the foot.
+ * Entry loader, rebuilt to the layout airforceecho.com uses (same engine family
+ * as the site this home was ported from), with the Hebrew alphabet in place of
+ * the reference's latin one:
  *
- * Same markup, styles and timings as the legacy `public/app.html`: everything
- * fades in at 100ms, the frame fades out at 4.5s and unmounts at 5.5s onto the
- * WebGL scene, which it never touches.
+ *   the divine names in the reference's logo slot, 50px from the top
+ *   500px wrapper, centred:
+ *     450px box with a registration square at each corner
+ *     380px field where single letters blink in and out
+ *     the two-digit counter, 230px, white, behind everything
+ *     the prayer over it, where the reference runs its status line
+ * Both the names and the prayer are set the way the client's "Oracion
+ * TELEFONO" sheet has them: unpointed, three lines.
+ *
+ * Measured off the reference at 1920x992: squares 12px with a 1px #0b1c26 rule
+ * and a 2px dot, letters 18px at 0.5 alpha, counter 230px/23px tracking, title
+ * 20px/24px with 4px tracking. Everything scales with `--hs-k` under 1100px.
  */
+
+/** Scribe-hand alphabet the field draws from. */
+const ALEPHBET = 'אבגדהוזחטיכלמנסעפצקרשת'.split('')
+
+/**
+ * Cells of the 380px field: a 5x5 grid of 50x18 slots, minus the middle band
+ * the title sits on. 82.5px pitch puts the last column flush with the edge.
+ */
+const CELLS = (() => {
+  const out: Array<{ x: number; y: number }> = []
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < 5; col++) {
+      if (row === 2 && col > 0 && col < 4) continue
+      out.push({ x: col * 82.5, y: row * 90.5 })
+    }
+  }
+  return out
+})()
+
+/** How many letters are lit at once, and how long each one stays. */
+const LIT = 7
+const BLINK_MS = 420
+
+/** Total run, and the slice of it the counter takes to reach 99. */
+const COUNT_MS = 4200
+const FADE_AT = 4600
+const GONE_AT = 5600
+
 export function HebrewSplash() {
   const [shown, setShown] = useState(false)
   const [fading, setFading] = useState(false)
   const [gone, setGone] = useState(false)
+  const [count, setCount] = useState(0)
+  const [lit, setLit] = useState<Record<number, string>>({})
+  const startRef = useRef(0)
 
   useEffect(() => {
     const timers = [
       setTimeout(() => setShown(true), 100),
-      setTimeout(() => setFading(true), 4500),
-      setTimeout(() => setGone(true), 5500),
+      setTimeout(() => setFading(true), FADE_AT),
+      setTimeout(() => setGone(true), GONE_AT),
     ]
-    return () => timers.forEach(clearTimeout)
+
+    // Counter: eased so it crawls at the end, the way the reference does.
+    startRef.current = performance.now()
+    const tick = () => {
+      const t = Math.min(1, (performance.now() - startRef.current) / COUNT_MS)
+      setCount(Math.floor(99 * (1 - Math.pow(1 - t, 2.2))))
+      if (t < 1) raf = requestAnimationFrame(tick)
+    }
+    let raf = requestAnimationFrame(tick)
+
+    // Field: a fresh handful of letters every beat.
+    const blink = setInterval(() => {
+      const next: Record<number, string> = {}
+      const pool = [...CELLS.keys()]
+      for (let i = 0; i < LIT && pool.length; i++) {
+        const [cell] = pool.splice(Math.floor(Math.random() * pool.length), 1)
+        next[cell] = ALEPHBET[Math.floor(Math.random() * ALEPHBET.length)]
+      }
+      setLit(next)
+    }, BLINK_MS)
+
+    return () => {
+      timers.forEach(clearTimeout)
+      cancelAnimationFrame(raf)
+      clearInterval(blink)
+    }
   }, [])
 
   if (gone) return null
 
   const show = shown ? ' show' : ''
+  const tens = Math.floor(count / 10)
+  const units = count % 10
+
   return (
     <div id="hebrew-splash" className={fading ? 'fade-out' : undefined}>
-      <div className="hs-bg-glyph">מ</div>
-      <div className={`hs-corner hs-corner--tl${show}`} />
-      <div className={`hs-corner hs-corner--tr${show}`} />
-      <div className={`hs-corner hs-corner--bl${show}`} />
-      <div className={`hs-corner hs-corner--br${show}`} />
-      {FLOATS.map((f, i) => (
-        <span key={i} className={`hs-float${show}`} style={f.style}>
-          {f.glyph}
-        </span>
-      ))}
-      <div className={`hs-center${show}`}>
-        <p className="hs-status">מאתחל _</p>
-        <p className="hs-status">_ מערכת</p>
+      <div className="hs-wrapper">
+        <div className="hs-squares">
+          <span className={`hs-square${show}`} />
+          <span className={`hs-square${show}`} />
+          <span className={`hs-square${show}`} />
+          <span className={`hs-square${show}`} />
+        </div>
+
+        <div className="hs-field" aria-hidden="true">
+          {CELLS.map((c, i) => (
+            <span
+              key={i}
+              className={`hs-cell${lit[i] ? ' on' : ''}`}
+              style={{ transform: `translate(${c.x}px, ${c.y}px)` }}
+            >
+              {lit[i] ?? ''}
+            </span>
+          ))}
+        </div>
+
+        <div className={`hs-count${show}`} aria-hidden="true">
+          <span>{tens}</span>
+          <span>{units}</span>
+        </div>
+
+        <div className={`hs-prayer${show}`}>
+          <p>אלהים יחננו ויברכנו</p>
+          <p>יאר פניו אתנו</p>
+          <p>סלה</p>
+        </div>
       </div>
-      <div className={`hs-psalm${show}`}>
-        <p>אֱלֹהִים יְחָנֵּנוּ וִיבָרְכֵנוּ יָאֵר פָּנָיו אִתָּנוּ סֶלָה</p>
-        <p>לָדַעַת בָּאָרֶץ דַּרְכֶּךָ בְּכָל גּוֹיִם יְשׁוּעָתֶךָ</p>
-        <p>יוֹדוּךָ עַמִּים אֱלֹהִים יוֹדוּךָ עַמִּים כֻּלָּם</p>
+
+      <div className={`hs-yhsal${show}`}>
+        <p>יה</p>
+        <p>סאל</p>
       </div>
     </div>
   )

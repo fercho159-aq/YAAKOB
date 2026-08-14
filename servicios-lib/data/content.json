@@ -354,8 +354,8 @@
         "id": "whatsapp",
         "icon": "chat",
         "label": "WhatsApp",
-        "lines": ["+52 55 2741 6178"],
-        "href": "https://wa.me/5215527416178"
+        "lines": ["+52 55 3007 7441"],
+        "href": "https://wa.me/5215530077441"
       },
       {
         "id": "correo",
@@ -386,7 +386,7 @@
     ],
     "qr": {
       "src": "/servicios/contacto-qr.svg",
-      "href": "https://wa.me/5215527416178",
+      "href": "https://wa.me/5215530077441",
       "caption": "Escanea para agendar tu evaluación inicial"
     },
     "legal": {
@@ -400,7 +400,7 @@
     "privacy": { "label": "Aviso de privacidad", "href": "/privacidad" },
     "ads": { "label": "Términos", "href": "/terminos" },
     "logo": { "href": "/" },
-    "contact": { "label": "Contacto", "href": "https://wa.me/5215527416178" },
+    "contact": { "label": "Contacto", "href": "https://wa.me/5215530077441" },
     "social": {
       "instagram": { "href": "https://www.instagram.com/yaakobeheart/", "label": "Instagram" },
       "facebook": {
@@ -410,7 +410,7 @@
       "tiktok": { "href": "https://www.tiktok.com/@yaakob_heart", "label": "TikTok" },
       "youtube": { "href": "https://www.youtube.com/@YaakobBeHeart", "label": "YouTube" },
       "twitter": { "href": "https://x.com/yaakob", "label": "X" },
-      "whatsapp": { "href": "https://wa.me/5215527416178", "label": "WhatsApp" }
+      "whatsapp": { "href": "https://wa.me/5215530077441", "label": "WhatsApp" }
     }
   }
 }

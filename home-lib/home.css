@@ -4,7 +4,7 @@
    Sections:
      1. Page reset (scoped to html.yk-home so /servicios is unaffected)
      2. Blackout overlay + dissolve transition out of the experience
-     3. Hebrew splash intro (the legacy app.html frame)
+     3. Hebrew splash intro (airforceecho.com's loader layout, in Hebrew)
      4. HUD header (clock, social, nav, login)
    The old inline #yk-contact card styles were dropped: the home now uses the
    shared ContactModal from servicios-lib.
@@ -140,129 +140,170 @@ input:-webkit-autofill:hover {
 		100% { opacity: 0; filter: blur(12px) brightness(3); transform: scale(1.15); }
 	}
 
-/* ---- 3. Hebrew splash intro (ported verbatim from the legacy app.html) ---- */
+/* ---- 3. Hebrew splash intro ----
+   Laid out to the airforceecho.com loader, measured at 1920x992: a 500px
+   wrapper holding a 450px registration box, a 380px letter field, the 230px
+   counter and the status line. `--hs-k` scales the whole rig on small screens
+   so the proportions never change. */
 	@font-face {
-		font-family: 'SBLHebrew';
-		src: url('/fonts/SBL_Hbrw.ttf') format('truetype');
-		font-weight: normal;
+		font-family: 'StamAshkenaz';
+		src: url('/fonts/StamAshkenazCLM-Medium.ttf') format('truetype');
+		font-weight: 500;
 		font-style: normal;
 		font-display: block;
 	}
 	#hebrew-splash {
+		--hs-k: 1;
+		--hs-ink: #0b1c26;
 		position: fixed;
 		inset: 0;
 		z-index: 999999;
-		background: #b8b8b8;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-family: 'SBLHebrew', serif;
-		direction: rtl;
+		background: #a8b6bd;
 		overflow: hidden;
+		direction: rtl;
 		transition: opacity 1s ease;
 	}
 	#hebrew-splash.fade-out {
 		opacity: 0;
 		pointer-events: none;
 	}
-	.hs-bg-glyph {
+
+	.hs-wrapper {
 		position: absolute;
-		top: 50%; left: 50%;
-		transform: translate(-50%, -50%);
-		font-family: 'SBLHebrew', serif;
-		font-size: min(45vw, 600px);
-		color: rgba(190, 190, 190, 0.25);
-		line-height: 1;
-		pointer-events: none;
-		user-select: none;
+		top: 50%;
+		left: 50%;
+		width: 500px;
+		height: 500px;
+		margin: -250px 0 0 -250px;
+		transform: scale(var(--hs-k));
 	}
-	.hs-corner {
+
+	/* 450px box, one 12px registration square per corner. */
+	.hs-squares {
 		position: absolute;
-		width: 16px; height: 16px;
-		border: 1.5px solid #555;
+		top: 25px;
+		left: 25px;
+		width: 450px;
+		height: 450px;
+	}
+	.hs-square {
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		box-sizing: border-box;
+		border: 1px solid var(--hs-ink);
 		opacity: 0;
 		transition: opacity 0.8s ease 0.3s;
 	}
-	.hs-corner.show { opacity: 1; }
-	.hs-corner::after {
+	.hs-square.show { opacity: 1; }
+	.hs-square::after {
 		content: "";
 		position: absolute;
-		top: 50%; left: 50%;
-		width: 4px; height: 4px;
-		background: #555;
-		border-radius: 50%;
-		transform: translate(-50%, -50%);
+		top: 50%;
+		left: 50%;
+		width: 2px;
+		height: 2px;
+		margin: -1px 0 0 -1px;
+		background: var(--hs-ink);
 	}
-	.hs-corner--tl { top: 10%; left: 15%; }
-	.hs-corner--tr { top: 10%; right: 15%; }
-	.hs-corner--bl { bottom: 10%; left: 15%; }
-	.hs-corner--br { bottom: 10%; right: 15%; }
-	.hs-float {
+	.hs-square:nth-child(1) { top: 0; left: 0; }
+	.hs-square:nth-child(2) { top: 0; left: 438px; }
+	.hs-square:nth-child(3) { top: 438px; left: 0; }
+	.hs-square:nth-child(4) { top: 438px; left: 438px; }
+
+	/* 380px field of blinking letters. */
+	.hs-field {
 		position: absolute;
-		font-family: 'SBLHebrew', serif;
-		font-size: min(3vw, 32px);
-		color: rgba(100, 100, 100, 0.35);
+		top: 60px;
+		left: 60px;
+		width: 380px;
+		height: 380px;
+	}
+	.hs-cell {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 50px;
+		height: 18px;
+		font-family: 'StamAshkenaz', serif;
+		font-size: 18px;
+		line-height: 18px;
+		text-align: center;
+		color: var(--hs-ink);
+		opacity: 0;
+		transition: opacity 0.35s ease;
 		pointer-events: none;
 		user-select: none;
-		opacity: 0;
-		transition: opacity 0.6s ease;
-		animation: hsFloatDrift 4s ease-in-out infinite alternate;
 	}
-	.hs-float.show { opacity: 1; }
-	@keyframes hsFloatDrift {
-		0% { transform: translateY(0) translateX(0); }
-		100% { transform: translateY(-12px) translateX(6px); }
-	}
-	.hs-center {
-		position: relative;
-		z-index: 10;
+	.hs-cell.on { opacity: 0.5; }
+
+	/* The counter sits behind the status, white and nearly washed out. */
+	.hs-count {
+		position: absolute;
+		top: 147px;
+		left: 50%;
+		width: 294px;
+		height: 207px;
+		margin-left: -147px;
 		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 4px;
+		justify-content: center;
+		direction: ltr;
+		font-family: 'TTMussels', sans-serif;
+		font-size: 230px;
+		line-height: 207px;
+		letter-spacing: 23px;
+		color: #fff;
+		opacity: 0;
+		transition: opacity 1s ease 0.2s;
+		pointer-events: none;
+		user-select: none;
+	}
+	.hs-count.show { opacity: 0.14; }
+	.hs-count span { width: 147px; text-align: center; }
+
+	/* The prayer, dead centre of the wrapper, over the counter. */
+	.hs-prayer {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 400px;
+		transform: translate(-50%, -50%);
+		text-align: center;
 		opacity: 0;
 		transition: opacity 0.8s ease 0.2s;
 	}
-	.hs-center.show { opacity: 1; }
-	.hs-status {
-		font-family: 'SBLHebrew', serif;
-		font-size: min(3.5vw, 38px);
-		color: #4a4a4a;
+	.hs-prayer.show { opacity: 1; }
+	.hs-prayer p {
 		margin: 0;
-		letter-spacing: 0.08em;
-		animation: hsStatusBlink 2.5s ease-in-out infinite;
+		font-family: 'StamAshkenaz', serif;
+		font-size: 26px;
+		line-height: 46px;
+		letter-spacing: 2px;
+		color: var(--hs-ink);
+		white-space: nowrap;
 	}
-	@keyframes hsStatusBlink {
-		0%, 100% { opacity: 1; }
-		50% { opacity: 0.6; }
-	}
-	.hs-psalm {
+
+	/* The divine names, in the slot the reference gives its logo. */
+	.hs-yhsal {
 		position: absolute;
-		bottom: 12%;
+		top: calc(60px * var(--hs-k));
 		left: 50%;
 		transform: translateX(-50%);
 		text-align: center;
-		direction: rtl;
 		opacity: 0;
-		transition: opacity 1.2s ease 0.6s;
+		transition: opacity 1s ease 0.4s;
 	}
-	.hs-psalm.show { opacity: 1; }
-	.hs-psalm p {
-		font-family: 'SBLHebrew', serif;
-		font-size: min(1.8vw, 20px);
-		color: rgba(70, 70, 70, 0.6);
-		margin: 4px 0;
-		line-height: 1.7;
-		white-space: nowrap;
+	.hs-yhsal.show { opacity: 1; }
+	.hs-yhsal p {
+		margin: 2px 0;
+		font-family: 'StamAshkenaz', serif;
+		font-size: calc(26px * var(--hs-k));
+		line-height: 1.25;
+		color: var(--hs-ink);
 	}
-	@media (max-width: 768px) {
-		.hs-corner--tl { top: 6%; left: 8%; }
-		.hs-corner--tr { top: 6%; right: 8%; }
-		.hs-corner--bl { bottom: 6%; left: 8%; }
-		.hs-corner--br { bottom: 6%; right: 8%; }
-		.hs-psalm p { white-space: normal; max-width: 90vw; font-size: 14px; }
-		.hs-status { font-size: 24px; }
-	}
+
+	@media (max-width: 1100px) { #hebrew-splash { --hs-k: 0.78; } }
+	@media (max-width: 700px) { #hebrew-splash { --hs-k: 0.58; } }
 
 /* ---- 4. HUD header ---- */
 	#yk-hud {
