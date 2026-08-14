@@ -236,12 +236,18 @@ float pattern(vec2 st, vec2 v, float t) {
 }
 
 void main() {
-    // The dissolve is driven by the intro transition alone. Upstream also fed
-    // the pointer fluid in here, but on devices where the half-float sim
-    // misbehaves the mask saturates and the wordmark stays glitched forever —
-    // the client wants the resting logo clean, so the fluid stays out of it.
-    float fluidMask = smoothstep(0.5, 0.0, uTransition);
-    float mixFluid = fluidMask;
+    // Both lookups are screen space. Upstream sampled the velocity with the
+    // quad's own vUv, which worked there because the logo was a screen aligned
+    // UI element; here it is a quad in the scene, so vUv would smear the whole
+    // fluid field across the wordmark.
+    vec2 fluidUV = gl_FragCoord.xy / uResolution;
+    float fluidMask = smoothstep(0.0, 0.1, texture2D(tFluid, fluidUV).z);
+    vec2 fluid = texture2D(tFluid, fluidUV).xy * fluidMask;
+
+    float mixFluid = smoothstep(0.0, 0.0005, fluid.x * fluid.y);
+    mixFluid = mix(mixFluid, 0.0, 0.3);
+    fluidMask = mix(fluidMask, 1.0, smoothstep(0.5, 0.0, uTransition));
+    mixFluid = max(fluidMask, mixFluid);
 
     float noise = cnoise(vUv * 3.0 - time * 0.15);
     vec4 tex = texture2D(tMap, vUv);

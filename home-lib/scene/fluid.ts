@@ -71,11 +71,17 @@ void main() {
 
     vec2 velocity = prev.xy * uDecay + uVelocity * splat;
 
+    // Only a MOVING pointer deposits mask. Without this gate the splat term
+    // stays 1.0 at the pointer's resting position every frame — the mask never
+    // decays there, and on touch devices (where the pointer never moves off
+    // its default at screen centre) the logo sat permanently dissolved.
+    float moving = step(1e-9, dot(ba, ba));
+
     // The mask is deliberately weak and short-lived. Consumers run it through
     // smoothstep(0.0, 0.1, mask), so a mask that reached 1 would saturate them
     // across the whole pointer trail — on the logo that swaps the letters'
     // solid fill for the dissolve pattern and eats the wordmark.
-    float mask = max(prev.z * uMaskDecay, splat * uMaskGain);
+    float mask = max(prev.z * uMaskDecay, splat * uMaskGain * moving);
 
     gl_FragColor = vec4(clamp(velocity, -1.0, 1.0), mask, 1.0);
 }
