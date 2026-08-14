@@ -61,10 +61,11 @@ const NAMES = ['יה', 'סאל']
 
 /**
  * Per-letter delay, the engine's `Math.random(0, 500)` — but derived from the
- * index so the server and the client agree on the markup.
+ * index so the server and the client agree on the markup, and spread over
+ * 700ms so the block thins out gradually instead of blinking off.
  */
 function letterDelay(line: number, i: number) {
-  return ((line * 7 + i * 37) * 61) % 500
+  return ((line * 7 + i * 37) * 61) % 700
 }
 
 /** One span per letter, so the hand-off can dissolve them one at a time. */
