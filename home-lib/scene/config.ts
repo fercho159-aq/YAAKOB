@@ -175,7 +175,9 @@ export const tagline = {
   text: 'ASESORÍA · PREVENCIÓN · REGULARIZACIÓN · DEFENSA FISCAL',
   font: '/assets/fonts/TTMussels-Bold.json',
   atlas: '/assets/fonts/TTMussels-Bold.png',
-  color: '#13343f',
+  /** Matches the wordmark's ink — the slate blue it shipped with read as a
+   *  second colour next to the black logo. */
+  color: '#000000',
   alpha: 0.96,
   /**
    * Fraction of the font's line height added between glyphs. The engine's own
