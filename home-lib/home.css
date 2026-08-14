@@ -161,38 +161,47 @@ input:-webkit-autofill:hover {
 		overflow: hidden;
 		direction: rtl;
 	}
-	#hebrew-splash.fade-out { pointer-events: none; }
-
-	/* The flat ground is its own plane: on the way out it turns blue and clears
-	   off the WebGL page underneath, over the two seconds of the hand-off. */
 	.hs-bg {
 		position: absolute;
 		inset: 0;
 		background: #a8b6bd;
 	}
-	#hebrew-splash.fade-out .hs-bg {
-		animation: hsBlueOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-	}
-	@keyframes hsBlueOut {
-		0% { background-color: #a8b6bd; opacity: 1; }
-		30% { background-color: #7d9cc4; opacity: 1; }
-		60% { background-color: #6188c4; opacity: 0.85; }
-		100% { background-color: #4f79bd; opacity: 0; }
-	}
 
-	/* Snow, painted on the canvas over the veil. */
-	.hs-particles {
-		position: absolute;
-		inset: 0;
+	/* ---- the hand-off, beat for beat with the engine's LoaderView.animateOut:
+	   the plate cross-fades over 2.5s after a 500ms beat (easeInOutSine), the
+	   squares collapse to 80px off centre over 1s (easeInOutQuint) while their
+	   box fades in 1s, and the counter goes in 500ms (easeOutSine). */
+	#hebrew-splash.fade-out {
 		pointer-events: none;
-	}
-
-	/* The intro's own marks simply step aside; no effect on the lettering. */
-	#hebrew-splash.fade-out .hs-wrapper,
-	#hebrew-splash.fade-out .hs-yhsal {
 		opacity: 0;
-		transition: opacity 0.7s ease;
+		transition: opacity 2500ms cubic-bezier(0.37, 0, 0.63, 1) 500ms;
 	}
+	#hebrew-splash.fade-out .hs-squares {
+		opacity: 0;
+		transition: opacity 1000ms cubic-bezier(0.37, 0, 0.63, 1) 100ms;
+	}
+	#hebrew-splash.fade-out .hs-square {
+		transition: transform 1000ms cubic-bezier(0.83, 0, 0.17, 1);
+	}
+	#hebrew-splash.fade-out .hs-square:nth-child(1) { transform: translate(133px, 133px); }
+	#hebrew-splash.fade-out .hs-square:nth-child(2) { transform: translate(-145px, 133px); }
+	#hebrew-splash.fade-out .hs-square:nth-child(3) { transform: translate(133px, -145px); }
+	#hebrew-splash.fade-out .hs-square:nth-child(4) { transform: translate(-145px, -145px); }
+	#hebrew-splash.fade-out .hs-count {
+		opacity: 0;
+		transition: opacity 500ms cubic-bezier(0.61, 1, 0.88, 1);
+	}
+	#hebrew-splash.fade-out .hs-field { opacity: 0; transition: opacity 400ms ease; }
+
+	/* Letters are one span each; the component staggers their delays. */
+	.hs-prayer span,
+	.hs-yhsal span {
+		display: inline-block;
+		white-space: pre;
+		transition: opacity 200ms cubic-bezier(0.61, 1, 0.88, 1);
+	}
+	#hebrew-splash.is-out .hs-prayer span,
+	#hebrew-splash.is-out .hs-yhsal span { opacity: 0; }
 
 	.hs-wrapper {
 		position: absolute;
