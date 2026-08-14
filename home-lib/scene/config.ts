@@ -25,12 +25,12 @@ export const camera = {
   near: 0.1,
   far: 1000,
   /**
-   * `dynamicFOVCode` from the editor, verbatim in spirit:
-   * `50 * Math.max(1, Math.range(aspect, 1.0, 0.5, 1.0, 1.8))` — portrait
-   * viewports widen the lens so the eye still fits.
+   * `dynamicFOVCode` from the editor, in spirit: portrait viewports widen the
+   * lens so the eye still fits. The editor's endpoint (1.8 at aspect 0.5) left
+   * the logo tiny on phones, so the widening is softened to pull it closer.
    */
   fovForAspect(aspect: number) {
-    const t = 1 + ((aspect - 1) * (1.8 - 1)) / (0.5 - 1)
+    const t = 1 + ((aspect - 1) * (1.4 - 1)) / (0.5 - 1)
     return this.fov * Math.max(1, t)
   },
 }
