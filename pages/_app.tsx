@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import { ContactModalProvider } from '@servicios/components/contact'
 import { dinOT, gridnik, wordmark } from '@servicios/fonts'
 import theme from '@servicios/theme'
+import '@home/home.css'
 
 /** Keeps `--vh` in sync with the visual viewport, as the original site does. */
 function useViewportHeight() {

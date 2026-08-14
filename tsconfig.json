@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@servicios/*": ["./servicios-lib/*"]
+      "@servicios/*": ["./servicios-lib/*"],
+      "@home/*": ["./home-lib/*"]
     }
   },
   "include": [

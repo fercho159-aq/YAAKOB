@@ -10,6 +10,7 @@ export {
 } from './Cursor'
 export { Footer, type FooterProps } from './Footer'
 export { Loader, type LoaderProps } from './Loader'
+export { MenuDrawer, type MenuDrawerProps } from './MenuDrawer'
 export { MenuOverlay, type MenuOverlayProps } from './MenuOverlay'
 export { Navigation, type NavigationProps } from './Navigation'
 export {

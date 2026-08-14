@@ -71,7 +71,7 @@ const swiperSx: SystemStyleObject = {
       },
       '&.swiper-pagination-bullet-active': {
         width: '1.875rem',
-        backgroundColor: '#E0BE7A',
+        backgroundColor: '#FF9933',
         opacity: 1,
         boxShadow: 'none',
       },

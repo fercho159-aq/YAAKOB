@@ -11,7 +11,7 @@ export const CURSOR_STROKE_WIDTH = 2
 const RADIUS = CURSOR_DIAMETER / 2
 
 const WHITE = '#FFFFFF'
-const GOLD = '#E0BE7A'
+const GOLD = '#FF9933'
 
 export const CURSOR_TYPE = {
   label: 'label',

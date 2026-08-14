@@ -46,7 +46,7 @@ function ContactCard({ field }: { field: ContactField }) {
       borderColor={CARD_BORDER}
       borderRadius="14px"
       transition="border-color 0.3s ease-out, background 0.3s ease-out"
-      _hover={field.href ? { borderColor: 'goldAlt', bg: 'rgba(224,190,122,0.06)' } : undefined}
+      _hover={field.href ? { borderColor: 'goldAlt', bg: 'rgba(255,153,51,0.06)' } : undefined}
     >
       <Flex
         align="center"
@@ -55,9 +55,9 @@ function ContactCard({ field }: { field: ContactField }) {
         w="42px"
         h="42px"
         borderRadius="12px"
-        bg="rgba(224,190,122,0.09)"
+        bg="rgba(255,153,51,0.09)"
         border="1px solid"
-        borderColor="rgba(224,190,122,0.18)"
+        borderColor="rgba(255,153,51,0.18)"
         color="gold"
       >
         {Glyph ? <Glyph w="20px" h="20px" /> : null}

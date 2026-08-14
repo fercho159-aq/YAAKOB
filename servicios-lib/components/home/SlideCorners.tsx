@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { VARIANTS } from './constants'
 import { MotionCanvas } from './motion'
 
-const GOLD = '#E0BE7A'
+const GOLD = '#FF9933'
 const ARM = 8
 /** Half of the 1.5px stroke, so the corner sits fully inside the canvas. */
 const INSET = 0.75

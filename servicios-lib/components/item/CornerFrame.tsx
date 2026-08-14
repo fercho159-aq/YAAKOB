@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { MotionCanvas } from './motion'
 import { VARIANTS } from './shared'
 
-const GOLD = '#E0BE7A'
+const GOLD = '#FF9933'
 /** Half of the 1.5px stroke, so the line lands on the pixel grid. */
 const INSET = 0.75
 const ARM = 8

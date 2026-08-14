@@ -5,9 +5,11 @@ import theme from '@servicios/theme'
 export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang="es">
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
+          {/* Adobe Fonts kit used by the home's cloned WebGL experience */}
+          <link rel="stylesheet" href="https://use.typekit.net/awh6wkx.css" />
         </Head>
         <body>
           <noscript>

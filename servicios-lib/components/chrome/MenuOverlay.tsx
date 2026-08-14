@@ -71,7 +71,7 @@ function NewsSection() {
                 fontSize="0.5625rem"
                 letterSpacing="0.18em"
                 textTransform="uppercase"
-                color="goldAlt"
+                color="gold"
                 mb="0.375rem"
               >
                 {entry.source}
@@ -116,7 +116,7 @@ export function MenuOverlay({ isOpen, onClose, footer }: MenuOverlayProps) {
               aria-label="Go to home page"
               onClick={onClose}
             >
-              <AnimatedWordmark animate={isOpen} w="auto" h="22px" />
+              <AnimatedWordmark animate={isOpen} label="YAAKOB CONSULTORES SC" title="Yaakob" w="auto" h="22px" />
             </NavLink>
             <DrawerCloseButton
               pos="absolute"

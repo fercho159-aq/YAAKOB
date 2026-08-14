@@ -1,0 +1,485 @@
+/* ==========================================================================
+   Home (/) styles. The page is composed from home-lib components; everything
+   visual lives here.
+   Sections:
+     1. Page reset (scoped to html.yk-home so /servicios is unaffected)
+     2. Blackout overlay + dissolve transition out of the experience
+     3. Hebrew splash intro
+     4. HUD header (clock, social, nav, login)
+   The old inline #yk-contact card styles were dropped: the home now uses the
+   shared ContactModal from servicios-lib.
+   ========================================================================== */
+
+/* ---- 1. Page reset (home only, scoped via html.yk-home) ----
+   Trimmed when the cloned engine was replaced by home-lib/scene: the rules for
+   its #Stage container, its leaderboard cards, its feature-detect probe and its
+   headphone prompt all went with it. What is left is the full-bleed reset, the
+   TTMussels faces the HUD needs, and the OneTrust overrides. */
+.yk-home,
+.yk-home body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: #a8b6bd;
+	overflow: hidden;
+	-ms-content-zooming: none;
+	-ms-touch-action: none;
+	touch-action: none;
+}
+
+.yk-home {
+	font-size: 10px;
+	color: #1a1a1a;
+}
+
+/* iOS needs the page to scroll behind the browser chrome. */
+.yk-home.ios,
+.yk-home.ios body {
+	overflow: visible;
+}
+
+.yk-home.ios {
+	position: relative;
+	height: 100vh;
+}
+
+.yk-home * {
+	scrollbar-width: 5px;
+	scrollbar-color: rgba(255, 255, 255, .8) rgba(0, 0, 0, .1);
+}
+
+.yk-home::-webkit-scrollbar {
+	background: rgba(0, 0, 0, .1);
+	width: 5px;
+}
+
+.yk-home::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, .8);
+}
+
+button:focus {
+	outline: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:active,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover {
+	transition: background-color 10000s;
+}
+
+@font-face {
+	font-family: 'TTMussels';
+	src: url(/assets/fonts/ttmussels/TTMussels-Regular.ttf) format('truetype');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'TTMussels';
+	src: url(/assets/fonts/ttmussels/TTMussels-Medium.ttf) format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'TTMussels';
+	src: url(/assets/fonts/ttmussels/TTMussels-DemiBold.ttf) format('truetype');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'TTMussels';
+	src: url(/assets/fonts/ttmussels/TTMussels-Bold.ttf) format('truetype');
+	font-weight: 700;
+	font-style: normal;
+}
+
+/* OneTrust cookie banner, restyled to match the site. */
+#onetrust-banner-sdk :focus { outline-color: #111; }
+#onetrust-banner-sdk {
+	background-color: #c0c0c0 !important;
+	font-family: 'TTMussels', sans-serif !important;
+	outline: 0 !important;
+}
+#onetrust-banner-sdk p { color: #111 !important; }
+#onetrust-banner-sdk button[id*=-handler] {
+	border: 0 !important;
+	background-color: #111 !important;
+	color: #c0c0c0 !important;
+}
+#onetrust-banner-sdk #onetrust-pc-btn-handler.cookie-setting-link {
+	background: 0 0 !important;
+	color: #111 !important;
+}
+#onetrust-banner-sdk .banner-close-button.ot-close-icon {
+	color: #111 !important;
+	filter: brightness(.5) !important;
+}
+#onetrust-consent-sdk { position: absolute; z-index: 99999 !important; }
+#ot-sdk-btn, #ot-sdk-btn-floating { opacity: 0 !important; }
+#ot-sdk-btn { position: absolute !important; z-index: -99999 !important; }
+#onetrust-button-group > button:focus,
+#onetrust-consent-sdk #onetrust-banner-sdk :focus { outline-color: #555 !important; }
+
+/* ---- 2. Dispersion transition ---- */
+	/* Dispersion transition */
+	#yaakob-blackout {
+		position: fixed;
+		top: 0; left: 0; width: 100%; height: 100%;
+		z-index: 999998;
+		pointer-events: none;
+		background: #050505;
+		opacity: 0;
+	}
+	@keyframes particleDissolve {
+		0% { opacity: 1; filter: blur(0px) brightness(1); transform: scale(1); }
+		30% { filter: blur(0px) brightness(1.8); }
+		100% { opacity: 0; filter: blur(12px) brightness(3); transform: scale(1.15); }
+	}
+
+/* ---- 3. Hebrew splash intro ---- */
+	@font-face {
+		font-family: 'SBLHebrew';
+		src: url('/fonts/SBL_Hbrw.ttf') format('truetype');
+		font-weight: normal;
+		font-style: normal;
+		font-display: block;
+	}
+	#hebrew-splash {
+		position: fixed;
+		inset: 0;
+		z-index: 999999;
+		background: #a9b4bc;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: 'SBLHebrew', serif;
+		direction: rtl;
+		overflow: hidden;
+		transition: opacity 1s ease;
+	}
+	#hebrew-splash.fade-out {
+		opacity: 0;
+		pointer-events: none;
+	}
+	/* Second card slips under the HUD (z 1200): the client's mock shows the
+	   social row + hamburger over the psalm frame, but not over the intro. */
+	#hebrew-splash.phase-hebrew { z-index: 1100; }
+	/* The two cards crossfade inside the same frame. */
+	.hs-intro, .hs-hebrew {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		opacity: 0;
+		transition: opacity 0.9s ease;
+		pointer-events: none;
+	}
+	.hs-intro.show, .hs-hebrew.show { opacity: 1; }
+	/* The brand flower — /logo.png tinted ink through a mask. */
+	.hs-flower {
+		background: #23282c;
+		-webkit-mask: url('/logo.png') no-repeat center / contain;
+		mask: url('/logo.png') no-repeat center / contain;
+	}
+	.hs-flower--intro { width: min(46vw, 240px); height: min(46vw, 240px); }
+	.hs-flower--foot { width: min(30vw, 150px); height: min(30vw, 150px); }
+	.hs-brand {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		direction: ltr;
+		margin-top: 6px;
+		font-family: 'Times New Roman', Georgia, serif;
+		color: #23282c;
+		user-select: none;
+	}
+	.hs-brand-name {
+		font-size: min(7.2vw, 34px);
+		letter-spacing: 0.32em;
+		margin-right: -0.32em;
+	}
+	.hs-brand-tag {
+		font-size: min(3.4vw, 16px);
+		letter-spacing: 0.48em;
+		margin-right: -0.48em;
+		margin-top: 2px;
+		color: rgba(35, 40, 44, 0.85);
+	}
+	.hs-brand--foot .hs-brand-name { font-size: min(4.6vw, 22px); }
+	.hs-brand--foot .hs-brand-tag { font-size: min(2.4vw, 11px); }
+	/* Phase 2 layout: יה/סאל near the top, psalm mid-frame, mark at the foot. */
+	.hs-yhsal {
+		position: absolute;
+		top: 16%;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 6px;
+		font-size: min(9vw, 46px);
+		color: #2e353a;
+		line-height: 1;
+		user-select: none;
+	}
+	.hs-psalm-wrap {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.hs-watermark {
+		position: absolute;
+		top: 50%; left: 50%;
+		transform: translate(-50%, -50%);
+		font-family: 'Times New Roman', serif;
+		font-size: min(60vw, 330px);
+		color: rgba(255, 255, 255, 0.18);
+		line-height: 1;
+		pointer-events: none;
+		user-select: none;
+	}
+	.hs-foot {
+		position: absolute;
+		bottom: 6%;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+	.hs-corner {
+		position: absolute;
+		width: 16px; height: 16px;
+		border: 1.5px solid #555;
+		opacity: 0;
+		transition: opacity 0.8s ease 0.3s;
+	}
+	.hs-corner.show { opacity: 1; }
+	.hs-corner::after {
+		content: "";
+		position: absolute;
+		top: 50%; left: 50%;
+		width: 4px; height: 4px;
+		background: #555;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+	}
+	.hs-corner--tl { top: 10%; left: 15%; }
+	.hs-corner--tr { top: 10%; right: 15%; }
+	.hs-corner--bl { bottom: 10%; left: 15%; }
+	.hs-corner--br { bottom: 10%; right: 15%; }
+	.hs-float {
+		position: absolute;
+		font-family: 'SBLHebrew', serif;
+		font-size: min(3vw, 32px);
+		color: rgba(100, 100, 100, 0.35);
+		pointer-events: none;
+		user-select: none;
+		opacity: 0;
+		transition: opacity 0.6s ease;
+		animation: hsFloatDrift 4s ease-in-out infinite alternate;
+	}
+	.hs-float.show { opacity: 1; }
+	@keyframes hsFloatDrift {
+		0% { transform: translateY(0) translateX(0); }
+		100% { transform: translateY(-12px) translateX(6px); }
+	}
+	.hs-psalm {
+		position: relative;
+		z-index: 10;
+		text-align: center;
+		direction: rtl;
+	}
+	.hs-psalm p {
+		font-family: 'SBLHebrew', serif;
+		font-size: min(8.4vw, 44px);
+		color: #2b3238;
+		margin: 10px 0;
+		line-height: 1.5;
+		white-space: nowrap;
+	}
+	@media (max-width: 768px) {
+		.hs-corner--tl { top: 33%; left: 17%; }
+		.hs-corner--tr { top: 33%; right: 17%; }
+		.hs-corner--bl { bottom: 34%; left: 17%; }
+		.hs-corner--br { bottom: 34%; right: 17%; }
+	}
+
+/* ---- 4. HUD header ---- */
+	#yk-hud {
+		position: fixed;
+		top: 0; left: 0; right: 0;
+		/* Below Chakra's modal layer (1300/1400) so the MENU drawer covers the
+		   header, but still above the WebGL scene. */
+		z-index: 1200;
+		background: #fff;
+		/* lifts the white band off the scene */
+		box-shadow: 0 6px 18px rgba(26,26,26,0.16), 0 1px 3px rgba(26,26,26,0.10);
+		padding: max(10px, env(safe-area-inset-top, 0px)) 22px 10px 18px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 10px 16px;
+		pointer-events: none;
+		font-family: 'TTMussels', sans-serif;
+		color: #1a1a1a;
+	}
+	#yk-hud > * { pointer-events: auto; }
+	/* one row per side keeps the band short: clock beside the social icons,
+	   date beside the nav + button */
+	.yk-hud-side { display: flex; flex-direction: row; align-items: center; gap: 14px; }
+	.yk-hud-row { display: flex; align-items: center; gap: 14px; }
+
+	/* Social icons — same language as the services page footer: a brand glyph
+	   inside a split ring that rotates on hover. */
+	#yk-social { display: flex; align-items: center; gap: 2px; }
+	#yk-social a.yk-soc {
+		display: block;
+		width: 28px; height: 28px;
+		color: rgba(26,26,26,0.55);
+		transition: color .35s ease;
+	}
+	#yk-social a.yk-soc:hover { color: #1a1a1a; }
+	#yk-social a.yk-soc.is-whatsapp { color: #25D366; }
+	#yk-social a.yk-soc.is-whatsapp:hover { color: #1DB954; }
+	#yk-social svg { display: block; width: 100%; height: 100%; }
+	#yk-social .yk-soc-glyph { fill: currentColor; }
+	#yk-social .yk-soc-ring {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.1;
+		stroke-miterlimit: 10;
+		transform-origin: 12px 12px;
+		transition: transform .4s ease-out;
+	}
+	#yk-social a.yk-soc:hover .yk-soc-ring { transform: rotate(90deg); }
+
+	/* Clock */
+	.yk-time {
+		font-size: 9px;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+		user-select: none;
+	}
+	.yk-date {
+		font-size: 9px;
+		font-weight: 500;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		opacity: 0.6;
+		line-height: 1;
+		user-select: none;
+	}
+	/* Clock + date are phone-only; the desktop header stays clean */
+	@media (min-width: 701px) {
+		.yk-time, .yk-date { display: none; }
+	}
+
+	/* Right nav */
+	#yk-nav { display: flex; align-items: center; gap: 22px; }
+	#yk-nav a.yk-navlink {
+		position: relative;
+		text-decoration: none;
+		color: #1a1a1a;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		opacity: 0.75;
+		transition: opacity .25s ease;
+	}
+	#yk-nav a.yk-navlink::after {
+		content: '';
+		position: absolute;
+		left: 0; right: 0; bottom: -6px;
+		height: 1px;
+		background: #1a1a1a;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform .3s ease;
+	}
+	#yk-nav a.yk-navlink:hover { opacity: 1; }
+	#yk-nav a.yk-navlink:hover::after { transform: scaleX(1); }
+	#yk-login {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 8px;
+		height: 30px;
+		padding: 0 16px;
+		border: 1px solid rgba(26,26,26,0.4);
+		border-radius: 6px;
+		background: transparent;
+		color: #1a1a1a;
+		text-decoration: none;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		cursor: pointer;
+		transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+	}
+	#yk-login svg { width: 13px; height: 13px; flex: 0 0 13px; fill: currentColor; }
+	/* Glass on hover: the frosted panel reads against the WebGL scene behind
+	   the header, so the label keeps its ink colour instead of inverting. */
+	#yk-login:hover {
+		background: rgba(255,255,255,0.55);
+		border-color: rgba(26,26,26,0.65);
+		box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 10px rgba(26,26,26,0.12);
+		backdrop-filter: blur(10px) saturate(140%);
+		-webkit-backdrop-filter: blur(10px) saturate(140%);
+	}
+	@media (max-width: 900px) {
+		#yk-nav { gap: 16px; }
+		#yk-nav a.yk-navlink { font-size: 9px; letter-spacing: 0.1em; }
+	}
+	/* Phone hamburger: opens the shared dark MENU drawer. Hidden on desktop,
+	   where the inline nav + login button remain. */
+	#yk-burger {
+		display: none;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 22px;
+		height: 14px;
+		padding: 0;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+	}
+	#yk-burger span {
+		display: block;
+		height: 2px;
+		width: 100%;
+		background: #1a1a1a;
+	}
+	@media (max-width: 700px) {
+		#yk-nav, #yk-login { display: none; }
+		#yk-burger { display: flex; }
+		/* Single row: social icons left, hamburger right — per the client's mock. */
+		.yk-time, .yk-date { display: none; }
+		.yk-hud-side { flex: 0 0 auto; }
+		.yk-hud-right { justify-content: flex-end; }
+		#yk-social a.yk-soc { width: 24px; height: 24px; }
+	}
+	@media (max-width: 380px) {
+		#yk-social { gap: 0; }
+		#yk-social a.yk-soc { width: 22px; height: 22px; }
+	}
+
+	@media (max-width: 480px) {
+		#yk-hud { padding-left: 16px; padding-right: 18px; }
+	}

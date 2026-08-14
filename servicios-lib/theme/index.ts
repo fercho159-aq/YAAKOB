@@ -15,9 +15,9 @@ export const theme = extendTheme({
     blackAlt: '#111316',
     grey1: '#0D0F15',
     grey2: '#9d9d9d',
-    gold: '#E0BE7A',
-    goldAlt: '#A18855',
-    focus: '#E0BE7A',
+    gold: '#FF9933',
+    goldAlt: '#B76F24',
+    focus: '#FF9933',
   },
   fonts: {
     heading: 'var(--font-din-ot),-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif',
@@ -103,7 +103,7 @@ export const theme = extendTheme({
       },
       "a:focus-visible, button:focus-visible, [role='button']:focus-visible": {
         boxShadow: 'none',
-        outline: '#E0BE7A solid 2px',
+        outline: '#FF9933 solid 2px',
         outlineOffset: '1px',
       },
     },
