@@ -24,3 +24,11 @@ dist-ssr
 *.sw?
 .vercel
 .env*.local
+
+# Build output — Next lo regenera; no tiene por qué versionarse
+.next
+out
+tsconfig.tsbuildinfo
+
+# Scratch local
+_to_delete/

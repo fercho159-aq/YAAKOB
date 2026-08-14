@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/fernandotrejo/Developer/YAAKOB/pages/spike-escena.tsx"],"sourcesContent":["import Head from 'next/head'\nimport dynamic from 'next/dynamic'\n\n/**\n * Spike: the landing scene rebuilt on react-three-fiber, served on its own\n * route so it can be compared against the legacy engine at `/` without\n * touching the live home.\n *\n * Not linked from anywhere. Delete this page once the port lands (or the spike\n * is abandoned).\n */\nconst Scene = dynamic(() => import('@home/scene/Scene').then((m) => m.Scene), { ssr: false })\n\nexport default function SpikeEscena() {\n  return (\n    <>\n      <Head>\n        <title>Spike · escena R3F</title>\n        <meta name=\"robots\" content=\"noindex\" />\n      </Head>\n      <Scene />\n    </>\n  )\n}\n"],"names":[],"mappings":";;;;;AAAA;AACA;;;;;AAEA;;;;;;;CAOC,GACD,MAAM,QAAQ,IAAA,mIAAO,EAAC,IAAM,mHAA4B,IAAI,CAAC,CAAC,IAAM,EAAE,KAAK;;;;;;IAAK,KAAK;;AAEtE,SAAS;IACtB,qBACE;;0BACE,qKAAC,gIAAI;;kCACH,qKAAC;kCAAM;;;;;;kCACP,qKAAC;wBAAK,MAAK;wBAAS,SAAQ;;;;;;;;;;;;0BAE9B,qKAAC;;;;;;;AAGP"}}]
-}
