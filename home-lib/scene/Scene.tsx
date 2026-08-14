@@ -1,7 +1,7 @@
 import { PerspectiveCamera } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
-import { Suspense, useMemo, useRef } from 'react'
+import { Suspense, useEffect, useMemo, useRef } from 'react'
 import {
   AdditiveBlending,
   BackSide,
@@ -510,11 +510,35 @@ function CameraRig() {
   const pointer = useThree((state) => state.pointer)
   const cameraRef = useRef<PerspectiveCameraImpl>(null)
 
+  // R3F's pointer keeps its last value when the cursor leaves the window, so
+  // the parallax would park the whole scene off to one side indefinitely —
+  // the background at z=-18 swings hard enough to read as "the page broke".
+  // Ease back to centre whenever the pointer is gone.
+  const pointerActive = useRef(false)
+  useEffect(() => {
+    const on = () => {
+      pointerActive.current = true
+    }
+    const off = () => {
+      pointerActive.current = false
+    }
+    window.addEventListener('pointermove', on)
+    document.documentElement.addEventListener('pointerleave', off)
+    window.addEventListener('blur', off)
+    return () => {
+      window.removeEventListener('pointermove', on)
+      document.documentElement.removeEventListener('pointerleave', off)
+      window.removeEventListener('blur', off)
+    }
+  }, [])
+
   useFrame(() => {
     const camera = cameraRef.current
     if (!camera) return
-    const targetX = cameraConfig.position[0] + pointer.x * parallax.move[0]
-    const targetY = cameraConfig.position[1] + pointer.y * parallax.move[1]
+    const px = pointerActive.current ? pointer.x : 0
+    const py = pointerActive.current ? pointer.y : 0
+    const targetX = cameraConfig.position[0] + px * parallax.move[0]
+    const targetY = cameraConfig.position[1] + py * parallax.move[1]
     camera.position.x += (targetX - camera.position.x) * parallax.lerp
     camera.position.y += (targetY - camera.position.y) * parallax.lerp
     // Keep aiming at the level's target, so the logo holds its place.
