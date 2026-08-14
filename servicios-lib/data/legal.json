@@ -6,7 +6,10 @@
     "domicilioFiscal": "Cerrada Durango Sur, Manzana 4, Lote 22, sin número interior, Colonia Unidad Bonito Ecatepec, Ecatepec de Morelos, Estado de México, C.P. 55090",
     "domicilioAtencion": "Alica 40, Lomas de Chapultepec, Miguel Hidalgo, Ciudad de México, C.P. 11000",
     "correo": "contacto@yaakob.com",
-    "telefonos": ["+52 55 9008 6360", "+52 55 9008 7881"],
+    "telefonos": [
+      "+52 55 9008 6360",
+      "+52 55 9008 7881"
+    ],
     "whatsapp": "+52 55 2741 6178",
     "sitio": "https://www.yaakob.com"
   },
@@ -18,154 +21,326 @@
     "description": "Aviso de privacidad integral de Yaakob Consultores, S.C. conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.",
     "updatedLabel": "Última actualización",
     "updated": "13 de agosto de 2026",
-    "intro": "Yaakob Consultores, S.C. reconoce la importancia del tratamiento legítimo, controlado e informado de sus datos personales y emite el presente aviso de privacidad en cumplimiento de los artículos 15, 16 y 17 de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, así como de su Reglamento y de los Lineamientos del Aviso de Privacidad.",
+    "intro": "Yaakob Consultores, S.C. (en adelante, “YAAKOB”, “nosotros” o el “Responsable”) reconoce la importancia de la protección de los datos personales y está comprometida con su tratamiento legítimo, controlado, informado y seguro. El presente aviso se emite de conformidad con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, su normativa aplicable y los Lineamientos del Aviso de Privacidad. Este aviso explica qué datos personales podemos recabar, para qué los utilizamos, cómo los protegemos, con quién podemos compartirlos y cuáles son los derechos que usted puede ejercer respecto de sus datos personales.",
     "sections": [
       {
         "id": "responsable",
         "heading": "1. Identidad y domicilio del responsable",
         "paragraphs": [
-          "Yaakob Consultores, S.C., con Registro Federal de Contribuyentes YCO2604212U8, constituida bajo el régimen de sociedad civil y dedicada a la prestación de servicios de consultoría en administración y defensa fiscal, es la responsable del tratamiento de sus datos personales.",
+          "Yaakob Consultores, S.C., con Registro Federal de Contribuyentes YCO2604212U8, constituida bajo el régimen de sociedad civil y dedicada, entre otras actividades, a la prestación de servicios de consultoría, asesoría, acompañamiento y defensa en materia fiscal, administrativa, financiera y relacionada, es responsable del tratamiento de los datos personales que recabe.",
           "Domicilio fiscal: Cerrada Durango Sur, Manzana 4, Lote 22, Colonia Unidad Bonito Ecatepec, Ecatepec de Morelos, Estado de México, C.P. 55090.",
           "Domicilio de atención y oficina de contacto: Alica 40, Lomas de Chapultepec, Miguel Hidalgo, Ciudad de México, C.P. 11000.",
-          "Correo electrónico para asuntos de privacidad: contacto@yaakob.com."
+          "Correo electrónico para asuntos relacionados con privacidad y protección de datos personales: contacto@yaakob.com. El presente aviso se encuentra disponible permanentemente en www.yaakob.com."
         ]
       },
       {
-        "id": "datos",
-        "heading": "2. Datos personales que se recaban",
+        "id": "datos-recabados",
+        "heading": "2. Datos personales que podemos recabar",
         "paragraphs": [
-          "Para las finalidades señaladas en este aviso, podemos recabar de forma directa, por medios electrónicos o a través de terceros legalmente facultados, las siguientes categorías de datos personales:"
+          "Para cumplir con las finalidades descritas en este aviso, YAAKOB podrá recabar, dependiendo de la naturaleza de la relación con usted y de los servicios solicitados, las siguientes categorías de datos personales:"
         ],
         "items": [
-          "Datos de identificación: nombre, denominación o razón social, firma, nacionalidad, fecha de nacimiento, clave única de registro de población y datos contenidos en identificaciones oficiales.",
-          "Datos de contacto: domicilio, correo electrónico, teléfono fijo, teléfono móvil y cuentas de mensajería instantánea.",
-          "Datos fiscales: Registro Federal de Contribuyentes, constancia de situación fiscal, opinión de cumplimiento, régimen fiscal, domicilio fiscal, comprobantes fiscales digitales, declaraciones, papeles de trabajo y contabilidad electrónica.",
-          "Datos patrimoniales y financieros: información sobre bienes, cuentas bancarias, ingresos, egresos, créditos fiscales, embargos, garantías y estados financieros.",
-          "Datos laborales o profesionales: puesto, actividad, giro y relación con la persona moral que representa.",
-          "Datos de terceros que usted nos proporcione: representantes legales, socios, accionistas, beneficiarios controladores, apoderados y personal, respecto de quienes usted manifiesta contar con la facultad para transmitirlos."
+          "Datos de identificación: nombre completo, firma, nacionalidad, fecha de nacimiento, CURP cuando resulte necesaria, datos e imagen contenidos en identificaciones oficiales y, en su caso, información relativa a la representación legal, poderes y facultades.",
+          "Datos de contacto: domicilio, correo electrónico, teléfonos fijo y móvil, datos de contacto profesional e información necesaria para establecer comunicación mediante herramientas de mensajería electrónica.",
+          "Datos fiscales: RFC, Constancia de Situación Fiscal, Opinión de Cumplimiento, régimen y domicilio fiscal, CFDI, declaraciones, acuses y constancias, papeles de trabajo, contabilidad y contabilidad electrónica, información sobre obligaciones fiscales, créditos fiscales, multas, recargos, actualizaciones y accesorios, así como información de auditorías, revisiones, requerimientos, expedientes y comunicaciones con autoridades fiscales.",
+          "Datos patrimoniales y financieros: información sobre bienes, ingresos y egresos, estados financieros, información bancaria y cuentas, créditos, obligaciones financieras, garantías, embargos, información patrimonial y económica necesaria para elaborar diagnósticos, estrategias, opiniones o defensas. Su tratamiento observará las disposiciones aplicables y, cuando legalmente corresponda, se recabará el consentimiento expreso del titular.",
+          "Datos laborales y profesionales: profesión, puesto, actividad profesional o empresarial, giro, empresa u organización a la que pertenece e información relacionada con su función o representación dentro de una persona moral.",
+          "Datos relacionados con procedimientos y asuntos jurídicos o fiscales: expedientes administrativos y fiscales, resoluciones, oficios, requerimientos, actas, notificaciones, demandas, recursos, medios de defensa, resoluciones judiciales e información de procedimientos administrativos o jurisdiccionales.",
+          "Datos de terceros proporcionados por usted: representantes legales, socios, accionistas, administradores, apoderados, beneficiarios controladores, trabajadores, asesores, proveedores, clientes y personas relacionadas con el asunto encomendado."
         ],
-        "note": "No se recaban datos personales sensibles en los términos del artículo 3, fracción VI de la Ley, salvo que resulten estrictamente indispensables para la defensa de un asunto concreto, en cuyo caso se recabará su consentimiento expreso y por escrito."
+        "note": "Cuando usted proporcione información personal de terceros, manifiesta que cuenta con las facultades, autorizaciones o bases jurídicas necesarias para proporcionarla a YAAKOB y se obliga a comunicar a dichas personas el tratamiento correspondiente cuando resulte exigible. YAAKOB podrá solicitar documentación que acredite la legitimidad de dicha transmisión cuando las circunstancias del asunto lo requieran."
+      },
+      {
+        "id": "datos-sensibles",
+        "heading": "3. Datos personales sensibles",
+        "paragraphs": [
+          "YAAKOB no recaba de manera ordinaria datos personales sensibles.",
+          "Cuando, excepcionalmente, la atención de un asunto requiera conocer información que tenga el carácter de dato personal sensible conforme a la legislación aplicable, YAAKOB limitará su tratamiento a lo estrictamente necesario para la finalidad correspondiente y recabará el consentimiento que legalmente resulte exigible, salvo que exista una excepción prevista expresamente por la legislación aplicable."
+        ]
+      },
+      {
+        "id": "fuentes",
+        "heading": "4. Fuentes de obtención de los datos",
+        "paragraphs": [
+          "Los datos personales podrán obtenerse:"
+        ],
+        "items": [
+          "Directamente del titular.",
+          "Mediante formularios físicos o electrónicos.",
+          "Por correo electrónico.",
+          "Mediante llamadas telefónicas o medios de comunicación electrónica.",
+          "Mediante reuniones presenciales o virtuales.",
+          "A través de documentación proporcionada por el cliente.",
+          "Mediante documentos o información proporcionados por representantes legalmente facultados.",
+          "De autoridades, tribunales u organismos públicos cuando ello sea legalmente procedente.",
+          "De fuentes públicas permitidas por la legislación aplicable.",
+          "De terceros legalmente facultados para proporcionar la información."
+        ]
+      },
+      {
+        "id": "finalidades-primarias",
+        "heading": "5. Finalidades primarias",
+        "paragraphs": [
+          "Los datos personales serán tratados para las siguientes finalidades necesarias para la prestación de los servicios y, en su caso, para el establecimiento, mantenimiento y cumplimiento de la relación jurídica con usted:"
+        ],
+        "items": [
+          "Atención y contratación: atender solicitudes de información y de consulta, elaborar cotizaciones y propuestas, identificar al cliente, verificar la información proporcionada, evaluar la naturaleza y alcance del servicio, formalizar contratos y cartas compromiso, gestionar pagos y facturación, y dar seguimiento a la relación contractual.",
+          "Consultoría y asesoría: elaborar diagnósticos fiscales, administrativos, financieros o relacionados; analizar información fiscal, contable, financiera y patrimonial; elaborar opiniones, recomendaciones, estrategias y planes de acción; y proporcionar asesoría y consultoría especializada.",
+          "Defensa fiscal y administrativa: preparar promociones; elaborar y presentar recursos administrativos; atender requerimientos, revisiones y auditorías; analizar créditos fiscales; preparar medios de defensa y demandas de nulidad; atender procedimientos ante el Tribunal Federal de Justicia Administrativa; preparar y dar seguimiento a juicios de amparo; atender procedimientos ante juzgados, tribunales y autoridades competentes; dar seguimiento a procedimientos administrativos de ejecución; atender cartas invitación; analizar procedimientos relacionados con el artículo 69-B y demás disposiciones aplicables del Código Fiscal de la Federación; atender procedimientos sobre restricción o cancelación de certificados de sello digital; y analizar y atender actos de autoridades fiscales y administrativas.",
+          "Cumplimiento de obligaciones legales: cumplir obligaciones fiscales, contables, mercantiles, administrativas y legales aplicables; atender requerimientos de autoridades competentes; cumplir obligaciones de conservación documental y las relacionadas con la prevención de operaciones con recursos de procedencia ilícita cuando resulten aplicables; integrar expedientes de identificación cuando exista obligación legal; y cumplir obligaciones derivadas de procedimientos administrativos o judiciales.",
+          "Administración interna: facturación, cobranza, administración de cuentas, contabilidad del despacho, control administrativo, auditoría interna, gestión documental, seguridad de la información y prevención y detección de actividades fraudulentas o ilícitas."
+        ]
+      },
+      {
+        "id": "finalidades-secundarias",
+        "heading": "6. Finalidades secundarias",
+        "paragraphs": [
+          "Adicionalmente, y siempre que usted no manifieste su oposición, podremos utilizar sus datos de contacto para:"
+        ],
+        "items": [
+          "Enviar boletines fiscales.",
+          "Enviar alertas sobre cambios legislativos o regulatorios.",
+          "Compartir información relacionada con temas fiscales, financieros, administrativos o empresariales.",
+          "Invitar a conferencias, cursos, seminarios y eventos.",
+          "Realizar encuestas de satisfacción.",
+          "Evaluar y mejorar nuestros servicios.",
+          "Elaborar estadísticas internas.",
+          "Realizar actividades de comunicación institucional y comercial relacionadas con los servicios de YAAKOB."
+        ],
+        "note": "El tratamiento para estas finalidades secundarias no es necesario para la prestación de los servicios principales. Usted puede manifestar su negativa enviando un correo electrónico a contacto@yaakob.com con el asunto “OPOSICIÓN A FINALIDADES SECUNDARIAS”. La negativa para finalidades secundarias no condicionará la prestación de los servicios contratados o solicitados."
       },
       {
         "id": "consentimiento",
-        "heading": "3. Consentimiento expreso para datos financieros y patrimoniales",
+        "heading": "7. Consentimiento",
         "paragraphs": [
-          "De conformidad con el artículo 8 de la Ley, el tratamiento de datos financieros y patrimoniales requiere su consentimiento expreso. La contratación de nuestros servicios, la firma de la carta compromiso correspondiente o la entrega voluntaria de esta información por cualquier medio se entenderán como manifestación de dicho consentimiento, sin perjuicio de su derecho a revocarlo en los términos de la sección 8 de este aviso."
+          "YAAKOB obtendrá los consentimientos que sean legalmente necesarios para el tratamiento de datos personales. Cuando la legislación requiera consentimiento expreso, YAAKOB implementará mecanismos que permitan obtener y conservar evidencia de dicho consentimiento.",
+          "La entrega voluntaria de información no se interpretará automáticamente como consentimiento expreso cuando la legislación exija una manifestación expresa, inequívoca o por escrito. El consentimiento podrá no ser necesario cuando el tratamiento se encuentre dentro de alguno de los supuestos de excepción establecidos por la legislación aplicable."
         ]
-      },
-      {
-        "id": "finalidades",
-        "heading": "4. Finalidades del tratamiento",
-        "paragraphs": [
-          "Finalidades primarias, necesarias para la existencia y cumplimiento de la relación jurídica con usted:"
-        ],
-        "items": [
-          "Identificar al cliente y verificar la veracidad de la información proporcionada.",
-          "Elaborar el diagnóstico fiscal y determinar la estrategia y vías de defensa aplicables.",
-          "Preparar, presentar y dar seguimiento a promociones, recursos administrativos, demandas de nulidad, juicios de amparo y cualquier medio de defensa ante el Servicio de Administración Tributaria, el Tribunal Federal de Justicia Administrativa, juzgados de distrito y demás autoridades competentes.",
-          "Atender requerimientos, auditorías, revisiones, procedimientos administrativos de ejecución, cartas invitación y procedimientos previstos en los artículos 69-B del Código Fiscal de la Federación y disposiciones relacionadas.",
-          "Emitir comprobantes fiscales, gestionar cobranza y llevar la contabilidad del despacho.",
-          "Dar cumplimiento a las obligaciones de identificación, integración de expedientes, resguardo y presentación de avisos previstas en la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita, cuando la actividad encuadre como vulnerable.",
-          "Atender requerimientos de autoridades judiciales o administrativas legalmente fundados y motivados."
-        ],
-        "secondary": {
-          "paragraph": "Finalidades secundarias, que no son necesarias para la relación jurídica y a las que usted puede oponerse:",
-          "items": [
-            "Envío de boletines, alertas normativas y comunicaciones informativas en materia fiscal.",
-            "Invitación a conferencias, cursos y eventos organizados por el despacho.",
-            "Elaboración de estadísticas internas y encuestas de calidad del servicio."
-          ],
-          "optOut": "Si usted no desea que sus datos sean tratados para estas finalidades secundarias, puede manifestarlo dentro de los cinco días hábiles siguientes a la puesta a disposición de este aviso, enviando un correo a contacto@yaakob.com con la leyenda \"NO FINALIDADES SECUNDARIAS\". La negativa no será motivo para negarle los servicios que solicita."
-        }
       },
       {
         "id": "transferencias",
-        "heading": "5. Transferencias y remisiones de datos",
+        "heading": "8. Transferencias de datos personales",
         "paragraphs": [
-          "Sus datos personales podrán ser transferidos, sin requerir su consentimiento, en los supuestos previstos en el artículo 37 de la Ley, particularmente cuando la transferencia sea legalmente exigida para la salvaguarda de un interés público, para la procuración o administración de justicia, para el reconocimiento o defensa de sus derechos en un proceso, o cuando sea precisa para el mantenimiento o cumplimiento de la relación jurídica entre usted y el responsable.",
-          "En ese marco, los destinatarios pueden ser:"
+          "YAAKOB podrá realizar transferencias de datos personales cuando exista una base jurídica que lo permita y, cuando sea necesario, con el consentimiento correspondiente. Las transferencias podrán realizarse, entre otros, a:"
         ],
         "items": [
-          "Servicio de Administración Tributaria, Secretaría de Hacienda y Crédito Público y autoridades fiscales locales.",
-          "Tribunal Federal de Justicia Administrativa, juzgados de distrito, tribunales colegiados y demás órganos jurisdiccionales.",
-          "Unidad de Inteligencia Financiera y Fiscalía General de la República, cuando exista requerimiento legalmente fundado.",
-          "Instituto Mexicano del Seguro Social, INFONAVIT y organismos fiscales autónomos, cuando el asunto lo requiera.",
-          "Abogados, contadores, peritos, notarios y corresponsales externos que intervengan en la atención del asunto, sujetos a obligaciones de confidencialidad equivalentes."
+          "Servicio de Administración Tributaria.",
+          "Autoridades fiscales federales, estatales o municipales.",
+          "Secretaría de Hacienda y Crédito Público y demás autoridades competentes.",
+          "Tribunal Federal de Justicia Administrativa.",
+          "Juzgados y tribunales.",
+          "Autoridades administrativas.",
+          "Instituto Mexicano del Seguro Social e INFONAVIT.",
+          "Autoridades encargadas de procuración y administración de justicia.",
+          "Autoridades competentes en materia de prevención y detección de operaciones con recursos de procedencia ilícita.",
+          "Notarios y corredores públicos cuando su intervención sea necesaria.",
+          "Peritos, abogados, contadores, auditores, corresponsales o profesionistas externos que participen en la atención del asunto."
         ],
-        "note": "Los proveedores de servicios tecnológicos que tratan datos por cuenta y bajo instrucciones del responsable —correo electrónico, almacenamiento y respaldo— actúan como encargados; su intervención constituye una remisión y no una transferencia. Cualquier transferencia distinta a las señaladas requerirá su consentimiento previo."
+        "note": "Estas transferencias podrán realizarse sin consentimiento cuando se actualice alguno de los supuestos establecidos por la legislación aplicable, incluyendo los relacionados con el cumplimiento de obligaciones legales, la administración o procuración de justicia, la defensa de derechos, el cumplimiento de una relación jurídica o los demás supuestos legalmente previstos. Cuando una transferencia requiera consentimiento y no exista una excepción legal aplicable, YAAKOB solicitará dicho consentimiento."
       },
       {
-        "id": "arco",
-        "heading": "6. Derechos ARCO",
+        "id": "encargados",
+        "heading": "9. Remisiones a encargados",
         "paragraphs": [
-          "Usted tiene derecho a conocer qué datos personales tenemos de usted, para qué los utilizamos y las condiciones del uso que les damos (Acceso); a solicitar la corrección de su información cuando esté desactualizada, sea inexacta o incompleta (Rectificación); a solicitar que la eliminemos de nuestros registros cuando considere que no está siendo utilizada conforme a los principios y deberes de la Ley (Cancelación); así como a oponerse al uso de sus datos para fines específicos (Oposición).",
-          "Para ejercer cualquiera de estos derechos, envíe su solicitud al correo contacto@yaakob.com o preséntela por escrito en nuestro domicilio de atención. La solicitud deberá contener:"
-        ],
-        "items": [
-          "Nombre del titular y medio o domicilio para comunicarle la respuesta.",
-          "Documentos que acrediten su identidad o, en su caso, la representación legal del titular.",
-          "Descripción clara y precisa de los datos personales respecto de los que busca ejercer el derecho y del derecho que desea ejercer.",
-          "Cualquier elemento o documento que facilite la localización de los datos personales."
-        ],
-        "note": "Daremos respuesta a su solicitud en un plazo máximo de veinte días hábiles contados desde su recepción y, de resultar procedente, la haremos efectiva dentro de los quince días hábiles siguientes a la comunicación de la respuesta. El ejercicio de estos derechos es gratuito; únicamente deberán cubrirse los gastos justificados de envío o reproducción."
-      },
-      {
-        "id": "limitaciones",
-        "heading": "7. Limitaciones al ejercicio de los derechos ARCO",
-        "paragraphs": [
-          "La cancelación y la oposición no procederán cuando los datos sean necesarios para el cumplimiento de una obligación legal a cargo del responsable, cuando obstaculicen actuaciones judiciales o administrativas vinculadas a obligaciones fiscales, o cuando sean indispensables para el cumplimiento de la relación jurídica con usted, en los términos del artículo 26 de la Ley.",
-          "En particular, la documentación que integra el expediente de identificación previsto en la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita y la que soporta obligaciones fiscales deben conservarse por los plazos que la normatividad aplicable establece, aun después de concluida la relación de servicios."
+          "YAAKOB podrá utilizar proveedores de servicios que traten datos personales por cuenta y bajo instrucciones de YAAKOB, incluyendo, entre otros: proveedores de correo electrónico, servicios de alojamiento, almacenamiento en la nube, respaldo de información, sistemas administrativos y contables, herramientas de gestión documental, herramientas de comunicación y proveedores tecnológicos.",
+          "Cuando estos proveedores actúen como encargados del tratamiento, estarán sujetos a las obligaciones correspondientes de confidencialidad, seguridad y tratamiento conforme a las instrucciones de YAAKOB y a la legislación aplicable."
         ]
       },
       {
-        "id": "revocacion",
-        "heading": "8. Revocación del consentimiento y limitación de uso",
+        "id": "derechos-arco",
+        "heading": "10. Derechos ARCO",
         "paragraphs": [
-          "En cualquier momento puede revocar el consentimiento otorgado para el tratamiento de sus datos personales, así como solicitar que limitemos su uso o divulgación, enviando su petición a contacto@yaakob.com. Le informaremos sobre la procedencia de la revocación en un plazo máximo de veinte días hábiles.",
-          "La revocación no tendrá efectos retroactivos y no procederá respecto de los tratamientos necesarios para el cumplimiento de obligaciones legales del responsable ni respecto de la información que deba conservarse conforme a la sección anterior."
+          "El titular de los datos personales tiene derecho a:"
+        ],
+        "items": [
+          "Acceso: conocer qué datos personales tenemos, para qué los utilizamos y las condiciones del tratamiento.",
+          "Rectificación: solicitar la corrección de sus datos cuando sean inexactos, incompletos o se encuentren desactualizados.",
+          "Cancelación: solicitar la eliminación de sus datos personales cuando considere que no están siendo tratados conforme a la legislación aplicable.",
+          "Oposición: oponerse al tratamiento de sus datos personales para determinadas finalidades cuando exista causa legítima para ello."
+        ]
+      },
+      {
+        "id": "procedimiento-arco",
+        "heading": "11. Procedimiento para ejercer los derechos ARCO",
+        "paragraphs": [
+          "Para ejercer cualquiera de sus derechos ARCO, deberá presentar una solicitud a través del correo electrónico contacto@yaakob.com o directamente en el domicilio de atención señalado en este aviso. La solicitud deberá contener, al menos:"
+        ],
+        "items": [
+          "Nombre del titular.",
+          "Medio para recibir la respuesta.",
+          "Documentos que acrediten la identidad del titular o, en su caso, la representación legal.",
+          "Descripción clara y precisa del derecho que pretende ejercer.",
+          "Descripción de los datos personales respecto de los cuales solicita el ejercicio del derecho.",
+          "Cualquier otro elemento que facilite la localización de los datos."
+        ],
+        "note": "YAAKOB podrá solicitar información adicional cuando sea necesaria para acreditar la identidad, representación o procedencia de la solicitud. La respuesta se emitirá dentro de los plazos establecidos por la legislación aplicable y, cuando resulte procedente, la determinación se hará efectiva dentro del plazo legal correspondiente. El ejercicio de los derechos ARCO será gratuito, salvo los casos y gastos permitidos por la legislación aplicable."
+      },
+      {
+        "id": "limitaciones-arco",
+        "heading": "12. Limitaciones al ejercicio de derechos ARCO",
+        "paragraphs": [
+          "Los derechos de acceso, rectificación, cancelación u oposición podrán estar sujetos a las limitaciones y excepciones previstas por la legislación aplicable. En particular, podrán existir restricciones cuando:"
+        ],
+        "items": [
+          "Exista una obligación legal de conservar la información.",
+          "El tratamiento sea necesario para cumplir obligaciones fiscales.",
+          "La información sea necesaria para el ejercicio o defensa de derechos.",
+          "Exista un procedimiento administrativo o judicial.",
+          "La cancelación pueda obstaculizar actuaciones de autoridad.",
+          "Exista una relación contractual vigente que requiera el tratamiento.",
+          "Exista cualquier otra excepción prevista expresamente por la legislación aplicable."
+        ],
+        "note": "Cuando legalmente corresponda, los datos podrán ser bloqueados y posteriormente suprimidos una vez concluidos los plazos de conservación aplicables."
+      },
+      {
+        "id": "revocacion",
+        "heading": "13. Revocación del consentimiento",
+        "paragraphs": [
+          "Cuando el tratamiento se base en el consentimiento del titular, éste podrá solicitar su revocación en cualquier momento mediante correo electrónico a contacto@yaakob.com. La revocación no tendrá efectos retroactivos.",
+          "La revocación no procederá cuando el tratamiento sea necesario para el cumplimiento de obligaciones legales, para el ejercicio o defensa de derechos, para la ejecución de una relación jurídica o cuando exista cualquier otra excepción legal aplicable. La revocación podrá estar sujeta a los mismos plazos y requisitos de identificación establecidos para las solicitudes correspondientes."
+        ]
+      },
+      {
+        "id": "limitacion-uso",
+        "heading": "14. Limitación del uso o divulgación",
+        "paragraphs": [
+          "El titular podrá solicitar la limitación del uso o divulgación de sus datos personales para determinadas finalidades mediante solicitud dirigida a contacto@yaakob.com. Asimismo, podrá solicitar su inclusión en los mecanismos internos de exclusión que, en su caso, YAAKOB establezca para dejar de recibir comunicaciones promocionales o informativas.",
+          "La limitación no afectará los tratamientos necesarios para cumplir obligaciones legales, contractuales o para la defensa de derechos."
         ]
       },
       {
         "id": "conservacion",
-        "heading": "9. Plazo de conservación",
+        "heading": "15. Plazo de conservación",
         "paragraphs": [
-          "Sus datos personales se conservarán durante la vigencia de la relación de servicios y, concluida ésta, durante los plazos de conservación y las facultades de comprobación previstos en el Código Fiscal de la Federación y en la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita. Transcurridos dichos plazos, los datos serán bloqueados y posteriormente suprimidos."
+          "YAAKOB conservará los datos personales únicamente durante el tiempo que resulte necesario para cumplir las finalidades para las cuales fueron recabados y, posteriormente, durante los plazos establecidos por las disposiciones legales aplicables.",
+          "Dependiendo de la naturaleza de la información, podrán resultar aplicables obligaciones de conservación derivadas, entre otras, de la legislación fiscal, mercantil, civil o administrativa, de la legislación relacionada con la prevención de operaciones con recursos de procedencia ilícita, de obligaciones contractuales y de procedimientos administrativos o judiciales.",
+          "Una vez concluido el periodo de conservación aplicable, los datos serán suprimidos o, cuando corresponda, bloqueados y posteriormente eliminados de conformidad con las políticas y procedimientos internos de YAAKOB."
         ]
       },
       {
         "id": "seguridad",
-        "heading": "10. Medidas de seguridad",
+        "heading": "16. Medidas de seguridad",
         "paragraphs": [
-          "Hemos implementado medidas de seguridad administrativas, técnicas y físicas razonables para proteger sus datos personales contra daño, pérdida, alteración, destrucción, uso, acceso o tratamiento no autorizado, incluyendo control de accesos, resguardo de expedientes, cifrado en tránsito de las comunicaciones del sitio y acuerdos de confidencialidad con el personal y los colaboradores externos."
+          "YAAKOB implementará y mantendrá medidas de seguridad administrativas, técnicas y físicas razonables y proporcionales a los riesgos asociados al tratamiento de los datos personales. Estas medidas podrán incluir, de acuerdo con la naturaleza de la información y los sistemas utilizados: controles de acceso, gestión de usuarios y contraseñas, restricciones de acceso a expedientes, resguardo físico de documentación, mecanismos de respaldo, medidas de seguridad informática, protección de comunicaciones, procedimientos internos de confidencialidad, acuerdos de confidencialidad con colaboradores y proveedores, y controles para prevenir accesos, usos, alteraciones, pérdidas o tratamientos no autorizados.",
+          "YAAKOB revisará periódicamente sus medidas de seguridad y podrá actualizarlas conforme evolucionen los riesgos, las tecnologías y las obligaciones legales."
+        ]
+      },
+      {
+        "id": "vulneraciones",
+        "heading": "17. Vulneraciones de seguridad",
+        "paragraphs": [
+          "En caso de que ocurra una vulneración de seguridad que pueda afectar significativamente los derechos patrimoniales o morales de los titulares, YAAKOB actuará conforme a las obligaciones establecidas por la legislación aplicable y, cuando corresponda, notificará al titular afectado y a las autoridades competentes.",
+          "La notificación, cuando resulte legalmente exigible, contendrá la información y medidas previstas por la legislación aplicable."
         ]
       },
       {
         "id": "cookies",
-        "heading": "11. Uso de cookies y tecnologías de rastreo",
+        "heading": "18. Cookies, web beacons y tecnologías similares",
         "paragraphs": [
-          "El sitio yaakob.com puede utilizar cookies y tecnologías similares estrictamente necesarias para su funcionamiento, así como para obtener estadísticas agregadas de navegación —páginas visitadas, tiempo de permanencia, tipo de navegador y sistema operativo—. Esta información no se asocia a una persona identificada ni identificable.",
-          "Usted puede deshabilitar o eliminar las cookies desde la configuración de su navegador; hacerlo puede afectar algunas funciones del sitio."
-        ]
+          "El sitio www.yaakob.com podrá utilizar cookies, archivos de registro, tecnologías de almacenamiento local, web beacons, píxeles u otras tecnologías similares necesarias para el funcionamiento, seguridad y mejora del sitio. Estas tecnologías podrán permitir obtener información como:"
+        ],
+        "items": [
+          "Tipo de navegador y sistema operativo.",
+          "Dispositivo utilizado.",
+          "Dirección IP.",
+          "Páginas consultadas.",
+          "Fecha y hora de acceso, y duración de la visita.",
+          "Interacciones realizadas en el sitio.",
+          "Información técnica relacionada con el funcionamiento del sitio."
+        ],
+        "note": "Dependiendo de las herramientas implementadas, cierta información podrá asociarse a identificadores técnicos que permitan distinguir un dispositivo o sesión. YAAKOB podrá utilizar cookies necesarias (funcionamiento, seguridad y navegación del sitio), cookies de análisis o estadísticas (comprender el uso del sitio y mejorarlo) y cookies de terceros, las cuales podrán establecer sus propias tecnologías de rastreo conforme a sus respectivos términos y políticas. El titular podrá configurar su navegador para bloquear, eliminar o limitar las cookies; sin embargo, algunas funciones del sitio podrían verse afectadas. Cuando las tecnologías utilizadas requieran consentimiento conforme a la legislación aplicable, YAAKOB implementará el mecanismo correspondiente."
       },
       {
         "id": "menores",
-        "heading": "12. Menores de edad",
+        "heading": "19. Menores de edad",
         "paragraphs": [
-          "Los servicios ofrecidos a través de este sitio están dirigidos a personas mayores de edad y a personas morales. No recabamos intencionalmente datos personales de menores de edad; en caso de resultar necesarios para la atención de un asunto, se recabarán a través de quien ejerza la patria potestad o la tutela."
+          "Los servicios ofrecidos por YAAKOB están dirigidos principalmente a personas mayores de edad, empresas, empresarios, profesionistas y personas morales. YAAKOB no recaba intencionalmente datos personales de menores de edad.",
+          "Cuando la atención de un asunto requiera tratar información de una persona menor de edad, el tratamiento se realizará conforme a la legislación aplicable y, cuando corresponda, a través de quien ejerza legalmente la patria potestad, tutela o representación."
         ]
       },
       {
-        "id": "cambios",
-        "heading": "13. Cambios al aviso de privacidad",
+        "id": "personas-morales",
+        "heading": "20. Información de personas morales",
         "paragraphs": [
-          "El presente aviso puede sufrir modificaciones derivadas de reformas legislativas, de nuestras propias necesidades por los servicios que ofrecemos o de cambios en nuestro modelo de negocio. Cualquier modificación se pondrá a su disposición en esta misma dirección electrónica, indicando la fecha de la última actualización. Le sugerimos consultar esta página de forma periódica."
+          "Cuando YAAKOB preste servicios a una persona moral, podrá tratar datos personales de las personas físicas relacionadas con ésta, incluyendo representantes legales, socios, accionistas, administradores, apoderados, trabajadores y beneficiarios controladores, en la medida en que resulte necesario para la prestación del servicio y exista una base jurídica para ello.",
+          "La persona que proporcione datos personales de terceros manifiesta que cuenta con facultades suficientes para hacerlo cuando así sea requerido por la legislación aplicable."
         ]
       },
       {
-        "id": "inai",
-        "heading": "14. Autoridad garante",
+        "id": "terceros",
+        "heading": "21. Sitios web y servicios de terceros",
         "paragraphs": [
-          "Si usted considera que su derecho a la protección de datos personales ha sido lesionado por alguna conducta u omisión de nuestra parte, o presume una violación a las disposiciones previstas en la Ley y demás ordenamientos aplicables, podrá interponer la queja o denuncia correspondiente ante la autoridad garante federal en materia de protección de datos personales, dentro de los plazos que la normatividad establece."
+          "El sitio www.yaakob.com podrá contener enlaces, herramientas o servicios proporcionados por terceros. YAAKOB no será responsable por las prácticas de privacidad, contenidos, políticas o tratamientos realizados directamente por terceros fuera de sus sistemas y control.",
+          "Cuando el titular acceda a sitios o servicios de terceros, deberá consultar las políticas de privacidad y términos correspondientes de dichos terceros."
+        ]
+      },
+      {
+        "id": "comunicaciones",
+        "heading": "22. Comunicaciones electrónicas",
+        "paragraphs": [
+          "Cuando el titular proporcione un correo electrónico, teléfono o medio de comunicación electrónica, autoriza su utilización para las finalidades relacionadas con la atención de la solicitud, prestación de servicios, seguimiento de asuntos y demás finalidades previstas en este aviso.",
+          "Las comunicaciones comerciales o informativas estarán sujetas a las preferencias y derechos que correspondan al titular conforme a la legislación aplicable. El titular podrá solicitar en cualquier momento dejar de recibir comunicaciones de carácter comercial o informativo."
+        ]
+      },
+      {
+        "id": "servicios-sitio",
+        "heading": "23. Servicios contratados a través del sitio web",
+        "paragraphs": [
+          "Cuando YAAKOB permita solicitar, contratar, reservar o pagar servicios mediante www.yaakob.com, la operación podrá estar sujeta adicionalmente a términos y condiciones de contratación, políticas de cancelación y de reembolso, condiciones particulares del servicio, políticas de cookies, condiciones de los proveedores de pago y demás documentos jurídicos que resulten aplicables.",
+          "El tratamiento de datos personales derivado de una operación electrónica se realizará conforme a este aviso y a las condiciones particulares aplicables."
+        ],
+        "link": {
+          "label": "Consultar términos y condiciones",
+          "href": "/terminos"
+        }
+      },
+      {
+        "id": "pagos",
+        "heading": "24. Pagos y proveedores de servicios de pago",
+        "paragraphs": [
+          "Cuando YAAKOB habilite pagos electrónicos, los datos de pago podrán ser tratados directamente por proveedores especializados de servicios de pago. YAAKOB procurará no almacenar datos completos de tarjetas bancarias cuando la operación pueda procesarse directamente mediante un proveedor especializado.",
+          "Los proveedores de pago podrán tratar información conforme a sus propias políticas de privacidad, términos y condiciones y obligaciones legales."
+        ]
+      },
+      {
+        "id": "confidencialidad",
+        "heading": "25. Propiedad y confidencialidad de la información",
+        "paragraphs": [
+          "La información proporcionada por el cliente será tratada con carácter confidencial, sin perjuicio de las comunicaciones que resulten necesarias para prestar los servicios, cumplir obligaciones legales, atender requerimientos de autoridad, ejercer o defender derechos o cumplir las finalidades previstas en este aviso.",
+          "La obligación de confidencialidad continuará después de concluida la relación de servicios, en los términos establecidos por la legislación aplicable y por las obligaciones contractuales correspondientes."
+        ]
+      },
+      {
+        "id": "pld",
+        "heading": "26. Prevención de operaciones con recursos de procedencia ilícita",
+        "paragraphs": [
+          "Cuando alguna actividad, servicio u operación realizada por YAAKOB se encuentre dentro del ámbito de aplicación de la legislación relacionada con la prevención e identificación de operaciones con recursos de procedencia ilícita, YAAKOB podrá recabar, conservar, verificar y, en su caso, transmitir la información necesaria para cumplir las obligaciones legales correspondientes.",
+          "El tratamiento realizado para cumplir dichas obligaciones podrá efectuarse aun cuando el titular se oponga a determinados usos de sus datos, cuando exista una obligación legal que así lo permita o exija."
+        ]
+      },
+      {
+        "id": "modificaciones",
+        "heading": "27. Actualizaciones y modificaciones al aviso",
+        "paragraphs": [
+          "YAAKOB podrá modificar o actualizar este aviso de privacidad cuando resulte necesario por cambios legislativos o regulatorios, cambios en los servicios o en los procesos internos, incorporación de nuevas tecnologías, cambios en el modelo de negocio, incorporación de nuevos proveedores o encargados, o modificaciones en las finalidades del tratamiento.",
+          "Las modificaciones estarán disponibles en www.yaakob.com, indicando la fecha de última actualización. Cuando una modificación requiera una nueva puesta a disposición o consentimiento conforme a la legislación aplicable, YAAKOB implementará el mecanismo correspondiente."
+        ]
+      },
+      {
+        "id": "autoridad",
+        "heading": "28. Autoridad competente",
+        "paragraphs": [
+          "Cuando el titular considere que se ha vulnerado su derecho a la protección de datos personales, podrá ejercer los medios de defensa, procedimientos o presentar las denuncias que correspondan ante la autoridad competente en materia de protección de datos personales, de conformidad con la legislación vigente.",
+          "La autoridad garante federal competente será la que determine la legislación vigente al momento de la presentación de la solicitud, procedimiento, denuncia o recurso correspondiente."
+        ]
+      },
+      {
+        "id": "aceptacion",
+        "heading": "29. Aceptación y puesta a disposición",
+        "paragraphs": [
+          "El presente aviso de privacidad integral se encuentra permanentemente disponible en www.yaakob.com. La puesta a disposición de este aviso se realizará mediante los mecanismos previstos por la legislación aplicable.",
+          "Cuando un tratamiento requiera consentimiento, YAAKOB utilizará el mecanismo correspondiente para obtenerlo y conservar evidencia de éste.",
+          "Fecha de última actualización: 13 de agosto de 2026. Yaakob Consultores, S.C. — contacto@yaakob.com — www.yaakob.com."
         ]
       }
     ]
@@ -173,132 +348,394 @@
   "terminos": {
     "slug": "terminos",
     "label": "Términos y condiciones",
-    "heading": "Términos y condiciones de uso",
+    "heading": "Términos y condiciones de uso, suscripción y contratación de servicios",
     "subheading": "Yaakob Consultores, S.C.",
-    "description": "Términos y condiciones de uso del sitio yaakob.com, propiedad de Yaakob Consultores, S.C.",
+    "description": "Términos y condiciones de uso, suscripción y contratación de servicios de Yaakob Consultores, S.C.",
     "updatedLabel": "Última actualización",
     "updated": "13 de agosto de 2026",
-    "intro": "Los presentes términos y condiciones regulan el acceso y uso del sitio yaakob.com y de los contenidos, formularios y canales de contacto puestos a disposición a través de él. El acceso al sitio atribuye la condición de usuario e implica la aceptación plena de estos términos.",
+    "intro": "Los presentes términos y condiciones regulan el acceso, navegación y utilización del sitio web de Yaakob Consultores, S.C., así como, en su caso, la contratación de la suscripción de contenido informativo disponible a través del sitio y el proceso de contacto y contratación de servicios profesionales de consultoría fiscal, contable, financiera y demás servicios que, en su caso, sean ofrecidos por Yaakob Consultores, S.C. El acceso y utilización del sitio implica la aceptación de estos términos en la versión vigente al momento de su acceso. En caso de que el usuario no esté de acuerdo con alguno de estos términos, deberá abstenerse de utilizar el sitio y sus servicios.",
     "sections": [
       {
         "id": "titular",
         "heading": "1. Titular del sitio",
         "paragraphs": [
-          "El sitio yaakob.com es operado por Yaakob Consultores, S.C., sociedad civil con Registro Federal de Contribuyentes YCO2604212U8, con domicilio fiscal en Cerrada Durango Sur, Manzana 4, Lote 22, Colonia Unidad Bonito Ecatepec, Ecatepec de Morelos, Estado de México, C.P. 55090, y domicilio de atención en Alica 40, Lomas de Chapultepec, Miguel Hidalgo, Ciudad de México, C.P. 11000. Correo de contacto: contacto@yaakob.com."
+          "El sitio web yaakob.com es operado por Yaakob Consultores, S.C., con Registro Federal de Contribuyentes YCO2604212U8.",
+          "Domicilio fiscal: Cerrada Durango Sur, Manzana 4, Lote 22, Colonia Unidad Bonito Ecatepec, Ecatepec de Morelos, Estado de México, C.P. 55090.",
+          "Domicilio de atención: Alica 40, Lomas de Chapultepec, Miguel Hidalgo, Ciudad de México, C.P. 11000.",
+          "Correo electrónico de contacto: contacto@yaakob.com. Teléfonos: +52 55 9008 6360 y +52 55 9008 7881. Horario de atención: lunes a viernes, de 9:00 a 18:00 horas, tiempo del centro de México, salvo días inhábiles o festivos.",
+          "Para efectos de estos términos, se entenderá por “Yaakob”, “el despacho”, “nosotros” o “el titular” a Yaakob Consultores, S.C."
+        ]
+      },
+      {
+        "id": "definiciones",
+        "heading": "2. Definiciones",
+        "paragraphs": [
+          "Para efectos de estos términos y condiciones:"
+        ],
+        "items": [
+          "Sitio: el portal web operado por Yaakob Consultores, S.C.",
+          "Usuario: toda persona que acceda, navegue, consulte o utilice el sitio.",
+          "Suscriptor: usuario que contrate una suscripción de acceso a contenidos informativos mediante el sitio.",
+          "Suscripción: servicio digital mediante el cual el suscriptor obtiene acceso, durante el periodo contratado, a contenidos, materiales, publicaciones, herramientas, actualizaciones o información que Yaakob determine y ponga a disposición de los suscriptores.",
+          "Servicios profesionales: servicios de consultoría, asesoría, diagnóstico, análisis, acompañamiento, elaboración de informes, estrategias y demás servicios profesionales que Yaakob pueda prestar de conformidad con una propuesta y un contrato específico.",
+          "Cliente: persona física o moral que haya formalizado con Yaakob un contrato de prestación de servicios profesionales.",
+          "Diagnóstico: proceso previo de análisis de la situación, necesidades, información y documentación proporcionada por un prospecto, cuyo objetivo es determinar, cuando resulte procedente, el alcance y características de una eventual propuesta de servicios.",
+          "Propuesta de servicios: documento mediante el cual Yaakob presenta al prospecto el alcance, actividades, entregables, honorarios, condiciones y demás características de los servicios profesionales que, en su caso, se propone contratar."
         ]
       },
       {
         "id": "aceptacion",
-        "heading": "2. Aceptación",
+        "heading": "3. Aceptación de los términos",
         "paragraphs": [
-          "El uso del sitio implica la aceptación de estos términos en la versión publicada al momento del acceso. Si usted no está de acuerdo con alguna de sus disposiciones, deberá abstenerse de utilizar el sitio."
+          "El acceso al sitio, su navegación, la utilización de sus funcionalidades o la contratación de una suscripción implican la aceptación de los presentes términos y condiciones. Cuando la contratación de un servicio requiera una aceptación expresa, el usuario deberá realizar las acciones que el sitio establezca para manifestar dicha aceptación.",
+          "La aceptación electrónica, incluyendo la selección de casillas, botones de aceptación, confirmaciones electrónicas, órdenes de contratación o mecanismos equivalentes, podrá constituir evidencia de la manifestación de voluntad del usuario, en los términos permitidos por la legislación aplicable. El usuario deberá leer estos términos antes de contratar cualquier servicio."
         ]
       },
       {
         "id": "naturaleza",
-        "heading": "3. Naturaleza informativa del contenido",
+        "heading": "4. Naturaleza del sitio y de los contenidos",
         "paragraphs": [
-          "La información publicada en este sitio tiene carácter general e informativo. No constituye asesoría fiscal, contable o jurídica, ni opinión profesional aplicable a un caso concreto, y no debe utilizarse como sustituto de la consulta con un profesional respecto de su situación particular.",
-          "El contenido se refiere a disposiciones vigentes en México a la fecha de su publicación. La normatividad fiscal y administrativa cambia con frecuencia, por lo que no garantizamos que la información se encuentre actualizada en todo momento."
-        ]
-      },
-      {
-        "id": "relacion",
-        "heading": "4. Ausencia de relación profesional",
-        "paragraphs": [
-          "El acceso al sitio, la consulta de sus contenidos o el envío de un mensaje a través de los canales de contacto no generan por sí mismos una relación profesional entre usted y Yaakob Consultores, S.C., ni obligación de representación o patrocinio.",
-          "La relación profesional se perfecciona únicamente mediante la aceptación expresa del asunto por parte del despacho y la formalización del contrato de prestación de servicios o carta compromiso correspondiente."
-        ]
-      },
-      {
-        "id": "confidencialidad",
-        "heading": "5. Confidencialidad de las comunicaciones iniciales",
-        "paragraphs": [
-          "La información que usted envíe por correo electrónico, formulario o mensajería instantánea antes de la formalización de la relación profesional será tratada con reserva conforme a nuestro aviso de privacidad, pero no queda amparada por el secreto profesional en los mismos términos que la información entregada dentro de un asunto ya contratado.",
-          "Le recomendamos no transmitir por estos medios documentación sensible ni información detallada de un procedimiento en curso hasta que se haya formalizado la contratación."
-        ]
-      },
-      {
-        "id": "resultados",
-        "heading": "6. Ausencia de garantía de resultados",
-        "paragraphs": [
-          "Los servicios profesionales se prestan bajo obligaciones de medios y no de resultado. Cada asunto está sujeto al análisis de sus antecedentes, documentación, plazos y circunstancias particulares, así como al criterio de las autoridades administrativas y jurisdiccionales competentes.",
-          "Ningún contenido de este sitio, incluidos casos referidos, cifras o resultados previos, debe interpretarse como promesa, oferta o garantía de un resultado determinado."
-        ]
-      },
-      {
-        "id": "licitud",
-        "heading": "7. Marco de licitud de los servicios",
-        "paragraphs": [
-          "Los servicios ofrecidos se desarrollan dentro del marco jurídico aplicable. No comprenden actos de evasión fiscal, simulación de operaciones, expedición o adquisición de comprobantes fiscales que amparen operaciones inexistentes, ocultamiento de información a la autoridad ni cualquier otra conducta contraria a la ley.",
-          "El despacho se reserva el derecho de no aceptar o de dar por terminado un asunto cuando advierta que la información proporcionada es falsa o incompleta, o cuando el encargo implique la realización de conductas contrarias a la normatividad aplicable o a las obligaciones derivadas de la Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita."
-        ]
-      },
-      {
-        "id": "uso",
-        "heading": "8. Uso permitido del sitio",
-        "paragraphs": [
-          "El usuario se obliga a utilizar el sitio conforme a la ley, a la buena fe y a estos términos. Queda prohibido:"
+          "El sitio tiene como finalidad proporcionar información general relacionada principalmente con materias fiscales, contables, financieras, empresariales y administrativas, así como poner a disposición determinados contenidos mediante suscripción y facilitar el contacto entre potenciales clientes y Yaakob.",
+          "Los contenidos publicados gratuitamente o proporcionados mediante suscripción tienen carácter general e informativo. Salvo que expresamente se indique lo contrario dentro de un contrato de prestación de servicios profesionales, dichos contenidos:"
         ],
         "items": [
-          "Utilizar el sitio con fines ilícitos o lesivos de derechos e intereses de terceros.",
-          "Intentar acceder a áreas restringidas, alterar, dañar o inutilizar el sitio, sus servidores o los datos que contiene.",
-          "Introducir o difundir programas, código o archivos susceptibles de provocar daños en los sistemas del titular o de terceros.",
-          "Extraer, reproducir o reutilizar de forma sistemática los contenidos del sitio mediante procesos automatizados.",
-          "Suplantar la identidad de otra persona o proporcionar datos falsos en los canales de contacto."
+          "No constituyen asesoría fiscal personalizada.",
+          "No constituyen opinión jurídica o contable respecto de un caso concreto.",
+          "No constituyen representación ante autoridades.",
+          "No constituyen dictamen profesional respecto de la situación particular del usuario.",
+          "No sustituyen el análisis individual de las circunstancias y documentación de cada contribuyente."
+        ],
+        "note": "La utilización de cualquier contenido del sitio es responsabilidad del usuario."
+      },
+      {
+        "id": "actualizacion",
+        "heading": "5. Actualización de la información",
+        "paragraphs": [
+          "Yaakob procura que los contenidos publicados sean elaborados con base en fuentes y disposiciones vigentes al momento de su preparación. Sin embargo, las disposiciones fiscales, legales, administrativas, contables y financieras pueden modificarse, derogarse, sustituirse o interpretarse de manera diferente por las autoridades competentes.",
+          "Por ello, la publicación de un contenido no implica que éste permanecerá vigente indefinidamente. La fecha de publicación o actualización de cada contenido deberá considerarse para determinar su contexto temporal. Yaakob podrá actualizar, modificar, sustituir o retirar contenidos cuando lo considere necesario."
         ]
       },
       {
-        "id": "propiedad",
-        "heading": "9. Propiedad intelectual",
+        "id": "suscripcion",
+        "heading": "6. Suscripción de contenidos",
         "paragraphs": [
-          "Los textos, marcas, avisos comerciales, logotipos, diseños, gráficos, código fuente y demás elementos del sitio son propiedad de Yaakob Consultores, S.C. o se utilizan bajo licencia, y están protegidos por la Ley Federal de Protección a la Propiedad Industrial y la Ley Federal del Derecho de Autor.",
-          "El acceso al sitio no otorga licencia ni derecho alguno sobre dichos elementos. Se permite la reproducción parcial de los contenidos con fines informativos no comerciales, siempre que se cite la fuente y no se altere su sentido."
+          "Yaakob podrá ofrecer mediante el sitio determinadas modalidades de suscripción para acceder a contenidos informativos. Las características específicas de cada suscripción serán informadas antes de su contratación e incluirán, cuando corresponda: nombre o descripción del servicio, contenido incluido, duración o periodo de vigencia, precio, impuestos aplicables, periodicidad del cobro cuando exista, fecha o momento de cobro, forma de pago, condiciones de renovación, procedimiento de cancelación y restricciones o limitaciones de uso.",
+          "La contratación de una suscripción no constituye contratación de servicios profesionales de consultoría fiscal personalizada. El suscriptor tendrá acceso únicamente a los contenidos y funcionalidades expresamente incluidos en la modalidad contratada."
         ]
       },
       {
-        "id": "enlaces",
-        "heading": "10. Enlaces a sitios de terceros",
+        "id": "cobro-recurrente",
+        "heading": "7. Suscripciones con cobro recurrente",
         "paragraphs": [
-          "El sitio puede incluir enlaces a portales de autoridades, medios de comunicación o redes sociales de terceros. Dichos enlaces se ofrecen únicamente como referencia; no controlamos sus contenidos ni sus políticas de privacidad, por lo que no asumimos responsabilidad por ellos."
+          "Cuando una suscripción implique cobros periódicos o recurrentes, esta circunstancia será informada al usuario de manera clara antes de concluir la contratación. Antes de contratar, el usuario deberá poder conocer, cuando corresponda: el monto del cargo, la periodicidad del cobro, la fecha o momento aproximado del cargo, las condiciones de renovación y el procedimiento para cancelar la suscripción.",
+          "La autorización para realizar un pago recurrente no implica autorización para modificar unilateralmente el precio, periodicidad o características esenciales de la suscripción. Cualquier modificación que requiera una nueva autorización será comunicada previamente al suscriptor."
+        ]
+      },
+      {
+        "id": "cancelacion",
+        "heading": "8. Cancelación de la suscripción",
+        "paragraphs": [
+          "El suscriptor podrá cancelar su suscripción mediante el mecanismo de cancelación habilitado por Yaakob. Cuando la modalidad contratada implique pagos recurrentes, Yaakob proporcionará un mecanismo que permita solicitar la cancelación de manera clara y accesible. La cancelación evitará los cargos futuros que correspondan conforme a la modalidad contratada.",
+          "La cancelación no implica automáticamente la devolución de cantidades correspondientes a periodos ya iniciados o consumidos, salvo que exista disposición legal aplicable, una condición específica de la suscripción o una circunstancia que expresamente genere derecho a reembolso. Cuando proceda un reembolso, éste se realizará conforme al método de pago utilizado o al mecanismo que resulte aplicable, dentro del plazo correspondiente."
+        ]
+      },
+      {
+        "id": "precios",
+        "heading": "9. Precios, impuestos y pagos",
+        "paragraphs": [
+          "Los precios de las suscripciones serán informados antes de finalizar la contratación. Salvo que expresamente se indique lo contrario, los precios se expresarán en pesos mexicanos. Cuando corresponda, los precios indicarán de manera clara si incluyen o no el Impuesto al Valor Agregado u otros impuestos aplicables.",
+          "Los pagos podrán procesarse mediante las plataformas, instituciones financieras o proveedores de servicios de pago que Yaakob determine. Yaakob no almacena información de tarjetas bancarias cuando el procesamiento del pago sea realizado directamente por un tercero especializado, salvo que el proveedor tecnológico utilizado contemple legalmente dicho tratamiento. El usuario deberá consultar también los términos, condiciones y políticas de seguridad de la plataforma de pago utilizada."
+        ]
+      },
+      {
+        "id": "facturacion",
+        "heading": "10. Facturación",
+        "paragraphs": [
+          "Cuando el usuario requiera un comprobante fiscal por los servicios contratados, deberá proporcionar a Yaakob la información fiscal correcta y completa que resulte necesaria para su emisión. La emisión del comprobante fiscal estará sujeta a la información proporcionada por el usuario y a las disposiciones fiscales aplicables. El usuario será responsable de verificar que los datos fiscales proporcionados sean correctos."
+        ]
+      },
+      {
+        "id": "contratacion-servicios",
+        "heading": "11. Contratación de servicios profesionales de consultoría",
+        "paragraphs": [
+          "Los servicios profesionales de Yaakob se contratan mediante un proceso diferente a la suscripción informativa. En términos generales, el proceso podrá comprender:"
+        ],
+        "items": [
+          "Contacto inicial: el interesado podrá solicitar información mediante el sitio, correo electrónico, teléfono, mensajería u otros medios habilitados.",
+          "Diagnóstico: Yaakob podrá realizar un diagnóstico preliminar de la situación y necesidades del prospecto, con base en la información y documentación que éste proporcione.",
+          "Propuesta de servicios: cuando Yaakob determine que puede atender el asunto, podrá elaborar una propuesta en la que se establecerán, entre otros elementos, alcance, objetivos, actividades, entregables, honorarios, gastos cuando existan, calendario, obligaciones de las partes, condiciones de pago, vigencia de la propuesta y demás condiciones particulares.",
+          "Contratación: la prestación de servicios profesionales comenzará únicamente después de que se hayan cumplido las condiciones de contratación establecidas por Yaakob, incluyendo la aceptación de la propuesta de servicios y la formalización del contrato correspondiente.",
+          "Acuerdo de confidencialidad: cuando corresponda, las partes suscribirán el acuerdo de confidencialidad respectivo."
+        ]
+      },
+      {
+        "id": "sin-relacion-automatica",
+        "heading": "12. Ausencia de relación profesional automática",
+        "paragraphs": [
+          "El acceso al sitio, la consulta de contenidos, la contratación de una suscripción, el envío de un correo electrónico, la utilización de un formulario de contacto, una llamada telefónica o cualquier comunicación inicial no generan por sí mismos una relación profesional entre el usuario y Yaakob. Tampoco implican aceptación del asunto, obligación de representación, de defensa, de comparecer ante autoridades, de emitir opiniones profesionales, ni obligación de contratar los servicios profesionales.",
+          "La relación profesional únicamente se entenderá formalizada cuando Yaakob haya aceptado expresamente el asunto y se hayan cumplido las condiciones establecidas en la propuesta de servicios, contrato de prestación de servicios y demás documentos aplicables."
+        ]
+      },
+      {
+        "id": "diagnostico-aceptacion",
+        "heading": "13. Diagnóstico previo y aceptación del asunto",
+        "paragraphs": [
+          "La realización de un diagnóstico preliminar no obliga a Yaakob a aceptar la prestación de servicios profesionales. Yaakob podrá determinar que un asunto se encuentra fuera de su ámbito de especialidad, requiere servicios que no ofrece, presenta información insuficiente, presenta posibles conflictos de interés, requiere documentación adicional, implica riesgos legales, fiscales o profesionales incompatibles con las políticas del despacho, o no resulta conveniente aceptar por cualquier otra causa legítima.",
+          "La decisión de aceptar o no un asunto corresponde exclusivamente a Yaakob, sin que ello implique obligación de justificar públicamente sus criterios internos."
+        ]
+      },
+      {
+        "id": "conflictos",
+        "heading": "14. Conflictos de interés",
+        "paragraphs": [
+          "Antes de aceptar formalmente un asunto, Yaakob podrá realizar las revisiones necesarias para identificar posibles conflictos de interés. El usuario deberá proporcionar información veraz y suficiente para permitir, cuando resulte necesario, dicha revisión.",
+          "La existencia de un conflicto de interés podrá ser motivo para rechazar un asunto o para adoptar las medidas que resulten procedentes conforme a la legislación y a las obligaciones profesionales aplicables."
+        ]
+      },
+      {
+        "id": "informacion-usuario",
+        "heading": "15. Información proporcionada por el usuario",
+        "paragraphs": [
+          "El usuario y, en su caso, el cliente, se obliga a proporcionar información verdadera, completa, exacta y actualizada. Yaakob podrá basar sus análisis, recomendaciones y servicios en la información y documentación proporcionada por el cliente.",
+          "Yaakob no será responsable por consecuencias derivadas de información falsa, incompleta, incorrecta, alterada, desactualizada, proporcionada fuera de plazo o cuya autenticidad no pueda razonablemente verificarse. El cliente deberá informar oportunamente cualquier circunstancia que pueda modificar sustancialmente la situación objeto del servicio."
+        ]
+      },
+      {
+        "id": "confidencialidad-previa",
+        "heading": "16. Confidencialidad de las comunicaciones previas",
+        "paragraphs": [
+          "La información que el usuario proporcione a través del sitio, formularios, correo electrónico, teléfono o cualquier otro medio de contacto será tratada conforme al aviso de privacidad de Yaakob y, cuando corresponda, bajo las obligaciones de confidencialidad legalmente aplicables. No obstante, el envío de información durante una etapa preliminar no sustituye el acuerdo de confidencialidad que, en su caso, deba celebrarse entre las partes.",
+          "Por razones de seguridad, el usuario deberá evitar proporcionar información innecesaria, contraseñas, claves privadas, certificados digitales, accesos a sistemas o documentación altamente sensible durante las primeras comunicaciones, salvo que Yaakob lo solicite expresamente mediante un canal autorizado. La información necesaria para el diagnóstico y prestación de servicios será tratada conforme a los documentos contractuales correspondientes."
+        ]
+      },
+      {
+        "id": "obligacion-medios",
+        "heading": "17. Obligaciones de medios y ausencia de garantía de resultados",
+        "paragraphs": [
+          "Los servicios profesionales de Yaakob se prestan, salvo pacto expreso en contrario y dentro de los límites legalmente permitidos, bajo una obligación de medios y no de resultado. Yaakob realizará sus servicios con la diligencia profesional que corresponda al servicio contratado.",
+          "Sin embargo, determinados resultados pueden depender de factores ajenos al control de Yaakob, incluyendo criterios de autoridades, resoluciones administrativas o jurisdiccionales, cambios legislativos, información proporcionada por el cliente, cumplimiento de obligaciones por parte del cliente, actuaciones de terceros, plazos legales, hechos posteriores a la prestación del servicio y demás circunstancias propias de cada asunto.",
+          "Por ello, ningún contenido del sitio, antecedente, caso, experiencia, porcentaje, cifra, testimonio o resultado previo constituye garantía de que otro cliente obtendrá un resultado igual o similar."
+        ]
+      },
+      {
+        "id": "responsabilidad",
+        "heading": "18. Responsabilidad profesional",
+        "paragraphs": [
+          "Las limitaciones previstas en estos términos no tendrán por objeto excluir responsabilidades que legalmente no puedan ser excluidas o limitadas. Las obligaciones específicas de Yaakob respecto de cada cliente serán las establecidas en el contrato de prestación de servicios correspondiente.",
+          "En caso de existir contradicción entre estos términos y un contrato específico celebrado posteriormente entre Yaakob y el cliente, prevalecerán las disposiciones del contrato específico respecto del servicio contratado."
+        ]
+      },
+      {
+        "id": "no-permitidos",
+        "heading": "19. Servicios y actividades no permitidos",
+        "paragraphs": [
+          "Yaakob presta sus servicios dentro del marco jurídico aplicable. En consecuencia, Yaakob no ofrece ni realizará servicios destinados a:"
+        ],
+        "items": [
+          "Evasión fiscal.",
+          "Simulación de operaciones.",
+          "Ocultamiento deliberado de ingresos.",
+          "Generación o utilización de documentación falsa.",
+          "Expedición o adquisición de comprobantes fiscales que amparen operaciones inexistentes.",
+          "Alteración o manipulación fraudulenta de registros.",
+          "Ocultamiento de información a autoridades.",
+          "Lavado de dinero u operaciones con recursos de procedencia ilícita.",
+          "Cualquier otra conducta contraria a la legislación aplicable."
+        ],
+        "note": "Yaakob podrá rechazar, suspender o terminar un servicio cuando detecte que el encargo pudiera implicar conductas ilícitas o información deliberadamente falsa o incompleta. Cuando resulte aplicable, Yaakob cumplirá las obligaciones que le correspondan conforme a la legislación en materia de prevención e identificación de operaciones con recursos de procedencia ilícita."
+      },
+      {
+        "id": "propiedad-intelectual",
+        "heading": "20. Propiedad intelectual",
+        "paragraphs": [
+          "Todos los elementos del sitio, incluyendo, entre otros, textos, artículos, análisis, metodologías, modelos, bases de datos, documentos, presentaciones, gráficos, fotografías, videos, logotipos, marcas, nombres comerciales, diseños, interfaces, código fuente, materiales descargables, contenidos de las suscripciones y demás elementos protegibles, son propiedad de Yaakob o de terceros que hayan autorizado su utilización.",
+          "El acceso al sitio o la contratación de una suscripción no implica transmisión de derechos de propiedad intelectual. Salvo autorización expresa y por escrito de Yaakob, queda prohibido reproducir masivamente los contenidos, comercializarlos, revenderlos, distribuirlos, incorporarlos a productos de terceros, publicarlos nuevamente, modificar sustancialmente su contenido, utilizarlos para crear servicios competidores, extraer sistemáticamente información mediante procesos automatizados o utilizarlos con fines distintos de los permitidos por estos términos.",
+          "El contenido proporcionado mediante suscripción está destinado exclusivamente al suscriptor contratado y no podrá compartirse con terceros. Lo anterior se establece sin perjuicio de los derechos que correspondan conforme a la legislación aplicable en materia de derechos de autor y propiedad industrial."
+        ]
+      },
+      {
+        "id": "uso-contenidos",
+        "heading": "21. Uso de los contenidos de la suscripción",
+        "paragraphs": [
+          "El acceso a los contenidos mediante suscripción es personal e intransferible, salvo autorización expresa de Yaakob. El suscriptor no podrá compartir sus credenciales con terceros. Yaakob podrá establecer mecanismos razonables de seguridad para proteger el acceso al contenido.",
+          "Cuando existan indicios razonables de uso fraudulento, acceso no autorizado o distribución indebida de contenidos, Yaakob podrá adoptar medidas de protección, incluyendo la suspensión temporal del acceso y, cuando corresponda, la terminación de la suscripción, sin perjuicio de las acciones legales que pudieran proceder."
+        ]
+      },
+      {
+        "id": "uso-permitido",
+        "heading": "22. Uso permitido del sitio",
+        "paragraphs": [
+          "El usuario se obliga a utilizar el sitio conforme a la ley, la buena fe y estos términos. Queda prohibido:"
+        ],
+        "items": [
+          "Utilizar el sitio con fines ilícitos.",
+          "Afectar derechos de terceros.",
+          "Intentar acceder a áreas restringidas.",
+          "Introducir código malicioso.",
+          "Afectar deliberadamente la disponibilidad del sitio.",
+          "Intentar vulnerar sus mecanismos de seguridad.",
+          "Utilizar procesos automatizados para extraer información de manera sistemática sin autorización.",
+          "Suplantar la identidad de terceros.",
+          "Proporcionar información deliberadamente falsa.",
+          "Utilizar los contenidos para actividades fraudulentas.",
+          "Compartir indebidamente credenciales de acceso.",
+          "Reproducir o comercializar contenidos protegidos sin autorización."
         ]
       },
       {
         "id": "disponibilidad",
-        "heading": "11. Disponibilidad y responsabilidad",
+        "heading": "23. Disponibilidad del sitio",
         "paragraphs": [
-          "Procuramos mantener el sitio disponible de forma continua, sin que ello constituya una obligación de resultado. El titular no será responsable por interrupciones, fallas técnicas, suspensión del servicio, ni por daños derivados del uso o de la imposibilidad de uso del sitio, salvo en los casos en que la ley lo determine.",
-          "El titular tampoco será responsable por las decisiones que el usuario adopte con base exclusiva en la información publicada, sin la asesoría profesional correspondiente."
+          "Yaakob realizará esfuerzos razonables para mantener disponible el sitio. No obstante, no garantiza que éste opere de manera ininterrumpida o libre de errores. La disponibilidad podrá verse afectada por mantenimiento, actualizaciones, fallas de proveedores, problemas de conectividad, fallas de servidores, ataques informáticos, acontecimientos de fuerza mayor, actos de autoridad o circunstancias ajenas al control razonable de Yaakob.",
+          "Yaakob procurará restablecer el servicio en el menor tiempo razonablemente posible."
         ]
       },
       {
-        "id": "privacidad",
-        "heading": "12. Datos personales",
+        "id": "enlaces",
+        "heading": "24. Enlaces a sitios de terceros",
         "paragraphs": [
-          "El tratamiento de los datos personales que se recaben a través del sitio o de los canales de contacto se rige por nuestro aviso de privacidad, disponible en yaakob.com/privacidad, que forma parte integrante de estos términos."
+          "El sitio podrá contener enlaces hacia sitios web, plataformas, autoridades, instituciones, medios de comunicación, redes sociales u otros servicios de terceros. Estos enlaces se proporcionan como referencia o herramienta de utilidad.",
+          "Yaakob no controla necesariamente dichos sitios y no será responsable por su contenido, disponibilidad, seguridad, políticas de privacidad, prácticas comerciales o funcionamiento. El acceso a sitios de terceros será responsabilidad del usuario."
+        ]
+      },
+      {
+        "id": "datos-personales",
+        "heading": "25. Protección de datos personales",
+        "paragraphs": [
+          "El tratamiento de los datos personales recabados a través del sitio se realizará conforme al aviso de privacidad de Yaakob, disponible en yaakob.com/privacidad. El aviso de privacidad forma parte del marco jurídico aplicable al tratamiento de datos personales realizado por Yaakob.",
+          "El usuario deberá consultar dicho documento antes de proporcionar información personal. Cuando el tratamiento de datos requiera consentimiento, Yaakob utilizará los mecanismos correspondientes conforme a la legislación aplicable."
         ],
-        "link": { "label": "Consultar el aviso de privacidad", "href": "/privacidad" }
+        "link": {
+          "label": "Consultar aviso de privacidad",
+          "href": "/privacidad"
+        }
+      },
+      {
+        "id": "seguridad",
+        "heading": "26. Seguridad de la información",
+        "paragraphs": [
+          "Yaakob implementará medidas administrativas, técnicas y físicas razonables para proteger la información bajo su responsabilidad, de conformidad con la naturaleza de los datos y las obligaciones legales aplicables. No obstante, ningún sistema conectado a internet puede garantizar seguridad absoluta.",
+          "El usuario deberá mantener bajo resguardo sus contraseñas y demás elementos de autenticación y deberá informar inmediatamente a Yaakob cualquier uso no autorizado de sus credenciales."
+        ]
+      },
+      {
+        "id": "comunicaciones",
+        "heading": "27. Comunicaciones electrónicas",
+        "paragraphs": [
+          "El usuario acepta que determinadas comunicaciones relacionadas con el sitio, suscripciones, solicitudes, contratación, facturación, soporte y demás servicios puedan realizarse mediante medios electrónicos, incluyendo correo electrónico, notificaciones dentro del sitio, mensajes, confirmaciones electrónicas, comprobantes, avisos relacionados con la suscripción y otros medios digitales habilitados.",
+          "El usuario será responsable de proporcionar y mantener actualizados sus datos de contacto."
+        ]
+      },
+      {
+        "id": "registros",
+        "heading": "28. Registros electrónicos",
+        "paragraphs": [
+          "Cuando el usuario realice una contratación electrónica, Yaakob podrá conservar registros relacionados con la operación, incluyendo, cuando resulte técnicamente posible y legalmente procedente: fecha y hora, datos de identificación, aceptación de términos, versión de los términos aceptada, confirmaciones, información de la operación, comprobantes, comunicaciones y demás registros necesarios para acreditar la operación.",
+          "Estos registros podrán utilizarse como evidencia de las operaciones realizadas mediante el sitio, conforme a la legislación aplicable."
+        ]
+      },
+      {
+        "id": "capacidad",
+        "heading": "29. Capacidad para contratar",
+        "paragraphs": [
+          "El usuario declara que cuenta con capacidad legal suficiente para aceptar estos términos y, cuando corresponda, para contratar los servicios ofrecidos mediante el sitio. Cuando una persona actúe en representación de una persona moral, deberá contar con facultades suficientes para realizar la operación correspondiente."
+        ]
       },
       {
         "id": "modificaciones",
-        "heading": "13. Modificaciones",
+        "heading": "30. Modificaciones al sitio y a estos términos",
         "paragraphs": [
-          "El titular puede modificar en cualquier momento la presentación, configuración y contenidos del sitio, así como estos términos y condiciones. Las modificaciones surten efecto desde su publicación, indicándose la fecha de la última actualización."
+          "Yaakob podrá modificar, actualizar, complementar o retirar contenidos y funcionalidades del sitio. Asimismo, podrá actualizar estos términos cuando resulte necesario por cambios legales, tecnológicos, comerciales o en los servicios ofrecidos.",
+          "La versión modificada surtirá efectos a partir de su publicación en el sitio, salvo que la legislación aplicable o la naturaleza de una relación contractual requieran un tratamiento distinto. Las modificaciones no tendrán efectos retroactivos sobre obligaciones contractuales ya perfeccionadas, salvo que exista fundamento legal o acuerdo expreso de las partes. La fecha de última actualización será indicada al inicio del documento."
+        ]
+      },
+      {
+        "id": "fuerza-mayor",
+        "heading": "31. Fuerza mayor",
+        "paragraphs": [
+          "Yaakob no será responsable por incumplimientos o retrasos derivados de acontecimientos imprevisibles, inevitables o fuera de su control razonable, incluyendo, entre otros: desastres naturales, incendios, inundaciones, pandemias o emergencias sanitarias, interrupciones generalizadas de telecomunicaciones, fallas de proveedores críticos, ataques cibernéticos, actos de autoridad, conflictos sociales o laborales, actos de terceros o cualquier otro acontecimiento que razonablemente impida o dificulte el cumplimiento de una obligación.",
+          "Una vez superada la circunstancia, Yaakob procurará reanudar sus actividades."
+        ]
+      },
+      {
+        "id": "nulidad-parcial",
+        "heading": "32. Nulidad parcial",
+        "paragraphs": [
+          "Si alguna disposición de estos términos fuera declarada inválida, ilegal o inaplicable por autoridad competente, dicha circunstancia no afectará la validez de las demás disposiciones. La disposición afectada se interpretará, en la medida legalmente posible, de manera que conserve su finalidad original."
+        ]
+      },
+      {
+        "id": "no-renuncia",
+        "heading": "33. No renuncia",
+        "paragraphs": [
+          "La falta de ejercicio inmediato de cualquier derecho previsto en estos términos no constituirá una renuncia al mismo. La renuncia a un derecho deberá constar expresamente y por escrito cuando así lo exija la legislación aplicable."
+        ]
+      },
+      {
+        "id": "relacion-contratos",
+        "heading": "34. Relación entre estos términos y los contratos de servicios",
+        "paragraphs": [
+          "Estos términos regulan principalmente el uso del sitio y la contratación de las suscripciones. Los servicios profesionales de consultoría se regirán además por la propuesta de servicios, el contrato de prestación de servicios profesionales, el acuerdo de confidencialidad y demás documentos que, en su caso, sean suscritos entre Yaakob y el cliente.",
+          "En caso de contradicción respecto de un servicio profesional específico, prevalecerán las disposiciones expresamente pactadas en el contrato correspondiente."
+        ]
+      },
+      {
+        "id": "consumidores",
+        "heading": "35. Derechos de los consumidores",
+        "paragraphs": [
+          "Cuando una operación realizada mediante el sitio se encuentre dentro del ámbito de aplicación de la legislación mexicana de protección al consumidor, Yaakob respetará los derechos que correspondan al usuario conforme a dicha legislación. Nada de lo previsto en estos términos deberá interpretarse como una renuncia o limitación de derechos que legalmente tengan carácter irrenunciable.",
+          "En particular, cuando resulte aplicable, Yaakob proporcionará información clara sobre las características de la suscripción, precio, cargos, periodicidad, condiciones de contratación y mecanismos de cancelación."
+        ]
+      },
+      {
+        "id": "aclaraciones",
+        "heading": "36. Atención de aclaraciones y reclamaciones",
+        "paragraphs": [
+          "El usuario podrá presentar dudas, aclaraciones, solicitudes o reclamaciones relacionadas con el sitio o los servicios mediante el correo electrónico contacto@yaakob.com o los teléfonos +52 55 9008 6360 y +52 55 9008 7881, en horario de atención de lunes a viernes, de 9:00 a 18:00 horas, tiempo del centro de México.",
+          "Yaakob procurará atender las solicitudes dentro de un plazo razonable, considerando su naturaleza y complejidad."
+        ]
+      },
+      {
+        "id": "legislacion",
+        "heading": "37. Legislación aplicable",
+        "paragraphs": [
+          "Estos términos se regirán e interpretarán conforme a las leyes aplicables de los Estados Unidos Mexicanos. Cuando corresponda, serán aplicables, entre otras disposiciones, las normas mexicanas relativas a comercio electrónico, protección al consumidor, protección de datos personales, propiedad intelectual, prestación de servicios, obligaciones civiles y mercantiles, y demás legislación aplicable a la relación concreta."
         ]
       },
       {
         "id": "jurisdiccion",
-        "heading": "14. Ley aplicable y jurisdicción",
+        "heading": "38. Jurisdicción",
         "paragraphs": [
-          "Estos términos se rigen por la legislación federal mexicana. Para la interpretación y cumplimiento de los mismos, las partes se someten expresamente a la jurisdicción de los tribunales competentes de la Ciudad de México, renunciando a cualquier otro fuero que pudiera corresponderles por razón de sus domicilios presentes o futuros."
+          "Para la interpretación y cumplimiento de estos términos, las partes se someterán a la jurisdicción de los tribunales competentes de la Ciudad de México, salvo que la legislación aplicable establezca una jurisdicción distinta o que existan derechos del consumidor que no puedan ser válidamente renunciados.",
+          "Lo anterior se entiende sin perjuicio de los mecanismos administrativos o alternativos de solución de controversias que legalmente resulten aplicables."
+        ]
+      },
+      {
+        "id": "idioma",
+        "heading": "39. Idioma",
+        "paragraphs": [
+          "Estos términos se encuentran redactados en idioma español. En caso de que Yaakob publique una traducción a otro idioma, la versión en español será la versión de referencia para efectos de interpretación, salvo que la legislación aplicable disponga lo contrario."
+        ]
+      },
+      {
+        "id": "vigencia",
+        "heading": "40. Fecha de vigencia",
+        "paragraphs": [
+          "Los presentes términos y condiciones entran en vigor a partir de su publicación en el sitio. Última actualización: 13 de agosto de 2026."
         ]
       },
       {
         "id": "contacto",
-        "heading": "15. Contacto",
+        "heading": "41. Contacto",
         "paragraphs": [
-          "Para cualquier duda, aclaración o comentario sobre estos términos y condiciones, puede escribirnos a contacto@yaakob.com o comunicarse a los teléfonos +52 55 9008 6360 y +52 55 9008 7881, en horario de 9:00 a 18:00 horas."
-        ]
+          "Para cualquier duda, aclaración, comentario o solicitud relacionada con estos términos y condiciones: Yaakob Consultores, S.C. Correo electrónico: contacto@yaakob.com. Teléfonos: +52 55 9008 6360 y +52 55 9008 7881. Horario de atención: lunes a viernes de 9:00 a 18:00 horas, tiempo del centro de México.",
+          "Domicilio fiscal: Cerrada Durango Sur, Manzana 4, Lote 22, Colonia Unidad Bonito Ecatepec, Ecatepec de Morelos, Estado de México, C.P. 55090. Domicilio de atención: Alica 40, Lomas de Chapultepec, Miguel Hidalgo, Ciudad de México, C.P. 11000.",
+          "Documentos relacionados: aviso de privacidad, política de cookies, política de suscripción, cancelación y reembolsos, propuesta de servicios profesionales, contrato de prestación de servicios profesionales y acuerdo de confidencialidad."
+        ],
+        "link": {
+          "label": "Consultar aviso de privacidad",
+          "href": "/privacidad"
+        }
       }
     ]
   }
