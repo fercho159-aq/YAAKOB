@@ -939,6 +939,7 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react/jsx-dev-runtime [external] (react/jsx-dev-runtime, cjs)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__ = __turbopack_context__.i("[externals]/@chakra-ui/react [external] (@chakra-ui/react, esm_import, [project]/node_modules/@chakra-ui/react)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$framer$2d$motion__$5b$external$5d$__$28$framer$2d$motion$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f$framer$2d$motion$29$__ = __turbopack_context__.i("[externals]/framer-motion [external] (framer-motion, esm_import, [project]/node_modules/framer-motion)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/link.js [ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$externals$5d2f$react__$5b$external$5d$__$28$react$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/react [external] (react, cjs)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$contact$2f$index$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/servicios-lib/components/contact/index.ts [ssr] (ecmascript) <locals>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$contact$2f$ContactModalProvider$2e$tsx__$5b$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/servicios-lib/components/contact/ContactModalProvider.tsx [ssr] (ecmascript)");
@@ -978,6 +979,7 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 ;
 ;
 ;
+;
 /**
  * Chakra v2's `Grid` resolves its `as`-prop overload via a conditional type
  * that, combined with React 19's `ElementType`, blows past TypeScript's
@@ -991,6 +993,13 @@ const ACTIVE = '#FFFFFF';
 /** WhatsApp is the one brand that keeps its own colour in the row. */ const WHATSAPP = '#25D366';
 const WHATSAPP_ACTIVE = '#4AE98A';
 /** `FOOTER_HEIGHT` in the original's constants module. */ const FOOTER_HEIGHT = '80px';
+/**
+ * Both entries are internal routes, so they use `NextLink` and stay in the tab —
+ * unlike the social row, which is external throughout.
+ */ const LEGAL_LINKS = [
+    __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$data$2f$content$2e$json__$28$json$29$__["default"].footer.privacy,
+    __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$data$2f$content$2e$json__$28$json$29$__["default"].footer.ads
+];
 /** Same set, in the same order, as the social row on the home page. */ const SOCIALS = [
     {
         key: 'instagram',
@@ -1108,7 +1117,7 @@ function SocialLink({ href, icon: Brand, iconProps, colors, ariaLabel, delay, an
                     ...iconProps
                 }, void 0, false, {
                     fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                    lineNumber: 117,
+                    lineNumber: 124,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["MotionBox"], {
@@ -1164,28 +1173,28 @@ function SocialLink({ href, icon: Brand, iconProps, colors, ariaLabel, delay, an
                             transition: "stroke 0.4s ease-out"
                         }, void 0, false, {
                             fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                            lineNumber: 149,
+                            lineNumber: 156,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                        lineNumber: 145,
+                        lineNumber: 152,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                    lineNumber: 127,
+                    lineNumber: 134,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-            lineNumber: 116,
+            lineNumber: 123,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-        lineNumber: 97,
+        lineNumber: 104,
         columnNumber: 5
     }, this);
 }
@@ -1326,22 +1335,97 @@ function Footer({ delay = 0, animate = true, mobile = false, restartId = 0, ...r
                             }
                         }, void 0, false, {
                             fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                            lineNumber: 233,
+                            lineNumber: 240,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                        lineNumber: 224,
+                        lineNumber: 231,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                    lineNumber: 223,
+                    lineNumber: 230,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                lineNumber: 215,
+                lineNumber: 222,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["GridItem"], {
+                colSpan: [
+                    12,
+                    null,
+                    null,
+                    null,
+                    4
+                ],
+                colStart: [
+                    'auto',
+                    null,
+                    null,
+                    null,
+                    5
+                ],
+                rowStart: [
+                    3,
+                    null,
+                    null,
+                    null,
+                    'auto'
+                ],
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$components$2f$chrome$2f$motion$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["MotionBox"], {
+                    initial: {
+                        opacity: 0
+                    },
+                    animate: logoControls,
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["Flex"], {
+                        align: "center",
+                        gap: [
+                            '0.75rem',
+                            null,
+                            '1.25rem'
+                        ],
+                        children: LEGAL_LINKS.map((entry)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["Link"], {
+                                as: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"],
+                                href: entry.href,
+                                fontSize: [
+                                    '0.5625rem',
+                                    null,
+                                    '0.625rem'
+                                ],
+                                letterSpacing: "0.16em",
+                                textTransform: "uppercase",
+                                color: IDLE,
+                                whiteSpace: "nowrap",
+                                transition: "color 0.4s ease-out",
+                                _hover: {
+                                    color: ACTIVE,
+                                    textDecor: 'none'
+                                },
+                                children: entry.label
+                            }, entry.href, false, {
+                                fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
+                                lineNumber: 267,
+                                columnNumber: 15
+                            }, this))
+                    }, void 0, false, {
+                        fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
+                        lineNumber: 265,
+                        columnNumber: 11
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
+                    lineNumber: 264,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
+                fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
+                lineNumber: 256,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["GridItem"], {
@@ -1395,18 +1479,18 @@ function Footer({ delay = 0, animate = true, mobile = false, restartId = 0, ...r
                         ml: index === 0 ? 0 : undefined
                     }, key, false, {
                         fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                        lineNumber: 259,
+                        lineNumber: 296,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-                lineNumber: 249,
+                lineNumber: 286,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/servicios-lib/components/chrome/Footer.tsx",
-        lineNumber: 202,
+        lineNumber: 209,
         columnNumber: 5
     }, this);
 }

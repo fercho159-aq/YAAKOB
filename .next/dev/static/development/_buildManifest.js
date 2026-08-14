@@ -1,9 +1,6 @@
 self.__BUILD_MANIFEST = {
-  "/servicios": [
-    "static/chunks/pages/servicios.js"
-  ],
-  "/servicios/[slug]": [
-    "static/chunks/pages/servicios/[slug].js"
+  "/": [
+    "static/chunks/pages/index.js"
   ],
   "__rewrites": {
     "afterFiles": [],
@@ -11,9 +8,12 @@ self.__BUILD_MANIFEST = {
     "fallback": []
   },
   "sortedPages": [
+    "/",
     "/_app",
     "/_error",
+    "/privacidad",
     "/servicios",
-    "/servicios/[slug]"
+    "/servicios/[slug]",
+    "/terminos"
   ]
 };self.__BUILD_MANIFEST_CB && self.__BUILD_MANIFEST_CB()

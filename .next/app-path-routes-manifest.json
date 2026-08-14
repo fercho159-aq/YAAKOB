@@ -4,7 +4,6 @@
   "/api/[...path]/route": "/api/[...path]",
   "/api/gcs/[...path]/route": "/api/gcs/[...path]",
   "/apps/page": "/apps",
-  "/favicon.ico/route": "/favicon.ico",
-  "/route": "/",
+  "/icon.png/route": "/icon.png",
   "/start/page": "/start"
 }

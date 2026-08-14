@@ -9,7 +9,7 @@ __turbopack_load_page_chunks__("/_app", [
   "static/chunks/node_modules_@chakra-ui_theme_dist_c7c1bcf0._.js",
   "static/chunks/node_modules_framer-motion_dist_es_0d6aa545._.js",
   "static/chunks/node_modules_8cbd9e2f._.js",
-  "static/chunks/[next]_internal_font_google_afbc5f99._.css",
+  "static/chunks/[root-of-the-server]__e2b6bff9._.css",
   "static/chunks/pages__app_2da965e7._.js",
-  "static/chunks/turbopack-pages__app_3f98f600._.js"
+  "static/chunks/turbopack-pages__app_a3714a1c._.js"
 ])

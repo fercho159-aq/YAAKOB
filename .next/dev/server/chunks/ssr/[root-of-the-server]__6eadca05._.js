@@ -62,9 +62,9 @@ const theme = (0, __TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$
         blackAlt: '#111316',
         grey1: '#0D0F15',
         grey2: '#9d9d9d',
-        gold: '#E0BE7A',
-        goldAlt: '#A18855',
-        focus: '#E0BE7A'
+        gold: '#FF9933',
+        goldAlt: '#B76F24',
+        focus: '#FF9933'
     },
     fonts: {
         heading: 'var(--font-din-ot),-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif',
@@ -150,7 +150,7 @@ const theme = (0, __TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$
             },
             "a:focus-visible, button:focus-visible, [role='button']:focus-visible": {
                 boxShadow: 'none',
-                outline: '#E0BE7A solid 2px',
+                outline: '#FF9933 solid 2px',
                 outlineOffset: '1px'
             }
         }
@@ -184,18 +184,28 @@ var __turbopack_async_dependencies__ = __turbopack_handle_async_dependencies__([
 class MyDocument extends __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$document$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["default"] {
     render() {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$document$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Html"], {
-            lang: "en",
+            lang: "es",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$document$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Head"], {
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("link", {
-                        rel: "preconnect",
-                        href: "https://fonts.gstatic.com"
-                    }, void 0, false, {
-                        fileName: "[project]/pages/_document.tsx",
-                        lineNumber: 10,
-                        columnNumber: 11
-                    }, this)
-                }, void 0, false, {
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("link", {
+                            rel: "preconnect",
+                            href: "https://fonts.gstatic.com"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/_document.tsx",
+                            lineNumber: 10,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("link", {
+                            rel: "stylesheet",
+                            href: "https://use.typekit.net/awh6wkx.css"
+                        }, void 0, false, {
+                            fileName: "[project]/pages/_document.tsx",
+                            lineNumber: 12,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
                     fileName: "[project]/pages/_document.tsx",
                     lineNumber: 9,
                     columnNumber: 9
@@ -214,35 +224,35 @@ class MyDocument extends __TURBOPACK__imported__module__$5b$project$5d2f$node_mo
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/pages/_document.tsx",
-                                lineNumber: 14,
+                                lineNumber: 16,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/pages/_document.tsx",
-                            lineNumber: 13,
+                            lineNumber: 15,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$externals$5d2f40$chakra$2d$ui$2f$react__$5b$external$5d$__$2840$chakra$2d$ui$2f$react$2c$__esm_import$2c$__$5b$project$5d2f$node_modules$2f40$chakra$2d$ui$2f$react$29$__["ColorModeScript"], {
                             initialColorMode: __TURBOPACK__imported__module__$5b$project$5d2f$servicios$2d$lib$2f$theme$2f$index$2e$ts__$5b$ssr$5d$__$28$ecmascript$29$__["default"].config.initialColorMode
                         }, void 0, false, {
                             fileName: "[project]/pages/_document.tsx",
-                            lineNumber: 22,
+                            lineNumber: 24,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$document$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["Main"], {}, void 0, false, {
                             fileName: "[project]/pages/_document.tsx",
-                            lineNumber: 23,
+                            lineNumber: 25,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$document$2e$js__$5b$ssr$5d$__$28$ecmascript$29$__["NextScript"], {}, void 0, false, {
                             fileName: "[project]/pages/_document.tsx",
-                            lineNumber: 24,
+                            lineNumber: 26,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/pages/_document.tsx",
-                    lineNumber: 12,
+                    lineNumber: 14,
                     columnNumber: 9
                 }, this)
             ]

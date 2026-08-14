@@ -4,7 +4,6 @@
   "/api/[...path]/route": "app/api/[...path]/route.js",
   "/api/gcs/[...path]/route": "app/api/gcs/[...path]/route.js",
   "/apps/page": "app/apps/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/route": "app/route.js",
+  "/icon.png/route": "app/icon.png/route.js",
   "/start/page": "app/start/page.js"
 }

@@ -1,6 +1,5 @@
 {
+  "/": "pages/index.js",
   "/_app": "pages/_app.js",
-  "/_document": "pages/_document.js",
-  "/servicios": "pages/servicios.js",
-  "/servicios/[slug]": "pages/servicios/[slug].js"
+  "/_document": "pages/_document.js"
 }

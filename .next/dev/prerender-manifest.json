@@ -1,1 +1,11 @@
-{"version":4,"routes":{"/servicios/diagnostico-fiscal":{},"/servicios/presuntiva-fiscal":{},"/servicios/requerimientos-sat":{},"/servicios/auditorias":{},"/servicios/multas-fiscales":{},"/servicios/creditos-fiscales":{},"/servicios/sellos-digitales":{},"/servicios/defensa-69b":{},"/servicios/uif-fgr":{},"/servicios/controles-volumetricos":{},"/servicios/regularizacion-fiscal":{}},"dynamicRoutes":{"/servicios/[slug]":{"dataRoute":null,"dataRouteRegex":null,"fallback":false,"fallbackRevalidate":false,"fallbackSourceRoute":"/servicios/[slug]","routeRegex":"^\\/servicios\\/([^/]+?)(?:\\/)?$","allowHeader":[]}},"notFoundRoutes":[],"preview":{"previewModeId":"d51595224b6a31042f516e5d9f1acf8f","previewModeSigningKey":"761c0b9040f6eebe5e40395493f30217140d3c5da1e69e2f49bdbc85f5aba68d","previewModeEncryptionKey":"b6f0a70e97de388091c7ef1cc5f3348e83eedc2cdbbc66f29f21eceede89d713"}}
+{
+  "version": 4,
+  "routes": {},
+  "dynamicRoutes": {},
+  "notFoundRoutes": [],
+  "preview": {
+    "previewModeId": "01caceb86cc38a06da7f6b7e790e4a9f",
+    "previewModeSigningKey": "45b1e9942b245af825e808e7bd1e225e6eabc05fa089a1975a5c48016ffcd40e",
+    "previewModeEncryptionKey": "742045b4c22bf1a2eb7ec8eaea2646a6c7109c78f396f5e2e80c5cc62bd37b24"
+  }
+}

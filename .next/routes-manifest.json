@@ -76,10 +76,16 @@
       "namedRegex": "^/apps(?:/)?$"
     },
     {
-      "page": "/favicon.ico",
-      "regex": "^/favicon\\.ico(?:/)?$",
+      "page": "/icon.png",
+      "regex": "^/icon\\.png(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/favicon\\.ico(?:/)?$"
+      "namedRegex": "^/icon\\.png(?:/)?$"
+    },
+    {
+      "page": "/privacidad",
+      "regex": "^/privacidad(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/privacidad(?:/)?$"
     },
     {
       "page": "/servicios",
@@ -92,20 +98,34 @@
       "regex": "^/start(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/start(?:/)?$"
+    },
+    {
+      "page": "/terminos",
+      "regex": "^/terminos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/terminos(?:/)?$"
     }
   ],
   "dataRoutes": [
     {
+      "page": "/privacidad",
+      "dataRouteRegex": "^/_next/data/1BzrcES0PTI0okh8era3d/privacidad\\.json$"
+    },
+    {
       "page": "/servicios",
-      "dataRouteRegex": "^/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios\\.json$"
+      "dataRouteRegex": "^/_next/data/1BzrcES0PTI0okh8era3d/servicios\\.json$"
     },
     {
       "page": "/servicios/[slug]",
       "routeKeys": {
         "nxtPslug": "nxtPslug"
       },
-      "dataRouteRegex": "^/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/([^/]+?)\\.json$",
-      "namedDataRouteRegex": "^/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/(?<nxtPslug>[^/]+?)\\.json$"
+      "dataRouteRegex": "^/_next/data/1BzrcES0PTI0okh8era3d/servicios/([^/]+?)\\.json$",
+      "namedDataRouteRegex": "^/_next/data/1BzrcES0PTI0okh8era3d/servicios/(?<nxtPslug>[^/]+?)\\.json$"
+    },
+    {
+      "page": "/terminos",
+      "dataRouteRegex": "^/_next/data/1BzrcES0PTI0okh8era3d/terminos\\.json$"
     }
   ],
   "rsc": {

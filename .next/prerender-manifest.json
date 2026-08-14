@@ -50,11 +50,11 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/favicon.ico": {
+    "/icon.png": {
       "initialHeaders": {
         "cache-control": "public, max-age=0, must-revalidate",
-        "content-type": "image/x-icon",
-        "x-next-cache-tags": "_N_T_/layout,_N_T_/favicon.ico/layout,_N_T_/favicon.ico/route,_N_T_/favicon.ico"
+        "content-type": "image/png",
+        "x-next-cache-tags": "_N_T_/layout,_N_T_/icon.png/layout,_N_T_/icon.png/route,_N_T_/icon.png"
       },
       "experimentalBypassFor": [
         {
@@ -68,7 +68,7 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/favicon.ico",
+      "srcRoute": "/icon.png",
       "dataRoute": null,
       "allowHeader": [
         "host",
@@ -103,10 +103,36 @@
         "x-next-revalidate-tag-token"
       ]
     },
+    "/privacidad": {
+      "initialRevalidateSeconds": false,
+      "srcRoute": null,
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/privacidad.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/terminos": {
+      "initialRevalidateSeconds": false,
+      "srcRoute": null,
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/terminos.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
     "/servicios/diagnostico-fiscal": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/diagnostico-fiscal.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/diagnostico-fiscal.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -119,7 +145,7 @@
     "/servicios/presuntiva-fiscal": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/presuntiva-fiscal.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/presuntiva-fiscal.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -132,7 +158,7 @@
     "/servicios/requerimientos-sat": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/requerimientos-sat.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/requerimientos-sat.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -145,7 +171,7 @@
     "/servicios/auditorias": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/auditorias.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/auditorias.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -158,7 +184,7 @@
     "/servicios/multas-fiscales": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/multas-fiscales.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/multas-fiscales.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -171,7 +197,7 @@
     "/servicios/creditos-fiscales": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/creditos-fiscales.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/creditos-fiscales.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -184,7 +210,7 @@
     "/servicios/sellos-digitales": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/sellos-digitales.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/sellos-digitales.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -197,7 +223,7 @@
     "/servicios/defensa-69b": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/defensa-69b.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/defensa-69b.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -210,7 +236,7 @@
     "/servicios/uif-fgr": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/uif-fgr.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/uif-fgr.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -223,7 +249,7 @@
     "/servicios/controles-volumetricos": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/controles-volumetricos.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/controles-volumetricos.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -236,7 +262,7 @@
     "/servicios/regularizacion-fiscal": {
       "initialRevalidateSeconds": false,
       "srcRoute": "/servicios/[slug]",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/regularizacion-fiscal.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/regularizacion-fiscal.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -249,7 +275,7 @@
     "/servicios": {
       "initialRevalidateSeconds": false,
       "srcRoute": null,
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios.json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios.json",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -263,9 +289,9 @@
   "dynamicRoutes": {
     "/servicios/[slug]": {
       "routeRegex": "^/servicios/([^/]+?)(?:/)?$",
-      "dataRoute": "/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/[slug].json",
+      "dataRoute": "/_next/data/1BzrcES0PTI0okh8era3d/servicios/[slug].json",
       "fallback": false,
-      "dataRouteRegex": "^/_next/data/3ZjyOFITxO1BUrfUgXCU8/servicios/([^/]+?)\\.json$",
+      "dataRouteRegex": "^/_next/data/1BzrcES0PTI0okh8era3d/servicios/([^/]+?)\\.json$",
       "allowHeader": [
         "host",
         "x-matched-path",
