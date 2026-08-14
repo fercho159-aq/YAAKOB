@@ -80,38 +80,6 @@ const jsonLd = {
   ],
 }
 
-// OneTrust callback, verbatim from the old app.html: translates the cookie
-// banner to Spanish once it mounts.
-const optanonWrapper = `
-function OptanonWrapper() {
-    (function translateBanner() {
-        var banner = document.getElementById('onetrust-banner-sdk');
-        if (!banner) { setTimeout(translateBanner, 200); return; }
-        var policy = banner.querySelector('#onetrust-policy-text');
-        if (policy) policy.innerHTML = 'Este sitio web utiliza cookies para mejorar la experiencia del usuario y analizar el rendimiento y tráfico en nuestro sitio. También compartimos información sobre el uso de nuestro sitio con nuestros socios de redes sociales, publicidad y análisis.';
-        var acceptBtn = banner.querySelector('#onetrust-accept-btn-handler');
-        if (acceptBtn) acceptBtn.textContent = 'ACEPTAR COOKIES';
-        var settingsLink = banner.querySelector('#onetrust-pc-btn-handler');
-        if (settingsLink) settingsLink.textContent = 'No vender ni compartir mi información personal';
-    })();
-
-    if (window.self == window.top) {
-        for (i = 0; i < window.frames.length; i++) {
-            window.frames[i].postMessage('cookieGroupsUpdated', '*');
-        }
-    } else {
-        document.getElementById("onetrust-consent-sdk").style.display = "none";
-        window.addEventListener('message', function(event) {
-            if (~event.origin.match(/airforceaircade\\.com/) && event.data == 'cookieGroupsUpdated') {
-                location.reload();
-            } else {
-                return;
-            }
-        });
-    }
-}
-`
-
 const gtmSnippet = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -177,16 +145,6 @@ export default function Home() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
 
-      {/* OneTrust Cookies Consent Notice start */}
-      <Script id="optanon-wrapper" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: optanonWrapper }} />
-      <Script
-        id="onetrust-stub"
-        src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
-        data-domain-script="ff0445a9-1ea6-4168-89fb-12471f269c18"
-        charSet="UTF-8"
-        strategy="afterInteractive"
-      />
-      {/* OneTrust Cookies Consent Notice end */}
       {/* Google Tag Manager */}
       <Script id="gtm" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: gtmSnippet }} />
       <Script id="gtag" src="https://www.googletagmanager.com/gtag/js?id=DC-4136874" strategy="afterInteractive" />
@@ -196,11 +154,6 @@ export default function Home() {
       <Stage />
       <HebrewSplash />
       <Hud />
-
-      {/* OneTrust Cookies Settings button */}
-      <button id="ot-sdk-btn" className="ot-sdk-show-settings">
-        Cookie Settings
-      </button>
     </>
   )
 }
