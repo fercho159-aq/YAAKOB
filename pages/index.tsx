@@ -1,4 +1,4 @@
-import { HebrewSplash, Hud, Stage } from '@home/components'
+import { HebrewSplash, Hud, IntroVeil, Stage } from '@home/components'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect } from 'react'
@@ -152,6 +152,8 @@ export default function Home() {
 
       {/* WebGL scene (react-three-fiber; see home-lib/scene) */}
       <Stage />
+      {/* Order on screen, back to front: scene, blue field, loader plate. */}
+      <IntroVeil />
       <HebrewSplash />
       <Hud />
     </>

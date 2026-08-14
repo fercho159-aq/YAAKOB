@@ -18,7 +18,7 @@ export type Vec3 = [number, number, number]
 export const DEG = Math.PI / 180
 
 export const camera = {
-  /** Group position + local offset from the level's game camera. */
+  /** Group position + local offset from the level's game camera (`landingLevel`). */
   position: [0, 2, 0] as Vec3,
   lookAt: [0, 2, -6] as Vec3,
   fov: 50,
@@ -33,6 +33,68 @@ export const camera = {
     const t = 1 + ((aspect - 1) * (1.4 - 1)) / (0.5 - 1)
     return this.fov * Math.max(1, t)
   },
+}
+
+/**
+ * The entry shot — the engine's `IntroLevel`, rebuilt.
+ *
+ * On the reference the loader plate does not hand straight to the landing
+ * framing. It hands to a second camera, `introLevel`, parked 25 units back
+ * down the same axis, and the level sits there while the environment dust
+ * fades up. `LandingLevel` then pulls the camera the whole 25 units forward
+ * over 8 seconds and the wordmark wipes in as it arrives.
+ *
+ * Every number here is the engine's own, out of `assets/data/uil.json` and
+ * `assets/js/app.*.js`:
+ *
+ *   CAMERA_GameCameraintroLevelgroupPos      [0, 2, 25]
+ *   CAMERA_GameCameraintroLevellookAt        [0, 0, -6]   (same as landing)
+ *   CAMERA_GameCameraintroLevelmoveXY        [1, 0.2]
+ *   CAMERA_GameCameralandingLevelgroupPos    [0, 2, 0]
+ *   LandingLevel.cameraTransitionTime        8000, "easeInOutCubic"
+ *   LandingLevel.animateInDelay              2500
+ *   BaseEnvironment.fadeInParticles          uAlpha -> 0.4, 7000, easeInOutSine
+ *
+ * Because both cameras aim at the same point the move is a pure dolly: the
+ * eye and the wordmark hold their place in frame and only the dust streams
+ * past. Nothing to lerp but z and the parallax amplitude.
+ */
+export const intro = {
+  /** `introLevel` group position — 25 units back from the landing framing. */
+  position: [0, 2, 25] as Vec3,
+  /**
+   * Pointer parallax while the camera is back here, from `introLevel`'s
+   * `moveXY`. Sign convention matches `parallax.move` below (y flipped).
+   */
+  parallax: [1, -0.2] as [number, number],
+  /**
+   * When the dolly starts, measured from canvas mount.
+   *
+   * The reference waits out its own two intro text lines (`IntroLevel` holds
+   * for 5s) and then `LandingLevel.animateInDelay` (2.5s) before the camera
+   * moves. With no text on this build that is dead air, so the move starts
+   * while the blue field is still dissolving — you come out of the hand-off
+   * into a shot that is already travelling. Set this to 12100 to sit through
+   * the reference's full dwell instead.
+   */
+  flightDelay: 5800,
+  /**
+   * How long the dolly takes.
+   *
+   * `LandingLevel.cameraTransitionTime` is 8000 on the reference, but that
+   * pace belongs to a game that wants you settling in, not to a page whose
+   * next move is reading the services line.
+   *
+   * The floor is not taste, it is the plate: `HebrewSplash` does not clear
+   * until ~7050ms, so any move that ends before then happens behind it and is
+   * never seen. At 5800 + 2600 the last ~1.4s of travel lands in the open,
+   * which is what reads as the push-in. Going shorter means pulling the
+   * plate's own hand-off in to match. Put it back to 8000 for the engine's
+   * own timing.
+   */
+  flightDuration: 2600,
+  /** `BaseEnvironment.fadeInParticles`, on the environment dust. */
+  particleFade: { to: 0.4, duration: 7000, delay: 0 },
 }
 
 /**
@@ -133,8 +195,13 @@ export const logo = {
   /**
    * `uTransition` wipes the stack in from the bottom. The engine drove it from
    * the level's intro timeline; this matches the pace the live page shows.
+   *
+   * That timeline belongs to `LandingLevel`, so it does not start until the
+   * dolly does — on the reference the wordmark is not on screen at all while
+   * the camera is still back at the intro pose. The 800ms is the beat the live
+   * page holds after the move begins.
    */
-  transition: { to: 1, duration: 6000, delay: 800 },
+  transition: { to: 1, duration: 2200, delay: intro.flightDelay + 900 },
 }
 
 /**
@@ -179,6 +246,12 @@ export const tagline = {
    *  second colour next to the black logo. */
   color: '#000000',
   alpha: 0.96,
+  /**
+   * The line rides the wordmark in. On the reference it is a GLUI layer of the
+   * same `LandingLevel` timeline, so it has no business being legible while
+   * the camera is still 25 units back; it fades up a beat behind the stack.
+   */
+  transition: { to: 0.96, duration: 1600, delay: intro.flightDelay + 1700 },
   /**
    * Fraction of the font's line height added between glyphs. The engine's own
    * `letterSpacing: 0.6` is in GLUI's units, not these; 0.125 reproduces the
@@ -231,6 +304,10 @@ export const floaters = {
   uniforms: {
     uSize: 8,
     uScale: [1, 1] as [number, number],
+    /**
+     * Where the dust settles. It is not set directly — `intro.particleFade`
+     * ramps up to this value over the entry shot — so keep the two in step.
+     */
     uAlpha: 0.4,
   },
   renderOrder: 1,
@@ -277,5 +354,9 @@ export const composite = {
 /** t in [0,1] -> eased, matching the engine's easeOutSine. */
 export const easeOutSine = (t: number) => Math.sin((t * Math.PI) / 2)
 
-/** easeInOutSine, used by the spline fade-in. */
+/** easeInOutSine, used by the spline fade-in and the dust ramp. */
 export const easeInOutSine = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2
+
+/** easeInOutCubic — the curve the engine's camera transitions run on. */
+export const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2

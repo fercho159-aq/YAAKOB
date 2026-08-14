@@ -19,11 +19,13 @@ import {
   camera as cameraConfig,
   composite,
   DEG,
+  easeInOutCubic,
   easeInOutSine,
   easeOutSine,
   eye,
   eyeGroup,
   floaters,
+  intro,
   lens,
   logo,
   parallax,
@@ -66,6 +68,17 @@ function transitionAt(elapsed: number, { to, duration, delay }: Transition, ease
   const t = elapsed - delay
   return ease(t <= 0 ? 0 : Math.min(1, t / duration)) * to
 }
+
+/**
+ * How far along the intro dolly we are, 0 at the `introLevel` pose and 1 at the
+ * landing framing. The engine ran this transition on easeInOutCubic.
+ */
+function flightAt(elapsed: number) {
+  const t = (elapsed - intro.flightDelay) / intro.flightDuration
+  return easeInOutCubic(t <= 0 ? 0 : Math.min(1, t))
+}
+
+const mix = (a: number, b: number, t: number) => a + (b - a) * t
 
 interface LayerProps {
   fluid: Fluid
@@ -286,7 +299,9 @@ function Floaters({ fluid }: LayerProps) {
       uColor: { value: rawColor(floaters.color) },
       uSize: { value: floaters.uniforms.uSize },
       uScale: { value: new Vector2(...floaters.uniforms.uScale) },
-      uAlpha: { value: floaters.uniforms.uAlpha },
+      // Driven per frame by the intro ramp; `floaters.uniforms.uAlpha` is the
+      // value it settles on.
+      uAlpha: { value: 0 },
       uMouseStrength: { value: 1 },
       DPR: { value: 1 },
     }),
@@ -299,6 +314,14 @@ function Floaters({ fluid }: LayerProps) {
     material.uniforms.time.value = clock.elapsedTime
     material.uniforms.tFluid.value = fluid.texture
     material.uniforms.DPR.value = viewport.dpr
+    // BaseEnvironment.fadeInParticles: the dust is not simply on, it swells up
+    // to 0.4 over seven seconds while the camera sits back at the intro pose.
+    // It is the only thing moving in that shot, so the ramp is the shot.
+    material.uniforms.uAlpha.value = transitionAt(
+      clock.elapsedTime * 1000,
+      intro.particleFade,
+      easeInOutSine
+    )
   })
 
   return (
@@ -438,7 +461,8 @@ function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
       tFluid: { value: fluid.texture },
       uResolution: { value: new Vector2(1, 1) },
       uColor: { value: rawColor(tagline.color) },
-      uAlpha: { value: tagline.alpha },
+      // Ramped by the intro timeline below; `tagline.alpha` is where it lands.
+      uAlpha: { value: 0 },
     }),
     [atlas, fluid]
   )
@@ -448,6 +472,7 @@ function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
     uniforms.tFluid.value = fluid.texture
     // Device pixels; see the note in Eye.
     uniforms.uResolution.value.set(frameSize.width * viewport.dpr, frameSize.height * viewport.dpr)
+    uniforms.uAlpha.value = transitionAt(clock.elapsedTime * 1000, tagline.transition, easeInOutSine)
   })
 
   // The layout is in font units; scale the whole line to its world width. The
@@ -502,8 +527,12 @@ function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
 
 /**
  * Camera placement, the editor's aspect-driven FOV (which widens the lens on
- * portrait viewports), and the pointer parallax the level's game camera ran.
- * The level's lookAt sits straight down -Z, so the default orientation matches.
+ * portrait viewports), the pointer parallax the level's game camera ran, and
+ * the intro dolly.
+ *
+ * The level's lookAt sits straight down -Z, so the default orientation matches
+ * — and since `introLevel` and `landingLevel` share that lookAt, the dolly is
+ * a straight run down z from 25 to 0. See `intro` in ./config.
  */
 function CameraRig() {
   const size = useThree((state) => state.size)
@@ -532,15 +561,28 @@ function CameraRig() {
     }
   }, [])
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
     const camera = cameraRef.current
     if (!camera) return
+
+    // 0 while the shot is parked back at the intro pose, 1 once it has landed.
+    const t = flightAt(clock.elapsedTime * 1000)
+
     const px = pointerActive.current ? pointer.x : 0
     const py = pointerActive.current ? pointer.y : 0
-    const targetX = cameraConfig.position[0] + px * parallax.move[0]
-    const targetY = cameraConfig.position[1] + py * parallax.move[1]
+    // The engine gave each level its own `moveXY`; cross-fade the two so the
+    // parallax opens up as the camera arrives instead of switching over.
+    const moveX = mix(intro.parallax[0], parallax.move[0], t)
+    const moveY = mix(intro.parallax[1], parallax.move[1], t)
+
+    const targetX = mix(intro.position[0], cameraConfig.position[0], t) + px * moveX
+    const targetY = mix(intro.position[1], cameraConfig.position[1], t) + py * moveY
     camera.position.x += (targetX - camera.position.x) * parallax.lerp
     camera.position.y += (targetY - camera.position.y) * parallax.lerp
+    // The dolly itself. Driven straight rather than through the parallax lerp:
+    // that smoothing is tuned for a pointer, and would drag an 8s move out to
+    // something closer to twenty.
+    camera.position.z = mix(intro.position[2], cameraConfig.position[2], t)
     // Keep aiming at the level's target, so the logo holds its place.
     camera.lookAt(...cameraConfig.lookAt)
   })
@@ -549,7 +591,8 @@ function CameraRig() {
     <PerspectiveCamera
       ref={cameraRef}
       makeDefault
-      position={cameraConfig.position}
+      // Starts at the intro pose; the rig walks it forward from there.
+      position={intro.position}
       fov={cameraConfig.fovForAspect(size.width / size.height)}
       near={cameraConfig.near}
       far={cameraConfig.far}
