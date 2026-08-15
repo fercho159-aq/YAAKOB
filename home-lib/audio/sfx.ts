@@ -44,6 +44,8 @@ const cache = new Map<SoundName, HTMLAudioElement>()
 let unlocked = false
 /** Set while the ambience is waiting for that gesture. */
 let ambiencePending = false
+/** Set once the room tone is actually running, so a tab switch can park it. */
+let ambienceRunning = false
 
 function element(name: SoundName): HTMLAudioElement | null {
   if (typeof window === 'undefined') return null
@@ -57,10 +59,29 @@ function element(name: SoundName): HTMLAudioElement | null {
   return el
 }
 
-/** Ramp an element's volume, in ms. Resolves when it lands. */
+/**
+ * Build every registered sound's element now rather than on first play.
+ *
+ * Without this the first hover pays for a round trip and lands after the
+ * pointer has already moved on, which reads as the sound being broken rather
+ * than late. Five files, ~550KB total; the browser gives media a low fetch
+ * priority, so this sits behind the scene's own assets rather than racing them.
+ */
+export function preload() {
+  if (typeof window === 'undefined') return
+  ;(Object.keys(SOUNDS) as SoundName[]).forEach(element)
+}
+
+/**
+ * Ramp an element's volume, in ms.
+ *
+ * Backed by rAF, which a hidden tab does not run — a fade started there would
+ * stall part-way and leave the volume wherever it stopped. Nobody can hear the
+ * ramp in that case anyway, so snap instead.
+ */
 function fade(el: HTMLAudioElement, to: number, ms: number) {
   const from = el.volume
-  if (ms <= 0 || from === to) {
+  if (ms <= 0 || from === to || document.hidden) {
     el.volume = to
     return
   }
@@ -102,10 +123,37 @@ export function play(name: SoundName, opts: { loop?: boolean; fadeIn?: number } 
 
 /** Fade a sound out and stop it. */
 export function stop(name: SoundName, ms = 600) {
+  if (name === 'ambience') ambienceRunning = false
   const el = cache.get(name)
   if (!el) return
   fade(el, 0, ms)
   window.setTimeout(() => el.pause(), ms)
+}
+
+/**
+ * Park the room tone while the tab is in the background and bring it back on
+ * return.
+ *
+ * A loop left running in a tab nobody is looking at is the fastest way to get
+ * a site muted at the browser level, so the pause is hard and immediate — a
+ * fade would need rAF, which is frozen there anyway. Coming back is the part
+ * that has to be gentle, so that side ramps from silence.
+ */
+function onVisibility() {
+  const el = cache.get('ambience')
+  if (!el || !ambienceRunning) return
+  if (document.hidden) {
+    el.pause()
+    return
+  }
+  el.volume = 0
+  void el.play().then(
+    () => fade(el, SOUNDS.ambience.volume, 600),
+    () => {
+      // Returning to a tab is not a gesture; if the browser says no, the tone
+      // stays down until the next click.
+    }
+  )
 }
 
 /**
@@ -116,14 +164,22 @@ export function armAmbience() {
   if (typeof window === 'undefined') return () => {}
   if (ambiencePending) return () => {}
   ambiencePending = true
+  document.addEventListener('visibilitychange', onVisibility)
 
   const start = () => {
+    ambienceRunning = true
     play('ambience', { loop: true, fadeIn: 2000 })
+  }
+
+  const teardown = () => {
+    document.removeEventListener('visibilitychange', onVisibility)
+    ambiencePending = false
+    stop('ambience')
   }
 
   if (unlocked) {
     start()
-    return () => stop('ambience')
+    return teardown
   }
 
   const onGesture = () => {
@@ -139,8 +195,7 @@ export function armAmbience() {
 
   return () => {
     detach()
-    ambiencePending = false
-    stop('ambience')
+    teardown()
   }
 }
 
