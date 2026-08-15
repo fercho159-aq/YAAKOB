@@ -18,14 +18,24 @@ import { armAmbience, play, preload } from './sfx'
  * Every file is fetched at mount, not at first play: the zoom is due 5.8s in
  * and the HUD's hover fires the moment the pointer crosses the bar, and
  * neither can afford to wait on a request at that point.
+ *
+ * Neither of these can play on a page nobody has touched yet, which on the
+ * deployed site is every first visit. Each one carries the length of its own
+ * move as a grace window, so a click during the intro still lands the sound
+ * over the picture it belongs to, and a click after it lands nothing.
  */
 export function useIntroSfx() {
   useEffect(() => {
     preload()
 
     const timers = [
-      window.setTimeout(() => play('zoom'), intro.flightDelay),
-      window.setTimeout(() => play('logo'), logo.transition.delay),
+      // Held while the camera is still travelling: 5800 -> 8400.
+      window.setTimeout(() => play('zoom', { grace: intro.flightDuration }), intro.flightDelay),
+      // Held while the wordmark is still wiping in: 6700 -> 8900.
+      window.setTimeout(
+        () => play('logo', { grace: logo.transition.duration }),
+        logo.transition.delay
+      ),
     ]
     const disarm = armAmbience()
 

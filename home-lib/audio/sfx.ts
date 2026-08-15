@@ -13,9 +13,17 @@
  *
  *   - the ambience is armed, not played. It starts on the first real gesture,
  *     whenever that comes, and fades in from silence.
- *   - one-shots are fired and forgotten. If the browser refuses, the sound is
- *     dropped rather than queued: a whoosh that lands after the camera has
- *     stopped moving is worse than no whoosh.
+ *   - one-shots are fired, and held only as long as they still mean something.
+ *     A blocked sound waits for the first gesture with a deadline attached —
+ *     the moment its picture leaves the screen, it is dropped. A whoosh that
+ *     lands after the camera has stopped moving is worse than no whoosh, but
+ *     one that lands while it is still travelling is the sound working.
+ *
+ * That last point is not a corner case in production. Chrome decides autoplay
+ * per origin, and a dev machine has spent weeks earning the localhost origin
+ * the right to make noise — so the intro sounds locally and is silent on the
+ * real domain, on identical code. The deadline is what makes the deployed
+ * page behave like the one in front of you.
  *
  * Nothing here throws. Audio is decoration; a missing file or a blocked call
  * must never take the page down with it.
@@ -46,6 +54,10 @@ let unlocked = false
 let ambiencePending = false
 /** Set once the room tone is actually running, so a tab switch can park it. */
 let ambienceRunning = false
+/** One-shots the browser refused, each with the time it stops being worth playing. */
+const pending = new Map<SoundName, number>()
+/** Whether the listener that flushes `pending` is already attached. */
+let waitingOnGesture = false
 
 function element(name: SoundName): HTMLAudioElement | null {
   if (typeof window === 'undefined') return null
@@ -96,10 +108,45 @@ function fade(el: HTMLAudioElement, to: number, ms: number) {
 }
 
 /**
- * Play a registered sound. A no-op if the browser refuses — see the note at
- * the top of the file on why one-shots are not queued.
+ * Fire any held one-shot whose moment has not passed, and forget the rest.
+ *
+ * Called on the gesture that lifts the autoplay block. Deadlines are absolute
+ * times on the same clock `play` stamped them with, so a visitor who clicks
+ * ten seconds late gets silence rather than a whoosh over a still frame.
  */
-export function play(name: SoundName, opts: { loop?: boolean; fadeIn?: number } = {}) {
+function flushPending() {
+  const now = performance.now()
+  const due = [...pending.entries()].filter(([, deadline]) => now <= deadline)
+  pending.clear()
+  due.forEach(([name]) => play(name))
+}
+
+/** Attach the one-shot listener that lets a held sound through. */
+function waitForGesture() {
+  if (waitingOnGesture) return
+  waitingOnGesture = true
+  const events = ['pointerdown', 'keydown', 'touchstart'] as const
+  const onGesture = () => {
+    waitingOnGesture = false
+    events.forEach((e) => window.removeEventListener(e, onGesture))
+    markUnlocked()
+  }
+  events.forEach((e) => window.addEventListener(e, onGesture, { once: true, passive: true }))
+}
+
+/**
+ * Play a registered sound.
+ *
+ * `grace` is how long past this instant the sound still matches what is on
+ * screen. Give it one and a blocked sound is held for that window instead of
+ * dropped; leave it off and a refusal is final, which is what every sound
+ * answering a click wants — the click already unlocked the page, so a failure
+ * there is a real failure.
+ */
+export function play(
+  name: SoundName,
+  opts: { loop?: boolean; fadeIn?: number; grace?: number } = {}
+) {
   const el = element(name)
   if (!el) return
   const target = SOUNDS[name].volume
@@ -116,7 +163,13 @@ export function play(name: SoundName, opts: { loop?: boolean; fadeIn?: number } 
       if (opts.fadeIn) fade(el, target, opts.fadeIn)
     },
     () => {
-      // Blocked, or the file is missing. Either way the page carries on.
+      // Blocked, or the file is missing. Hold it if it was given a window and
+      // the page has never been touched — that is the autoplay case, and the
+      // one a gesture can still rescue.
+      if (opts.grace && !unlocked) {
+        pending.set(name, performance.now() + opts.grace)
+        waitForGesture()
+      }
     }
   )
 }
@@ -183,7 +236,7 @@ export function armAmbience() {
   }
 
   const onGesture = () => {
-    unlocked = true
+    markUnlocked()
     start()
     detach()
   }
@@ -199,9 +252,13 @@ export function armAmbience() {
   }
 }
 
-/** Note that the user has interacted, so later one-shots are allowed to try. */
+/**
+ * Note that the user has interacted, so later one-shots are allowed to try,
+ * and let through anything held while they had not.
+ */
 export function markUnlocked() {
   unlocked = true
+  if (pending.size) flushPending()
 }
 
 /** True once a gesture has landed. One-shots before that will be dropped. */
