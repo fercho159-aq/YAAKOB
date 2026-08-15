@@ -289,6 +289,12 @@
     "label": "Noticias",
     "items": [
       {
+        "id": "acoso-sat-empresas-eu",
+        "title": "Denuncian empresas de EU acoso del SAT",
+        "source": "Reforma",
+        "href": "https://share.google/dtRPELB0Re4G0a7dx"
+      },
+      {
         "id": "visitas-domiciliarias",
         "title": "Ya es oficial: el SAT visitará casa por casa con cámaras especiales y abogados para verificar el cumplimiento de las obligaciones fiscales",
         "source": "El Cronista",
