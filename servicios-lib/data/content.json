@@ -375,7 +375,7 @@
         "id": "direccion",
         "icon": "pin",
         "label": "Dirección",
-        "lines": ["Alica 40 Lomas de Chapultepec", "Miguel Hidalgo CDMX, CP 11040"]
+        "lines": ["Alica 40, int. 202, Molino del Rey", "Miguel Hidalgo CDMX, CP 11040"]
       },
       {
         "id": "horarios",

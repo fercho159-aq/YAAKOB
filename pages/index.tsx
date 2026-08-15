@@ -23,7 +23,7 @@ const jsonLd = {
       email: 'contacto@yaakob.com',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Alica 40, Lomas de Chapultepec',
+        streetAddress: 'Calle Alica 40, interior 202, Molino del Rey',
         addressLocality: 'Miguel Hidalgo, CDMX',
         postalCode: '11040',
         addressCountry: 'MX',
