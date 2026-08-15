@@ -52,8 +52,15 @@ const cache = new Map<SoundName, HTMLAudioElement>()
 let unlocked = false
 /** Set while the ambience is waiting for that gesture. */
 let ambiencePending = false
-/** Set once the room tone is actually running, so a tab switch can park it. */
-let ambienceRunning = false
+/**
+ * Whether the room tone is supposed to be sounding.
+ *
+ * Kept apart from whether it actually is: the tone is meant to hold for the
+ * whole visit, and everything that can knock it over — a refused `play`, a
+ * call coming in on a phone, the OS handing audio to another app — knocks over
+ * the fact, not the intent. `ensureAmbience` is what closes the gap.
+ */
+let ambienceWanted = false
 /** One-shots the browser refused, each with the time it stops being worth playing. */
 const pending = new Map<SoundName, number>()
 /** Whether the listener that flushes `pending` is already attached. */
@@ -176,11 +183,46 @@ export function play(
 
 /** Fade a sound out and stop it. */
 export function stop(name: SoundName, ms = 600) {
-  if (name === 'ambience') ambienceRunning = false
+  // Before the pause, not after: the `pause` handler reads this to tell a
+  // stop we asked for from one done to us.
+  if (name === 'ambience') ambienceWanted = false
   const el = cache.get(name)
   if (!el) return
   fade(el, 0, ms)
   window.setTimeout(() => el.pause(), ms)
+}
+
+/**
+ * Put the room tone back on if it is meant to be playing and is not.
+ *
+ * Every route to silence ends here, so there is one recovery path instead of
+ * one per accident. Safe to call at any time: it does nothing when the tone is
+ * already sounding, when the page has stopped wanting it, or when the tab is
+ * hidden and the silence is deliberate.
+ *
+ * A refusal re-arms the gesture listener rather than giving up. The first
+ * attempt on a page nobody has touched is expected to fail; the tone starting
+ * on the click that follows is the normal path, not the fallback.
+ */
+function ensureAmbience(fadeMs: number) {
+  if (!ambienceWanted) return
+  const el = element('ambience')
+  if (!el || document.hidden || !el.paused) return
+  el.loop = true
+  el.volume = 0
+  void el.play().then(
+    () => fade(el, SOUNDS.ambience.volume, fadeMs),
+    () => waitForGesture()
+  )
+}
+
+/**
+ * The tone stopped without us asking. Something outside the page did it: audio
+ * handed to another app, a call, a decoder giving up mid-file. Take it back.
+ */
+function onInterrupted() {
+  // Short ramp — this is a hole being closed, not an entrance.
+  ensureAmbience(300)
 }
 
 /**
@@ -193,62 +235,43 @@ export function stop(name: SoundName, ms = 600) {
  * that has to be gentle, so that side ramps from silence.
  */
 function onVisibility() {
-  const el = cache.get('ambience')
-  if (!el || !ambienceRunning) return
+  if (!ambienceWanted) return
   if (document.hidden) {
-    el.pause()
+    cache.get('ambience')?.pause()
     return
   }
-  el.volume = 0
-  void el.play().then(
-    () => fade(el, SOUNDS.ambience.volume, 600),
-    () => {
-      // Returning to a tab is not a gesture; if the browser says no, the tone
-      // stays down until the next click.
-    }
-  )
+  ensureAmbience(600)
 }
 
 /**
- * Start the room tone as soon as the page is allowed to make noise: now if a
- * gesture has already landed, otherwise on the first one. Returns a teardown.
+ * Hold the room tone under the page for as long as it is mounted.
+ *
+ * It starts as soon as the browser allows noise — now if a gesture has already
+ * landed, otherwise on the first one — and from then on it is kept up rather
+ * than merely started: a refusal waits for the next gesture, an interruption
+ * is taken back, a tab switch parks it and returning resumes it. Returns a
+ * teardown that ends the intent and fades the tone out.
  */
 export function armAmbience() {
   if (typeof window === 'undefined') return () => {}
   if (ambiencePending) return () => {}
   ambiencePending = true
+  ambienceWanted = true
+
+  const el = element('ambience')
+  el?.addEventListener('pause', onInterrupted)
+  el?.addEventListener('ended', onInterrupted)
   document.addEventListener('visibilitychange', onVisibility)
 
-  const start = () => {
-    ambienceRunning = true
-    play('ambience', { loop: true, fadeIn: 2000 })
-  }
-
-  const teardown = () => {
-    document.removeEventListener('visibilitychange', onVisibility)
-    ambiencePending = false
-    stop('ambience')
-  }
-
-  if (unlocked) {
-    start()
-    return teardown
-  }
-
-  const onGesture = () => {
-    markUnlocked()
-    start()
-    detach()
-  }
-  const events = ['pointerdown', 'keydown', 'touchstart'] as const
-  const detach = () => {
-    events.forEach((e) => window.removeEventListener(e, onGesture))
-  }
-  events.forEach((e) => window.addEventListener(e, onGesture, { once: true, passive: true }))
+  // The entrance is the one slow fade; every later recovery is quick.
+  ensureAmbience(2000)
 
   return () => {
-    detach()
-    teardown()
+    ambiencePending = false
+    document.removeEventListener('visibilitychange', onVisibility)
+    el?.removeEventListener('pause', onInterrupted)
+    el?.removeEventListener('ended', onInterrupted)
+    stop('ambience')
   }
 }
 
@@ -259,6 +282,9 @@ export function armAmbience() {
 export function markUnlocked() {
   unlocked = true
   if (pending.size) flushPending()
+  // The gesture that lets the page make noise is also the one the room tone
+  // has been waiting for, whether this is its first chance or its fifth.
+  ensureAmbience(2000)
 }
 
 /** True once a gesture has landed. One-shots before that will be dropped. */
