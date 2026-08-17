@@ -289,6 +289,12 @@
     "label": "Noticias",
     "items": [
       {
+        "id": "limite-efectivo-inmueble",
+        "title": "SAT confirma el límite de efectivo para comprar un inmueble en agosto 2026",
+        "source": "El Informador",
+        "href": "https://www.informador.mx/economia/sat-confirma-el-limite-de-efectivo-para-comprar-un-inmueble-en-agosto-2026-20260814-0083.html"
+      },
+      {
         "id": "acoso-sat-empresas-eu",
         "title": "Denuncian empresas de EU acoso del SAT",
         "source": "Reforma",
