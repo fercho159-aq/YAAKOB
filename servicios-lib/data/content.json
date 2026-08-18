@@ -289,6 +289,12 @@
     "label": "Noticias",
     "items": [
       {
+        "id": "condonacion-multas-recargos",
+        "title": "SAT condonará hasta 100% de multas y recargos a contribuyentes con adeudos",
+        "source": "Milenio",
+        "href": "https://www.milenio.com/estados/sat-condonara-multas-recargos-programa-regulacion-fiscal"
+      },
+      {
         "id": "limite-efectivo-inmueble",
         "title": "SAT confirma el límite de efectivo para comprar un inmueble en agosto 2026",
         "source": "El Informador",
