@@ -36,10 +36,19 @@ const WHATSAPP_ACTIVE = '#4AE98A'
 const FOOTER_HEIGHT = '80px'
 
 /**
- * Both entries are internal routes, so they use `NextLink` and stay in the tab —
+ * Every entry is an internal route, so they use `NextLink` and stay in the tab —
  * unlike the social row, which is external throughout.
+ *
+ * Cancelaciones y contacto entran aquí por la validación técnica de Openpay:
+ * las políticas de cancelación y reembolso y los datos de soporte tienen que
+ * ser alcanzables desde cualquier página, no sólo desde el modal de contacto.
  */
-const LEGAL_LINKS = [content.footer.privacy, content.footer.ads]
+const LEGAL_LINKS = [
+  content.footer.privacy,
+  content.footer.ads,
+  content.footer.cancelaciones,
+  content.footer.contacto,
+]
 
 /** Same set, in the same order, as the social row on the home page. */
 const SOCIALS: Array<{
@@ -262,7 +271,7 @@ export function Footer({
         alignItems="center"
       >
         <MotionBox initial={{ opacity: 0 }} animate={logoControls}>
-          <Flex align="center" gap={['0.75rem', null, '1.25rem']}>
+          <Flex align="center" justify="center" wrap="wrap" gap={['0.5rem 0.75rem', null, '0.5rem 1.25rem']}>
             {LEGAL_LINKS.map((entry) => (
               <Link
                 key={entry.href}

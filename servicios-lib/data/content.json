@@ -19,7 +19,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Integración de las obligaciones del contribuyente bajo expedientes, notificaciones y posibles riesgos fiscales.",
-        "tags": ["DIAGNÓSTICO", "DICTAMEN", "EXPEDIENTE", "RIESGO"]
+        "tags": [
+          "DIAGNÓSTICO",
+          "DICTAMEN",
+          "EXPEDIENTE",
+          "RIESGO"
+        ]
       },
       "description": {
         "heading": "Panorama real de su situación fiscal",
@@ -42,7 +47,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Revisión preventiva para identificar diferencias, omisiones e inconsistencias que pueden originar requerimientos, multas, actualizaciones, recargos o actos de fiscalización.",
-        "tags": ["PREVENCIÓN", "ERRORES", "DIFERENCIAS", "SIMULACIÓN"]
+        "tags": [
+          "PREVENCIÓN",
+          "ERRORES",
+          "DIFERENCIAS",
+          "SIMULACIÓN"
+        ]
       },
       "description": {
         "heading": "Modelo de vigilancia profunda",
@@ -65,7 +75,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Apoyo para analizar y solventar requerimientos, cartas invitación, avisos y solicitudes de información emitidas por la autoridad.",
-        "tags": ["SAT", "UIF", "FGR", "BANCOS"]
+        "tags": [
+          "SAT",
+          "UIF",
+          "FGR",
+          "BANCOS"
+        ]
       },
       "description": {
         "heading": "Solución oportuna a cada notificación",
@@ -88,7 +103,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Revisión de gabinete, visitas domiciliarias, revisiones electrónicas y demás actos de auditoría fiscal.",
-        "tags": ["AUDITORÍA", "GABINETE", "VISITAS", "FISCALIZACIÓN"]
+        "tags": [
+          "AUDITORÍA",
+          "GABINETE",
+          "VISITAS",
+          "FISCALIZACIÓN"
+        ]
       },
       "description": {
         "heading": "Determinación del riesgo fiscal",
@@ -111,7 +131,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente.",
-        "tags": ["MULTAS", "RECARGOS", "SANCIONES", "CORRECCIÓN"]
+        "tags": [
+          "MULTAS",
+          "RECARGOS",
+          "SANCIONES",
+          "CORRECCIÓN"
+        ]
       },
       "description": {
         "heading": "Disminución de sanciones y recargos",
@@ -134,7 +159,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Análisis de la determinación de contribuciones, accesorios y créditos fiscales, así como de las alternativas de pago, garantía o impugnación.",
-        "tags": ["CRÉDITOS", "GARANTÍA", "IMPUGNACIÓN", "PAGO"]
+        "tags": [
+          "CRÉDITOS",
+          "GARANTÍA",
+          "IMPUGNACIÓN",
+          "PAGO"
+        ]
       },
       "description": {
         "heading": "Estrategia de pago, garantía o impugnación",
@@ -157,7 +187,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Reactivación del certificado de sello digital, considerando el requerimiento o documento emitido por la autoridad.",
-        "tags": ["CSD", "EFIRMA", "SELLOS", "RECUPERACIÓN"]
+        "tags": [
+          "CSD",
+          "EFIRMA",
+          "SELLOS",
+          "RECUPERACIÓN"
+        ]
       },
       "description": {
         "heading": "Recuperación del Certificado de Sello Digital",
@@ -180,7 +215,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Aclaración de presuntivas, preparación de pruebas, escritos y demás medios procedentes.",
-        "tags": ["69-B", "DEFENSA", "MATERIALIDAD", "CORRECCIÓN"]
+        "tags": [
+          "69-B",
+          "DEFENSA",
+          "MATERIALIDAD",
+          "CORRECCIÓN"
+        ]
       },
       "description": {
         "heading": "Defensa legal ante el listado del 69-B",
@@ -203,7 +243,11 @@
       "about": {
         "heading": "Síntesis",
         "description": "Resolución definitiva por derechos, legalidad, seguridad y acceso a información ante la UIF y la FGR.",
-        "tags": ["CNBV", "BLOQUEO", "GARANTÍA"]
+        "tags": [
+          "CNBV",
+          "BLOQUEO",
+          "GARANTÍA"
+        ]
       },
       "description": {
         "heading": "Prevención financiera y fiscal",
@@ -226,7 +270,12 @@
       "about": {
         "heading": "Síntesis",
         "description": "Regularización sobre la Ley de Hidrocarburos, ANAM y AGASE.",
-        "tags": ["SOFTWARE", "PEDIMENTOS", "REGISTROS", "IRREGULARIDADES"]
+        "tags": [
+          "SOFTWARE",
+          "PEDIMENTOS",
+          "REGISTROS",
+          "IRREGULARIDADES"
+        ]
       },
       "description": {
         "heading": "Subsanación de irregularidades",
@@ -249,7 +298,11 @@
       "about": {
         "heading": "Síntesis",
         "description": "Prevenir, identificar y corregir irregularidades, fraudes, incumplimientos y riesgos fiscales.",
-        "tags": ["DIAGNÓSTICO", "ANÁLISIS", "CUMPLIMIENTO"]
+        "tags": [
+          "DIAGNÓSTICO",
+          "ANÁLISIS",
+          "CUMPLIMIENTO"
+        ]
       },
       "description": {
         "heading": "Estrategias para poner al día su situación fiscal",
@@ -274,8 +327,14 @@
       "subheading": "Hable con un especialista",
       "body": "Cada caso es distinto. Agende una consulta para revisar su situación y definir la estrategia adecuada.",
       "ctas": {
-        "login": { "label": "Solicitar consulta", "href": "/" },
-        "register": { "label": "Más información", "href": "/" }
+        "login": {
+          "label": "Solicitar consulta",
+          "href": "/"
+        },
+        "register": {
+          "label": "Más información",
+          "href": "/"
+        }
       }
     }
   },
@@ -354,52 +413,76 @@
     "title": "Yaakob Consultores SC",
     "heading": "Hablemos sobre su situación fiscal",
     "fields": [
-      { "id": "despacho", "icon": "building", "label": "Despacho", "lines": ["Yaakob Consultores S.C."] },
+      {
+        "id": "despacho",
+        "icon": "building",
+        "label": "Despacho",
+        "lines": [
+          "Yaakob Consultores S.C."
+        ]
+      },
       {
         "id": "especialista",
         "icon": "user",
         "label": "Especialista",
-        "lines": ["L.C. Juan José de Anda G."]
+        "lines": [
+          "L.C. Juan José de Anda G."
+        ]
       },
       {
         "id": "telefono",
         "icon": "phone",
         "label": "Teléfono",
-        "lines": ["+52 55 9008 6360", "+52 55 9008 7881"],
+        "lines": [
+          "+52 55 9008 6360",
+          "+52 55 9008 7881"
+        ],
         "href": "tel:+525590086360"
       },
       {
         "id": "whatsapp",
         "icon": "chat",
         "label": "WhatsApp",
-        "lines": ["+52 55 3007 7441"],
+        "lines": [
+          "+52 55 3007 7441"
+        ],
         "href": "https://wa.me/5215530077441"
       },
       {
         "id": "correo",
         "icon": "mail",
         "label": "Correo",
-        "lines": ["contacto@yaakob.com"],
+        "lines": [
+          "contacto@yaakob.com"
+        ],
         "href": "mailto:contacto@yaakob.com"
       },
       {
         "id": "sitio",
         "icon": "globe",
         "label": "Sitio web",
-        "lines": ["www.yaakob.com"],
+        "lines": [
+          "www.yaakob.com"
+        ],
         "href": "https://www.yaakob.com"
       },
       {
         "id": "direccion",
         "icon": "pin",
         "label": "Dirección",
-        "lines": ["Alica 40, int. 202, Molino del Rey", "Miguel Hidalgo CDMX, CP 11040"]
+        "lines": [
+          "Alica 40, int. 202, Molino del Rey",
+          "Miguel Hidalgo CDMX, CP 11040"
+        ]
       },
       {
         "id": "horarios",
         "icon": "clock",
         "label": "Horarios",
-        "lines": ["Lunes a Viernes", "9:00 A.M. a 6:00 P.M."]
+        "lines": [
+          "Lunes a Viernes",
+          "9:00 A.M. a 6:00 P.M."
+        ]
       }
     ],
     "qr": {
@@ -414,21 +497,57 @@
     "signature": "Yaakob Consultores SC · Protección y defensa fiscal"
   },
   "footer": {
-    "cookies": { "label": "Configuración de cookies" },
-    "privacy": { "label": "Aviso de privacidad", "href": "/privacidad" },
-    "ads": { "label": "Términos", "href": "/terminos" },
-    "logo": { "href": "/" },
-    "contact": { "label": "Contacto", "href": "https://wa.me/5215530077441" },
+    "cookies": {
+      "label": "Configuración de cookies"
+    },
+    "privacy": {
+      "label": "Aviso de privacidad",
+      "href": "/privacidad"
+    },
+    "ads": {
+      "label": "Términos",
+      "href": "/terminos"
+    },
+    "logo": {
+      "href": "/"
+    },
+    "contact": {
+      "label": "Contacto",
+      "href": "https://wa.me/5215530077441"
+    },
     "social": {
-      "instagram": { "href": "https://www.instagram.com/yaakobeheart/", "label": "Instagram" },
+      "instagram": {
+        "href": "https://www.instagram.com/yaakobeheart/",
+        "label": "Instagram"
+      },
       "facebook": {
         "href": "https://www.facebook.com/profile.php?id=61587552527813&locale=es_LA",
         "label": "Facebook"
       },
-      "tiktok": { "href": "https://www.tiktok.com/@yaakob_heart", "label": "TikTok" },
-      "youtube": { "href": "https://www.youtube.com/@YaakobBeHeart", "label": "YouTube" },
-      "twitter": { "href": "https://x.com/yaakob", "label": "X" },
-      "whatsapp": { "href": "https://wa.me/5215530077441", "label": "WhatsApp" }
+      "tiktok": {
+        "href": "https://www.tiktok.com/@yaakob_heart",
+        "label": "TikTok"
+      },
+      "youtube": {
+        "href": "https://www.youtube.com/@YaakobBeHeart",
+        "label": "YouTube"
+      },
+      "twitter": {
+        "href": "https://x.com/yaakob",
+        "label": "X"
+      },
+      "whatsapp": {
+        "href": "https://wa.me/5215530077441",
+        "label": "WhatsApp"
+      }
+    },
+    "cancelaciones": {
+      "label": "Cancelaciones",
+      "href": "/cancelaciones"
+    },
+    "contacto": {
+      "label": "Contacto",
+      "href": "/contacto"
     }
   }
 }

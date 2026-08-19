@@ -21,7 +21,8 @@
     "paths": {
       "@/*": ["./*"],
       "@servicios/*": ["./servicios-lib/*"],
-      "@home/*": ["./home-lib/*"]
+      "@home/*": ["./home-lib/*"],
+      "@pagos/*": ["./pagos-lib/*"]
     }
   },
   "include": [
