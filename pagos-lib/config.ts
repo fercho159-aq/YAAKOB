@@ -27,8 +27,10 @@ export const apiBase = esSandbox
   : 'https://api.openpay.mx/v1'
 
 /** URL pública del sitio, para armar el `redirect_url` de 3D Secure. */
+// Mismo cuidado que en `merchantIdServidor`: la variable puede venir declarada
+// y vacía, y un `redirect_url` sin origen deja el retorno de 3D Secure roto.
 export const sitioUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
 ).replace(/\/$/, '')
 
@@ -48,7 +50,10 @@ export function llavePrivada(): string {
 }
 
 export function merchantIdServidor(): string {
-  const id = process.env.OPENPAY_MERCHANT_ID ?? merchantId
+  // `||` y no `??`: la variable opcional viene declarada pero VACÍA en
+  // `.env.example`, y una cadena vacía sí está definida —— con `??` ganaba el
+  // vacío y el fallback público nunca entraba.
+  const id = process.env.OPENPAY_MERCHANT_ID?.trim() || merchantId
   if (!id) {
     throw new Error('Falta OPENPAY_MERCHANT_ID (o NEXT_PUBLIC_OPENPAY_MERCHANT_ID).')
   }

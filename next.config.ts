@@ -12,6 +12,20 @@ const OPENPAY_HOSTS = [
   'https://cdn.openpay.mx',
 ]
 
+/**
+ * El antifraude de Openpay (`openpay-data.v1.min.js`) no se queda en dominios de
+ * Openpay: monta iframes de Kount y de OpenControl para calcular el
+ * `device_session_id`. Se descubrieron corriendo el cobro con la CSP en modo
+ * reporte, que los marcó como violación. Sin ellos no hay huella de dispositivo
+ * y el cargo se queda sin el dato antifraude, así que tienen que ir en la lista
+ * antes de poner `CSP_ENFORCE=1`.
+ */
+const ANTIFRAUDE_HOSTS = [
+  'https://*.kaptcha.com',
+  'https://opencontrol.mx',
+  'https://*.opencontrol.mx',
+]
+
 const ANALYTICS_HOSTS = [
   'https://www.googletagmanager.com',
   'https://www.google-analytics.com',
@@ -28,13 +42,13 @@ const FONT_HOSTS = ['https://use.typekit.net', 'https://p.typekit.net', 'https:/
  */
 const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${[...OPENPAY_HOSTS, ...ANALYTICS_HOSTS].join(' ')}`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${[...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS, ...ANALYTICS_HOSTS].join(' ')}`,
   `style-src 'self' 'unsafe-inline' ${FONT_HOSTS.join(' ')}`,
   `font-src 'self' data: ${FONT_HOSTS.join(' ')}`,
-  `img-src 'self' data: blob: ${[...ANALYTICS_HOSTS, ...OPENPAY_HOSTS].join(' ')}`,
-  `connect-src 'self' ${[...OPENPAY_HOSTS, ...ANALYTICS_HOSTS].join(' ')}`,
+  `img-src 'self' data: blob: ${[...ANALYTICS_HOSTS, ...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS].join(' ')}`,
+  `connect-src 'self' ${[...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS, ...ANALYTICS_HOSTS].join(' ')}`,
   // 3D Secure devuelve al usuario dentro de un marco del emisor en algunos bancos.
-  `frame-src 'self' ${OPENPAY_HOSTS.join(' ')}`,
+  `frame-src 'self' ${[...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS].join(' ')}`,
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",

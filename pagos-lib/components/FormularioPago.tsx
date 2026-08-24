@@ -11,7 +11,8 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useMemo, useRef, useState } from 'react'
-import { formatearPrecio, type Plan } from '../planes'
+import { totalesDelCarrito, type LineaResuelta } from '../carrito'
+import { formatearPrecio } from '../planes'
 import { nuevaReferenciaCliente } from '../referencia'
 import { useOpenpay } from '../useOpenpay'
 import {
@@ -76,8 +77,16 @@ const TARJETA_VACIA: CamposTarjeta = { titular: '', numero: '', mes: '', anio: '
 
 type Estado = 'capturando' | 'procesando' | 'redirigiendo'
 
-export function FormularioPago({ plan }: { plan: Plan }) {
+export function FormularioPago({ lineas }: { lineas: LineaResuelta[] }) {
   const { listo, estado: estadoOpenpay, esSandbox, tokenizar, obtenerDeviceSessionId } = useOpenpay()
+
+  // El total que se muestra es informativo: el importe que se cobra lo recalcula
+  // el servidor con los precios del catálogo, nunca con lo que mande esta pantalla.
+  const totales = totalesDelCarrito(lineas)
+  const renovacion =
+    lineas.length === 1
+      ? `su renovación ${lineas[0].plan.cadencia}`
+      : 'la renovación de cada suscripción en su propia periodicidad'
 
   const [cliente, setCliente] = useState<CamposCliente>(CLIENTE_VACIO)
   const [tarjeta, setTarjeta] = useState<CamposTarjeta>(TARJETA_VACIA)
@@ -132,7 +141,7 @@ export function FormularioPago({ plan }: { plan: Plan }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          planId: plan.id,
+          items: lineas.map((linea) => ({ planId: linea.plan.id, cantidad: linea.cantidad })),
           token,
           deviceSessionId,
           referencia,
@@ -190,7 +199,7 @@ export function FormularioPago({ plan }: { plan: Plan }) {
       ? 'Procesando…'
       : estado === 'redirigiendo'
         ? 'Redirigiendo a su banco…'
-        : `Contratar por ${formatearPrecio(plan.precio, plan.moneda)}`
+        : `Contratar por ${formatearPrecio(totales.total)}`
 
   return (
     <Box as="form" onSubmit={enviar} noValidate>
@@ -376,8 +385,9 @@ export function FormularioPago({ plan }: { plan: Plan }) {
       </Button>
 
       <Text mt="1rem" fontSize="0.6875rem" lineHeight="1.125rem" color="rgba(255,255,255,0.55)">
-        Al contratar autoriza un cargo de {formatearPrecio(plan.precio, plan.moneda)} y su renovación{' '}
-        {plan.cadencia} hasta que usted la cancele. Puede cancelar en cualquier momento sin
+        Al contratar autoriza un cargo de {formatearPrecio(totales.total)} por{' '}
+        {totales.unidades === 1 ? 'una suscripción' : `${totales.unidades} suscripciones`} y{' '}
+        {renovacion} hasta que usted la cancele. Puede cancelar en cualquier momento sin
         penalización. Su banco le pedirá confirmar la operación mediante 3D Secure.
       </Text>
 

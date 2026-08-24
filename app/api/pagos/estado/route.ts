@@ -6,8 +6,14 @@ import {
   suscripciones,
   type SuscripcionOpenpay,
 } from '@pagos/openpay-servidor'
-import { buscarPlan, comoFechaOpenpay, finDelPrimerPeriodo, formatearPrecio } from '@pagos/planes'
-import { planDesdeDescripcion } from '@pagos/referencia'
+import {
+  buscarPlan,
+  comoFechaOpenpay,
+  finDelPrimerPeriodo,
+  formatearPrecio,
+  type Plan,
+} from '@pagos/planes'
+import { planesDesdeDescripcion } from '@pagos/referencia'
 
 /**
  * Confirmación del cargo y alta de la suscripción.
@@ -29,15 +35,6 @@ const error = (mensaje: string, status = 400, extra: Record<string, unknown> = {
   NextResponse.json({ ok: false, mensaje, ...extra }, { status })
 
 const ACTIVAS = new Set(['active', 'trial', 'past_due'])
-
-async function suscripcionExistente(
-  clienteId: string,
-  planOpenpayId: string,
-): Promise<SuscripcionOpenpay | undefined> {
-  const lista = await suscripciones.listar(clienteId)
-  if (!Array.isArray(lista)) return undefined
-  return lista.find((s) => s.plan_id === planOpenpayId && ACTIVAS.has(s.status))
-}
 
 export async function POST(request: Request) {
   let cargoId: string | undefined
@@ -72,18 +69,19 @@ export async function POST(request: Request) {
 
     /* ------------------------------------------------- cargo confirmado */
 
-    const planId = planDesdeDescripcion(cargo.description)
-    const plan = buscarPlan(planId)
+    const renglones = planesDesdeDescripcion(cargo.description)
+      .map((renglon) => ({ plan: buscarPlan(renglon.planId), cantidad: renglon.cantidad }))
+      .filter((renglon): renglon is { plan: Plan; cantidad: number } => Boolean(renglon.plan))
     const clienteId = cargo.customer_id
     const tarjetaId = cargo.card?.id
 
-    if (!plan || !clienteId || !tarjetaId) {
+    if (!renglones.length || !clienteId || !tarjetaId) {
       // El dinero sí entró; lo que falla es armar la recurrencia. Se le dice al
       // usuario que su pago está hecho y que soporte lo completa, en vez de
       // dejarle un error rojo sobre un cargo que sí se le hizo.
       console.error('[pagos] cargo confirmado sin datos para la suscripción', {
         cargoId,
-        planId,
+        descripcion: cargo.description,
         clienteId,
         tarjetaId,
       })
@@ -97,25 +95,47 @@ export async function POST(request: Request) {
       })
     }
 
-    const yaExiste = await suscripcionExistente(clienteId, plan.openpayPlanId)
-    const suscripcion =
-      yaExiste ??
-      (await suscripciones.crear(clienteId, {
-        plan_id: plan.openpayPlanId,
-        card_id: tarjetaId,
-        // El primer periodo ya se cobró con este cargo: el recurrente arranca
-        // cuando ese periodo termina, no de inmediato.
-        trial_end_date: comoFechaOpenpay(finDelPrimerPeriodo(plan)),
-      }))
+    // Una suscripción por unidad del carrito. Idempotente: las que ya existen
+    // para ese plan se cuentan primero, así que recargar la página de resultado
+    // no da de alta un segundo juego de suscripciones.
+    const activas = await suscripciones.listar(clienteId).catch(() => [] as SuscripcionOpenpay[])
+    const contratados = []
+
+    for (const { plan, cantidad } of renglones) {
+      const existentes = Array.isArray(activas)
+        ? activas.filter((s) => s.plan_id === plan.openpayPlanId && ACTIVAS.has(s.status))
+        : []
+      const ids = existentes.slice(0, cantidad).map((s) => s.id)
+
+      for (let i = ids.length; i < cantidad; i += 1) {
+        const suscripcion = await suscripciones.crear(clienteId, {
+          plan_id: plan.openpayPlanId,
+          card_id: tarjetaId,
+          // El primer periodo ya se cobró con este cargo: el recurrente arranca
+          // cuando ese periodo termina, no de inmediato.
+          trial_end_date: comoFechaOpenpay(finDelPrimerPeriodo(plan)),
+        })
+        ids.push(suscripcion.id)
+      }
+
+      contratados.push({
+        id: plan.id,
+        nombre: plan.nombre,
+        cadencia: plan.cadencia,
+        cantidad,
+        importe: formatearPrecio(plan.precio * cantidad, plan.moneda),
+        proximoCargo: comoFechaOpenpay(finDelPrimerPeriodo(plan)),
+        suscripciones: ids,
+        reutilizadas: Math.min(existentes.length, cantidad),
+      })
+    }
 
     return NextResponse.json({
       ok: true,
       estado: 'activa',
-      plan: { id: plan.id, nombre: plan.nombre, cadencia: plan.cadencia },
-      importe: formatearPrecio(plan.precio, plan.moneda),
-      proximoCargo: comoFechaOpenpay(finDelPrimerPeriodo(plan)),
-      suscripcionId: suscripcion.id,
-      reutilizada: Boolean(yaExiste),
+      planes: contratados,
+      importe: formatearPrecio(cargo.amount),
+      suscripcionId: contratados[0]?.suscripciones[0],
     })
   } catch (fallo) {
     if (fallo instanceof OpenpayError) {

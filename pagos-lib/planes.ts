@@ -99,3 +99,15 @@ export function finDelPrimerPeriodo(plan: Plan, desde = new Date()): Date {
 export function comoFechaOpenpay(fecha: Date): string {
   return fecha.toISOString().slice(0, 10)
 }
+
+/**
+ * Topes del carrito. Viven aquí, junto al catálogo, porque los aplica tanto la
+ * interfaz como `/api/pagos/suscripcion`, y el servidor no debe tener que
+ * importar el módulo del carrito —— que es código de navegador.
+ */
+
+/** Máximo de suscripciones del mismo plan en una orden. */
+export const MAX_POR_LINEA = 10
+
+/** Máximo de suscripciones por operación. Arriba de esto se atiende a mano. */
+export const MAX_UNIDADES = 20

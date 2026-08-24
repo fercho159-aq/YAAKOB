@@ -1,0 +1,458 @@
+% !TEX program = xelatex
+\documentclass[11pt,letterpaper]{article}
+
+% ============================================================
+% PAQUETES
+% ============================================================
+\usepackage[spanish,es-tabla,es-noindentfirst]{babel}
+\usepackage{fontspec}
+\setsansfont{Montserrat}[
+    Path = /usr/local/texlive/2026/texmf-dist/fonts/opentype/public/montserrat/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic ]
+\setmonofont{Menlo}[Scale=0.85]
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit, backgrounds}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\geometry{top=2.4cm, bottom=2cm, left=2cm, right=2cm}
+\setlength{\headheight}{34pt}
+\addtolength{\topmargin}{-12pt}
+
+% ============================================================
+% COLORES --- identidad Yaakob Consultores
+% ============================================================
+\definecolor{oroyk}{HTML}{FF9933}
+\definecolor{orooscuro}{HTML}{C97316}
+\definecolor{tinta}{HTML}{111316}
+\definecolor{grisfondo}{HTML}{F5F4F2}
+\definecolor{gristexto}{HTML}{5B6472}
+\definecolor{arena}{HTML}{EFE7DC}
+\definecolor{azultit}{HTML}{0B1C26}
+\definecolor{verdeok}{HTML}{047857}
+\definecolor{ambar}{HTML}{B45309}
+\definecolor{rojoalerta}{HTML}{B91C1C}
+
+\hypersetup{colorlinks=true, linkcolor=azultit, urlcolor=azultit}
+
+% ============================================================
+% ENCABEZADO / PIE
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\raisebox{-7pt}{\includegraphics[height=24pt]{logo.png}}\hspace{6pt}\footnotesize\color{gristexto}\textbf{Yaakob Consultores SC}}
+\fancyhead[R]{\footnotesize\color{gristexto}Integración Openpay --- pruebas en sandbox}
+\fancyfoot[C]{\footnotesize\color{gristexto}\thepage}
+\renewcommand{\headrulewidth}{0.6pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{oroyk}\leaders\hrule height \headrulewidth\hfill}}
+
+% ============================================================
+% COMANDOS / CAJAS
+% ============================================================
+\newcommand{\seccion}[1]{%
+    \vspace{4pt}
+    {\large\bfseries\color{tinta}#1}\par\vspace{2pt}
+    {\color{oroyk}\rule{\linewidth}{1.2pt}}\par
+    \vspace{6pt}
+}
+
+\newcommand{\subseccion}[1]{%
+    \vspace{8pt}
+    \noindent{\bfseries\color{azultit}#1}\par
+    \vspace{3pt}
+}
+
+\newtcolorbox{cajaNota}{
+    colback=grisfondo, colframe=gristexto!50, rounded corners,
+    boxrule=1pt, left=10pt, right=10pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{cajaOjo}{
+    colback=oroyk!10, colframe=oroyk, rounded corners,
+    boxrule=1.2pt, left=10pt, right=10pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{cajaAlerta}{
+    colback=rojoalerta!6, colframe=rojoalerta, rounded corners,
+    boxrule=1.2pt, left=10pt, right=10pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{cajaInfo}[1][]{
+    colback=grisfondo, colframe=tinta, fonttitle=\bfseries\color{white},
+    colbacktitle=tinta, title=#1, rounded corners,
+    boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\newtcolorbox{cajaRol}[1][]{
+    colback=arena!55, colframe=azultit, fonttitle=\bfseries\color{white},
+    colbacktitle=azultit, title=#1, rounded corners,
+    boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+\setlist[itemize]{leftmargin=16pt, itemsep=3pt, topsep=3pt}
+\setlist[enumerate]{leftmargin=20pt, itemsep=5pt, topsep=4pt}
+\renewcommand{\arraystretch}{1.3}
+
+\newcommand{\cd}[1]{{\ttfamily\small #1}}
+\newcommand{\boton}[1]{{\bfseries\color{orooscuro}[#1]}}
+
+% Captura de pantalla con marco y pie
+\newcommand{\captura}[2]{%
+    \begin{center}
+    \fbox{\includegraphics[width=0.86\linewidth]{capturas/#1}}\\[3pt]
+    {\footnotesize\color{gristexto}#2}
+    \end{center}
+}
+\newcommand{\capturaMovil}[2]{%
+    \begin{center}
+    \fbox{\includegraphics[width=0.40\linewidth]{capturas/#1}}\\[3pt]
+    {\footnotesize\color{gristexto}#2}
+    \end{center}
+}
+\newcommand{\capturaAncha}[2]{%
+    \begin{center}
+    \fbox{\includegraphics[width=\linewidth]{capturas/#1}}\\[3pt]
+    {\footnotesize\color{gristexto}#2}
+    \end{center}
+}
+\newcommand{\capturaRecorte}[3]{%
+    \begin{center}
+    \fbox{\includegraphics[width=#3\linewidth]{capturas/#1}}\\[3pt]
+    {\footnotesize\color{gristexto}#2}
+    \end{center}
+}
+
+% ============================================================
+% ESTILOS DE DIAGRAMA
+% ============================================================
+\tikzset{
+    paso/.style={
+        draw=tinta, fill=white, rounded corners=3pt, line width=0.9pt,
+        text=tinta, font=\sffamily\small, align=center,
+        minimum height=30pt, minimum width=112pt, inner sep=5pt },
+    pasooro/.style={
+        draw=oroyk, fill=oroyk, rounded corners=3pt, line width=0.9pt,
+        text=tinta, font=\sffamily\bfseries\small, align=center,
+        minimum height=30pt, minimum width=112pt, inner sep=5pt },
+    pasogris/.style={
+        draw=gristexto, fill=grisfondo, rounded corners=3pt, line width=0.9pt,
+        text=tinta, font=\sffamily\small, align=center,
+        minimum height=30pt, minimum width=112pt, inner sep=5pt },
+    rombo/.style={
+        draw=oroyk, fill=oroyk!12, diamond, aspect=2.4, line width=0.9pt,
+        text=tinta, font=\sffamily\footnotesize, align=center, inner sep=2pt },
+    quien/.style={
+        font=\sffamily\scriptsize\bfseries, text=gristexto },
+    flecha/.style={-{Stealth[length=5pt]}, line width=0.9pt, draw=gristexto},
+    flechao/.style={-{Stealth[length=5pt]}, line width=0.9pt, draw=oroyk},
+}
+
+\newcommand{\hecho}{\textcolor{verdeok}{\textbf{Probado}}}
+\newcommand{\corregido}{\textcolor{verdeok}{\textbf{Corregido}}}
+\newcommand{\pendiente}{{\color{ambar}\textbf{Con Openpay}}}
+\newcommand{\decision}{{\color{azultit}\textbf{Requiere decisión}}}
+
+% ============================================================
+\begin{document}
+
+% ---- PORTADA ----
+\begin{center}
+    \includegraphics[height=64pt]{logo.png}\\[12pt]
+    {\LARGE\bfseries\color{tinta}INTEGRACIÓN OPENPAY}\\[6pt]
+    {\normalsize\color{gristexto}Pruebas en el ambiente sandbox y hallazgos corregidos}\\[2pt]
+    {\normalsize\color{gristexto}Suscripción de vigilancia fiscal --- \cd{www.yaakob.com}}\\[8pt]
+    {\footnotesize\color{gristexto}Para el equipo de validación de Openpay}\\[2pt]
+    {\footnotesize\color{gristexto}24 de agosto de 2026}\\[8pt]
+    {\color{oroyk}\rule{0.5\linewidth}{1.6pt}}
+\end{center}
+
+\vspace{10pt}
+
+\noindent Este documento reporta la integración del comercio con Openpay y las pruebas corridas contra el ambiente de pruebas con las llaves entregadas por correo. Cubre el recorrido completo de compra ---catálogo, carrito, checkout, cobro con 3D~Secure y alta de la suscripción recurrente---, las veintidós pruebas ejecutadas y los cuatro defectos que las pruebas destaparon, ya corregidos. Cierra con lo que no se puede cerrar de este lado porque depende de la configuración de la cuenta.
+
+\vspace{6pt}
+
+\begin{cajaOjo}
+\textbf{Resumen.} El flujo de contratación funciona de extremo a extremo en sandbox: se cobró \$13,\!920.00~MXN por tres suscripciones, el banco confirmó por 3D~Secure y quedaron dadas de alta las tres recurrencias con la fecha correcta del siguiente cargo. Las pruebas encontraron \textbf{cuatro defectos}, los cuatro ya corregidos ---uno de ellos grave, porque mezclaba los expedientes de clientes distintos. Quedan \textbf{dos topes de la cuenta} que sólo Openpay puede levantar.
+\end{cajaOjo}
+
+\vspace{8pt}
+
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.06\linewidth} X >{\raggedright\arraybackslash}p{0.28\linewidth}@{}}
+\toprule
+\textbf{No.} & \textbf{Punto} & \textbf{Estado} \\
+\midrule
+1 & Llaves y ambiente sandbox configurados & \hecho \\
+2 & Planes de suscripción creados en el panel & \hecho \\
+3 & Catálogo público con IVA desglosado y periodicidad & \hecho \\
+4 & Carrito: agregar, cambiar cantidad, quitar, vaciar & \hecho \\
+5 & Checkout con resumen previo a capturar la tarjeta & \hecho \\
+6 & Tokenización en el navegador (el PAN no toca el servidor) & \hecho \\
+7 & Cobro del primer periodo con 3D~Secure & \hecho \\
+8 & Alta de la suscripción recurrente tras el cobro & \hecho \\
+9 & Idempotencia: recargar no duplica ni cobra dos veces & \hecho \\
+10 & Tope de tres tarjetas guardadas por cliente & \hecho \\
+11 & Mensajes de declinación saneados & \hecho \\
+12 & Cancelación sin penalización & \hecho \\
+13 & Cliente equivocado por el filtro de correo & \corregido \\
+14 & Variable de entorno vacía tumbaba el cobro & \corregido \\
+15 & Errores de operación mostrados como declinación & \corregido \\
+16 & La CSP habría bloqueado el antifraude al ponerla en vigor & \corregido \\
+17 & Tope de \$10,\!000 por plan (plan anual son \$11,\!600) & \pendiente \\
+18 & Tope de \$84,\!295 por transacción & \pendiente \\
+\bottomrule
+\end{tabularx}
+
+% ============================================================
+\newpage
+\seccion{1. Ambiente y configuración}
+
+\subseccion{Llaves}
+Las llaves del sandbox quedaron cargadas en variables de entorno, nunca en el código. La llave privada \textbf{no lleva} el prefijo \cd{NEXT\_PUBLIC\_}, que es lo que la publicaría en el paquete que descarga el navegador. Se verificó sobre la compilación de producción:
+
+\begin{cajaNota}
+\begin{itemize}
+    \item La llave privada \cd{sk\_...} \textbf{no aparece} en ningún archivo servido al navegador.
+    \item El identificador de comercio y la llave pública \cd{pk\_...} sí aparecen, que es lo correcto: se necesitan para tokenizar del lado del cliente.
+    \item \cd{NEXT\_PUBLIC\_OPENPAY\_SANDBOX=true}: el sitio apunta a \cd{sandbox-api.openpay.mx} y el formulario muestra el aviso de ambiente de pruebas.
+\end{itemize}
+\end{cajaNota}
+
+\subseccion{Planes dados de alta}
+Los dos planes se crearon por API en el panel del comercio:
+
+\noindent\begin{tabularx}{\linewidth}{@{}X >{\raggedright\arraybackslash}p{0.28\linewidth} >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule
+\textbf{Plan} & \textbf{Identificador} & \textbf{Importe} \\
+\midrule
+Vigilancia fiscal (mensual) & \cd{pougg6slphukzbr5rgry} & \$1,\!160.00 / mes \\
+Vigilancia fiscal $\cdot$ anual & \cd{pk1pbqzqj06hbt6kkxwc} & \$10,\!000.00 / año \\
+\bottomrule
+\end{tabularx}
+
+\vspace{8pt}
+\begin{cajaAlerta}
+\textbf{El plan anual no coincide con el precio publicado.} La cuenta sandbox rechaza cualquier plan por encima de \$10,\!000.00 (\cd{error\_code 1003}), y el plan anual son \$11,\!600.00 con IVA. Quedó dado de alta en \$10,\!000.00 para poder probar el camino completo. \textbf{Antes de salir a producción hay que levantar ese tope y volver a crear el plan con el importe real.}
+\end{cajaAlerta}
+
+% ============================================================
+\newpage
+\seccion{2. Recorrido de compra}
+
+\subseccion{2.1 Catálogo público}
+El catálogo es consultable sin registro previo. Cada plan publica el importe total en pesos, el IVA desglosado, la moneda y la periodicidad del cargo, y el encabezado advierte la renovación automática y que no hay envíos ni costos de envío por tratarse de un servicio digital.
+
+\captura{01-planes.jpg}{Pantalla \cd{/planes}: importe con IVA desglosado, periodicidad y condiciones de cancelación en cada tarjeta.}
+
+\subseccion{2.2 El carrito se alimenta desde el catálogo}
+Al agregar, la tarjeta confirma en pantalla lo acumulado y el indicador superior muestra el número de suscripciones y el total en vivo. El carrito admite conceptos distintos en la misma orden: el plan mensual y el anual conviven sin sustituirse.
+
+\captura{02-planes-carrito.jpg}{Dos suscripciones mensuales y una anual agregadas: el indicador muestra 3 y el total acumulado.}
+
+% ============================================================
+\newpage
+\subseccion{2.3 La orden se modifica antes de pagar}
+Cada renglón sube o baja de cantidad, se quita por separado o se vacía el carrito completo. Los totales ---conceptos, suscripciones, subtotal, IVA al 16\,\% y total--- se recalculan al instante. El envío aparece explícitamente como no aplicable por ser servicio digital.
+
+\capturaAncha{03-carrito.jpg}{Pantalla \cd{/carrito}: controles de cantidad, ``Quitar'' por renglón y totales recalculados.}
+
+% ============================================================
+\newpage
+\subseccion{2.4 Checkout: la orden completa antes de cualquier dato de pago}
+Antes de pedir un solo dato de la tarjeta se muestra, por renglón, el importe, el IVA incluido, la periodicidad de renovación y la fecha del siguiente cargo; al pie, el total a pagar hoy y las condiciones de cancelación. ``Modificar el carrito'' regresa sin perder lo capturado.
+
+\captura{04-checkout-resumen.jpg}{Pantalla \cd{/suscripcion}: resumen de la orden con fecha del siguiente cargo por cada plan.}
+
+% ============================================================
+\newpage
+\subseccion{2.5 Formulario y método de pago}
+El número de tarjeta se tokeniza en el navegador contra Openpay: \textbf{no viaja ni se almacena en los servidores de Yaakob}. El botón confirma el importe exacto de la operación y el texto debajo advierte la renovación de cada suscripción, la cancelación sin penalización y la confirmación por 3D~Secure. Al pie van las marcas aceptadas y la leyenda ``Procesado por Openpay''.
+
+\capturaAncha{05-formulario-pago.jpg}{Formulario con el aviso de ambiente de pruebas, datos del titular y datos de la tarjeta.}
+
+% ============================================================
+\newpage
+\seccion{3. Cobro, 3D Secure y alta de la suscripción}
+
+El orden de las operaciones no es casual. La suscripción \textbf{no} se crea al enviar el formulario: mientras 3D~Secure no termine no hay dinero confirmado, y una suscripción activa sin primer cobro es una aclaración segura. Sólo cuando el cargo se consulta a Openpay y responde \cd{completed} se dan de alta las recurrencias, con \cd{trial\_end\_date} al final del periodo ya pagado para que el cobro automático no duplique el primer mes.
+
+\vspace{6pt}
+\begin{center}
+\begin{tikzpicture}[node distance=13pt and 18pt]
+    \node[paso] (a) {Carrito};
+    \node[paso, right=of a] (b) {Checkout\\{\scriptsize tokenización}};
+    \node[pasooro, right=of b] (c) {Cargo con\\3D~Secure};
+    \node[pasogris, below=22pt of c] (d) {Banco emisor\\{\scriptsize reto al tarjetahabiente}};
+    \node[paso, left=of d] (e) {Se consulta\\el cargo};
+    \node[pasooro, left=of e] (f) {Alta de las\\suscripciones};
+    \draw[flecha] (a) -- (b);
+    \draw[flecha] (b) -- (c);
+    \draw[flechao] (c) -- (d);
+    \draw[flecha] (d) -- (e);
+    \draw[flechao] (e) -- (f);
+\end{tikzpicture}
+\end{center}
+
+\vspace{4pt}
+\begin{cajaNota}
+\textbf{El estado del pago se lee de Openpay, nunca de la URL de retorno.} El banco devuelve al usuario con parámetros en la dirección, y cualquiera puede escribir esos parámetros a mano. Sólo el cargo consultado a la API abre el acceso.
+\end{cajaNota}
+
+\subseccion{3.1 El reto del banco}
+\captura{06-3dsecure.jpg}{Simulador 3D~Secure v2 del sandbox: comercio, terminación de la tarjeta e importe de la operación.}
+
+% ============================================================
+\newpage
+\subseccion{3.2 Suscripciones activas}
+Al volver del banco, la pantalla de resultado confirma el cargo y las suscripciones dadas de alta, cada una con su periodicidad y la fecha de su próximo cargo.
+
+\capturaAncha{07-resultado.jpg}{Pantalla \cd{/suscripcion/resultado}: cargo confirmado y suscripciones activas.}
+
+\vspace{4pt}
+\noindent Verificado del lado de Openpay, sobre el cliente de la operación:
+
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.30\linewidth} X >{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+\toprule
+\textbf{Suscripción} & \textbf{Plan} & \textbf{Siguiente cargo} \\
+\midrule
+\cd{sj2uvp7mmchubw5ovrse} & Vigilancia fiscal & 25/09/2026 \\
+\cd{s6lhp4t0jmgmynxvu6ed} & Vigilancia fiscal & 25/09/2026 \\
+\cd{sxeov8tscjjzl03s6ief} & Vigilancia fiscal $\cdot$ anual & 25/08/2027 \\
+\bottomrule
+\end{tabularx}
+
+\subseccion{3.3 Cancelación}
+La cancelación no obliga a llamar por teléfono. Como el sitio todavía no tiene cuentas de usuario, la autorización es por capacidad: hacen falta \textbf{a la vez} el folio de la suscripción ---un valor opaco de Openpay que sólo conoce quien completó la contratación--- y el correo con el que se contrató, contra el que se verifica que la suscripción efectivamente le pertenece.
+
+\capturaAncha{08-cancelar.jpg}{Pantalla \cd{/suscripcion/cancelar}.}
+
+% ============================================================
+\newpage
+\seccion{4. Pruebas ejecutadas}
+
+Veintidós pruebas contra el sandbox. Las que debían fallar, fallaron; y fallaron con el mensaje correcto, que es la mitad del trabajo.
+
+\subseccion{4.1 Camino feliz}
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.04\linewidth} X >{\raggedright\arraybackslash}p{0.20\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Prueba} & \textbf{Resultado} \\
+\midrule
+1 & Contratación de 3 suscripciones por \$13,\!920.00 con 3D~Secure & \hecho \\
+2 & Retorno del banco a la pantalla de resultado & \hecho \\
+3 & Alta de las 3 recurrencias con la fecha correcta & \hecho \\
+4 & Repetir la confirmación no crea suscripciones nuevas & \hecho \\
+5 & Contratación de un solo plan mensual, extremo a extremo & \hecho \\
+\bottomrule
+\end{tabularx}
+
+\subseccion{4.2 Lo que debe rechazarse}
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.04\linewidth} X >{\raggedright\arraybackslash}p{0.20\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Prueba} & \textbf{Resultado} \\
+\midrule
+6 & Referencia ya cobrada: Openpay la rechaza (\cd{1006}) & \hecho \\
+7 & Reintento tras una declinación: sí se permite & \hecho \\
+8 & Cantidad fuera de rango (999) & \hecho \\
+9 & Plan inexistente & \hecho \\
+10 & El mismo plan repetido en dos renglones & \hecho \\
+11 & Falta el identificador antifraude & \hecho \\
+12 & Referencia con formato inválido & \hecho \\
+13 & \cd{GET} a la ruta de cobro: 405 & \hecho \\
+14 & Importe por encima del tope del comercio & \hecho \\
+15 & Cuarta tarjeta con tres ya guardadas: 409 & \hecho \\
+16 & Tarjeta declinada por el emisor: mensaje saneado & \hecho \\
+17 & La tarjeta que no cobró se retira del cliente & \hecho \\
+\bottomrule
+\end{tabularx}
+
+\subseccion{4.3 Cancelación y datos del cliente}
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.04\linewidth} X >{\raggedright\arraybackslash}p{0.20\linewidth}@{}}
+\toprule
+\textbf{\#} & \textbf{Prueba} & \textbf{Resultado} \\
+\midrule
+18 & Folio válido con un correo ajeno: rechazado & \hecho \\
+19 & Correo correcto con folio inventado: rechazado & \hecho \\
+20 & Folio y correo correctos: cancela & \hecho \\
+21 & Cancelar dos veces el mismo folio: rechazado & \hecho \\
+22 & Cada cliente nuevo queda en su propio expediente & \hecho \\
+\bottomrule
+\end{tabularx}
+
+\vspace{8pt}
+\begin{cajaNota}
+Tarjetas usadas: \cd{4111\,1111\,1111\,1111} (aprobada), \cd{5555\,5555\,5555\,4444} y \cd{5105\,1051\,0510\,5100} (aprobadas, para el tope de tarjetas) y \cd{4000\,0000\,0000\,0002} (declinada por el emisor, \cd{error\_code 3001}).
+\end{cajaNota}
+
+% ============================================================
+\newpage
+\seccion{5. Defectos que destaparon las pruebas}
+
+\subseccion{5.1 Cada cliente nuevo se colgaba del expediente de otro}
+\corregido. Openpay acepta el parámetro \cd{email} en \cd{GET /customers} pero \textbf{no filtra por él}: devuelve la lista completa de clientes del comercio. El código se quedaba con el primer renglón de esa lista, de modo que la tarjeta, el cargo y la suscripción de cada suscriptor nuevo terminaban en el expediente de otra persona.
+
+\begin{cajaAlerta}
+Es el hallazgo grave de esta ronda. Además del cruce de datos, la ruta de cancelación verificaba la propiedad del folio contra la lista de un cliente ajeno: es decir, no verificaba nada.
+\end{cajaAlerta}
+
+\noindent Ahora se recorren las páginas de clientes y se compara el correo contra lo que trae cada registro. Verificado: cuatro contrataciones seguidas con correos distintos quedaron en cuatro expedientes distintos.
+
+\subseccion{5.2 Una variable de entorno vacía tumbaba todo cobro}
+\corregido. El archivo de ejemplo declara \cd{OPENPAY\_MERCHANT\_ID=} sin valor. En JavaScript el operador \cd{??} sólo cae al valor de respaldo cuando lo que tiene enfrente es nulo, y una cadena vacía no lo es: el comercio se quedaba sin identificador y \textbf{cada cobro moría} con un error de servidor disfrazado de ``Tarjeta declinada''. El mismo patrón afectaba la dirección de retorno de 3D~Secure. Ambos usan ahora el operador correcto.
+
+\subseccion{5.3 Errores de operación presentados como declinación}
+\corregido. Dos códigos de Openpay caían en el mensaje genérico y mandaban al cliente a hablar con su banco por algo que su banco no puede resolver:
+
+\noindent\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.10\linewidth} X@{}}
+\toprule
+\textbf{Código} & \textbf{Mensaje que ve ahora el cliente} \\
+\midrule
+\cd{1006} & Esta operación ya se procesó. Revise su correo antes de intentar de nuevo. \\
+\cd{1012} & El importe supera el máximo por operación. Divida la orden o escríbanos. \\
+\bottomrule
+\end{tabularx}
+
+\subseccion{5.4 La política de seguridad habría bloqueado el antifraude}
+\corregido. La \cd{Content-Security-Policy} del sitio corre en modo reporte, y durante el cobro reportó dos violaciones: el antifraude de Openpay ---\cd{openpay-data.v1.min.js}--- no se queda en dominios de Openpay, sino que monta marcos de Kount y de OpenControl para calcular el \cd{device\_session\_id}. Con la política en modo reporte los marcos cargan igual, pero \textbf{el día que se ponga en bloqueo el antifraude habría dejado de funcionar} y los cargos se habrían quedado sin huella de dispositivo. Los dominios ya están declarados.
+
+\vspace{6pt}
+\noindent El resto de los motivos de declinación del emisor se sigue mostrando como ``Tarjeta declinada''. Openpay pide expresamente que ``fondos insuficientes'' y ``tarjeta reportada como perdida o robada'' no lleguen al tarjetahabiente; aquí la regla se aplicó a \textbf{todos} los motivos del emisor, no sólo a esos dos: el navegador nunca recibe el texto crudo de Openpay.
+
+% ============================================================
+\newpage
+\seccion{6. Lo que depende de Openpay}
+
+\subseccion{6.1 Tope de \$10,000 por plan}
+\pendiente. El plan anual son \$11,\!600.00 con IVA y la cuenta no acepta darlo de alta. Solicitamos que se levante el tope para poder crear el plan con su importe real.
+
+\subseccion{6.2 Tope de \$84,295 por transacción}
+\pendiente. El carrito admite hasta veinte suscripciones por operación, que rebasan ese tope sin esfuerzo. Hoy el cliente recibe un mensaje claro pidiéndole dividir la orden, pero conviene saber cuál es el tope definitivo en producción para ajustar el máximo del carrito a un número que sí se pueda cobrar.
+
+\seccion{7. Lo que falta de nuestro lado}
+
+\begin{itemize}
+    \item \textbf{Correo transaccional.} La pantalla de resultado ofrece enviar el folio por correo y hoy ese correo no sale. Hay que conectar un proveedor o retirar la frase antes de la cita.
+    \item \textbf{Webhook de Openpay.} Los cobros recurrentes posteriores al primero ocurren del lado de Openpay; sin webhook el sitio no se entera de un cargo fallido ni de una suscripción vencida. Para la validación no es obligatorio; para operar, sí.
+    \item \textbf{Cuentas de usuario.} Sin sesión no puede haber un área donde el suscriptor administre sus tarjetas guardadas. Deliberadamente \textbf{no} se construyó un endpoint que liste tarjetas o suscripciones a partir de un correo: sin autenticación eso es una fuga de datos de clientes, no una funcionalidad.
+\end{itemize}
+
+\vspace{14pt}
+\begin{center}
+{\color{oroyk}\rule{0.4\linewidth}{1.2pt}}\\[8pt]
+{\footnotesize\color{gristexto}Yaakob Consultores SC $\cdot$ \cd{contacto@yaakob.com} $\cdot$ +52 55 9008 6360}
+\end{center}
+
+\end{document}

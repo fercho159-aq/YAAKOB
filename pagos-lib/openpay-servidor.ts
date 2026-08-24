@@ -123,12 +123,30 @@ export type SuscripcionOpenpay = {
 /* ------------------------------------------------------------- operaciones */
 
 export const clientes = {
+  /**
+   * OJO: Openpay acepta el parámetro `email` pero NO filtra por él —— devuelve
+   * la lista completa de clientes del comercio. Confiar en el primer renglón
+   * cuelga cada alta nueva del cliente equivocado: su tarjeta, su cargo y su
+   * suscripción terminan en el expediente de otra persona. El correo se
+   * compara aquí, contra lo que de verdad trae cada registro.
+   */
   buscarPorCorreo: async (correo: string): Promise<ClienteOpenpay | undefined> => {
-    const lista = await peticion<ClienteOpenpay[]>(
-      'GET',
-      `/customers?email=${encodeURIComponent(correo)}&limit=1`,
-    )
-    return Array.isArray(lista) ? lista[0] : undefined
+    const buscado = correo.trim().toLowerCase()
+    const POR_PAGINA = 100
+    // Tope de seguridad: 20 páginas ≈ 2,000 clientes. Si el correo estuviera más
+    // allá, se crea un cliente duplicado —— molesto en el panel, pero inocuo.
+    // Colgarse del cliente equivocado no lo es, y ése es el fallo que se evita.
+    for (let pagina = 0; pagina < 20; pagina += 1) {
+      const lista = await peticion<ClienteOpenpay[]>(
+        'GET',
+        `/customers?limit=${POR_PAGINA}&offset=${pagina * POR_PAGINA}`,
+      )
+      if (!Array.isArray(lista) || lista.length === 0) return undefined
+      const encontrado = lista.find((cliente) => cliente.email?.trim().toLowerCase() === buscado)
+      if (encontrado) return encontrado
+      if (lista.length < POR_PAGINA) return undefined
+    }
+    return undefined
   },
 
   crear: (datos: {

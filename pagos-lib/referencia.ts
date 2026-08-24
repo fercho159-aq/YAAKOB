@@ -35,17 +35,30 @@ export function esReferenciaValida(referencia: unknown): referencia is string {
 }
 
 /**
- * El plan viaja dentro de la descripción del cargo para que la página de
- * retorno de 3D Secure pueda reconstruir la operación consultando a Openpay,
- * sin depender de una base de datos ni de la sesión del navegador —— que es
- * justo lo que se pierde cuando el banco redirige al usuario de vuelta.
+ * El contenido del carrito viaja dentro de la descripción del cargo para que la
+ * página de retorno de 3D Secure pueda reconstruir la operación consultando a
+ * Openpay, sin depender de una base de datos ni de la sesión del navegador ——
+ * que es justo lo que se pierde cuando el banco redirige al usuario de vuelta.
+ *
+ * Formato: `Yaakob Consultores · plan:vigilancia-mensual x2 · plan:...`
  */
-export function descripcionDeCargo(nombrePlan: string, planId: string): string {
-  return `Yaakob Consultores · ${nombrePlan} · plan:${planId}`
+export function descripcionDeCargo(lineas: { planId: string; cantidad: number }[]): string {
+  const conceptos = lineas.map((linea) => `plan:${linea.planId} x${linea.cantidad}`).join(' · ')
+  return `Yaakob Consultores · ${conceptos}`.slice(0, 250)
 }
 
-export function planDesdeDescripcion(descripcion?: string): string | undefined {
-  if (!descripcion) return undefined
-  const encontrado = /plan:([a-z0-9-]+)/i.exec(descripcion)
-  return encontrado?.[1]
+/**
+ * Devuelve los renglones del carrito codificados en la descripción. Un cargo
+ * viejo sin cantidad (`plan:algo`) se lee como una unidad.
+ */
+export function planesDesdeDescripcion(descripcion?: string): { planId: string; cantidad: number }[] {
+  if (!descripcion) return []
+  const lineas: { planId: string; cantidad: number }[] = []
+  for (const encontrado of descripcion.matchAll(/plan:([a-z0-9-]+)(?:\s*x(\d+))?/gi)) {
+    const planId = encontrado[1]
+    const cantidad = Number(encontrado[2] ?? 1)
+    if (!Number.isFinite(cantidad) || cantidad < 1) continue
+    lineas.push({ planId, cantidad })
+  }
+  return lineas
 }

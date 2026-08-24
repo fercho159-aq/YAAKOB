@@ -6,6 +6,8 @@ import { MotionArticle } from '@servicios/components/home/motion'
 import Layout from '@servicios/components/layout/Layout'
 import content from '@servicios/data/content.json'
 import { PLANES, formatearPrecio, type Plan } from '@pagos/planes'
+import { MAX_POR_LINEA, useCarrito } from '@pagos/carrito'
+import { IndicadorCarrito } from '@pagos/components/IndicadorCarrito'
 
 /**
  * Punto 4 de la validación técnica: los precios tienen que ser públicos y
@@ -32,7 +34,19 @@ const cuerpo = {
   color: 'rgba(255,255,255,0.78)',
 } as const
 
+const enlaceAccion = {
+  fontSize: '0.6875rem',
+  letterSpacing: '0.14em',
+  textTransform: 'uppercase',
+  color: 'gold',
+  _hover: { color: 'white', textDecor: 'none' },
+} as const
+
 function TarjetaPlan({ plan }: { plan: Plan }) {
+  const { listo, lineas, agregar } = useCarrito()
+  const enCarrito = listo ? (lineas.find((linea) => linea.planId === plan.id)?.cantidad ?? 0) : 0
+  const lleno = enCarrito >= MAX_POR_LINEA
+
   return (
     <Box
       as="article"
@@ -87,8 +101,6 @@ function TarjetaPlan({ plan }: { plan: Plan }) {
       </Box>
 
       <Button
-        as={NextLink}
-        href={`/suscripcion?plan=${plan.id}`}
         mt="1.75rem"
         h="2.75rem"
         borderRadius="2px"
@@ -98,10 +110,27 @@ function TarjetaPlan({ plan }: { plan: Plan }) {
         fontWeight="bold"
         letterSpacing="0.18em"
         textTransform="uppercase"
-        _hover={{ bg: 'goldAlt', textDecor: 'none' }}
+        isDisabled={lleno}
+        onClick={() => agregar(plan.id)}
+        _hover={{ bg: 'goldAlt' }}
       >
-        Contratar
+        {enCarrito ? 'Agregar otra suscripción' : 'Agregar al carrito'}
       </Button>
+
+      <Box mt="0.875rem" display="flex" flexWrap="wrap" justifyContent="space-between" gap="0.75rem">
+        {enCarrito ? (
+          <Link as={NextLink} href="/carrito" {...enlaceAccion}>
+            En el carrito ({enCarrito}) · Ver carrito →
+          </Link>
+        ) : (
+          <Text fontSize="0.6875rem" letterSpacing="0.12em" color="rgba(255,255,255,0.45)">
+            Una suscripción por RFC
+          </Text>
+        )}
+        <Link as={NextLink} href={`/suscripcion?plan=${plan.id}`} {...enlaceAccion}>
+          Contratar sólo este →
+        </Link>
+      </Box>
     </Box>
   )
 }
@@ -132,7 +161,10 @@ export default function Planes() {
         animate={{ opacity: 1 }}
       >
         <Box as="header" pb="1.5rem" borderBottom={HAIRLINE}>
-          <Text {...etiqueta}>Suscripciones</Text>
+          <Box display="flex" justifyContent="space-between" alignItems="flex-start" gap="1rem">
+            <Text {...etiqueta}>Suscripciones</Text>
+            <IndicadorCarrito />
+          </Box>
           <Box
             as="h1"
             mt="0.625rem"

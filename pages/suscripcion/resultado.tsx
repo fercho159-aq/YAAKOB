@@ -7,6 +7,7 @@ import { MotionArticle } from '@servicios/components/home/motion'
 import { ScrambleText } from '@servicios/components/ui/ScrambleText'
 import Layout from '@servicios/components/layout/Layout'
 import content from '@servicios/data/content.json'
+import { vaciarCarrito } from '@pagos/carrito'
 
 /**
  * Retorno de 3D Secure.
@@ -41,14 +42,23 @@ const cuerpo = {
   color: 'rgba(255,255,255,0.78)',
 } as const
 
+type PlanContratado = {
+  id?: string
+  nombre?: string
+  cadencia?: string
+  cantidad?: number
+  importe?: string
+  proximoCargo?: string
+  suscripciones?: string[]
+}
+
 type Respuesta = {
   ok?: boolean
   estado?: string
   mensaje?: string
   importe?: string
-  proximoCargo?: string
   suscripcionId?: string
-  plan?: { nombre?: string; cadencia?: string }
+  planes?: PlanContratado[]
 }
 
 type Vista = 'consultando' | 'activa' | 'pendiente' | 'rechazada' | 'sin-referencia'
@@ -98,7 +108,12 @@ export default function Resultado() {
         }
 
         setDatos(cuerpoRespuesta)
-        if (cuerpoRespuesta.ok && cuerpoRespuesta.estado === 'activa') setVista('activa')
+        if (cuerpoRespuesta.ok && cuerpoRespuesta.estado === 'activa') {
+          // Lo que estaba en el carrito ya se cobró: se vacía aquí y no antes,
+          // para que un cobro rechazado en el banco no le borre la orden a nadie.
+          vaciarCarrito()
+          setVista('activa')
+        }
         else if (cuerpoRespuesta.ok && cuerpoRespuesta.estado === 'pagado_sin_suscripcion')
           setVista('pendiente')
         else if (cuerpoRespuesta.estado === 'pendiente') setVista('pendiente')
@@ -168,22 +183,41 @@ export default function Resultado() {
           {vista === 'activa' ? (
             <>
               <Text {...cuerpo}>
-                Su pago de {datos?.importe} quedó confirmado y su suscripción a{' '}
-                {datos?.plan?.nombre} está activa. La renovación se hará {datos?.plan?.cadencia}, a
-                partir del {datos?.proximoCargo}.
+                Su pago de {datos?.importe} quedó confirmado y{' '}
+                {(datos?.planes?.length ?? 0) > 1
+                  ? 'sus suscripciones están activas'
+                  : 'su suscripción está activa'}
+                . Cada una renueva en su propia periodicidad hasta que usted la cancele.
               </Text>
-              {datos?.suscripcionId ? (
-                <Box mt="1.25rem" p="1rem" border={HAIRLINE} borderRadius="2px">
-                  <Text {...etiqueta}>Folio de su suscripción</Text>
-                  <Text {...cuerpo} mt="0.375rem" color="white">
-                    {datos.suscripcionId}
+
+              {datos?.planes?.map((plan) => (
+                <Box key={plan.id ?? plan.nombre} mt="1.25rem" p="1rem" border={HAIRLINE} borderRadius="2px">
+                  <Text {...etiqueta}>
+                    {plan.nombre}
+                    {(plan.cantidad ?? 1) > 1 ? ` × ${plan.cantidad}` : ''}
                   </Text>
-                  <Text {...cuerpo} mt="0.5rem" fontSize="0.75rem">
-                    Guárdelo: junto con su correo es lo que necesita para cancelar desde el sitio.
-                    También se lo enviamos por correo electrónico.
+                  <Text {...cuerpo} mt="0.375rem">
+                    {plan.importe} · renovación {plan.cadencia} a partir del {plan.proximoCargo}.
                   </Text>
+                  {plan.suscripciones?.length ? (
+                    <>
+                      <Text {...cuerpo} mt="0.75rem" fontSize="0.75rem" color="rgba(255,255,255,0.6)">
+                        {plan.suscripciones.length > 1 ? 'Folios' : 'Folio'}
+                      </Text>
+                      {plan.suscripciones.map((folio) => (
+                        <Text key={folio} {...cuerpo} color="white">
+                          {folio}
+                        </Text>
+                      ))}
+                    </>
+                  ) : null}
                 </Box>
-              ) : null}
+              ))}
+
+              <Text {...cuerpo} mt="1rem" fontSize="0.75rem">
+                Guarde los folios: junto con su correo son lo que necesita para cancelar desde el
+                sitio. También se los enviamos por correo electrónico.
+              </Text>
             </>
           ) : null}
 

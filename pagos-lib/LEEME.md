@@ -80,9 +80,39 @@ ocurren del lado de Openpay; sin webhook el sitio no se entera de un cargo
 fallido ni de una suscripción vencida. Para la validación no es obligatorio,
 para operar sí.
 
+## Lo que enseñó la primera corrida contra sandbox
+
+**Openpay acepta `GET /customers?email=` y no filtra por él.** Devuelve la lista
+completa del comercio. Quedarse con el primer renglón —que es lo que hacía
+`buscarPorCorreo`— cuelga cada alta nueva del cliente equivocado: tarjeta, cargo
+y suscripción en el expediente de otra persona, y la ruta de cancelación
+verificando la propiedad contra una lista ajena. Ahora se pagina y se compara el
+correo contra lo que trae cada registro. Si algún día Openpay implementa el
+filtro, la comparación sigue siendo correcta; no la quites.
+
+**Una variable de entorno declarada y vacía no es `undefined`.** `.env.example`
+trae `OPENPAY_MERCHANT_ID=` sin valor, y `??` deja pasar la cadena vacía: el
+comercio se quedaba sin id y todo cobro moría en 500. En `config.ts` esos
+fallbacks van con `||`, no con `??`.
+
+**El comercio tiene topes propios.** En la cuenta sandbox: $10,000 por plan
+—por eso el plan anual de $11,600 no se puede dar de alta tal cual— y $84,295
+por transacción, que un carrito grande rebasa sin esfuerzo. Los códigos `1012`
+(importe sobre el tope) y `1006` (`order_id` ya cobrado) tienen mensaje propio
+en `declinaciones.ts`: mandarlos al genérico manda al cliente a hablar con su
+banco por algo que su banco no puede resolver.
+
+**Una declinación no quema la referencia.** Openpay sólo rechaza un `order_id`
+repetido cuando el cargo anterior se completó, así que reintentar con la misma
+referencia tras un rechazo funciona —— que es justo lo que supone
+`referencia.ts`.
+
 ## Antes de la cita
 
 - `NEXT_PUBLIC_OPENPAY_SANDBOX=true` en el ambiente que vayas a mostrar.
+- Pide a Openpay que suba el tope de $10,000 por plan y vuelve a crear el plan
+  anual en $11,600. Mientras no lo hagan, el plan anual del sandbox está en
+  $10,000 y no coincide con el precio publicado.
 - Corre con tarjetas de prueba: aprobada, declinada, 3DS exitoso, 3DS fallido,
   doble clic, y un cuarto intento de tarjeta con tres ya guardadas.
 - Revisa que los cuatro logos estén en `public/pagos/` — si falta alguno se ve

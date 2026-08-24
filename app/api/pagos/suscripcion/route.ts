@@ -8,7 +8,7 @@ import {
   tarjetas,
   type CargoOpenpay,
 } from '@pagos/openpay-servidor'
-import { buscarPlan } from '@pagos/planes'
+import { MAX_POR_LINEA, MAX_UNIDADES, buscarPlan } from '@pagos/planes'
 import { descripcionDeCargo, esReferenciaValida } from '@pagos/referencia'
 
 /**
@@ -36,7 +36,8 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 type Cuerpo = {
-  planId?: string
+  /** Renglones del carrito. Un solo plan viaja como un renglón de cantidad 1. */
+  items?: { planId?: string; cantidad?: number }[]
   token?: string
   deviceSessionId?: string
   referencia?: string
@@ -54,16 +55,49 @@ export async function POST(request: Request) {
     return error('Petición inválida.')
   }
 
-  const { planId, token, deviceSessionId, referencia, cliente } = cuerpo
+  const { items, token, deviceSessionId, referencia, cliente } = cuerpo
 
   /* --------------------------------------------------------- validaciones */
 
-  const plan = buscarPlan(planId)
-  if (!plan) return error('El plan seleccionado no existe.')
-  if (!plan.openpayPlanId) {
-    console.error('[pagos] plan sin openpayPlanId:', plan.id)
-    return error('Este plan no está disponible por el momento.', 503)
+  if (!Array.isArray(items) || items.length === 0) {
+    return error('No hay nada que contratar.')
   }
+
+  // El carrito llega por referencia, no por importe: aquí se vuelve a resolver
+  // contra el catálogo y el total se calcula con los precios del servidor. Un
+  // navegador que mande otro importe no cambia lo que se cobra.
+  const lineas: { planId: string; cantidad: number; nombre: string; importe: number }[] = []
+  for (const item of items) {
+    const plan = buscarPlan(item?.planId)
+    if (!plan) return error('Uno de los planes seleccionados no existe.')
+    if (!plan.openpayPlanId) {
+      console.error('[pagos] plan sin openpayPlanId:', plan.id)
+      return error('Este plan no está disponible por el momento.', 503)
+    }
+    if (lineas.some((linea) => linea.planId === plan.id)) {
+      return error('El mismo plan viene repetido en la orden.')
+    }
+    const cantidad = Number(item?.cantidad ?? 1)
+    if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > MAX_POR_LINEA) {
+      return error(`La cantidad de cada plan tiene que estar entre 1 y ${MAX_POR_LINEA}.`)
+    }
+    lineas.push({
+      planId: plan.id,
+      cantidad,
+      nombre: plan.nombre,
+      importe: plan.precio * cantidad,
+    })
+  }
+
+  const unidades = lineas.reduce((suma, linea) => suma + linea.cantidad, 0)
+  if (unidades > MAX_UNIDADES) {
+    return error(
+      `El máximo por operación es de ${MAX_UNIDADES} suscripciones. Escríbanos a ` +
+        'contacto@yaakob.com para un alta a la medida.',
+    )
+  }
+
+  const importeTotal = Math.round(lineas.reduce((suma, linea) => suma + linea.importe, 0) * 100) / 100
 
   if (!token || typeof token !== 'string') return error('Falta el token de la tarjeta.')
   if (!deviceSessionId || typeof deviceSessionId !== 'string') {
@@ -111,9 +145,9 @@ export async function POST(request: Request) {
     try {
       cargo = await cargos.crear(clienteOpenpay.id, {
         source_id: tarjeta.id,
-        amount: plan.precio,
-        currency: plan.moneda,
-        description: descripcionDeCargo(plan.nombre, plan.id),
+        amount: importeTotal,
+        currency: 'MXN',
+        description: descripcionDeCargo(lineas),
         // Openpay rechaza un `order_id` repetido: ésta es la garantía real
         // contra el cobro duplicado, no el botón deshabilitado.
         order_id: referencia,

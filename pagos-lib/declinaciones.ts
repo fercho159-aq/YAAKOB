@@ -22,6 +22,14 @@ export const DECLINADA_GENERICA = 'Tarjeta declinada. Verifique con su banco o i
  * Referencia: https://documents.openpay.mx/docs/errors.html
  */
 const MENSAJES: Record<string, string> = {
+  // --- Fallos de la operación, no de la tarjeta ---------------------------
+  // Mandar a estos dos al genérico manda al usuario a hablar con su banco por
+  // algo que su banco no puede resolver.
+  '1006': 'Esta operación ya se procesó. Revise su correo antes de intentar de nuevo.',
+  '1012':
+    'El importe supera el máximo por operación. Divida la orden o escríbanos a ' +
+    'contacto@yaakob.com para un alta a la medida.',
+
   // --- Errores de la petición / de la tarjeta capturada -------------------
   '2004': 'El número de tarjeta no es válido. Revíselo e intente de nuevo.',
   '2005': 'La fecha de vencimiento es anterior a la fecha actual.',
