@@ -614,11 +614,26 @@ function CameraRig() {
   )
 }
 
-function Landing({ onBegin }: SceneProps) {
+/**
+ * Fires `onReady` on the first frame drawn after every layer's assets have
+ * resolved — i.e. once this sits inside the Suspense boundary and renders.
+ */
+function FirstFrame({ onReady }: { onReady?: () => void }) {
+  const fired = useRef(false)
+  useFrame(() => {
+    if (fired.current || !onReady) return
+    fired.current = true
+    onReady()
+  })
+  return null
+}
+
+function Landing({ onBegin, onReady }: SceneProps) {
   const fluid = useFluid()
 
   return (
     <>
+      <FirstFrame onReady={onReady} />
       <BackgroundSphere />
       <Floaters fluid={fluid} />
       <group
@@ -663,6 +678,8 @@ export interface SceneProps {
    * this to open on the push-in instead of the 5.8s dwell before it.
    */
   timeShift?: number
+  /** Called once the scene has all its assets and has drawn its first frame. */
+  onReady?: () => void
 }
 
 /**
@@ -674,7 +691,7 @@ export interface SceneProps {
  * The engine swapped in its own `-portrait` transforms, while this only widens
  * the FOV the way the editor's `dynamicFOVCode` did.
  */
-export function Scene({ onBegin, timeShift = 0 }: SceneProps = {}) {
+export function Scene({ onBegin, timeShift = 0, onReady }: SceneProps = {}) {
   return (
     <TimeShift.Provider value={timeShift}>
     <Canvas
@@ -688,7 +705,7 @@ export function Scene({ onBegin, timeShift = 0 }: SceneProps = {}) {
     >
       <CameraRig />
       <Suspense fallback={null}>
-        <Landing onBegin={onBegin} />
+        <Landing onBegin={onBegin} onReady={onReady} />
       </Suspense>
     </Canvas>
     </TimeShift.Provider>

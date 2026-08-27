@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 /**
  * The home's WebGL scene on its own, for the mobile app's splash screen.
@@ -22,6 +22,14 @@ export default function AppSplash() {
   const t = Number(router.query.t)
   const timeShift = Number.isFinite(t) && t >= 0 ? t : DEFAULT_SHIFT
 
+  // Tell the host (React Native WebView, or an iframe parent on web) that the
+  // scene is actually on screen, so it can lift its placeholder.
+  const handleReady = useCallback(() => {
+    const w = window as Window & { ReactNativeWebView?: { postMessage: (m: string) => void } }
+    w.ReactNativeWebView?.postMessage('yk-splash-ready')
+    if (window.parent !== window) window.parent.postMessage('yk-splash-ready', '*')
+  }, [])
+
   useEffect(() => {
     document.documentElement.classList.add('yk-home')
     return () => document.documentElement.classList.remove('yk-home')
@@ -38,7 +46,7 @@ export default function AppSplash() {
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
       </Head>
-      {router.isReady ? <Scene timeShift={timeShift} /> : null}
+      {router.isReady ? <Scene timeShift={timeShift} onReady={handleReady} /> : null}
     </>
   )
 }
