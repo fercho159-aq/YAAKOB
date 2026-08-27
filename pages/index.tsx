@@ -1,8 +1,8 @@
 import { useIntroSfx } from '@home/audio/useIntroSfx'
-import { HebrewSplash, Hud, IntroVeil, LegalBar, Stage } from '@home/components'
+import { HebrewSplash, Hud, IntroVeil, LegalBar, SplashStage, Stage } from '@home/components'
 import Head from 'next/head'
 import Script from 'next/script'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 // JSON-LD Structured Data for Google (same graph the old app.html/layout shipped)
 const jsonLd = {
@@ -105,10 +105,25 @@ function useHomeBodyClass() {
   }, [])
 }
 
+/**
+ * `?app=1`: the mobile app embeds this page as its splash screen and gets the
+ * WebGL scene alone — no HUD, legal bar, loader plate, blue field or sound.
+ * Decided on the client (the page is static); nothing mounts until known so
+ * the loader plate never flashes in app mode.
+ */
+function useAppMode() {
+  const [app, setApp] = useState<boolean | null>(null)
+  useEffect(() => {
+    setApp(new URLSearchParams(window.location.search).get('app') === '1')
+  }, [])
+  return app
+}
+
 export default function Home() {
   useHomeBodyClass()
+  const appMode = useAppMode()
   // Whoosh under the dolly, hit on the wordmark, room tone on first gesture.
-  useIntroSfx()
+  useIntroSfx(appMode === false)
 
   return (
     <>
@@ -153,13 +168,19 @@ export default function Home() {
       <Script id="gtag" src="https://www.googletagmanager.com/gtag/js?id=DC-4136874" strategy="afterInteractive" />
       <Script id="gtag-config" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: gtagSnippet }} />
 
-      {/* WebGL scene (react-three-fiber; see home-lib/scene) */}
-      <Stage />
-      {/* Order on screen, back to front: scene, blue field, loader plate. */}
-      <IntroVeil />
-      <HebrewSplash />
-      <Hud />
-      <LegalBar />
+      {appMode === true ? (
+        <SplashStage />
+      ) : appMode === false ? (
+        <>
+          {/* WebGL scene (react-three-fiber; see home-lib/scene) */}
+          <Stage />
+          {/* Order on screen, back to front: scene, blue field, loader plate. */}
+          <IntroVeil />
+          <HebrewSplash />
+          <Hud />
+          <LegalBar />
+        </>
+      ) : null}
     </>
   )
 }

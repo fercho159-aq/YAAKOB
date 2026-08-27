@@ -2,10 +2,8 @@ import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useState } from 'react'
 
 /**
- * The scene on its own, for the mobile app's splash screen (/app-splash).
- *
- * Same dynamic import as `Stage`, kept here rather than in the page so the
- * bundler emits the scene chunks for this route the way it does for the home.
+ * The scene on its own, for the mobile app's splash screen: the home page
+ * renders this instead of the full experience when opened with `?app=1`.
  * No HUD, no dissolve-out: the app decides when to leave.
  */
 const Scene = dynamic(() => import('@home/scene/Scene').then((m) => m.Scene), {

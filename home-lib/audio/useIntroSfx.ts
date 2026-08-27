@@ -24,8 +24,10 @@ import { armAmbience, play, preload } from './sfx'
  * move as a grace window, so a click during the intro still lands the sound
  * over the picture it belongs to, and a click after it lands nothing.
  */
-export function useIntroSfx() {
+/** `enabled: false` arms nothing — the app splash runs the scene silent. */
+export function useIntroSfx(enabled = true) {
   useEffect(() => {
+    if (!enabled) return
     preload()
 
     const timers = [
@@ -43,5 +45,5 @@ export function useIntroSfx() {
       timers.forEach(clearTimeout)
       disarm()
     }
-  }, [])
+  }, [enabled])
 }
