@@ -1,7 +1,7 @@
 import { PerspectiveCamera } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
-import { Suspense, useEffect, useMemo, useRef } from 'react'
+import { createContext, Suspense, useContext, useEffect, useMemo, useRef } from 'react'
 import {
   AdditiveBlending,
   BackSide,
@@ -80,6 +80,13 @@ function flightAt(elapsed: number) {
 
 const mix = (a: number, b: number, t: number) => a + (b - a) * t
 
+/**
+ * Milliseconds added to the scene clock. Lets an embed (the mobile app's
+ * splash) start partway through the intro instead of sitting through the
+ * dolly's dwell. 0 on the home page.
+ */
+const TimeShift = createContext(0)
+
 interface LayerProps {
   fluid: Fluid
 }
@@ -123,6 +130,7 @@ function BackgroundSphere() {
 }
 
 function Eye({ fluid }: LayerProps) {
+  const shift = useContext(TimeShift)
   const geometry = useGeometry(eye.geometry)
   const map = useTexture(eye.map, { repeat: true })
   const materialRef = useRef<ShaderMaterial>(null)
@@ -156,7 +164,7 @@ function Eye({ fluid }: LayerProps) {
       size.width * viewport.dpr,
       size.height * viewport.dpr
     )
-    material.uniforms.uTransition.value = transitionAt(clock.elapsedTime * 1000, eye.transition)
+    material.uniforms.uTransition.value = transitionAt(clock.elapsedTime * 1000 + shift, eye.transition)
   })
 
   return (
@@ -182,6 +190,7 @@ function Eye({ fluid }: LayerProps) {
 }
 
 function Lens() {
+  const shift = useContext(TimeShift)
   const geometry = useGeometry(lens.geometry)
   const matcap = useTexture(lens.matcap)
   const materialRef = useRef<ShaderMaterial>(null)
@@ -199,7 +208,7 @@ function Lens() {
   useFrame(({ clock }) => {
     const material = materialRef.current
     if (!material) return
-    material.uniforms.uTransition.value = transitionAt(clock.elapsedTime * 1000, lens.transition)
+    material.uniforms.uTransition.value = transitionAt(clock.elapsedTime * 1000 + shift, lens.transition)
   })
 
   return (
@@ -222,6 +231,7 @@ function Lens() {
 
 /** 65,025 points riding the baked splines around the eye. */
 function Splines({ fluid }: LayerProps) {
+  const shift = useContext(TimeShift)
   const data = useSplineData(splines.data)
   const materialRef = useRef<ShaderMaterial>(null)
 
@@ -254,7 +264,7 @@ function Splines({ fluid }: LayerProps) {
     material.uniforms.time.value = clock.elapsedTime
     material.uniforms.tFluid.value = fluid.texture
     material.uniforms.uAlpha.value = transitionAt(
-      clock.elapsedTime * 1000,
+      clock.elapsedTime * 1000 + shift,
       splines.transition,
       easeInOutSine
     )
@@ -288,6 +298,7 @@ function Splines({ fluid }: LayerProps) {
  * and the only per-frame work is the pointer push in the vertex shader.
  */
 function Floaters({ fluid }: LayerProps) {
+  const shift = useContext(TimeShift)
   const materialRef = useRef<ShaderMaterial>(null)
 
   const geometry = useMemo(() => createFloaterGeometry(floaters.count), [])
@@ -318,7 +329,7 @@ function Floaters({ fluid }: LayerProps) {
     // to 0.4 over seven seconds while the camera sits back at the intro pose.
     // It is the only thing moving in that shot, so the ramp is the shot.
     material.uniforms.uAlpha.value = transitionAt(
-      clock.elapsedTime * 1000,
+      clock.elapsedTime * 1000 + shift,
       intro.particleFade,
       easeInOutSine
     )
@@ -345,6 +356,7 @@ function LogoLayer({
   layer,
   fluid,
 }: LayerProps & { layer: (typeof logo.layers)[number] }) {
+  const shift = useContext(TimeShift)
   const map = useTexture(logo.map)
   const materialRef = useRef<ShaderMaterial>(null)
 
@@ -375,7 +387,7 @@ function LogoLayer({
       size.width * viewport.dpr,
       size.height * viewport.dpr
     )
-    material.uniforms.uTransition.value = transitionAt(clock.elapsedTime * 1000, logo.transition)
+    material.uniforms.uTransition.value = transitionAt(clock.elapsedTime * 1000 + shift, logo.transition)
   })
 
   return (
@@ -446,6 +458,7 @@ function TaglineLine({
 }
 
 function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
+  const shift = useContext(TimeShift)
   const layout = useText(tagline.font, tagline.text, tagline.letterSpacing)
   const atlas = useTexture(tagline.atlas)
   const size = useThree((state) => state.size)
@@ -472,7 +485,7 @@ function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
     uniforms.tFluid.value = fluid.texture
     // Device pixels; see the note in Eye.
     uniforms.uResolution.value.set(frameSize.width * viewport.dpr, frameSize.height * viewport.dpr)
-    uniforms.uAlpha.value = transitionAt(clock.elapsedTime * 1000, tagline.transition, easeInOutSine)
+    uniforms.uAlpha.value = transitionAt(clock.elapsedTime * 1000 + shift, tagline.transition, easeInOutSine)
   })
 
   // The layout is in font units; scale the whole line to its world width. The
@@ -535,6 +548,7 @@ function Tagline({ onBegin, fluid }: { onBegin?: () => void; fluid: Fluid }) {
  * a straight run down z from 25 to 0. See `intro` in ./config.
  */
 function CameraRig() {
+  const shift = useContext(TimeShift)
   const size = useThree((state) => state.size)
   const pointer = useThree((state) => state.pointer)
   const cameraRef = useRef<PerspectiveCameraImpl>(null)
@@ -566,7 +580,7 @@ function CameraRig() {
     if (!camera) return
 
     // 0 while the shot is parked back at the intro pose, 1 once it has landed.
-    const t = flightAt(clock.elapsedTime * 1000)
+    const t = flightAt(clock.elapsedTime * 1000 + shift)
 
     const px = pointerActive.current ? pointer.x : 0
     const py = pointerActive.current ? pointer.y : 0
@@ -644,6 +658,11 @@ export interface SceneProps {
    * the line renders as plain text.
    */
   onBegin?: () => void
+  /**
+   * Milliseconds to advance the intro clock by on mount. The app splash uses
+   * this to open on the push-in instead of the 5.8s dwell before it.
+   */
+  timeShift?: number
 }
 
 /**
@@ -655,8 +674,9 @@ export interface SceneProps {
  * The engine swapped in its own `-portrait` transforms, while this only widens
  * the FOV the way the editor's `dynamicFOVCode` did.
  */
-export function Scene({ onBegin }: SceneProps = {}) {
+export function Scene({ onBegin, timeShift = 0 }: SceneProps = {}) {
   return (
+    <TimeShift.Provider value={timeShift}>
     <Canvas
       style={{ position: 'fixed', inset: 0 }}
       dpr={[1, 2]}
@@ -671,5 +691,6 @@ export function Scene({ onBegin }: SceneProps = {}) {
         <Landing onBegin={onBegin} />
       </Suspense>
     </Canvas>
+    </TimeShift.Provider>
   )
 }
