@@ -348,6 +348,24 @@
     "label": "Noticias",
     "items": [
       {
+        "id": "boquete-isr",
+        "title": "Fisco mexicano enfrenta boquete de 118 mil mdp en ISR",
+        "source": "La Jornada",
+        "href": "https://share.google/aCkau3gjGJznFmhAU"
+      },
+      {
+        "id": "ventas-redes-sociales",
+        "title": "SAT refuerza vigilancia y asegura que las ventas en redes sociales también deben pagar impuestos",
+        "source": "El Heraldo de México",
+        "href": "https://share.google/Ny1ct7gzxWR7sZ61j"
+      },
+      {
+        "id": "facturas-falsas-prision",
+        "title": "Usar facturas falsas puede llevarte a prisión en México por hasta 9 años: el SAT puede investigar y aplicar sanciones",
+        "source": "Google Noticias",
+        "href": "https://share.google/vAwxg3XwU15ydSad9"
+      },
+      {
         "id": "condonacion-multas-recargos",
         "title": "SAT condonará hasta 100% de multas y recargos a contribuyentes con adeudos",
         "source": "Milenio",
