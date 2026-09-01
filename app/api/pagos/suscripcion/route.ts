@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { MAX_TARJETAS_POR_CLIENTE, sitioUrl } from '@pagos/config'
+import { MAX_TARJETAS_POR_CLIENTE } from '@pagos/config'
 import { mensajeDeDeclinacion, esErrorDeCaptura, DECLINADA_GENERICA } from '@pagos/declinaciones'
 import {
   OpenpayError,
@@ -152,8 +152,11 @@ export async function POST(request: Request) {
         // contra el cobro duplicado, no el botón deshabilitado.
         order_id: referencia,
         device_session_id: deviceSessionId,
-        use_3d_secure: true,
-        redirect_url: `${sitioUrl}/suscripcion/resultado`,
+        // Sin 3D Secure: lo que se contrata es una suscripción y las
+        // renovaciones que cobra Openpay tampoco pasan por autenticación, así
+        // que el primer cargo se comporta igual que los siguientes. El
+        // `device_session_id` antifraude se sigue mandando.
+        use_3d_secure: false,
       })
     } catch (fallo) {
       // La tarjeta quedó guardada pero el cargo no pasó: se retira para no
@@ -163,7 +166,9 @@ export async function POST(request: Request) {
       throw fallo
     }
 
-    // Camino normal con 3DS: Openpay devuelve a dónde mandar al usuario.
+    // Ya no se pide 3DS, pero el emisor o el propio Openpay pueden forzarlo
+    // (tarjetas con autenticación obligatoria). Si llega una redirección se
+    // respeta: el cliente sabe seguirla y el retorno confirma igual.
     if (cargo.payment_method?.type === 'redirect' && cargo.payment_method.url) {
       return NextResponse.json({
         ok: true,

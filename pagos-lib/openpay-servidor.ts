@@ -192,8 +192,11 @@ export const cargos = {
       description: string
       order_id: string
       device_session_id: string
-      use_3d_secure: boolean
-      redirect_url: string
+      // Opcionales: el cobro del primer periodo va sin 3DS porque lo que se
+      // contrata es una suscripción y las renovaciones tampoco lo llevan.
+      // `redirect_url` sólo tiene sentido si se vuelve a pedir 3DS.
+      use_3d_secure?: boolean
+      redirect_url?: string
     },
   ): Promise<CargoOpenpay> =>
     peticion('POST', `/customers/${clienteId}/charges`, { method: 'card', ...datos }),
