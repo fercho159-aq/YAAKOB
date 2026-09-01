@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { MAX_TARJETAS_POR_CLIENTE } from '@pagos/config'
+import { MAX_TARJETAS_POR_CLIENTE, requiere3ds, sitioUrl } from '@pagos/config'
 import { mensajeDeDeclinacion, esErrorDeCaptura, DECLINADA_GENERICA } from '@pagos/declinaciones'
 import {
   OpenpayError,
@@ -141,6 +141,10 @@ export async function POST(request: Request) {
       device_session_id: deviceSessionId,
     })
 
+    // 3DS sólo por encima del umbral: la suscripción de cada mes se cobra sin
+    // autenticar, así que abajo del corte el primer cargo se comporta igual.
+    const con3ds = requiere3ds(importeTotal)
+
     let cargo: CargoOpenpay
     try {
       cargo = await cargos.crear(clienteOpenpay.id, {
@@ -152,11 +156,10 @@ export async function POST(request: Request) {
         // contra el cobro duplicado, no el botón deshabilitado.
         order_id: referencia,
         device_session_id: deviceSessionId,
-        // Sin 3D Secure: lo que se contrata es una suscripción y las
-        // renovaciones que cobra Openpay tampoco pasan por autenticación, así
-        // que el primer cargo se comporta igual que los siguientes. El
-        // `device_session_id` antifraude se sigue mandando.
-        use_3d_secure: false,
+        use_3d_secure: con3ds,
+        // `redirect_url` sólo viaja cuando hay 3DS: es a donde Openpay devuelve
+        // al cliente después del banco.
+        ...(con3ds ? { redirect_url: `${sitioUrl}/suscripcion/resultado` } : {}),
       })
     } catch (fallo) {
       // La tarjeta quedó guardada pero el cargo no pasó: se retira para no
@@ -166,9 +169,9 @@ export async function POST(request: Request) {
       throw fallo
     }
 
-    // Ya no se pide 3DS, pero el emisor o el propio Openpay pueden forzarlo
-    // (tarjetas con autenticación obligatoria). Si llega una redirección se
-    // respeta: el cliente sabe seguirla y el retorno confirma igual.
+    // Camino con 3DS: Openpay devuelve a dónde mandar al usuario. También se
+    // entra aquí sin haberlo pedido, cuando el emisor fuerza la autenticación;
+    // por eso se mira la respuesta y no la bandera que mandamos.
     if (cargo.payment_method?.type === 'redirect' && cargo.payment_method.url) {
       return NextResponse.json({
         ok: true,

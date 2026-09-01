@@ -63,6 +63,22 @@ export function merchantIdServidor(): string {
 /** Máximo de tarjetas guardadas por cliente — punto 11 de la validación. */
 export const MAX_TARJETAS_POR_CLIENTE = 3
 
+/**
+ * Importe en pesos a partir del cual el cobro pide 3D Secure.
+ *
+ * Abajo del umbral el cargo pasa directo, que es lo que corresponde a una
+ * suscripción: las renovaciones que cobra Openpay tampoco autentican. De
+ * $6,001 en adelante sí se manda al cliente con su banco, porque ahí el
+ * contracargo pesa lo suficiente como para querer trasladar la
+ * responsabilidad al emisor.
+ */
+export const UMBRAL_3DS = 6001
+
+/** `true` si el importe del cargo obliga a pasar por 3D Secure. */
+export function requiere3ds(importe: number): boolean {
+  return importe >= UMBRAL_3DS
+}
+
 /** Scripts de Openpay que carga el navegador para tokenizar y para el antifraude. */
 export const SCRIPTS_OPENPAY = {
   core: 'https://openpay.s3.amazonaws.com/openpay.v1.min.js',
