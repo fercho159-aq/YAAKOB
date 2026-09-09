@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useMemo, Suspense, useCallback } fr
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
+import Link from "next/link";
 import "./start.css";
 
 // ─── Attractor particle system ──────────────────────────────────
@@ -272,17 +273,425 @@ function HebrewSplash({ onDone }: { onDone: () => void }) {
   );
 }
 
+// ─── Pasarela circular de la app (presentación del cliente) ────
+// Orden y títulos de las trece pantallas, tal como los entregó el cliente.
+const SLIDES = [
+  "YAAKOB",
+  "INE",
+  "Datos Fiscales",
+  "Registro RFC",
+  "Bienvenido",
+  "Chat Clientes",
+  "Requerimiento SAT",
+  "Recargos y Actualizaciones",
+  "Calculadora RFC",
+  "Diario Oficial",
+  "Marcos Legales",
+  "Cita Presencial",
+  "Próximamente",
+].map((title, i) => ({
+  title,
+  src: `/app/pasarela/${String(i + 1).padStart(2, "0")}.webp`,
+}));
+
+const SLIDE_COUNT = SLIDES.length;
+const ANGLE_STEP = 360 / SLIDE_COUNT;
+const AUTOPLAY_MS = 4800;
+const MOBILE_BREAKPOINT = 760;
+
+const modulo = (value: number) => ((value % SLIDE_COUNT) + SLIDE_COUNT) % SLIDE_COUNT;
+
+/** Distancia con signo (−6…6) entre una diapositiva y la activa. */
+function signedDistance(index: number, active: number) {
+  let value = index - active;
+  if (value > SLIDE_COUNT / 2) value -= SLIDE_COUNT;
+  if (value < -SLIDE_COUNT / 2) value += SLIDE_COUNT;
+  return value;
+}
+
+type SlideVars = React.CSSProperties & Record<`--${string}`, string | number>;
+
+function PhoneCarousel({ onEnlarge, frozen }: { onEnlarge: (index: number) => void; frozen: boolean }) {
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState(0);
+  const [size, setSize] = useState({ width: 0, height: 0, mobile: false });
+  const [paused, setPaused] = useState(false);
+  const drag = useRef<{ x: number; moved: boolean } | null>(null);
+  const wheelLock = useRef(false);
+  const lastTap = useRef(0);
+
+  const active = modulo(position);
+
+  // Medida del carrusel: define el radio de la órbita y el desplazamiento vertical.
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const measure = () =>
+      setSize({ width: el.clientWidth, height: el.clientHeight, mobile: window.innerWidth <= MOBILE_BREAKPOINT });
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    window.addEventListener("resize", measure, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+
+  const step = useCallback((amount: number) => setPosition((p) => p + amount), []);
+
+  const goTo = useCallback(
+    (index: number) => setPosition((p) => p + signedDistance(index, modulo(p))),
+    []
+  );
+
+  // Avance automático; se reinicia con cada interacción (cambia `position`)
+  // y se detiene mientras hay un modal abierto o se arrastra.
+  useEffect(() => {
+    if (paused || frozen) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let timer = window.setInterval(() => step(1), AUTOPLAY_MS);
+    const onVisibility = () => {
+      window.clearInterval(timer);
+      if (!document.hidden) timer = window.setInterval(() => step(1), AUTOPLAY_MS);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [paused, frozen, position, step]);
+
+  // Flechas del teclado.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (paused || frozen) return;
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [paused, frozen, step]);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    drag.current = { x: e.clientX, moved: false };
+    setPaused(true);
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (drag.current && Math.abs(e.clientX - drag.current.x) > 10) drag.current.moved = true;
+  };
+  // Con el puntero capturado los eventos apuntan al carrusel, no al teléfono:
+  // se resuelve el elemento bajo el cursor por coordenadas.
+  const hitsCenter = (x: number, y: number) =>
+    Boolean(document.elementFromPoint(x, y)?.closest(".sp-slide.is-center"));
+
+  const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (drag.current) {
+      const delta = e.clientX - drag.current.x;
+      const onCenter = hitsCenter(e.clientX, e.clientY);
+      if (Math.abs(delta) > 40) step(delta < 0 ? 1 : -1);
+      else if (!drag.current.moved && e.pointerType === "touch" && onCenter) {
+        const now = e.timeStamp;
+        if (now - lastTap.current < 330) {
+          onEnlarge(active);
+          lastTap.current = 0;
+        } else lastTap.current = now;
+      }
+    }
+    drag.current = null;
+    setPaused(false);
+  };
+  const onPointerCancel = () => {
+    drag.current = null;
+    setPaused(false);
+  };
+  const onWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (wheelLock.current || Math.abs(e.deltaX) + Math.abs(e.deltaY) < 12) return;
+    wheelLock.current = true;
+    step((e.deltaX || e.deltaY) > 0 ? 1 : -1);
+    window.setTimeout(() => {
+      wheelLock.current = false;
+    }, 760);
+  };
+  const onDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (hitsCenter(e.clientX, e.clientY)) onEnlarge(active);
+  };
+
+  const { width, height, mobile } = size;
+  const radius = mobile ? width * 1.05 : Math.min(width * 0.43, 660);
+
+  return (
+    <>
+      <div
+        ref={carouselRef}
+        className="sp-carousel"
+        role="region"
+        aria-roledescription="carrusel"
+        aria-label="Funciones de la aplicación YAAKOB"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+        onWheel={onWheel}
+        onDoubleClick={onDoubleClick}
+      >
+        <div className="sp-slides">
+          {SLIDES.map((slide, index) => {
+            const relative = signedDistance(index, active);
+            const absolute = Math.abs(relative);
+            const radians = ((index - position) * ANGLE_STEP * Math.PI) / 180;
+            // En teléfono el carrusel ocupa justo el alto disponible: sin
+            // desplazamiento vertical para que no invada el título.
+            const faceY = mobile || absolute === 0 ? 0 : -height * 0.102;
+            const vars: SlideVars = {
+              "--orbit-x": `${Math.sin(radians) * radius}px`,
+              "--orbit-z": `${(Math.cos(radians) - 1) * radius}px`,
+              "--face-scale": absolute === 0 ? 1 : 0.72,
+              "--face-y": `${faceY}px`,
+              "--opacity": absolute <= 1 ? 1 : 0,
+              "--z": absolute === 0 ? 30 : absolute === 1 ? 20 : 1,
+            };
+            return (
+              <article
+                key={slide.src}
+                className={`sp-slide${relative === 0 ? " is-center" : ""}`}
+                style={vars}
+                aria-hidden={relative !== 0}
+              >
+                <div className="sp-orbit-face">
+                  <div className="sp-phone">
+                    {/* Carga progresiva: sólo las pantallas a dos pasos de la activa. */}
+                    {absolute <= 2 && (
+                      <img
+                        src={slide.src}
+                        alt={slide.title}
+                        draggable={false}
+                        decoding="async"
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                      />
+                    )}
+                  </div>
+                  <div className="sp-disc" aria-hidden="true">
+                    <i />
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="sp-nav">
+        <button type="button" className="sp-arrow" aria-label="Función anterior" onClick={() => step(-1)}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+        </button>
+        <div className="sp-caption" aria-live="polite">
+          <strong>{SLIDES[active].title}</strong>
+          <span>
+            <b>{String(active + 1).padStart(2, "0")}</b> / {SLIDE_COUNT}
+          </span>
+        </div>
+        <div className="sp-dots" aria-label="Seleccionar función">
+          {SLIDES.map((slide, index) => (
+            <button
+              key={slide.src}
+              type="button"
+              className={`sp-dot${index === active ? " active" : ""}`}
+              aria-label={`Ver ${slide.title}`}
+              aria-current={index === active ? "true" : undefined}
+              onClick={() => goTo(index)}
+            />
+          ))}
+        </div>
+        <button type="button" className="sp-arrow" aria-label="Siguiente función" onClick={() => step(1)}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+        </button>
+      </div>
+    </>
+  );
+}
+
+// ─── Header (barra de la presentación del cliente, en el estilo del sitio) ──
+const NAV_LINKS = [
+  { label: "Servicios", href: "/servicios" },
+  { label: "Contacto", href: "/contacto" },
+  { label: "App", href: "/apps" },
+];
+
+// Mismas redes que el resto del sitio (servicios-lib/data/content.json → site.social).
+const SOCIAL_LINKS: { label: string; href: string; icon: React.ReactNode; whatsapp?: boolean }[] = [
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/yaakobeheart/",
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="3.8" />
+        <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61587552527813&locale=es_LA",
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M14 8.5V6.8c0-.8.5-1.3 1.3-1.3H17V2.5h-2.6C11.9 2.5 10.5 4 10.5 6.4v2.1H8v3h2.5v10h3.5v-10h2.6l.4-3H14z" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: "TikTok",
+    href: "https://www.tiktok.com/@yaakob_heart",
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13.5 2.5h2.9c.2 2.2 1.6 3.7 3.8 3.9v3c-1.4 0-2.7-.4-3.8-1.2v6.6a5.6 5.6 0 1 1-5.6-5.6h.7v3.1h-.7a2.5 2.5 0 1 0 2.5 2.5V2.5z" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@YaakobBeHeart",
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2.5" y="5.5" width="19" height="13" rx="4" />
+        <path d="M10 9v6l5-3-5-3z" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: "X",
+    href: "https://x.com/yaakob",
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 3.5h4.2l4 5.6 4.9-5.6H19l-6 6.8L20 20.5h-4.2l-4.3-6-5.3 6H4.3l6.4-7.3L4 3.5z" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    label: "WhatsApp",
+    href: "https://wa.me/5215530077441",
+    whatsapp: true,
+    icon: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" />
+        <path d="M9.2 8.3c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2 0 .4-.1.5l-.5.6c-.1.2-.1.3 0 .5.5.9 1.4 1.8 2.5 2.3.2.1.3.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.6.8c.3.1.4.2.4.4 0 .3-.1 1-.6 1.5-.4.4-1.1.6-1.6.5-2.5-.5-4.8-2.5-5.9-4.9-.4-.9-.2-2 .2-3z" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+];
+
+function StartHeader() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Escape cierra el menú del teléfono; al pasar a escritorio también se cierra.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth > MOBILE_BREAKPOINT) setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [menuOpen]);
+
+  const socials = (className: string) => (
+    <nav className={className} aria-label="Redes sociales">
+      {SOCIAL_LINKS.map((s) => (
+        <a
+          key={s.label}
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={s.label}
+          className={s.whatsapp ? "is-whatsapp" : undefined}
+        >
+          {s.icon}
+        </a>
+      ))}
+    </nav>
+  );
+
+  return (
+    <header className="sp-topbar">
+      <div className="sp-topbar__desktop">
+        {socials("sp-social")}
+        <nav className="sp-links" aria-label="Navegación principal">
+          {NAV_LINKS.map((l) => (
+            <Link key={l.href} href={l.href}>{l.label}</Link>
+          ))}
+          <Link className="sp-logo" href="/" aria-label="YAAKOB, inicio">
+            <img src="/logo.png" alt="" />
+          </Link>
+        </nav>
+      </div>
+
+      <div className="sp-topbar__mobile">
+        <Link className="sp-logo" href="/" aria-label="YAAKOB, inicio">
+          <img src="/logo.png" alt="" />
+        </Link>
+        <button
+          type="button"
+          className={`sp-burger${menuOpen ? " is-open" : ""}`}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-controls="sp-mobile-menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((o) => !o)}
+        >
+          <span /><span /><span />
+        </button>
+      </div>
+
+      <div
+        id="sp-mobile-menu"
+        className={`sp-mobile-menu${menuOpen ? " is-open" : ""}`}
+        aria-hidden={!menuOpen}
+        onClick={(e) => {
+          if ((e.target as HTMLElement).closest("a")) setMenuOpen(false);
+        }}
+      >
+        <nav className="sp-mobile-links" aria-label="Navegación del teléfono">
+          {NAV_LINKS.map((l) => (
+            <Link key={l.href} href={l.href}>{l.label}</Link>
+          ))}
+        </nav>
+        {socials("sp-social sp-social--mobile")}
+      </div>
+    </header>
+  );
+}
+
 // ─── Main Page ──────────────────────────────────────────────────
 export default function StartPage() {
   const [showSplash, setShowSplash] = useState(true);
   const [phase, setPhase] = useState(0);
   const [showDownload, setShowDownload] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   const handleSplashDone = useCallback(() => {
     setShowSplash(false);
     setTimeout(() => setPhase(1), 300);
     setTimeout(() => setPhase(2), 1800);
   }, []);
+
+  // Escape cierra la vista ampliada o el modal de descarga.
+  useEffect(() => {
+    if (viewerIndex === null && !showDownload) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setViewerIndex(null);
+      setShowDownload(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [viewerIndex, showDownload]);
 
   return (
     <div className="sp">
@@ -322,18 +731,44 @@ export default function StartPage() {
 
       {/* Content */}
       <div className={`sp-content sp-phase-${phase}`}>
-        <h1 className="sp-title" data-text="COMIENZA AHORA">
-          <span className="sp-title__line">COMIENZA</span>
-          <span className="sp-title__line">AHORA</span>
-        </h1>
+        <StartHeader />
 
-        <div className="sp-buttons">
-          <button onClick={() => setShowDownload(true)} className="sp-btn">
-            <span className="sp-btn__text">COMIENZA AHORA</span>
-            <span className="sp-btn__border" />
-          </button>
-        </div>
+        <header className="sp-heading">
+          <p className="sp-sub">Una nueva forma de entender la ley</p>
+          <h1 className="sp-title">
+            <span className="sp-title__line" data-text="LA APP QUE">LA APP QUE</span>
+            <span className="sp-title__line" data-text="CAMBIARÁ TU VIDA">CAMBIARÁ TU VIDA</span>
+          </h1>
+        </header>
+
+        <PhoneCarousel onEnlarge={setViewerIndex} frozen={viewerIndex !== null || showDownload} />
+
+        <footer className="sp-footer">
+          <p className="sp-instruction">
+            <span className="sp-instruction__desktop">Descubra cada función · Doble clic para ampliar</span>
+            <span className="sp-instruction__mobile">Arrastre para girar · Doble toque para ampliar</span>
+          </p>
+          <div className="sp-buttons">
+            <button onClick={() => setShowDownload(true)} className="sp-btn">
+              <span className="sp-btn__text">Descarga la app</span>
+              <span className="sp-btn__border" />
+            </button>
+          </div>
+        </footer>
       </div>
+
+      {/* Vista ampliada de la pantalla activa */}
+      {viewerIndex !== null && (
+        <div className="sp-viewer" role="dialog" aria-label="Vista ampliada" onClick={() => setViewerIndex(null)}>
+          <button className="sp-viewer__close" aria-label="Cerrar" onClick={() => setViewerIndex(null)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+          </button>
+          <figure onClick={(e) => e.stopPropagation()}>
+            <img src={SLIDES[viewerIndex].src} alt={SLIDES[viewerIndex].title} />
+            <figcaption>{SLIDES[viewerIndex].title}</figcaption>
+          </figure>
+        </div>
+      )}
 
       {/* Download modal */}
       {showDownload && (
