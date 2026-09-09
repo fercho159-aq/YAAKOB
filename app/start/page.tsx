@@ -5,6 +5,15 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import * as THREE from "three";
 import Link from "next/link";
+import {
+  FacebookGlyph,
+  InstagramGlyph,
+  SocialRing,
+  TiktokGlyph,
+  WhatsappGlyph,
+  XGlyph,
+  YoutubeGlyph,
+} from "./socialIcons";
 import "./start.css";
 
 // ─── Attractor particle system ──────────────────────────────────
@@ -521,65 +530,12 @@ const NAV_LINKS = [
 
 // Mismas redes que el resto del sitio (servicios-lib/data/content.json → site.social).
 const SOCIAL_LINKS: { label: string; href: string; icon: React.ReactNode; whatsapp?: boolean }[] = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/yaakobeheart/",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="3" width="18" height="18" rx="5" />
-        <circle cx="12" cy="12" r="3.8" />
-        <circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/profile.php?id=61587552527813&locale=es_LA",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M14 8.5V6.8c0-.8.5-1.3 1.3-1.3H17V2.5h-2.6C11.9 2.5 10.5 4 10.5 6.4v2.1H8v3h2.5v10h3.5v-10h2.6l.4-3H14z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    label: "TikTok",
-    href: "https://www.tiktok.com/@yaakob_heart",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M13.5 2.5h2.9c.2 2.2 1.6 3.7 3.8 3.9v3c-1.4 0-2.7-.4-3.8-1.2v6.6a5.6 5.6 0 1 1-5.6-5.6h.7v3.1h-.7a2.5 2.5 0 1 0 2.5 2.5V2.5z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@YaakobBeHeart",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="2.5" y="5.5" width="19" height="13" rx="4" />
-        <path d="M10 9v6l5-3-5-3z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    label: "X",
-    href: "https://x.com/yaakob",
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 3.5h4.2l4 5.6 4.9-5.6H19l-6 6.8L20 20.5h-4.2l-4.3-6-5.3 6H4.3l6.4-7.3L4 3.5z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
-  {
-    label: "WhatsApp",
-    href: "https://wa.me/5215530077441",
-    whatsapp: true,
-    icon: (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2z" />
-        <path d="M9.2 8.3c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .5.4l.7 1.7c.1.2 0 .4-.1.5l-.5.6c-.1.2-.1.3 0 .5.5.9 1.4 1.8 2.5 2.3.2.1.3.1.5-.1l.6-.7c.2-.2.3-.2.5-.1l1.6.8c.3.1.4.2.4.4 0 .3-.1 1-.6 1.5-.4.4-1.1.6-1.6.5-2.5-.5-4.8-2.5-5.9-4.9-.4-.9-.2-2 .2-3z" fill="currentColor" stroke="none" />
-      </svg>
-    ),
-  },
+  { label: "Instagram", href: "https://www.instagram.com/yaakobeheart/", icon: <InstagramGlyph /> },
+  { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61587552527813&locale=es_LA", icon: <FacebookGlyph /> },
+  { label: "TikTok", href: "https://www.tiktok.com/@yaakob_heart", icon: <TiktokGlyph /> },
+  { label: "YouTube", href: "https://www.youtube.com/@YaakobBeHeart", icon: <YoutubeGlyph /> },
+  { label: "X", href: "https://x.com/yaakob", icon: <XGlyph /> },
+  { label: "WhatsApp", href: "https://wa.me/5215530077441", whatsapp: true, icon: <WhatsappGlyph /> },
 ];
 
 function StartHeader() {
@@ -614,6 +570,7 @@ function StartHeader() {
           className={s.whatsapp ? "is-whatsapp" : undefined}
         >
           {s.icon}
+          <SocialRing />
         </a>
       ))}
     </nav>
@@ -672,7 +629,6 @@ function StartHeader() {
 export default function StartPage() {
   const [showSplash, setShowSplash] = useState(true);
   const [phase, setPhase] = useState(0);
-  const [showDownload, setShowDownload] = useState(false);
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   const handleSplashDone = useCallback(() => {
@@ -681,17 +637,15 @@ export default function StartPage() {
     setTimeout(() => setPhase(2), 1800);
   }, []);
 
-  // Escape cierra la vista ampliada o el modal de descarga.
+  // Escape cierra la vista ampliada.
   useEffect(() => {
-    if (viewerIndex === null && !showDownload) return;
+    if (viewerIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      setViewerIndex(null);
-      setShowDownload(false);
+      if (e.key === "Escape") setViewerIndex(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [viewerIndex, showDownload]);
+  }, [viewerIndex]);
 
   return (
     <div className="sp">
@@ -741,7 +695,7 @@ export default function StartPage() {
           </h1>
         </header>
 
-        <PhoneCarousel onEnlarge={setViewerIndex} frozen={viewerIndex !== null || showDownload} />
+        <PhoneCarousel onEnlarge={setViewerIndex} frozen={viewerIndex !== null} />
 
         <footer className="sp-footer">
           <p className="sp-instruction">
@@ -749,10 +703,34 @@ export default function StartPage() {
             <span className="sp-instruction__mobile">Arrastre para girar · Doble toque para ampliar</span>
           </p>
           <div className="sp-buttons">
-            <button onClick={() => setShowDownload(true)} className="sp-btn">
-              <span className="sp-btn__text">Descarga la app</span>
+            <Link href="/planes" className="sp-btn sp-btn--primary">
+              <span className="sp-btn__text">Contratar suscripción</span>
               <span className="sp-btn__border" />
-            </button>
+            </Link>
+            <a
+              href="https://apps.apple.com/mx/app/yaakob/id6758861392"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sp-btn sp-btn--store"
+            >
+              <span className="sp-btn__text">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" /></svg>
+                App Store
+              </span>
+              <span className="sp-btn__border" />
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=com.fernandotrejo.consultora&hl=es_MX"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sp-btn sp-btn--store"
+            >
+              <span className="sp-btn__text">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.092 12l2.606-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z" /></svg>
+                Google Play
+              </span>
+              <span className="sp-btn__border" />
+            </a>
           </div>
         </footer>
       </div>
@@ -767,27 +745,6 @@ export default function StartPage() {
             <img src={SLIDES[viewerIndex].src} alt={SLIDES[viewerIndex].title} />
             <figcaption>{SLIDES[viewerIndex].title}</figcaption>
           </figure>
-        </div>
-      )}
-
-      {/* Download modal */}
-      {showDownload && (
-        <div className="sp-modal-overlay" onClick={() => setShowDownload(false)}>
-          <div className="sp-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="sp-modal__close" onClick={() => setShowDownload(false)}>✕</button>
-            <h2 className="sp-modal__title">DESCARGA LA APP</h2>
-            <p className="sp-modal__sub">Elige tu plataforma</p>
-            <div className="sp-modal__links">
-              <a href="https://apps.apple.com/mx/app/yaakob/id6758861392" target="_blank" rel="noopener noreferrer" className="sp-modal__btn">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                <span>App Store</span>
-              </a>
-              <a href="https://play.google.com/store/apps/details?id=com.fernandotrejo.consultora&hl=es_MX" target="_blank" rel="noopener noreferrer" className="sp-modal__btn">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 01-.61-.92V2.734a1 1 0 01.609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 010 1.38l-2.302 2.302L15.092 12l2.606-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/></svg>
-                <span>Google Play</span>
-              </a>
-            </div>
-          </div>
         </div>
       )}
     </div>
