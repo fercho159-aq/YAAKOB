@@ -21,13 +21,13 @@ import {
 const STORES = [
   {
     href: "https://apps.apple.com/mx/app/yaakob/id6758861392",
-    icon: "/planes/app-store-color.webp",
+    icon: "/planes/app-store-color.png",
     kicker: "iPhone y iPad",
     name: "App Store",
   },
   {
     href: "https://play.google.com/store/apps/details?id=com.fernandotrejo.consultora&hl=es_MX",
-    icon: "/planes/google-play-color.webp",
+    icon: "/planes/google-play-color.png",
     kicker: "Android",
     name: "Google Play",
   },

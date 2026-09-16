@@ -20,19 +20,19 @@ const WHATSAPP = "https://wa.me/5215530077441";
 const BENEFICIOS = [
   {
     numero: "01.",
-    imagen: "/planes/benefit-symbol.webp",
+    imagen: "/planes/benefit-symbol.png",
     titulo: "Entienda sin tecnicismos",
     texto: "Transforme documentos y situaciones fiscales complejas en explicaciones claras.",
   },
   {
     numero: "02.",
-    imagen: "/planes/benefit-yaakob.webp",
+    imagen: "/planes/benefit-yaakob.png",
     titulo: "Actúe antes del problema",
     texto: "Identifique riesgos, prioridades y próximos pasos antes de afectar su operación.",
   },
   {
     numero: "03.",
-    imagen: "/planes/benefit-flower.webp",
+    imagen: "/planes/benefit-flower.png",
     titulo: "Decida con respaldo",
     texto: "Reciba una ruta práctica para proteger su patrimonio y avanzar con seguridad.",
   },
@@ -181,7 +181,7 @@ export function PlanesLanding() {
         {/* ── Confianza ────────────────────────────────────── */}
         <section className="pl-trust" id="confianza">
           <span className="pl-ring pl-ring--right" aria-hidden="true" />
-          <img className="pl-trust__logo" src="/planes/logo-puntos.webp" alt="Símbolo YAAKOB" loading="lazy" />
+          <img className="pl-trust__logo" src="/planes/logo-puntos.png" alt="Símbolo YAAKOB" loading="lazy" />
           <div className="pl-trust__title">
             <h2>
               Su patrimonio
@@ -256,11 +256,11 @@ export function PlanesLanding() {
         <div className="pl-footer__grid">
           <div className="pl-footer__col">
             <div className="pl-footer__payments" aria-label="Formas de pago">
-              <img src="/pagos/visa.png" alt="Visa" loading="lazy" />
-              <img src="/pagos/mastercard.png" alt="Mastercard" loading="lazy" />
-              <img src="/pagos/amex.png" alt="American Express" loading="lazy" />
+              <img src="/planes/pago-visa.png" alt="Visa" loading="lazy" />
+              <img src="/planes/pago-mastercard.png" alt="Mastercard" loading="lazy" />
+              <img src="/planes/pago-amex.png" alt="American Express" loading="lazy" />
               <a href="https://www.openpay.mx/" target="_blank" rel="noopener noreferrer" aria-label="Openpay">
-                <img src="/pagos/openpay.png" alt="Openpay" loading="lazy" />
+                <img src="/planes/pago-openpay.png" alt="Openpay" loading="lazy" />
               </a>
             </div>
             <nav className="pl-footer__legal" aria-label="Condiciones legales">
