@@ -259,9 +259,6 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
             Servicios
           </NavLink>
         )}
-        <NavLink href="/planes" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
-          Planes
-        </NavLink>
         <Box
           as="button"
           display={{ base: 'none', xl: 'block' }}
@@ -272,6 +269,9 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         </Box>
         <NavLink href="/apps" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
           App
+        </NavLink>
+        <NavLink href="/planes" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
+          Planes
         </NavLink>
         {onServicesIndex ? (
           // The home is a full page load (WebGL), so a plain link.

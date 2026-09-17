@@ -25,9 +25,9 @@ interface MenuEntry {
 /** Same links, same order, as the home and /start headers. */
 const ENTRIES: MenuEntry[] = [
   { label: 'Servicios', href: '/servicios' },
-  { label: 'Planes', href: '/planes' },
   { label: 'Contacto', modal: true },
   { label: 'App', href: '/apps' },
+  { label: 'Planes', href: '/planes' },
 ]
 
 export interface MenuDrawerProps {

@@ -1,9 +1,9 @@
 {
   "menu": [
     { "name": "Servicios", "url": "/servicios" },
-    { "name": "Planes", "url": "/planes" },
     { "name": "Contacto", "url": "https://wa.me/5215530187711", "modal": true },
-    { "name": "App", "url": "/apps" }
+    { "name": "App", "url": "/apps" },
+    { "name": "Planes", "url": "/planes" }
   ],
   "social": [
     {

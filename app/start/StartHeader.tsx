@@ -25,9 +25,9 @@ const MOBILE_BREAKPOINT = 760;
 
 const NAV_LINKS = [
   { label: "Servicios", href: "/servicios" },
-  { label: "Planes", href: "/planes" },
   { label: "Contacto", href: "/contacto" },
   { label: "App", href: "/apps" },
+  { label: "Planes", href: "/planes" },
 ];
 
 // Mismas redes que el resto del sitio (servicios-lib/data/content.json → site.social).
