@@ -1500,3 +1500,10 @@
     padding-top: 54px;
   }
 }
+
+/* El header compartido va fijo, fuera del flujo: la rejilla pasa de cinco
+   filas a cuatro (encabezado · pasarela · navegación · pie). Sin esto la
+   pasarela caía en una fila `auto` y quedaba con alto cero. */
+.sp-content {
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+}

@@ -54,9 +54,10 @@ const swiperSx: SystemStyleObject = {
       height: '0.125rem',
       marginRight: '0.5rem',
       marginLeft: '0.5rem',
+      borderRadius: 0,
       backgroundColor: '#ffffff',
       opacity: 0.6,
-      boxShadow: '0px 0px 5px 0px rgba(0, 0, 0, 0.6)',
+      boxShadow: 'none',
       transition: 'opacity 0.2s linear, width 0.3s ease-in-out',
       cursor: 'pointer',
       // Widens the hit area well past the 2px-tall bullet.
