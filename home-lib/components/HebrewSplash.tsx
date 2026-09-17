@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react'
  * as the site this home was ported from), with the Hebrew alphabet in place of
  * the reference's latin one:
  *
- *   the divine names in the reference's logo slot, 50px from the top
+ *   the divine names right above the prayer
  *   500px wrapper, centred:
  *     450px box with a registration square at each corner
  *     380px field where single letters blink in and out
@@ -159,16 +159,15 @@ export function HebrewSplash() {
         </div>
 
         <div className={`hs-prayer${show}`}>
+          <div className={`hs-yhsal${show}`}>
+            {NAMES.map((line, l) => (
+              <p key={l}>{splitLine(line, l + PRAYER.length)}</p>
+            ))}
+          </div>
           {PRAYER.map((line, l) => (
             <p key={l}>{splitLine(line, l)}</p>
           ))}
         </div>
-      </div>
-
-      <div className={`hs-yhsal${show}`}>
-        {NAMES.map((line, l) => (
-          <p key={l}>{splitLine(line, l + PRAYER.length)}</p>
-        ))}
       </div>
     </div>
   )
