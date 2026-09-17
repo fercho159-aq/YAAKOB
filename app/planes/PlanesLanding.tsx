@@ -2,17 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import content from "@home/data/content.json";
 import legal from "@servicios/data/legal.json";
 import { NIVELES, formatearEntero, formatearPrecio, planDe, type Nivel } from "@pagos/planes";
 import { SiteHeader } from "@servicios/components/chrome";
 import { CheckoutModal } from "./CheckoutModal";
+import { HeroWaves } from "./HeroWaves";
 import "./planes.css";
 
 /**
- * Landing de venta de la app: la quinta entrega del cliente («YAAKOB-Codigo-
- * Final») llevada al lenguaje del sitio. Mismo orden de secciones que la
- * presentación —— hero, confianza, planes, beneficios, pie —— con los micro
- * puntos y el cyan de la referencia sobre el fondo y la tipografía de /start.
+ * Landing de venta de la app: la quinta entrega del cliente en su versión
+ * «seccion-5-planes». Mismo orden de secciones que la presentación —— hero,
+ * confianza, planes, beneficios, pie —— con su dirección de arte: ciudad
+ * puntillista y secciones blancas, pero con el texto en fuente llena. Los
+ * importes salen del catálogo y los datos de contacto de legal.json, nunca a
+ * mano.
  */
 
 const WHATSAPP = "https://wa.me/5215530187711";
@@ -20,19 +24,22 @@ const WHATSAPP = "https://wa.me/5215530187711";
 const BENEFICIOS = [
   {
     numero: "01.",
-    imagen: "/planes/benefit-symbol.png",
+    imagen: "/planes/benefit-symbol.webp",
+    clase: "symbol",
     titulo: "Entienda sin tecnicismos",
     texto: "Transforme documentos y situaciones fiscales complejas en explicaciones claras.",
   },
   {
     numero: "02.",
-    imagen: "/planes/benefit-yaakob.png",
+    imagen: "/planes/benefit-yaakob.webp",
+    clase: "yaakob",
     titulo: "Actúe antes del problema",
     texto: "Identifique riesgos, prioridades y próximos pasos antes de afectar su operación.",
   },
   {
     numero: "03.",
-    imagen: "/planes/benefit-flower.png",
+    imagen: "/planes/benefit-flower.webp",
+    clase: "flower",
     titulo: "Decida con respaldo",
     texto: "Reciba una ruta práctica para proteger su patrimonio y avanzar con seguridad.",
   },
@@ -44,12 +51,20 @@ const LEGAL_LINKS = [
   { href: "/cancelaciones", label: "Cancelaciones y reembolsos" },
 ];
 
+const POLITICAS = ["Política de Cookies", "Política de Privacidad", "Política de Confidencialidad"];
+
 const SITE_LINKS = [
   { href: "/apps", label: "Productos" },
   { href: "/servicios", label: "Servicios" },
   { href: "/contacto", label: "Contacto" },
   { href: "/start", label: "Mi cuenta" },
 ];
+
+// Orden de los cuadros en /planes/redes-sociales.webp.
+const SPRITE = ["Instagram", "Facebook", "TikTok", "YouTube", "X", "WhatsApp"];
+const REDES = content.social
+  .map((s) => ({ name: s.name, url: s.url, cuadro: SPRITE.indexOf(s.name) }))
+  .filter((s) => s.cuadro >= 0);
 
 const { responsable } = legal;
 const telHref = (tel: string) => `tel:${tel.replace(/[^+\d]/g, "")}`;
@@ -104,13 +119,13 @@ function TarjetaPlan({ nivel, onBuy }: { nivel: (typeof NIVELES)[number]; onBuy:
         <p>{nivel.audiencia}</p>
         <strong>
           {formatearEntero(mensual.precioBase)}
-          <small>/mes</small>
+          <small>/Mes</small>
         </strong>
         {anual.ahorro ? <em>{anual.ahorro}</em> : <span className="pl-plan__space" aria-hidden="true" />}
-        <small className="pl-plan__iva">
-          + IVA · {formatearPrecio(mensual.precio)} al mes
+        <small className="pl-plan__billing">
+          Facturado anualmente. Usted paga {formatearEntero(anual.precioBase)} hoy.
           <br />
-          Anual: {formatearEntero(anual.precioBase)} + IVA · {formatearPrecio(anual.precio)}
+          Con IVA: {formatearPrecio(anual.precio)}
           {anual.ahorro && (
             <>
               <br />
@@ -120,20 +135,23 @@ function TarjetaPlan({ nivel, onBuy }: { nivel: (typeof NIVELES)[number]; onBuy:
         </small>
       </div>
 
-      <button type="button" className="pl-plan__buy" onClick={() => onBuy(nivel.nivel)}>
+      <button type="button" className="pl-plan__buy" aria-haspopup="dialog" onClick={() => onBuy(nivel.nivel)}>
         Compre ahora
       </button>
 
       <b className="pl-plan__users">
-        <span aria-hidden="true">♟</span> {nivel.usuarios} {nivel.usuarios === 1 ? "usuario" : "usuarios"}
+        ♟&nbsp; {nivel.usuarios} {nivel.usuarios === 1 ? "Usuario" : "usuarios"}
       </b>
-      {nivel.destacado && <small className="pl-plan__unlimited">Ilimitado · usuarios, clientes y proveedores</small>}
+      {nivel.destacado && (
+        <small className="pl-plan__unlimited">ilimitado · Usuarios, clientes y proveedores</small>
+      )}
 
       <h4>Características</h4>
       <ul>
         {nivel.funciones.map((f) => (
           <li key={f.nombre} className={f.incluida ? undefined : "is-off"}>
             {f.nombre}
+            {!f.incluida && <span className="pl-sr"> (no incluida)</span>}
           </li>
         ))}
       </ul>
@@ -154,19 +172,20 @@ export function PlanesLanding() {
 
       <main>
         {/* ── Hero ─────────────────────────────────────────── */}
-        <section className="pl-hero pl-dots" id="inicio">
+        <section className="pl-hero" id="inicio">
+          <HeroWaves />
           <nav className="pl-hero__nav" aria-label="Contenido">
             <a className="pl-outline" href="#planes">Ver planes</a>
           </nav>
           <div className="pl-hero__copy">
             <p className="pl-eyebrow">Inteligencia fiscal en México</p>
+            {/* Como el wordmark de /servicios: primera línea en contorno, segunda sólida. */}
             <h1>
-              Tranquilidad
-              <br />
-              en sus manos
+              <span className="pl-hero__outline">Tranquilidad</span>{" "}
+              <span className="pl-hero__solid">en sus manos</span>
             </h1>
             <h2>Proteja su patrimonio.</h2>
-            <p>Comprenda su situación fiscal, actúe a tiempo.</p>
+            <p className="pl-hero__lead">Comprenda su situación fiscal, actúe a tiempo.</p>
             <p className="pl-hero__steps">Entienda + Avance + Resuelva + Blíndese</p>
           </div>
           <div className="pl-hero__device" aria-label="Aplicación YAAKOB">
@@ -179,9 +198,9 @@ export function PlanesLanding() {
         </section>
 
         {/* ── Confianza ────────────────────────────────────── */}
-        <section className="pl-trust" id="confianza">
+        <section className="pl-trust pl-light" id="confianza">
           <span className="pl-ring pl-ring--right" aria-hidden="true" />
-          <img className="pl-trust__logo" src="/planes/logo-puntos.png" alt="Símbolo YAAKOB" loading="lazy" />
+          <img className="pl-trust__logo" src="/planes/logo-puntos-claro.webp" alt="Símbolo YAAKOB" loading="lazy" />
           <div className="pl-trust__title">
             <h2>
               Su patrimonio
@@ -197,14 +216,12 @@ export function PlanesLanding() {
         </section>
 
         {/* ── Planes ───────────────────────────────────────── */}
-        <section className="pl-pricing pl-dots" id="planes">
+        <section className="pl-pricing" id="planes">
           <div className="pl-pricing__intro">
             <h2>Seleccione su plan</h2>
           </div>
           <div className="pl-pricing__content">
-            <p className="pl-pricing__note">
-              <span aria-hidden="true">◷</span> Garantía de devolución de 30 días
-            </p>
+            <p className="pl-pricing__note">◷ Garantía de devolución de 30 días</p>
 
             <div className="pl-plans">
               {NIVELES.map((nivel) => (
@@ -221,11 +238,32 @@ export function PlanesLanding() {
               </p>
               <p>La garantía de devolución de dinero de 30 días se aplica solo para planes anuales.</p>
             </div>
+
+            {/* Demo y WhatsApp: esquinas de la sección; en móvil, fila bajo el aviso. */}
+            <div className="pl-pricing__actions">
+              <button
+                type="button"
+                className="pl-floating pl-floating--demo"
+                aria-label="Probar demostración"
+                onClick={() => setDemoOpen(true)}
+              >
+                ✧
+              </button>
+              <a
+                className="pl-floating pl-floating--wa"
+                href={WHATSAPP}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Contactar por WhatsApp"
+              >
+                <span aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </section>
 
         {/* ── Beneficios ───────────────────────────────────── */}
-        <section className="pl-services" id="servicios">
+        <section className="pl-services pl-light" id="servicios">
           <span className="pl-ring pl-ring--left" aria-hidden="true" />
           <div className="pl-services__title">
             <p className="pl-eyebrow">Claridad que protege</p>
@@ -240,7 +278,7 @@ export function PlanesLanding() {
             {BENEFICIOS.map((b) => (
               <article key={b.numero}>
                 <span className="pl-benefit__number">{b.numero}</span>
-                <i className="pl-benefit__logo">
+                <i className={`pl-benefit__logo pl-benefit__logo--${b.clase}`}>
                   <img src={b.imagen} alt="" loading="lazy" />
                 </i>
                 <h3>{b.titulo}</h3>
@@ -252,9 +290,20 @@ export function PlanesLanding() {
       </main>
 
       {/* ── Pie ────────────────────────────────────────────── */}
-      <footer className="pl-footer">
-        <div className="pl-footer__grid">
-          <div className="pl-footer__col">
+      <div className="pl-footer-scroll">
+        <footer className="pl-footer">
+          <div className="pl-footer__start">
+            <div className="pl-social">
+              {REDES.map((red) => (
+                <a key={red.name} href={red.url} target="_blank" rel="noopener noreferrer" aria-label={red.name}>
+                  <span
+                    className="pl-social__icon"
+                    style={{ backgroundPosition: `${red.cuadro * 20}% 0` }}
+                    aria-hidden="true"
+                  />
+                </a>
+              ))}
+            </div>
             <div className="pl-footer__payments" aria-label="Formas de pago">
               <img src="/planes/pago-visa.png" alt="Visa" loading="lazy" />
               <img src="/planes/pago-mastercard.png" alt="Mastercard" loading="lazy" />
@@ -270,12 +319,16 @@ export function PlanesLanding() {
             </nav>
           </div>
 
-          <div className="pl-footer__col">
-            <strong>{responsable.denominacion}</strong>
-            <address>{responsable.domicilioAtencion}</address>
+          <div className="pl-footer__company">
+            {responsable.denominacion}
+            {POLITICAS.map((p) => (
+              <Link key={p} href="/privacidad">{p}</Link>
+            ))}
           </div>
 
-          <div className="pl-footer__col pl-footer__contact">
+          <address>{responsable.domicilioAtencion}</address>
+
+          <div className="pl-footer__contact">
             <a href={`mailto:${responsable.correo}`}>{responsable.correo}</a>
             <a href="mailto:soporte@yaakob.com">soporte@yaakob.com</a>
             {responsable.telefonos.map((tel) => (
@@ -283,39 +336,21 @@ export function PlanesLanding() {
             ))}
           </div>
 
-          <nav className="pl-footer__col pl-footer__links" aria-label="Enlaces YAAKOB">
+          <nav className="pl-footer__links" aria-label="Enlaces YAAKOB">
             {SITE_LINKS.map((l) => (
               <Link key={l.href} href={l.href}>{l.label}</Link>
             ))}
           </nav>
-        </div>
-        <div className="pl-footer__bottom">
-          2026 - 2027 · <a href="https://www.yaakob.com/">www.yaakob.com</a> ·{" "}
-          <Link href="/terminos">Información legal</Link> ©
-        </div>
-      </footer>
 
-      {/* ── Botones flotantes (demo y WhatsApp) ──────────── */}
-      <div className="pl-floating">
-        <button
-          type="button"
-          className="pl-floating__btn pl-floating__demo"
-          aria-label="Probar demostración"
-          onClick={() => setDemoOpen(true)}
-        >
-          ✧
-        </button>
-        <a
-          className="pl-floating__btn pl-floating__wa"
-          href={WHATSAPP}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contactar por WhatsApp"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2m0 1.67c4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24c-1.48 0-2.93-.4-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.4 4.42c-.18 0-.47.07-.72.34-.25.27-.95.93-.95 2.26s.97 2.62 1.1 2.8c.14.18 1.88 2.98 4.63 4.06 2.29.9 2.75.72 3.25.68.5-.05 1.6-.65 1.83-1.29.22-.63.22-1.17.16-1.29-.07-.11-.25-.18-.52-.31-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.13-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.14-.42-2.17-1.34-.8-.72-1.34-1.6-1.5-1.87-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.13-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.13-.61-1.47-.84-2.01-.22-.53-.44-.46-.61-.47h-.53" />
-          </svg>
-        </a>
+          <div className="pl-footer__logo">
+            <img src="/planes/logo-footer.webp" alt="YAAKOB" loading="lazy" />
+          </div>
+
+          <div className="pl-footer__bottom">
+            2026 - 2027 · <a href="https://www.yaakob.com/">www.yaakob.com</a> ·{" "}
+            <Link href="/terminos">Información legal</Link> ©
+          </div>
+        </footer>
       </div>
 
       <DemoModal open={demoOpen} onClose={closeDemo} />
