@@ -9,7 +9,7 @@
     {
       "id": "diagnostico-fiscal",
       "slug": "diagnostico-fiscal",
-      "label": "Diagnóstico Fiscal",
+      "label": "Requerimiento Fiscal",
       "url": "/diagnostico-fiscal/view",
       "thumbnail": {
         "src": "/servicios/diagnostico-fiscal.jpg",
@@ -18,7 +18,7 @@
       "tagline": "Panorama real de su situación fiscal",
       "about": {
         "heading": "Síntesis",
-        "description": "Integración de las obligaciones del contribuyente bajo expedientes, notificaciones y posibles riesgos fiscales.",
+        "description": "Solventamos cartas invitación, requerimientos, avisos y solicitudes de información emitidas por la autoridad.",
         "tags": [
           "DIAGNÓSTICO",
           "DICTAMEN",
@@ -28,7 +28,7 @@
       },
       "description": {
         "heading": "Panorama real de su situación fiscal",
-        "body": "Integración de las obligaciones del contribuyente bajo expedientes, notificaciones y posibles riesgos fiscales."
+        "body": "Solventamos cartas invitación, requerimientos, avisos y solicitudes de información emitidas por la autoridad."
       },
       "background": {
         "fluxColor": "#c94f4f"
