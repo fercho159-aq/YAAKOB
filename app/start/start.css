@@ -1432,3 +1432,26 @@
 .sp-sub::after {
   display: none;
 }
+
+/* El disco ya no existe: el teléfono ocupa y se centra en todo el alto. */
+.sp-phone {
+  inset: 0;
+}
+.sp-phone img {
+  object-position: center;
+}
+
+@media (max-width: 760px) {
+  /* El carrusel se queda con el alto libre y el teléfono va centrado, sin el
+     hueco que dejaba el anclaje al pie. */
+  .sp-carousel {
+    margin-top: 0;
+  }
+  .sp-slide {
+    bottom: 0;
+    height: 100%;
+  }
+  .sp-slides {
+    perspective-origin: 50% 50%;
+  }
+}
