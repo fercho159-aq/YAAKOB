@@ -161,19 +161,22 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      <NavLink
-        href="/servicios"
-        aria-label="Go to home page"
-        pos="absolute"
-        top={minimal ? { base: '0.9375rem', xl: '0.9375rem' } : { base: '1.375rem', xl: '1.875rem' }}
-        left={{ base: '1.125rem', xl: '1.875rem' }}
-        w="20rem"
-        mt="-0.25rem"
-        zIndex="navigation"
-        visibility={{ base: logoHiddenOnMobile ? 'hidden' : undefined, xl: 'visible' }}
-      >
-        <AnimatedWordmark animate={animate} label="YAAKOB CONSULTORES SC" title="Yaakob" />
-      </NavLink>
+      {/* The services index goes without the bracketed wordmark. */}
+      {onServicesIndex ? null : (
+        <NavLink
+          href="/servicios"
+          aria-label="Go to home page"
+          pos="absolute"
+          top={minimal ? { base: '0.9375rem', xl: '0.9375rem' } : { base: '1.375rem', xl: '1.875rem' }}
+          left={{ base: '1.125rem', xl: '1.875rem' }}
+          w="20rem"
+          mt="-0.25rem"
+          zIndex="navigation"
+          visibility={{ base: logoHiddenOnMobile ? 'hidden' : undefined, xl: 'visible' }}
+        >
+          <AnimatedWordmark animate={animate} label="YAAKOB CONSULTORES SC" title="Yaakob" />
+        </NavLink>
+      )}
 
       {/* Mobile: news toggle pinned to the left edge, per the client's layout. */}
       <MotionFlex
