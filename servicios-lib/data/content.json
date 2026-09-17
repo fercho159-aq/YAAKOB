@@ -121,13 +121,13 @@
     {
       "id": "multas-fiscales",
       "slug": "multas-fiscales",
-      "label": "Multas Fiscales",
+      "label": "ANAM AGACE",
       "url": "/multas-fiscales/view",
       "thumbnail": {
         "src": "/servicios/multas-fiscales.jpg",
         "alt": "Corrección de multas fiscales"
       },
-      "tagline": "Disminución de sanciones y recargos",
+      "tagline": "Aduanas y comercio exterior",
       "about": {
         "heading": "Síntesis",
         "description": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente.",
@@ -139,7 +139,7 @@
         ]
       },
       "description": {
-        "heading": "Disminución de sanciones y recargos",
+        "heading": "Aduanas y comercio exterior",
         "body": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente."
       },
       "background": {
