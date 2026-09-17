@@ -132,10 +132,9 @@
         "heading": "Síntesis",
         "description": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente.",
         "tags": [
-          "MULTAS",
-          "RECARGOS",
-          "SANCIONES",
-          "CORRECCIÓN"
+          "AUDITORÍA",
+          "REQUERIMIENTO",
+          "DEFRAUDACIÓN TÉCNICA"
         ]
       },
       "description": {
