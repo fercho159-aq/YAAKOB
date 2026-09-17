@@ -1455,3 +1455,10 @@
     perspective-origin: 50% 50%;
   }
 }
+
+@media (max-width: 760px) {
+  /* El mock central manda: más ancho para que llene el alto libre. */
+  .sp-slide {
+    width: min(72vw, 360px);
+  }
+}
