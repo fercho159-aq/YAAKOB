@@ -125,12 +125,12 @@
       "url": "/multas-fiscales/view",
       "thumbnail": {
         "src": "/servicios/multas-fiscales.jpg",
-        "alt": "Corrección de multas fiscales"
+        "alt": "Aduana y comercio exterior: revisión de contenedores"
       },
       "tagline": "Aduanas y comercio exterior",
       "about": {
         "heading": "Síntesis",
-        "description": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente.",
+        "description": "Tratados comerciales, leyes aduaneras, impuestos y aranceles.",
         "tags": [
           "AUDITORÍA",
           "REQUERIMIENTO",
@@ -139,7 +139,7 @@
       },
       "description": {
         "heading": "Aduanas y comercio exterior",
-        "body": "Corrección de multas, recargos, actualizaciones y sanciones impuestas al contribuyente."
+        "body": "Tratados comerciales, leyes aduaneras, impuestos y aranceles."
       },
       "background": {
         "fluxColor": "#a84f8a"
