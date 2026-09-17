@@ -61,6 +61,7 @@ export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
           >
             <NavLink
               href="/servicios"
+              data-soft=""
               display="flex"
               alignItems="center"
               h="100%"
@@ -141,7 +142,9 @@ export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
                   )
                 }
                 return (
-                  <NavLink key={entry.label} href={entry.href ?? '/'} {...rowStyles} onClick={onClose}>
+                  // `data-soft`: the header holds the navigation for the click
+                  // sound, then routes this one in-app (see SiteHeader).
+                  <NavLink key={entry.label} href={entry.href ?? '/'} data-soft="" {...rowStyles} onClick={onClose}>
                     {inner}
                   </NavLink>
                 )

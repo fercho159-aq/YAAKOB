@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/compat/router'
 import { useContactModal } from '@servicios/components/contact'
 import { useUiSfx } from '@home/audio/useUiSfx'
 import content from '@home/data/content.json'
@@ -66,8 +67,19 @@ export function SiteHeader({ social = false, news = false }: SiteHeaderProps) {
   const { time, date } = useClock()
   const [menuOpen, setMenuOpen] = useState(false)
   const [newsOpen, setNewsOpen] = useState(false)
-  // Hover and click sounds for every link and button in the bar.
-  const sfx = useUiSfx()
+  // Null under the app router, which this header also ships in.
+  const router = useRouter()
+  // Hover and click sounds for every link and button in the bar, and in the
+  // drawers it opens. A followed link is held a beat so the click is heard;
+  // the drawer's `next/link` rows (`data-soft`) then route in-app where there
+  // is a pages router to do it, and everything else loads the document as the
+  // bar's plain anchors always have.
+  const sfx = useUiSfx({
+    navigate: (href, link) => {
+      if (router && link.dataset.soft !== undefined) void router.push(href)
+      else window.location.assign(href)
+    },
+  })
 
   // A link to the page one is already on is useless: it becomes INICIO, and
   // INICIO always leads the menu.
@@ -124,6 +136,7 @@ export function SiteHeader({ social = false, news = false }: SiteHeaderProps) {
                 key={m.name}
                 className="yk-navlink"
                 href={m.url}
+                {...(m.modal ? { 'data-modal': '' } : {})}
                 {...(!m.modal && isExternal(m.url)
                   ? { target: '_blank', rel: 'noopener noreferrer' }
                   : {})}

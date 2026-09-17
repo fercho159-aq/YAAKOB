@@ -107,6 +107,7 @@ export function MenuOverlay({ isOpen, onClose, footer }: MenuOverlayProps) {
           >
             <NavLink
               href="/servicios"
+              data-soft=""
               display={{ base: 'flex', xl: 'none' }}
               alignItems="center"
               h="100%"
