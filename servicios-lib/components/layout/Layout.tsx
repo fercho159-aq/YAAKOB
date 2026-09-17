@@ -57,8 +57,9 @@ export function Layout({
         flexDirection="column"
         style={rootStyle}
       >
-        {/* El mismo header de la portada en todas las páginas. */}
-        <SiteHeader />
+        {/* El mismo header de la portada en todas las páginas; NOTICIAS solo
+            acompaña a esta sección. */}
+        <SiteHeader news />
         {/*
          * No AnimatePresence around the page. Layout lives *inside* the page
          * in the Pages Router, so it unmounts with it and could never play an

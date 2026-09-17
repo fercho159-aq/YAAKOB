@@ -507,12 +507,17 @@ input:-webkit-autofill:hover {
 		font-weight: 600;
 		letter-spacing: 0.22em;
 	}
-	/* NOTICIAS: mismo tono que los enlaces del menú. */
+	/* NOTICIAS: cuelga bajo la franja blanca, ya sobre el fondo oscuro de la
+	   sección de Servicios, así que va en claro. */
 	.yk-news {
+		position: absolute;
+		top: 100%;
+		right: 22px;
+		margin-top: 10px;
 		padding: 0;
 		border: none;
 		background: transparent;
-		color: #1a1a1a;
+		color: #ffffff;
 		font-family: inherit;
 		font-size: 10px;
 		font-weight: 600;
@@ -542,7 +547,8 @@ input:-webkit-autofill:hover {
 	}
 	@media (max-width: 700px) {
 		#yk-nav { display: none; }
-		.yk-seal span, .yk-news { display: none; }
+		.yk-seal span { display: none; }
+		.yk-news { right: 18px; }
 		#yk-burger { display: flex; }
 		/* Single row: social icons left, hamburger right — per the client's mock. */
 		.yk-time, .yk-date { display: none; }

@@ -56,9 +56,11 @@ function usePath() {
 export interface SiteHeaderProps {
   /** Las redes sociales solo acompañan a la portada. */
   social?: boolean
+  /** El acceso a NOTICIAS solo aparece en la sección de Servicios. */
+  news?: boolean
 }
 
-export function SiteHeader({ social = false }: SiteHeaderProps) {
+export function SiteHeader({ social = false, news = false }: SiteHeaderProps) {
   const { open } = useContactModal()
   const path = usePath()
   const { time, date } = useClock()
@@ -142,15 +144,6 @@ export function SiteHeader({ social = false }: SiteHeaderProps) {
             </a>
           </nav>
           <button
-            type="button"
-            className="yk-news"
-            aria-label="Abrir noticias"
-            aria-expanded={newsOpen}
-            onClick={() => setNewsOpen((o) => !o)}
-          >
-            Noticias
-          </button>
-          <button
             id="yk-burger"
             aria-label="Abrir menú"
             onClick={() => setMenuOpen(true)}
@@ -161,6 +154,17 @@ export function SiteHeader({ social = false }: SiteHeaderProps) {
           </button>
         </div>
       </div>
+      {news ? (
+        <button
+          type="button"
+          className="yk-news"
+          aria-label="Abrir noticias"
+          aria-expanded={newsOpen}
+          onClick={() => setNewsOpen((o) => !o)}
+        >
+          Noticias
+        </button>
+      ) : null}
       <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <MenuOverlay isOpen={newsOpen} onClose={() => setNewsOpen(false)} />
     </div>
