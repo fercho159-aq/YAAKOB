@@ -1424,3 +1424,11 @@
 .sp-canvas {
   background: #ffffff;
 }
+
+/* Sin rayas: las líneas de glitch del título y las que flanquean el subtítulo. */
+.sp-title::before,
+.sp-title::after,
+.sp-sub::before,
+.sp-sub::after {
+  display: none;
+}
