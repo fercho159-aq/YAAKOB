@@ -493,6 +493,36 @@ input:-webkit-autofill:hover {
 	}
 	/* Phone hamburger: opens the shared dark MENU drawer. Hidden on desktop,
 	   where the inline nav remains. */
+	/* Sello del árbol de la vida con su leyenda, a la izquierda de la barra. */
+	.yk-seal {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		text-decoration: none;
+		color: #1a1a1a;
+	}
+	.yk-seal img { display: block; width: 30px; height: 30px; object-fit: contain; }
+	.yk-seal span {
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+	}
+	/* NOTICIAS: mismo tono que los enlaces del menú. */
+	.yk-news {
+		padding: 0;
+		border: none;
+		background: transparent;
+		color: #1a1a1a;
+		font-family: inherit;
+		font-size: 10px;
+		font-weight: 600;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		opacity: 0.75;
+		cursor: pointer;
+		transition: opacity .25s ease;
+	}
+	.yk-news:hover { opacity: 1; }
 	#yk-burger {
 		display: none;
 		flex-direction: column;
@@ -512,6 +542,7 @@ input:-webkit-autofill:hover {
 	}
 	@media (max-width: 700px) {
 		#yk-nav { display: none; }
+		.yk-seal span, .yk-news { display: none; }
 		#yk-burger { display: flex; }
 		/* Single row: social icons left, hamburger right — per the client's mock. */
 		.yk-time, .yk-date { display: none; }

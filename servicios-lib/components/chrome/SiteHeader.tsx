@@ -5,6 +5,7 @@ import { useContactModal } from '@servicios/components/contact'
 import { useUiSfx } from '@home/audio/useUiSfx'
 import content from '@home/data/content.json'
 import { MenuDrawer } from './MenuDrawer'
+import { MenuOverlay } from './MenuOverlay'
 
 // Split ring from the services footer: two 150 degree arcs on r=10.5,
 // leaving a gap top-right and bottom-left.
@@ -57,6 +58,7 @@ export function SiteHeader() {
   const path = usePath()
   const { time, date } = useClock()
   const [menuOpen, setMenuOpen] = useState(false)
+  const [newsOpen, setNewsOpen] = useState(false)
   // Hover and click sounds for every link and button in the bar.
   const sfx = useUiSfx()
 
@@ -70,6 +72,11 @@ export function SiteHeader() {
   return (
     <div id="yk-hud" {...sfx}>
       <div className="yk-hud-side yk-hud-left">
+        {/* Sello del árbol de la vida con su leyenda, como en /servicios. */}
+        <a className="yk-seal" href="/" aria-label="YAAKOB, inicio">
+          <img src="/logo-xix-xxiii.png" alt="" />
+          <span>XIX-XXIII</span>
+        </a>
         <div className="yk-time" id="yk-time" suppressHydrationWarning>
           {time}
         </div>
@@ -128,6 +135,15 @@ export function SiteHeader() {
             </a>
           </nav>
           <button
+            type="button"
+            className="yk-news"
+            aria-label="Abrir noticias"
+            aria-expanded={newsOpen}
+            onClick={() => setNewsOpen((o) => !o)}
+          >
+            Noticias
+          </button>
+          <button
             id="yk-burger"
             aria-label="Abrir menú"
             onClick={() => setMenuOpen(true)}
@@ -139,6 +155,7 @@ export function SiteHeader() {
         </div>
       </div>
       <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MenuOverlay isOpen={newsOpen} onClose={() => setNewsOpen(false)} />
     </div>
   )
 }
