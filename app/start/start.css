@@ -100,7 +100,7 @@
   width: calc(100% + 32px);
   margin: 0 -16px clamp(14px, 2.4vh, 26px);
   padding: 0 18px;
-  height: 55px;
+  height: 46px;
   border-bottom: 1px solid rgba(180, 180, 180, 0.18);
   background: linear-gradient(180deg, rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0));
   box-sizing: border-box;
@@ -891,7 +891,7 @@
 /* Cabecera clara (/apps, /planes): la misma franja blanca de /servicios,
    con sello a la izquierda y tipografía oscura. */
 .sp-topbar--light {
-  height: 64px;
+  height: 52px;
   border-bottom: none;
   background: #fff;
   box-shadow: 0 6px 18px rgba(26, 26, 26, 0.16), 0 1px 3px rgba(26, 26, 26, 0.1);
@@ -934,7 +934,7 @@
     width: calc(100% + 24px);
     margin: 0 -12px 10px;
     padding: 0 12px;
-    height: 56px;
+    height: 48px;
   }
   .sp-topbar__desktop {
     display: none;
@@ -973,7 +973,7 @@
   .sp-burger.is-open span:nth-child(2) { opacity: 0; }
   .sp-burger.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
   .sp-topbar--light {
-    height: 56px;
+    height: 48px;
   }
   .sp-topbar--light .sp-burger {
     border-color: rgba(26, 26, 26, 0.2);

@@ -514,9 +514,9 @@ function PhoneCarousel({ onEnlarge, frozen }: { onEnlarge: (index: number) => vo
 }
 
 // ─── Main Page ──────────────────────────────────────────────────
-export default function StartPage() {
-  const [showSplash, setShowSplash] = useState(true);
-  const [phase, setPhase] = useState(0);
+export default function StartPage({ splash = true }: { splash?: boolean }) {
+  const [showSplash, setShowSplash] = useState(splash);
+  const [phase, setPhase] = useState(splash ? 0 : 2);
   const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   const handleSplashDone = useCallback(() => {
