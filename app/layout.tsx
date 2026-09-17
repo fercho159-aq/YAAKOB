@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
+  title: "Yaakob - SAT - Inteligencia fiscal",
   description:
     "Yaakob Consultores S.C.: despacho especializado en protección y defensa fiscal. Diagnóstico fiscal, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B, UIF-FGR, controles volumétricos y regularización fiscal. Asesoría con L.C. Juan José de Anda González en CDMX.",
   keywords:
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://yaakob.com/",
-    title: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
+    title: "Yaakob - SAT - Inteligencia fiscal",
     description:
       "Despacho especializado en defensa fiscal: diagnóstico, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B y UIF-FGR.",
     images: "/logo.png",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
+    title: "Yaakob - SAT - Inteligencia fiscal",
     description:
       "Despacho especializado en defensa fiscal ante el SAT. Diagnóstico, auditorías, créditos fiscales, multas y más.",
     images: "/logo.png",
@@ -48,7 +48,7 @@ const jsonLd = {
       "@type": "LegalService",
       "@id": "https://yaakob.com/#organization",
       name: "Yaakob Consultores S.C.",
-      alternateName: "Yaakob - XIX - XXIII",
+      alternateName: "Yaakob - SAT - Inteligencia fiscal",
       url: "https://yaakob.com",
       logo: "https://yaakob.com/logo.png",
       image: "https://yaakob.com/logo.png",
@@ -98,7 +98,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://yaakob.com/#website",
       url: "https://yaakob.com",
-      name: "Yaakob - XIX - XXIII",
+      name: "Yaakob - SAT - Inteligencia fiscal",
       description: "Sitio web oficial de Yaakob Consultores S.C. - Protección y defensa fiscal",
       publisher: { "@id": "https://yaakob.com/#organization" },
       inLanguage: "es-MX",
@@ -107,7 +107,7 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": "https://yaakob.com/#webpage",
       url: "https://yaakob.com",
-      name: "Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México",
+      name: "Yaakob - SAT - Inteligencia fiscal",
       isPartOf: { "@id": "https://yaakob.com/#website" },
       about: { "@id": "https://yaakob.com/#organization" },
       description:

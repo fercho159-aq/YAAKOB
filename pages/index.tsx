@@ -12,7 +12,7 @@ const jsonLd = {
       '@type': 'LegalService',
       '@id': 'https://yaakob.com/#organization',
       name: 'Yaakob Consultores S.C.',
-      alternateName: 'Yaakob - XIX - XXIII',
+      alternateName: 'Yaakob - SAT - Inteligencia fiscal',
       url: 'https://yaakob.com',
       logo: 'https://yaakob.com/logo.png',
       image: 'https://yaakob.com/logo.png',
@@ -62,7 +62,7 @@ const jsonLd = {
       '@type': 'WebSite',
       '@id': 'https://yaakob.com/#website',
       url: 'https://yaakob.com',
-      name: 'Yaakob - XIX - XXIII',
+      name: 'Yaakob - SAT - Inteligencia fiscal',
       description: 'Sitio web oficial de Yaakob Consultores S.C. - Protección y defensa fiscal',
       publisher: { '@id': 'https://yaakob.com/#organization' },
       inLanguage: 'es-MX',
@@ -71,7 +71,7 @@ const jsonLd = {
       '@type': 'WebPage',
       '@id': 'https://yaakob.com/#webpage',
       url: 'https://yaakob.com',
-      name: 'Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México',
+      name: 'Yaakob - SAT - Inteligencia fiscal',
       isPartOf: { '@id': 'https://yaakob.com/#website' },
       about: { '@id': 'https://yaakob.com/#organization' },
       description:
@@ -128,7 +128,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México</title>
+        <title>Yaakob - SAT - Inteligencia fiscal</title>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta name="google" content="notranslate" />
         <meta
@@ -142,7 +142,7 @@ export default function Home() {
         <meta name="theme-color" content="#0a0a0a" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://yaakob.com/" />
-        <meta property="og:title" content="Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México" />
+        <meta property="og:title" content="Yaakob - SAT - Inteligencia fiscal" />
         <meta
           property="og:description"
           content="Despacho especializado en defensa fiscal: diagnóstico, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B y UIF-FGR."
@@ -152,7 +152,7 @@ export default function Home() {
         <meta property="og:locale" content="es_MX" />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://yaakob.com/" />
-        <meta property="twitter:title" content="Yaakob - XIX - XXIII | Protección y Defensa Fiscal en México" />
+        <meta property="twitter:title" content="Yaakob - SAT - Inteligencia fiscal" />
         <meta
           property="twitter:description"
           content="Despacho especializado en defensa fiscal ante el SAT. Diagnóstico, auditorías, créditos fiscales, multas y más."
