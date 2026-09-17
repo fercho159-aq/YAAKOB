@@ -112,13 +112,13 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         bg="grey1"
         color="white"
         border="1px solid"
-        borderColor="rgba(255,255,255,0.09)"
+        borderColor="rgba(22,183,227,0.55)"
         borderRadius="18px"
         overflow="hidden"
         mx={[3, null, 6]}
         my={[4, null, 8]}
         maxH="calc(var(--vh, 1vh) * 92)"
-        boxShadow="2xl"
+        boxShadow="0 0 0 1px rgba(22,183,227,0.35), 0 0 18px rgba(22,183,227,0.35), 0 0 48px rgba(22,183,227,0.18)"
       >
         <Flex
           align="center"

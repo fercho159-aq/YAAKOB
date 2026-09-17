@@ -65,7 +65,7 @@
     {
       "id": "requerimientos-sat",
       "slug": "requerimientos-sat",
-      "label": "Requerimientos SAT",
+      "label": "Diagnóstico Fiscal",
       "url": "/requerimientos-sat/view",
       "thumbnail": {
         "src": "/servicios/requerimientos-sat.jpg",
@@ -121,7 +121,7 @@
     {
       "id": "multas-fiscales",
       "slug": "multas-fiscales",
-      "label": "ANAM AGACE",
+      "label": "Aduana y Comercio Exterior",
       "url": "/multas-fiscales/view",
       "thumbnail": {
         "src": "/servicios/multas-fiscales.jpg",
