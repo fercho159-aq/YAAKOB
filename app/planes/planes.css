@@ -81,6 +81,11 @@ html.pl-modal-open {
   background: rgba(10, 10, 10, 0.86);
   backdrop-filter: blur(14px);
 }
+/* La versión clara (StartHeader en /planes) conserva su franja blanca. */
+.pl .sp-topbar--light {
+  background: #fff;
+  backdrop-filter: none;
+}
 
 /* Micro puntos de la referencia sobre negro. */
 .pl-dots {
