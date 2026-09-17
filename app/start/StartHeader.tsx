@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   FacebookGlyph,
   InstagramGlyph,
@@ -16,6 +17,7 @@ import "./start.css";
 /**
  * Barra superior de /start, /apps y /planes: redes a la izquierda, enlaces y
  * logo a la derecha; en teléfono, logo + hamburguesa con menú desplegable.
+ * En /apps y /planes va en su versión clara (ver LIGHT_ROUTES).
  * Los estilos (`.sp-topbar`, `.sp-social`, `.sp-links`…) viven en start.css.
  */
 
@@ -38,8 +40,16 @@ const SOCIAL_LINKS: { label: string; href: string; icon: React.ReactNode; whatsa
   { label: "WhatsApp", href: "https://wa.me/5215530187711", whatsapp: true, icon: <WhatsappGlyph /> },
 ];
 
+/**
+ * Rutas con la cabecera clara de /servicios: franja blanca, sello XIX-XXIII a
+ * la izquierda y, en lugar del enlace a la página actual, uno a la portada.
+ */
+const LIGHT_ROUTES = ["/apps", "/planes"];
+
 export function StartHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const light = LIGHT_ROUTES.includes(pathname ?? "");
 
   // Escape cierra el menú del teléfono; al pasar a escritorio también se cierra.
   useEffect(() => {
@@ -77,13 +87,24 @@ export function StartHeader() {
   );
 
   return (
-    <header className="sp-topbar">
+    <header className={`sp-topbar${light ? " sp-topbar--light" : ""}`}>
       <div className="sp-topbar__desktop">
-        {socials("sp-social")}
+        {light ? (
+          <div className="sp-seal">
+            <img src="/logo-xix-xxiii.png" alt="Árbol de la vida" />
+            <span>XIX-XXIII</span>
+          </div>
+        ) : (
+          socials("sp-social")
+        )}
         <nav className="sp-links" aria-label="Navegación principal">
-          {NAV_LINKS.map((l) => (
-            <Link key={l.href} href={l.href}>{l.label}</Link>
-          ))}
+          {NAV_LINKS.map((l) =>
+            light && l.href === pathname ? (
+              <Link key={l.href} href="/">Inicio</Link>
+            ) : (
+              <Link key={l.href} href={l.href}>{l.label}</Link>
+            ),
+          )}
           <Link className="sp-logo" href="/" aria-label="YAAKOB, inicio">
             <img src="/logo-yaakob.png" alt="" />
           </Link>

@@ -888,6 +888,41 @@
   border-color: rgba(180, 180, 180, 0.3);
 }
 
+/* Cabecera clara (/apps, /planes): la misma franja blanca de /servicios,
+   con sello a la izquierda y tipografía oscura. */
+.sp-topbar--light {
+  height: 64px;
+  border-bottom: none;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(26, 26, 26, 0.16), 0 1px 3px rgba(26, 26, 26, 0.1);
+}
+.sp-topbar--light .sp-links > a:not(.sp-logo) {
+  color: rgba(0, 0, 0, 0.8);
+}
+.sp-topbar--light .sp-links > a:not(.sp-logo):hover,
+.sp-topbar--light .sp-links > a:not(.sp-logo):focus-visible {
+  color: #000;
+  border-color: rgba(26, 26, 26, 0.25);
+  box-shadow: none;
+}
+.sp-seal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #1a1a1a;
+}
+.sp-seal img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+.sp-seal span {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
 /* ─── Responsive ──────────────────────────────────────── */
 @media (max-width: 760px) {
   .sp-content {
@@ -937,6 +972,16 @@
   .sp-burger.is-open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
   .sp-burger.is-open span:nth-child(2) { opacity: 0; }
   .sp-burger.is-open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+  .sp-topbar--light {
+    height: 56px;
+  }
+  .sp-topbar--light .sp-burger {
+    border-color: rgba(26, 26, 26, 0.2);
+    background: transparent;
+  }
+  .sp-topbar--light .sp-burger span {
+    background: #1a1a1a;
+  }
 
   .sp-mobile-menu {
     position: fixed;
