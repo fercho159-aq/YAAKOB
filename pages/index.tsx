@@ -1,5 +1,5 @@
 import { useIntroSfx } from '@home/audio/useIntroSfx'
-import { HebrewSplash, Hud, IntroVeil, LegalBar, SplashStage, Stage } from '@home/components'
+import { HebrewSplash, Hud, IntroVeil, SplashStage, Stage } from '@home/components'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
@@ -178,7 +178,6 @@ export default function Home() {
           <IntroVeil />
           <HebrewSplash />
           <Hud />
-          <LegalBar />
         </>
       ) : null}
     </>
