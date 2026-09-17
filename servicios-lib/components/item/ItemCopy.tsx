@@ -6,6 +6,7 @@ import { ItemButton } from './ItemButton'
 import { MotionParagraph } from './motion'
 import { AnimatedHeading, ScrambleText, VARIANTS } from './shared'
 import type { Item, ItemDetail } from './types'
+import { BRAND_GRADIENT } from '@servicios/theme'
 
 /** Body copy simply fades up once the heading above it has finished. */
 const bodyVariants: Variants = {
@@ -108,6 +109,7 @@ export function ItemCopy({ item, detail, animate = true, delay = 0, ...rest }: I
               minHeight={{ xl: '2.875rem' }}
               fontSize={{ xl: '0.75rem' }}
               bg="goldAlt"
+              bgImage={BRAND_GRADIENT}
               color="black"
               label={detail.login.ctas.login.label}
               onClick={openContact}

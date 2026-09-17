@@ -5,6 +5,22 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 }
 
+/** Brand gradient stops, deep indigo to cyan. */
+export const BRAND_STOPS = ['#2f38af', '#1d97da', '#16b7e3', '#0abce2'] as const
+
+/** The brand gradient as a CSS background image, for fills and bars. */
+export const BRAND_GRADIENT = `linear-gradient(90deg, ${BRAND_STOPS.join(', ')})`
+
+/**
+ * Canvas version of the brand gradient, laid across `width` pixels, for the
+ * brackets and the cursor ring that are stroked by hand.
+ */
+export function brandCanvasGradient(ctx: CanvasRenderingContext2D, width: number) {
+  const gradient = ctx.createLinearGradient(0, 0, width, 0)
+  BRAND_STOPS.forEach((stop, i) => gradient.addColorStop(i / (BRAND_STOPS.length - 1), stop))
+  return gradient
+}
+
 /**
  * Tokens below mirror the compiled theme of airforceaircade.com — only the
  * entries that differ from Chakra's defaults are listed.
@@ -15,9 +31,12 @@ export const theme = extendTheme({
     blackAlt: '#111316',
     grey1: '#0D0F15',
     grey2: '#9d9d9d',
-    gold: '#FF9933',
-    goldAlt: '#B76F24',
-    focus: '#FF9933',
+    // The "gold" names are kept from the original theme; the accent is now the
+    // brand blue. Solid fills use a stop of BRAND_STOPS, gradients use
+    // BRAND_GRADIENT.
+    gold: '#16b7e3',
+    goldAlt: '#1d97da',
+    focus: '#16b7e3',
   },
   fonts: {
     heading: 'var(--font-din-ot),-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif',
@@ -103,7 +122,7 @@ export const theme = extendTheme({
       },
       "a:focus-visible, button:focus-visible, [role='button']:focus-visible": {
         boxShadow: 'none',
-        outline: '#FF9933 solid 2px',
+        outline: '#16b7e3 solid 2px',
         outlineOffset: '1px',
       },
     },

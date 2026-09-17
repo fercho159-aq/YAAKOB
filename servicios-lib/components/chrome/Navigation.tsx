@@ -7,6 +7,7 @@ import { MenuDrawer } from './MenuDrawer'
 import { MenuOverlay } from './MenuOverlay'
 import { AnimatedWordmark } from './Wordmark'
 import { MotionBox, MotionFlex, NavLink } from './motion'
+import { BRAND_GRADIENT } from '@servicios/theme'
 
 const EASE: [number, number, number, number] = [0.25, 0, 0, 1]
 
@@ -66,11 +67,11 @@ function Bars() {
       h="0.75rem"
       w="1rem"
     >
-      <MotionBox as="span" display="block" bg="gold" h="2px" variants={barVariants} />
+      <MotionBox as="span" display="block" bgImage={BRAND_GRADIENT} h="2px" variants={barVariants} />
       <MotionBox
         as="span"
         display="block"
-        bg="gold"
+        bgImage={BRAND_GRADIENT}
         h="2px"
         transformOrigin="left"
         variants={barVariants}
@@ -79,7 +80,7 @@ function Bars() {
       <MotionBox
         as="span"
         display="block"
-        bg="gold"
+        bgImage={BRAND_GRADIENT}
         h="2px"
         transformOrigin="left"
         variants={barVariants}
@@ -258,9 +259,9 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
           <Box
             w="1.25rem"
             h="1.25rem"
-            bg="gold"
+            bgImage={BRAND_GRADIENT}
             transition="background 0.2s linear"
-            _hover={{ bg: 'white' }}
+            _hover={{ bgImage: 'none', bg: 'white' }}
             sx={{
               WebkitMaskImage: 'url(/logo.png)',
               maskImage: 'url(/logo.png)',

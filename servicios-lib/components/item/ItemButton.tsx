@@ -31,7 +31,7 @@ const baseStyle: BoxProps = {
   letterSpacing: 'widest',
   // Not the `transition` style prop: framer-motion claims that name.
   sx: { transition: 'background 0.15s linear, color 0.15s linear' },
-  _hover: { color: 'goldAlt', bg: 'rgba(0,0,0,0.3)' },
+  _hover: { color: 'goldAlt', bg: 'rgba(0,0,0,0.3)', bgImage: 'none' },
 }
 
 type ItemButtonBaseProps = {

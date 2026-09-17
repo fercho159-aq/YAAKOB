@@ -1,10 +1,10 @@
 import type { BoxProps } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import { brandCanvasGradient } from '@servicios/theme'
 import { MotionCanvas } from './motion'
 import { VARIANTS } from './shared'
 
-const GOLD = '#FF9933'
 /** Half of the 1.5px stroke, so the line lands on the pixel grid. */
 const INSET = 0.75
 const ARM = 8
@@ -41,7 +41,7 @@ export function CornerFrame(props: BoxProps) {
     if (!ctx) return
     ctx.scale(ratio, ratio)
     ctx.clearRect(0, 0, width, height)
-    ctx.strokeStyle = GOLD
+    ctx.strokeStyle = brandCanvasGradient(ctx, width)
     ctx.lineWidth = 1.5
 
     const corners: [number, number, number, number, number, number][] = [

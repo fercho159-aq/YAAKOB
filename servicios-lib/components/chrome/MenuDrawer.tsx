@@ -9,6 +9,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { useContactModal } from '@servicios/components/contact'
+import { BRAND_GRADIENT } from '@servicios/theme'
 import { AnimatedWordmark } from './Wordmark'
 import { NavLink } from './motion'
 
@@ -43,7 +44,7 @@ function FlowerGlyph({ size }: { size: string }) {
     <Box
       w={size}
       h={size}
-      bg="gold"
+      bgImage={BRAND_GRADIENT}
       sx={{
         WebkitMaskImage: 'url(/logo.png)',
         maskImage: 'url(/logo.png)',

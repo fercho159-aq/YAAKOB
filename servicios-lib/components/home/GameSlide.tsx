@@ -3,10 +3,11 @@ import type { Variants } from 'framer-motion'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { StackedWordmark } from '@servicios/components/svg'
+import { BRAND_GRADIENT } from '@servicios/theme'
 import { AnimatedHeading } from './AnimatedHeading'
 import { SLIDE_HEIGHT_XL, SLIDE_WIDTH_XL, VARIANTS, slideWidthPct } from './constants'
 import { useIsDesktop } from './hooks'
-import { MotionAspectRatio, MotionBox, MotionParagraph, MotionSpan } from './motion'
+import { MotionBox, MotionParagraph, MotionSpan } from './motion'
 import { SlideCorners } from './SlideCorners'
 import type { CarouselItem } from './types'
 
@@ -93,11 +94,16 @@ function Thumbnail({ src, alt, animate = true }: { src: string; alt: string; ani
       initial={VARIANTS.hidden}
       animate={animate && loaded ? VARIANTS.visible : VARIANTS.hidden}
       overflow="hidden"
+      h={{ base: '100%', xl: 'auto' }}
     >
-      <MotionAspectRatio
+      {/* On phones the frame takes whatever height the column leaves over;
+          from xl up it keeps the authored 390x520 proportion. */}
+      <MotionBox
         variants={thumbnailImageVariants}
-        ratio={SLIDE_WIDTH_XL / SLIDE_HEIGHT_XL}
+        pos="relative"
         w="100%"
+        h={{ base: '100%', xl: 'auto' }}
+        aspectRatio={{ xl: `${SLIDE_WIDTH_XL} / ${SLIDE_HEIGHT_XL}` }}
         border="1px solid rgba(255,255,255,0.2)"
       >
         <Image
@@ -108,7 +114,7 @@ function Thumbnail({ src, alt, animate = true }: { src: string; alt: string; ani
           alt={alt}
           onLoad={() => setLoaded(true)}
         />
-      </MotionAspectRatio>
+      </MotionBox>
     </MotionBox>
   )
 }
@@ -150,7 +156,7 @@ function WordmarkAndTagline({
             w: '0.9375rem',
             h: '0.1875rem',
             mt: '1.125rem',
-            bg: 'gold',
+            bgImage: BRAND_GRADIENT,
           }}
           variants={riseVariants}
           custom={0.3}
@@ -169,7 +175,7 @@ function TagPill({ label, delay = 0 }: { label: string; delay?: number }) {
       alignItems="center"
       h="1.5625rem"
       px="0.5rem"
-      border="1px solid rgba(255,153,51,0.4)"
+      border="1px solid rgba(22,183,227,0.4)"
       fontSize="0.6875rem"
       fontWeight="semibold"
       textAlign="center"
@@ -206,6 +212,7 @@ function AboutPanel({
       bottom="0"
       left={{ base: '-1.625rem', xl: '100%' }}
       mt={{ base: '4.25rem', xl: 0 }}
+      flexShrink={0}
       pl={{ xl: '4rem' }}
       w={{ base: 'calc(100% + 3.25rem)', xl: slideWidthPct(348) }}
       pointerEvents={isActive ? 'none' : undefined}
@@ -271,8 +278,11 @@ export function GameSlide({
       variants={slideVariants}
       initial={VARIANTS.hidden}
       animate={isActive ? VARIANTS.visible : VARIANTS.hidden}
+      h={{ base: '100%', xl: 'auto' }}
+      display={{ base: 'flex', xl: 'block' }}
+      flexDirection="column"
     >
-      <Box pos="relative">
+      <Box pos="relative" flex={{ base: '1 1 auto' }} minH={{ base: 0 }}>
         {isActive && (
           <SlideCorners
             top={{ base: '-1.5rem', xl: '-2.1875rem' }}

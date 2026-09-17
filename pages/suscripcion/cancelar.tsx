@@ -184,7 +184,7 @@ export default function Cancelar() {
               isLoading={enviando}
               loadingText="Cancelando…"
               _hover={{ bg: 'goldAlt' }}
-              _disabled={{ bg: 'rgba(255,153,51,0.35)', cursor: 'not-allowed' }}
+              _disabled={{ bg: 'rgba(22,183,227,0.35)', cursor: 'not-allowed' }}
             >
               Cancelar mi suscripción
             </Button>

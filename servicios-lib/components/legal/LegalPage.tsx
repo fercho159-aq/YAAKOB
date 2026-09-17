@@ -8,6 +8,7 @@ import { ScrambleText } from '@servicios/components/ui/ScrambleText'
 import Layout from '@servicios/components/layout/Layout'
 import content from '@servicios/data/content.json'
 import type { LegalDocument, LegalSection } from './types'
+import { BRAND_GRADIENT } from '@servicios/theme'
 
 /** Reading column, authored against the same 1440 reference as the detail page. */
 const COLUMN_WIDTH = { base: `${(315 / 375) * 100}%`, xl: '46rem' }
@@ -50,7 +51,7 @@ function Bullets({ items }: { items: string[] }) {
             top: '0.5625rem',
             w: '0.3125rem',
             h: '0.3125rem',
-            bg: 'goldAlt',
+            bgImage: BRAND_GRADIENT,
           }}
         >
           {item}

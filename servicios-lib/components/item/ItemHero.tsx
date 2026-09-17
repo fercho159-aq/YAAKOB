@@ -7,6 +7,7 @@ import { ItemThumbnail } from './ItemThumbnail'
 import { CURSOR_TYPE, type CursorType, useIsTouchDevice } from './shared'
 import { ShareButton } from './ShareButton'
 import type { Item, ItemDetail } from './types'
+import { BRAND_GRADIENT } from '@servicios/theme'
 
 /** The thumbnail's intrinsic frame, 508 × 406. */
 const THUMBNAIL_RATIO = 508 / 406
@@ -50,6 +51,7 @@ export function ItemHero({ item, detail, shareText, animate = true, ...rest }: I
         w="100%"
         mt={{ base: '0.625rem', xl: '1.3125rem' }}
         bg="goldAlt"
+        bgImage={BRAND_GRADIENT}
         color="black"
         label={detail.ctas.primary}
         href={item.url}

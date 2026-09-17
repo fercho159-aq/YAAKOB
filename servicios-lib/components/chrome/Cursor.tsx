@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { animate, useAnimation, useMotionValue, type Variants } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { useMouseFollower } from '@servicios/hooks'
+import { brandCanvasGradient } from '@servicios/theme'
 import { MotionBox } from './motion'
 
 export const CURSOR_DIAMETER = 177
@@ -11,7 +12,6 @@ export const CURSOR_STROKE_WIDTH = 2
 const RADIUS = CURSOR_DIAMETER / 2
 
 const WHITE = '#FFFFFF'
-const GOLD = '#FF9933'
 
 export const CURSOR_TYPE = {
   label: 'label',
@@ -187,8 +187,9 @@ export function Cursor({
     }
 
     if (progress > 0) {
-      context.fillStyle = GOLD
-      context.strokeStyle = GOLD
+      const gradient = brandCanvasGradient(context, CURSOR_DIAMETER)
+      context.fillStyle = gradient
+      context.strokeStyle = gradient
 
       // Inner hairline arc.
       context.beginPath()

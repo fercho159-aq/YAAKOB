@@ -53,14 +53,15 @@ export default function Home({ data, animate = true }: HomeProps) {
         <meta property="og:type" content="website" />
       </Head>
       <MotionArticle
-        display={{ xl: 'flex' }}
+        display="flex"
+        flexDirection={{ base: 'column', xl: 'row' }}
         mx="auto"
-        h="100%"
         // Nav's logo/menu button are overlaid, not in flow — this pushes the
-        // carousel clear of them. Layout's own wrapper handles the scrolling
-        // and sizing, so nothing else here needs an explicit height.
+        // carousel clear of them. Below xl the article fills exactly what is
+        // left of the content strip, so the slide can stretch into it.
+        h={{ base: 'calc(100% - 3.75rem)', md: 'calc(100% - 4.6875rem)', xl: '100%' }}
         mt={{ base: '3.75rem', md: '4.6875rem' }}
-        pb={{ base: '2.1875rem', md: 0 }}
+        pb={{ base: '0.5rem', md: 0 }}
         variants={articleVariants}
         initial={VARIANTS.hidden}
         animate={animate ? VARIANTS.visible : VARIANTS.hidden}
@@ -68,7 +69,7 @@ export default function Home({ data, animate = true }: HomeProps) {
       >
         {/* The original also carried an `mt` here, but nested one level too deep,
             so it compiled to a `.css-idxniu mt{…}` rule that matched nothing. */}
-        <Box w="100%" m="auto">
+        <Box w="100%" m="auto" flex={{ base: '1 1 auto', xl: 'initial' }} minH={{ base: 0 }}>
           <GameCarousel
             items={data.items}
             animate={animate}

@@ -5,6 +5,7 @@ import type { Swiper as SwiperClass } from 'swiper'
 import { A11y, Keyboard, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Cursor } from '@servicios/components/chrome'
+import { BRAND_GRADIENT } from '@servicios/theme'
 import {
   CURSOR_TYPE,
   SLIDES_OFFSET_BASE,
@@ -71,7 +72,8 @@ const swiperSx: SystemStyleObject = {
       },
       '&.swiper-pagination-bullet-active': {
         width: '1.875rem',
-        backgroundColor: '#FF9933',
+        backgroundColor: 'gold',
+        backgroundImage: BRAND_GRADIENT,
         opacity: 1,
         boxShadow: 'none',
       },
@@ -184,6 +186,9 @@ export function GameCarousel({
     <Box
       pos="relative"
       overflowX="hidden"
+      h={{ base: '100%', xl: 'auto' }}
+      display={{ base: 'flex', xl: 'block' }}
+      flexDirection="column"
       style={{ WebkitTapHighlightColor: 'transparent' }}
       onMouseLeave={hideCursor}
     >
@@ -227,8 +232,11 @@ export function GameCarousel({
         }}
         onSliderMove={hideCursor}
         pt={{ base: '2.625rem', xl: '2.5rem' }}
-        pb={{ base: '2rem', xl: '4.375rem' }}
+        pb={{ base: '0.5rem', xl: '4.375rem' }}
         userSelect="none"
+        flex={{ base: '1 1 auto' }}
+        minH={{ base: 0 }}
+        w="100%"
         sx={swiperSx}
       >
         {items.map((item, index) => (
@@ -247,6 +255,7 @@ export function GameCarousel({
               href={`/servicios/${item.slug}`}
               aria-label={`Go to ${item.label}`}
               display="block"
+              h={{ base: '100%', xl: 'auto' }}
               onClick={hideCursor}
             >
               <GameSlide

@@ -1,10 +1,10 @@
 import type { BoxProps } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useEffect, useRef } from 'react'
+import { brandCanvasGradient } from '@servicios/theme'
 import { VARIANTS } from './constants'
 import { MotionCanvas } from './motion'
 
-const GOLD = '#FF9933'
 const ARM = 8
 /** Half of the 1.5px stroke, so the corner sits fully inside the canvas. */
 const INSET = 0.75
@@ -36,7 +36,7 @@ export function SlideCorners(props: BoxProps) {
     if (!ctx) return
     ctx.scale(ratio, ratio)
     ctx.clearRect(0, 0, width, height)
-    ctx.strokeStyle = GOLD
+    ctx.strokeStyle = brandCanvasGradient(ctx, width)
     ctx.lineWidth = 1.5
 
     const corner = (x: number, y: number, dx: number, dy: number) => {
