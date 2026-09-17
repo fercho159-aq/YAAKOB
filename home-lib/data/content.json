@@ -1,9 +1,10 @@
 {
   "menu": [
     { "name": "Servicios", "url": "/servicios" },
-    { "name": "Contacto", "url": "https://wa.me/5215530187711", "modal": true }
+    { "name": "Planes", "url": "/planes" },
+    { "name": "Contacto", "url": "https://wa.me/5215530187711", "modal": true },
+    { "name": "App", "url": "/apps" }
   ],
-  "login": { "name": "Consultor", "url": "/start" },
   "social": [
     {
       "name": "Instagram",

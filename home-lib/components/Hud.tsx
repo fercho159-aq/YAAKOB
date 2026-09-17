@@ -10,11 +10,6 @@ const RING =
   '<path class="yk-soc-ring" d="M10.18 22.34A10.5 10.5 0 0 1 8.41 2.13"/>' +
   '<path class="yk-soc-ring" d="M13.82 1.66A10.5 10.5 0 0 1 15.59 21.87"/>'
 
-const USER_ICON =
-  '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-  '<path d="M12 12.4a4.7 4.7 0 1 0 0-9.4 4.7 4.7 0 0 0 0 9.4Zm0 1.9c-4.1 0-7.4 2.4-7.4 5.4V21h14.8v-1.3c0-3-3.3-5.4-7.4-5.4Z"/>' +
-  '</svg>'
-
 const DAYS = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB']
 const MONTHS = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
 const pad = (n: number) => (n < 10 ? '0' + n : '' + n)
@@ -39,8 +34,9 @@ function useClock() {
 }
 
 /**
- * HUD header: clock + social (left) · nav + login (right).
- * Menu/login/social entries come from home-lib/data/content.json — edit them
+ * HUD header: clock + social (left) · nav + logo (right), the same set of
+ * links as the /start header.
+ * Menu/social entries come from home-lib/data/content.json — edit them
  * there. Items with `modal: true` raise the shared ContactModal instead of
  * navigating away.
  */
@@ -107,15 +103,10 @@ export function Hud() {
                 {m.name}
               </a>
             ))}
+            <a className="yk-logo" href="/" aria-label="YAAKOB, inicio">
+              <img src="/logo-yaakob.png" alt="" />
+            </a>
           </nav>
-          <a
-            id="yk-login"
-            href={content.login.url}
-            {...(isExternal(content.login.url)
-              ? { target: '_blank', rel: 'noopener noreferrer' }
-              : {})}
-            dangerouslySetInnerHTML={{ __html: `${USER_ICON}<span>${content.login.name}</span>` }}
-          />
           <button
             id="yk-burger"
             aria-label="Abrir menú"

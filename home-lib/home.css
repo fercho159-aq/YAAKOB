@@ -5,7 +5,7 @@
      1. Page reset (scoped to html.yk-home so /servicios is unaffected)
      2. Blackout overlay + dissolve transition out of the experience
      3. Hebrew splash intro (airforceecho.com's loader layout, in Hebrew)
-     4. HUD header (clock, social, nav, login)
+     4. HUD header (clock, social, nav, logo)
    The old inline #yk-contact card styles were dropped: the home now uses the
    shared ContactModal from servicios-lib.
    ========================================================================== */
@@ -461,14 +461,14 @@ input:-webkit-autofill:hover {
 	}
 
 	/* Right nav */
-	#yk-nav { display: flex; align-items: center; gap: 22px; }
+	#yk-nav { display: flex; align-items: center; gap: 36px; }
 	#yk-nav a.yk-navlink {
 		position: relative;
 		text-decoration: none;
 		color: #1a1a1a;
 		font-size: 10px;
 		font-weight: 600;
-		letter-spacing: 0.14em;
+		letter-spacing: 0.2em;
 		text-transform: uppercase;
 		opacity: 0.75;
 		transition: opacity .25s ease;
@@ -485,42 +485,14 @@ input:-webkit-autofill:hover {
 	}
 	#yk-nav a.yk-navlink:hover { opacity: 1; }
 	#yk-nav a.yk-navlink:hover::after { transform: scaleX(1); }
-	#yk-login {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		gap: 8px;
-		height: 30px;
-		padding: 0 16px;
-		border: 1px solid rgba(26,26,26,0.4);
-		border-radius: 6px;
-		background: transparent;
-		color: #1a1a1a;
-		text-decoration: none;
-		font-size: 10px;
-		font-weight: 600;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		white-space: nowrap;
-		cursor: pointer;
-		transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
-	}
-	#yk-login svg { width: 13px; height: 13px; flex: 0 0 13px; fill: currentColor; }
-	/* Glass on hover: the frosted panel reads against the WebGL scene behind
-	   the header, so the label keeps its ink colour instead of inverting. */
-	#yk-login:hover {
-		background: rgba(255,255,255,0.55);
-		border-color: rgba(26,26,26,0.65);
-		box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 2px 10px rgba(26,26,26,0.12);
-		backdrop-filter: blur(10px) saturate(140%);
-		-webkit-backdrop-filter: blur(10px) saturate(140%);
-	}
+	#yk-nav a.yk-logo { display: flex; align-items: center; }
+	#yk-nav a.yk-logo img { display: block; height: 26px; width: auto; }
 	@media (max-width: 900px) {
 		#yk-nav { gap: 16px; }
 		#yk-nav a.yk-navlink { font-size: 9px; letter-spacing: 0.1em; }
 	}
 	/* Phone hamburger: opens the shared dark MENU drawer. Hidden on desktop,
-	   where the inline nav + login button remain. */
+	   where the inline nav remains. */
 	#yk-burger {
 		display: none;
 		flex-direction: column;
@@ -539,7 +511,7 @@ input:-webkit-autofill:hover {
 		background: #1a1a1a;
 	}
 	@media (max-width: 700px) {
-		#yk-nav, #yk-login { display: none; }
+		#yk-nav { display: none; }
 		#yk-burger { display: flex; }
 		/* Single row: social icons left, hamburger right — per the client's mock. */
 		.yk-time, .yk-date { display: none; }
