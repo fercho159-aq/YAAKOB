@@ -153,7 +153,9 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
   const ink = onServicesIndex ? '#1a1a1a' : undefined
   const linkStyles = onServicesIndex ? { ...NAV_LINK_STYLES, color: 'blackAlpha.800' } : NAV_LINK_STYLES
 
-  const topOffset = minimal ? { base: '0.5rem', xl: '0.5rem' } : { base: '0.875rem', xl: '1.5rem' }
+  const topOffset = minimal
+    ? { base: '0.5rem', xl: '0.5rem' }
+    : { base: '0.875rem', xl: onServicesIndex ? '0.96875rem' : '1.5rem' }
 
   return (
     <MotionBox
@@ -171,7 +173,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
           top={0}
           left={0}
           right={0}
-          h={minimal ? { base: '3rem', xl: '3rem' } : { base: '3.75rem', xl: '5.125rem' }}
+          h={minimal ? { base: '3rem', xl: '3rem' } : { base: '3.75rem', xl: '4rem' }}
           bg="white"
           boxShadow="0 6px 18px rgba(26,26,26,0.16), 0 1px 3px rgba(26,26,26,0.10)"
           zIndex="navigation"
@@ -186,7 +188,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
           alignItems="center"
           gap="0.875rem"
           pos="absolute"
-          top={minimal ? '0.75rem' : '1.375rem'}
+          top={minimal ? '0.75rem' : '0.625rem'}
           left="1.875rem"
           zIndex="navigation"
         >
@@ -294,12 +296,12 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
       </MotionFlex>
 
       {/* On the services index the header keeps only links and logo, so the
-          news toggle moves to the bottom-right corner, clear of the footer. */}
+          news toggle sits just under the white band, on the right. */}
       {onServicesIndex ? (
         <MotionFlex
           display={{ base: 'none', xl: 'flex' }}
           pos="fixed"
-          bottom="5.5rem"
+          top={minimal ? '3.75rem' : '4.75rem'}
           right="1.5rem"
           zIndex="navigation"
           variants={buttonVariants}
