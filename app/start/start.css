@@ -1468,3 +1468,25 @@
   border-color: rgba(22, 183, 227, 0.75);
   background: linear-gradient(90deg, rgba(22, 183, 227, 0.45), rgba(22, 183, 227, 1), rgba(22, 183, 227, 0.45));
 }
+
+/* Mismos indicadores que la portada de /servicios: barritas finas y la activa
+   más larga con el degradado de marca (indigo → cian). */
+.sp-dots {
+  gap: 1rem;
+}
+.sp-dot {
+  width: 0.6875rem;
+  height: 0.125rem;
+  border: 0;
+  border-radius: 0;
+  background: rgba(26, 26, 26, 0.35);
+  transition: width 0.3s ease-in-out, opacity 0.2s linear, background 0.3s ease;
+}
+.sp-dot:hover {
+  background: rgba(26, 26, 26, 0.6);
+}
+.sp-dot.active {
+  width: 1.875rem;
+  border: 0;
+  background-image: linear-gradient(90deg, #2f38af, #1d97da, #16b7e3, #0abce2);
+}
