@@ -18,7 +18,7 @@ import {
   type CursorType,
 } from './constants'
 import { GameSlide } from './GameSlide'
-import { useWindowSize } from './hooks'
+import { useIsTouchDevice, useWindowSize } from './hooks'
 import type { CarouselItem } from './types'
 
 // Swiper ships its layout CSS as plain stylesheets; Next allows global CSS from
@@ -122,6 +122,7 @@ export function GameCarousel({
   const [cursorType, setCursorType] = useState<CursorType>(CURSOR_TYPE.hidden)
   const [animateClick, setAnimateClick] = useState(false)
   const size = useWindowSize()
+  const isTouch = useIsTouchDevice()
 
   // Slide width and gap are both a fixed fraction of the viewport, so they are
   // recomputed rather than expressed as breakpoints.
@@ -262,12 +263,14 @@ export function GameCarousel({
           </SwiperSlide>
         ))}
       </SwiperContainer>
-      <Cursor
-        type={cursorType}
-        label="Select"
-        animateClick={animateClick}
-        onClickAnimation={() => setAnimateClick(false)}
-      />
+      {!isTouch && (
+        <Cursor
+          type={cursorType}
+          label="Select"
+          animateClick={animateClick}
+          onClickAnimation={() => setAnimateClick(false)}
+        />
+      )}
     </Box>
   )
 }
