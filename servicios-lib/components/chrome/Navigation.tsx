@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react'
+import { Box, Flex, Image, Link } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState, type ReactNode } from 'react'
@@ -146,9 +146,12 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
   const logoHiddenOnMobile =
     router.asPath !== '/' && router.asPath !== '/account-settings' && lastSegment !== 'play'
 
-  // On the services index a link back to itself is useless, so that slot
-  // points home instead.
+  // The services index gets its own corner mark, and its first nav slot
+  // points home (a link back to itself would be useless).
   const onServicesIndex = router.pathname === '/servicios'
+  // There the header sits on a white band, as on the home, so the type goes dark.
+  const ink = onServicesIndex ? '#1a1a1a' : undefined
+  const linkStyles = onServicesIndex ? { ...NAV_LINK_STYLES, color: 'blackAlpha.800' } : NAV_LINK_STYLES
 
   const topOffset = minimal ? { base: '0.5rem', xl: '0.5rem' } : { base: '0.875rem', xl: '1.5rem' }
 
@@ -161,8 +164,44 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {/* The services index goes without the bracketed wordmark. */}
-      {onServicesIndex ? null : (
+      {/* White band behind the services-index header, same look as the home HUD. */}
+      {onServicesIndex ? (
+        <Box
+          pos="fixed"
+          top={0}
+          left={0}
+          right={0}
+          h={minimal ? { base: '3rem', xl: '3rem' } : { base: '3.75rem', xl: '5.125rem' }}
+          bg="white"
+          boxShadow="0 6px 18px rgba(26,26,26,0.16), 0 1px 3px rgba(26,26,26,0.10)"
+          zIndex="navigation"
+          pointerEvents="none"
+        />
+      ) : null}
+      {/* The services index swaps the bracketed wordmark for the Tree of Life
+          seal and its XIX-XXIII legend. Phones keep that corner for NOTICIAS. */}
+      {onServicesIndex ? (
+        <Flex
+          display={{ base: 'none', xl: 'flex' }}
+          alignItems="center"
+          gap="0.875rem"
+          pos="absolute"
+          top={minimal ? '0.75rem' : '1.375rem'}
+          left="1.875rem"
+          zIndex="navigation"
+        >
+          <Image src="/logo-xix-xxiii.png" alt="Árbol de la vida" w="2.75rem" h="2.75rem" objectFit="contain" />
+          <Box
+            as="span"
+            fontSize="0.875rem"
+            fontWeight="semibold"
+            letterSpacing="0.22em"
+            color={ink}
+          >
+            XIX-XXIII
+          </Box>
+        </Flex>
+      ) : (
         <NavLink
           href="/servicios"
           aria-label="Go to home page"
@@ -186,6 +225,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         top={topOffset}
         left="0.75rem"
         zIndex="navigation"
+        color={ink}
         variants={buttonVariants}
         initial="hidden"
         animate={animate ? 'visible' : undefined}
@@ -201,6 +241,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         top={topOffset}
         right={{ base: '0.75rem', xl: '1.5rem' }}
         zIndex="navigation"
+        color={ink}
         variants={buttonVariants}
         initial="hidden"
         animate={animate ? 'visible' : undefined}
@@ -208,35 +249,66 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         {onServicesIndex ? (
           // The home is a full page load (WebGL), so a plain link rather than
           // a client transition.
-          <Link href="/" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+          <Link href="/" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
             Inicio
           </Link>
         ) : (
-          <NavLink href="/servicios" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+          <NavLink href="/servicios" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
             Servicios
           </NavLink>
         )}
-        <NavLink href="/planes" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+        <NavLink href="/planes" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
           Planes
         </NavLink>
         <Box
           as="button"
           display={{ base: 'none', xl: 'block' }}
-          {...NAV_LINK_STYLES}
+          {...linkStyles}
           onClick={openContact}
         >
           Contacto
         </Box>
-        <NavLink href="/apps" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+        <NavLink href="/apps" display={{ base: 'none', xl: 'block' }} {...linkStyles}>
           App
         </NavLink>
-        <Box display={{ base: 'none', xl: 'block' }}>
-          <ToggleButton label="Noticias" onClick={() => setNewsOpen((open) => !open)} />
-        </Box>
+        {onServicesIndex ? (
+          // The home is a full page load (WebGL), so a plain link.
+          <Link
+            href="/"
+            aria-label="YAAKOB, inicio"
+            display={{ base: 'none', xl: 'flex' }}
+            alignItems="center"
+            transition="transform 0.3s ease"
+            _hover={{ transform: 'translateY(-2px) scale(1.06)' }}
+          >
+            <Image src="/logo-yaakob.png" alt="" h="1.75rem" w="auto" />
+          </Link>
+        ) : (
+          <Box display={{ base: 'none', xl: 'block' }}>
+            <ToggleButton label="Noticias" onClick={() => setNewsOpen((open) => !open)} />
+          </Box>
+        )}
         <Box display={{ base: 'block', xl: 'none' }}>
           <ToggleButton label="Menu" onClick={() => setMenuOpen((open) => !open)} />
         </Box>
       </MotionFlex>
+
+      {/* On the services index the header keeps only links and logo, so the
+          news toggle moves to the bottom-right corner, clear of the footer. */}
+      {onServicesIndex ? (
+        <MotionFlex
+          display={{ base: 'none', xl: 'flex' }}
+          pos="fixed"
+          bottom="5.5rem"
+          right="1.5rem"
+          zIndex="navigation"
+          variants={buttonVariants}
+          initial="hidden"
+          animate={animate ? 'visible' : undefined}
+        >
+          <ToggleButton label="Noticias" onClick={() => setNewsOpen((open) => !open)} />
+        </MotionFlex>
+      ) : null}
 
       <MenuOverlay isOpen={newsOpen} onClose={() => setNewsOpen(false)} footer={menuFooter} />
       <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
