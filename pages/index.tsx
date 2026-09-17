@@ -178,7 +178,7 @@ export default function Home() {
           {/* Order on screen, back to front: scene, blue field, loader plate. */}
           <IntroVeil />
           <HebrewSplash />
-          <SiteHeader />
+          <SiteHeader social />
         </>
       ) : null}
     </>

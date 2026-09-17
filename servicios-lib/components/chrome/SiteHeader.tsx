@@ -53,7 +53,12 @@ function usePath() {
   return path
 }
 
-export function SiteHeader() {
+export interface SiteHeaderProps {
+  /** Las redes sociales solo acompañan a la portada. */
+  social?: boolean
+}
+
+export function SiteHeader({ social = false }: SiteHeaderProps) {
   const { open } = useContactModal()
   const path = usePath()
   const { time, date } = useClock()
@@ -80,6 +85,7 @@ export function SiteHeader() {
         <div className="yk-time" id="yk-time" suppressHydrationWarning>
           {time}
         </div>
+        {social ? (
         <div id="yk-social" aria-label="Síguenos">
           {content.social.map((s) => (
             <a
@@ -103,6 +109,7 @@ export function SiteHeader() {
             </a>
           ))}
         </div>
+        ) : null}
       </div>
       <div className="yk-hud-side yk-hud-right">
         <div className="yk-date" id="yk-date" suppressHydrationWarning>
