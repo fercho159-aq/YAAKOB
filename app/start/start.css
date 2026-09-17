@@ -1462,3 +1462,9 @@
     width: min(72vw, 360px);
   }
 }
+
+/* Punto activo en el azul neón del sitio. */
+.sp-dot.active {
+  border-color: rgba(22, 183, 227, 0.75);
+  background: linear-gradient(90deg, rgba(22, 183, 227, 0.45), rgba(22, 183, 227, 1), rgba(22, 183, 227, 0.45));
+}
