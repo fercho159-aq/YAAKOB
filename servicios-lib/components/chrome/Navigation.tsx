@@ -155,7 +155,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
 
   const topOffset = minimal
     ? { base: '0.5rem', xl: '0.5rem' }
-    : { base: '0.875rem', xl: onServicesIndex ? '0.96875rem' : '1.5rem' }
+    : { base: '0.875rem', xl: onServicesIndex ? '0.59375rem' : '1.5rem' }
 
   return (
     <MotionBox
@@ -173,7 +173,7 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
           top={0}
           left={0}
           right={0}
-          h={minimal ? { base: '3rem', xl: '3rem' } : { base: '3.75rem', xl: '4rem' }}
+          h={minimal ? { base: '2.75rem', xl: '2.75rem' } : { base: '3rem', xl: '3.25rem' }}
           bg="white"
           boxShadow="0 6px 18px rgba(26,26,26,0.16), 0 1px 3px rgba(26,26,26,0.10)"
           zIndex="navigation"
@@ -188,11 +188,11 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
           alignItems="center"
           gap="0.875rem"
           pos="absolute"
-          top={minimal ? '0.75rem' : '0.625rem'}
+          top={minimal ? '0.5rem' : '0.5rem'}
           left="1.875rem"
           zIndex="navigation"
         >
-          <Image src="/logo-xix-xxiii.png" alt="Árbol de la vida" w="2.75rem" h="2.75rem" objectFit="contain" />
+          <Image src="/logo-xix-xxiii.png" alt="Árbol de la vida" w="2.125rem" h="2.125rem" objectFit="contain" />
           <Box
             as="span"
             fontSize="0.875rem"
