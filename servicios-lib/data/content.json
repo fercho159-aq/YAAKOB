@@ -462,9 +462,9 @@
         "icon": "chat",
         "label": "WhatsApp",
         "lines": [
-          "+52 55 3007 7441"
+          "+52 55 3018 7711"
         ],
-        "href": "https://wa.me/5215530077441"
+        "href": "https://wa.me/5215530187711"
       },
       {
         "id": "correo",
@@ -505,7 +505,7 @@
     ],
     "qr": {
       "src": "/servicios/contacto-qr.svg",
-      "href": "https://wa.me/5215530077441",
+      "href": "https://wa.me/5215530187711",
       "caption": "Escanea para agendar tu evaluación inicial"
     },
     "legal": {
@@ -531,7 +531,7 @@
     },
     "contact": {
       "label": "Contacto",
-      "href": "https://wa.me/5215530077441"
+      "href": "https://wa.me/5215530187711"
     },
     "social": {
       "instagram": {
@@ -555,7 +555,7 @@
         "label": "X"
       },
       "whatsapp": {
-        "href": "https://wa.me/5215530077441",
+        "href": "https://wa.me/5215530187711",
         "label": "WhatsApp"
       }
     },

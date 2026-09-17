@@ -35,7 +35,7 @@ const SOCIAL_LINKS: { label: string; href: string; icon: React.ReactNode; whatsa
   { label: "TikTok", href: "https://www.tiktok.com/@yaakob_heart", icon: <TiktokGlyph /> },
   { label: "YouTube", href: "https://www.youtube.com/@YaakobBeHeart", icon: <YoutubeGlyph /> },
   { label: "X", href: "https://x.com/yaakob", icon: <XGlyph /> },
-  { label: "WhatsApp", href: "https://wa.me/5215530077441", whatsapp: true, icon: <WhatsappGlyph /> },
+  { label: "WhatsApp", href: "https://wa.me/5215530187711", whatsapp: true, icon: <WhatsappGlyph /> },
 ];
 
 export function StartHeader() {

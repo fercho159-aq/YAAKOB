@@ -15,7 +15,7 @@ import "./planes.css";
  * puntos y el cyan de la referencia sobre el fondo y la tipografía de /start.
  */
 
-const WHATSAPP = "https://wa.me/5215530077441";
+const WHATSAPP = "https://wa.me/5215530187711";
 
 const BENEFICIOS = [
   {
