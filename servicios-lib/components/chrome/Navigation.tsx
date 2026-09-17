@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Link } from '@chakra-ui/react'
+import { Box, Flex, Link } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState, type ReactNode } from 'react'
@@ -146,6 +146,10 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
   const logoHiddenOnMobile =
     router.asPath !== '/' && router.asPath !== '/account-settings' && lastSegment !== 'play'
 
+  // On the services index a link back to itself is useless, so that slot
+  // points home instead.
+  const onServicesIndex = router.pathname === '/servicios'
+
   const topOffset = minimal ? { base: '0.5rem', xl: '0.5rem' } : { base: '0.875rem', xl: '1.5rem' }
 
   return (
@@ -198,9 +202,17 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         initial="hidden"
         animate={animate ? 'visible' : undefined}
       >
-        <NavLink href="/servicios" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
-          Servicios
-        </NavLink>
+        {onServicesIndex ? (
+          // The home is a full page load (WebGL), so a plain link rather than
+          // a client transition.
+          <Link href="/" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+            Inicio
+          </Link>
+        ) : (
+          <NavLink href="/servicios" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+            Servicios
+          </NavLink>
+        )}
         <NavLink href="/planes" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
           Planes
         </NavLink>
@@ -215,19 +227,6 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         <NavLink href="/apps" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
           App
         </NavLink>
-        {/* Same mark as the home and /start headers; the home is a full page
-            load (WebGL), so a plain link rather than a client transition. */}
-        <Link
-          href="/"
-          aria-label="YAAKOB, inicio"
-          display={{ base: 'none', xl: 'flex' }}
-          alignItems="center"
-          h="2.0625rem"
-          transition="transform 0.3s ease"
-          _hover={{ transform: 'translateY(-2px) scale(1.06)' }}
-        >
-          <Image src="/logo-yaakob.png" alt="" h="1.75rem" w="auto" />
-        </Link>
         <Box display={{ base: 'none', xl: 'block' }}>
           <ToggleButton label="Noticias" onClick={() => setNewsOpen((open) => !open)} />
         </Box>
