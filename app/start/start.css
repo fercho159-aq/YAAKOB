@@ -199,8 +199,7 @@
   outline: none;
 }
 
-/* El logo del sitio es negro sobre blanco: invertido y en "screen" queda
-   plata sobre el fondo oscuro sin recorte. */
+/* El logo ya viene a color sobre transparente: se pinta tal cual. */
 .sp-logo {
   display: block;
   width: 40px;
@@ -212,8 +211,6 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: invert(1) brightness(0.85);
-  mix-blend-mode: screen;
 }
 .sp-logo:hover,
 .sp-logo:focus-visible {

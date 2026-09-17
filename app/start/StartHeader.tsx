@@ -85,14 +85,14 @@ export function StartHeader() {
             <Link key={l.href} href={l.href}>{l.label}</Link>
           ))}
           <Link className="sp-logo" href="/" aria-label="YAAKOB, inicio">
-            <img src="/logo.png" alt="" />
+            <img src="/logo-yaakob.png" alt="" />
           </Link>
         </nav>
       </div>
 
       <div className="sp-topbar__mobile">
         <Link className="sp-logo" href="/" aria-label="YAAKOB, inicio">
-          <img src="/logo.png" alt="" />
+          <img src="/logo-yaakob.png" alt="" />
         </Link>
         <button
           type="button"

@@ -7,71 +7,27 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
+  Image,
 } from '@chakra-ui/react'
 import { useContactModal } from '@servicios/components/contact'
-import { BRAND_GRADIENT } from '@servicios/theme'
 import { AnimatedWordmark } from './Wordmark'
 import { NavLink } from './motion'
 
 const HAIRLINE = '1px solid rgba(255,255,255,0.2)'
 const HIGHLIGHT = 'rgba(255,255,255,0.09)'
 
-/** Small house glyph for the HOME row. */
-function HomeGlyph() {
-  return (
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" aria-hidden="true">
-      <path
-        d="M3.5 11.5 12 4l8.5 7.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5.5 10v8.5a1 1 0 0 0 1 1H9.5v-6h5v6h3a1 1 0 0 0 1-1V10"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-/** The brand flower, tinted via mask so it always follows the accent colour. */
-function FlowerGlyph({ size }: { size: string }) {
-  return (
-    <Box
-      w={size}
-      h={size}
-      bgImage={BRAND_GRADIENT}
-      sx={{
-        WebkitMaskImage: 'url(/logo.png)',
-        maskImage: 'url(/logo.png)',
-        WebkitMaskRepeat: 'no-repeat',
-        maskRepeat: 'no-repeat',
-        WebkitMaskSize: 'contain',
-        maskSize: 'contain',
-        WebkitMaskPosition: 'center',
-        maskPosition: 'center',
-      }}
-    />
-  )
-}
-
 interface MenuEntry {
   label: string
   href?: string
   modal?: boolean
-  icon?: 'home' | 'flower'
 }
 
+/** Same links, same order, as the home and /start headers. */
 const ENTRIES: MenuEntry[] = [
-  { label: 'Home', href: '/', icon: 'home' },
-  { label: 'Contacto', modal: true },
   { label: 'Servicios', href: '/servicios' },
-  { label: 'Consultor', href: '/start' },
-  { label: 'App', href: '/apps', icon: 'flower' },
+  { label: 'Planes', href: '/planes' },
+  { label: 'Contacto', modal: true },
+  { label: 'App', href: '/apps' },
 ]
 
 export interface MenuDrawerProps {
@@ -80,8 +36,8 @@ export interface MenuDrawerProps {
 }
 
 /**
- * Main navigation drawer — the client's "MENU" panel: HOME / CONTACTO /
- * SERVICIOS / CONSULTOR / APP over hairline rows, with the flower mark below.
+ * Main navigation drawer — the client's "MENU" panel: SERVICIOS / PLANES /
+ * CONTACTO / APP over hairline rows, with the logo below.
  */
 export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
   const { open: openContact } = useContactModal()
@@ -148,8 +104,6 @@ export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
               {ENTRIES.map((entry) => {
                 const inner = (
                   <Flex align="center" gap="0.75rem" color="gold">
-                    {entry.icon === 'home' ? <HomeGlyph /> : null}
-                    {entry.icon === 'flower' ? <FlowerGlyph size="16px" /> : null}
                     <Box
                       as="span"
                       fontSize="0.9375rem"
@@ -195,7 +149,9 @@ export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
             </Box>
 
             <Flex flex="1" align="flex-end" justify="center" pb="2.5rem" pt="2rem" borderTop={HAIRLINE}>
-              <FlowerGlyph size="7.5rem" />
+              <Box as="a" href="/" aria-label="YAAKOB, inicio" onClick={onClose}>
+                <Image src="/logo-yaakob.png" alt="" w="7.5rem" h="auto" />
+              </Box>
             </Flex>
           </DrawerBody>
         </DrawerContent>

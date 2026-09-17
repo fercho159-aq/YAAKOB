@@ -1,4 +1,4 @@
-import { Box, Flex, Link } from '@chakra-ui/react'
+import { Box, Flex, Image, Link } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import { useRouter } from 'next/router'
 import { useState, type ReactNode } from 'react'
@@ -33,28 +33,6 @@ const barVariants: Variants = {
     transition: { ease: EASE, duration: 0.5 },
   }),
   hover: (custom?: BarScale) => ({ scaleX: custom?.hover ?? 1 }),
-}
-
-/** Simple house glyph — links out to the marketing root, away from `/servicios`. */
-function HomeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
-      <path
-        d="M3.5 11.5 12 4l8.5 7.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M5.5 10v8.5a1 1 0 0 0 1 1H9.5v-6h5v6h3a1 1 0 0 0 1-1V10"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
 }
 
 /** The three animated bars shared by both toggles. */
@@ -220,21 +198,11 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         initial="hidden"
         animate={animate ? 'visible' : undefined}
       >
-        <Link
-          href="https://www.yaakob.com/"
-          aria-label="Ir al inicio de Yaakob"
-          display={{ base: 'none', xl: 'flex' }}
-          alignItems="center"
-          justifyContent="center"
-          h="2.0625rem"
-          w="2.0625rem"
-          color="whiteAlpha.800"
-          _hover={{ color: 'gold' }}
-        >
-          <HomeIcon />
-        </Link>
         <NavLink href="/servicios" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
           Servicios
+        </NavLink>
+        <NavLink href="/planes" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+          Planes
         </NavLink>
         <Box
           as="button"
@@ -244,36 +212,22 @@ export function Navigation({ animate = true, minimal = false, menuFooter }: Navi
         >
           Contacto
         </Box>
-        <NavLink href="/start" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
-          Consultor
+        <NavLink href="/apps" display={{ base: 'none', xl: 'block' }} {...NAV_LINK_STYLES}>
+          App
         </NavLink>
-        <NavLink
-          href="/apps"
-          aria-label="App"
+        {/* Same mark as the home and /start headers; the home is a full page
+            load (WebGL), so a plain link rather than a client transition. */}
+        <Link
+          href="/"
+          aria-label="YAAKOB, inicio"
           display={{ base: 'none', xl: 'flex' }}
           alignItems="center"
-          justifyContent="center"
           h="2.0625rem"
-          w="1.5rem"
+          transition="transform 0.3s ease"
+          _hover={{ transform: 'translateY(-2px) scale(1.06)' }}
         >
-          <Box
-            w="1.25rem"
-            h="1.25rem"
-            bgImage={BRAND_GRADIENT}
-            transition="background 0.2s linear"
-            _hover={{ bgImage: 'none', bg: 'white' }}
-            sx={{
-              WebkitMaskImage: 'url(/logo.png)',
-              maskImage: 'url(/logo.png)',
-              WebkitMaskRepeat: 'no-repeat',
-              maskRepeat: 'no-repeat',
-              WebkitMaskSize: 'contain',
-              maskSize: 'contain',
-              WebkitMaskPosition: 'center',
-              maskPosition: 'center',
-            }}
-          />
-        </NavLink>
+          <Image src="/logo-yaakob.png" alt="" h="1.75rem" w="auto" />
+        </Link>
         <Box display={{ base: 'none', xl: 'block' }}>
           <ToggleButton label="Noticias" onClick={() => setNewsOpen((open) => !open)} />
         </Box>
