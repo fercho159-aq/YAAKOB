@@ -129,7 +129,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           borderColor="rgba(255,255,255,0.08)"
           flexShrink={0}
         >
-          {/* The mark ships as black line art on white, so it needs its own light disc. */}
+          {/* The neon mark reads on the dark shell, so the disc only frames it. */}
           <Flex
             align="center"
             justify="center"
@@ -137,10 +137,12 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             w="36px"
             h="36px"
             borderRadius="full"
-            bg="white"
+            bg="rgba(22,183,227,0.08)"
+            border="1px solid"
+            borderColor="rgba(22,183,227,0.28)"
             overflow="hidden"
           >
-            <Image src="/logo.png" alt="" w="30px" h="30px" objectFit="contain" />
+            <Image src="/logo-neon.png" alt="" w="26px" h="26px" objectFit="contain" />
           </Flex>
           <Text fontSize="1rem" fontWeight="medium" letterSpacing="0.01em">
             {contact.title}
