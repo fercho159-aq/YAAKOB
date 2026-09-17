@@ -1,8 +1,10 @@
-import { MenuDrawer } from '@servicios/components/chrome'
-import { useContactModal } from '@servicios/components/contact'
+'use client'
+
 import { useEffect, useState } from 'react'
-import { useUiSfx } from '../audio/useUiSfx'
-import content from '../data/content.json'
+import { useContactModal } from '@servicios/components/contact'
+import { useUiSfx } from '@home/audio/useUiSfx'
+import content from '@home/data/content.json'
+import { MenuDrawer } from './MenuDrawer'
 
 // Split ring from the services footer: two 150 degree arcs on r=10.5,
 // leaving a gap top-right and bottom-left.
@@ -34,18 +36,36 @@ function useClock() {
 }
 
 /**
- * HUD header: clock + social (left) · nav + logo (right), the same set of
- * links as the /start header.
+ * The site header, shared by every page: clock + social (left) · nav + logo
+ * (right), over a white band.
  * Menu/social entries come from home-lib/data/content.json — edit them
  * there. Items with `modal: true` raise the shared ContactModal instead of
  * navigating away.
  */
-export function Hud() {
+/**
+ * The current path, read from the browser: this header ships in both routers,
+ * so it cannot lean on either one's hook.
+ */
+function usePath() {
+  const [path, setPath] = useState<string | null>(null)
+  useEffect(() => setPath(window.location.pathname), [])
+  return path
+}
+
+export function SiteHeader() {
   const { open } = useContactModal()
+  const path = usePath()
   const { time, date } = useClock()
   const [menuOpen, setMenuOpen] = useState(false)
   // Hover and click sounds for every link and button in the bar.
   const sfx = useUiSfx()
+
+  // A link to the page one is already on is useless: it becomes INICIO, and
+  // INICIO always leads the menu.
+  const onSelf = content.menu.some((m) => m.url === path)
+  const menu = onSelf
+    ? [{ name: 'Inicio', url: '/' }, ...content.menu.filter((m) => m.url !== path)]
+    : content.menu
 
   return (
     <div id="yk-hud" {...sfx}>
@@ -83,7 +103,7 @@ export function Hud() {
         </div>
         <div className="yk-hud-row">
           <nav id="yk-nav" aria-label="Navegación">
-            {content.menu.map((m) => (
+            {menu.map((m) => (
               <a
                 key={m.name}
                 className="yk-navlink"

@@ -1,5 +1,6 @@
 import { useIntroSfx } from '@home/audio/useIntroSfx'
-import { HebrewSplash, Hud, IntroVeil, SplashStage, Stage } from '@home/components'
+import { HebrewSplash, IntroVeil, SplashStage, Stage } from '@home/components'
+import { SiteHeader } from '@servicios/components/chrome'
 import Head from 'next/head'
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
@@ -177,7 +178,7 @@ export default function Home() {
           {/* Order on screen, back to front: scene, blue field, loader plate. */}
           <IntroVeil />
           <HebrewSplash />
-          <Hud />
+          <SiteHeader />
         </>
       ) : null}
     </>

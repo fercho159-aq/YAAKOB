@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Providers } from "./Providers";
 
 export const metadata: Metadata = {
   title: "Yaakob - SAT - Inteligencia fiscal",
@@ -130,7 +131,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

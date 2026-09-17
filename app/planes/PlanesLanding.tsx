@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import legal from "@servicios/data/legal.json";
 import { NIVELES, formatearEntero, formatearPrecio, planDe, type Nivel } from "@pagos/planes";
-import { StartHeader } from "../start/StartHeader";
+import { SiteHeader } from "@servicios/components/chrome";
 import { CheckoutModal } from "./CheckoutModal";
 import "./planes.css";
 
@@ -150,7 +150,7 @@ export function PlanesLanding() {
 
   return (
     <div className="pl">
-      <StartHeader />
+      <SiteHeader />
 
       <main>
         {/* ── Hero ─────────────────────────────────────────── */}

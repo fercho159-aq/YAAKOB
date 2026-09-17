@@ -1,8 +1,7 @@
 import { Box } from '@chakra-ui/react'
-import { AnimatePresence } from 'framer-motion'
 import type { CSSProperties, ReactNode } from 'react'
 import { Background, type BackgroundVariant } from '@servicios/components/background'
-import { Footer, Loader, Navigation, type FooterProps } from '@servicios/components/chrome'
+import { Footer, Loader, SiteHeader, type FooterProps } from '@servicios/components/chrome'
 
 /**
  * The original carries the OneTrust banner height here and shifts the footer up
@@ -28,8 +27,9 @@ export interface LayoutProps {
   animate?: boolean
   footer?: boolean
   footerProps?: FooterProps
+  /** @deprecated El header compartido no tiene variante compacta. */
   minimalNav?: boolean
-  /** Bottom slot of the menu drawer — see `MenuOverlayProps.footer`. */
+  /** @deprecated El cajón del header compartido no lleva pie. */
   menuFooter?: ReactNode
 }
 
@@ -40,8 +40,6 @@ export function Layout({
   animate = true,
   footer = true,
   footerProps,
-  minimalNav = false,
-  menuFooter,
 }: LayoutProps) {
   return (
     <>
@@ -59,14 +57,8 @@ export function Layout({
         flexDirection="column"
         style={rootStyle}
       >
-        <AnimatePresence mode="wait">
-          <Navigation
-            key={minimalNav ? 'nav-minimal' : 'nav-default'}
-            animate={animate}
-            minimal={minimalNav}
-            menuFooter={menuFooter}
-          />
-        </AnimatePresence>
+        {/* El mismo header de la portada en todas las páginas. */}
+        <SiteHeader />
         {/*
          * No AnimatePresence around the page. Layout lives *inside* the page
          * in the Pages Router, so it unmounts with it and could never play an

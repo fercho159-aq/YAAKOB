@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { StartHeader } from "./StartHeader";
+import { SiteHeader } from "@servicios/components/chrome";
 import "./start.css";
 
 // ─── Floating Hebrew letters ───────────────────────────────────
@@ -334,7 +334,7 @@ export default function StartPage({ splash = true }: { splash?: boolean }) {
 
       {/* Content */}
       <div className={`sp-content sp-phase-${phase}`}>
-        <StartHeader />
+        <SiteHeader />
 
         <header className="sp-heading">
           <p className="sp-sub">Una nueva forma de entender la ley</p>

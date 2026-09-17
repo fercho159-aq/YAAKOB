@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/compat/router'
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ContactModal } from './ContactModal'
 
@@ -24,10 +24,13 @@ export function ContactModalProvider({ children }: { children: ReactNode }) {
 
   // A route change under an open overlay would leave it floating over a page
   // the visitor never asked it for.
+  // `next/compat/router` devuelve null en el App Router, donde cada
+  // navegación remonta el árbol y cierra la tarjeta por sí sola.
   useEffect(() => {
+    if (!router) return
     router.events.on('routeChangeStart', close)
     return () => router.events.off('routeChangeStart', close)
-  }, [router.events, close])
+  }, [router, close])
 
   const value = useMemo(() => ({ isOpen, open, close }), [isOpen, open, close])
 

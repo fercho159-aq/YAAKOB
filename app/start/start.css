@@ -1490,3 +1490,13 @@
   border: 0;
   background-image: linear-gradient(90deg, #2f38af, #1d97da, #16b7e3, #0abce2);
 }
+
+/* El header compartido (#yk-hud) es fijo: la página reserva su alto. */
+.sp-content {
+  padding-top: 58px;
+}
+@media (max-width: 760px) {
+  .sp-content {
+    padding-top: 54px;
+  }
+}
