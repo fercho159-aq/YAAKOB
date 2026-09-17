@@ -253,9 +253,6 @@ function PhoneCarousel({ onEnlarge, frozen }: { onEnlarge: (index: number) => vo
                       />
                     )}
                   </div>
-                  <div className="sp-disc" aria-hidden="true">
-                    <i />
-                  </div>
                 </div>
               </article>
             );
