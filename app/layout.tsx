@@ -68,11 +68,10 @@ const jsonLd = {
       openingHours: "Mo-Fr 09:00-18:00",
       founder: { "@type": "Person", name: "L.C. Juan José de Anda González" },
       sameAs: [
-        "https://www.instagram.com/yaakobeheart/",
+        "https://www.instagram.com/yaakob_consultores/",
         "https://www.facebook.com/profile.php?id=61587552527813",
-        "https://www.tiktok.com/@yaakob_heart",
-        "https://www.youtube.com/@YaakobBeHeart",
-        "https://x.com/yaakob",
+        "https://www.tiktok.com/@yaakob_consultores",
+        "https://www.youtube.com/@Yaakob_Consultores",
       ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -88,7 +87,7 @@ const jsonLd = {
           "Defensa 69-B",
           "UIF - FGR",
           "Controles Volumétricos",
-          "Regularización Fiscal",
+          "Defensa 49 Bis",
         ].map((name) => ({
           "@type": "Offer",
           itemOffered: { "@type": "Service", name },

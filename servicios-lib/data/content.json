@@ -285,27 +285,27 @@
       }
     },
     {
-      "id": "regularizacion-fiscal",
-      "slug": "regularizacion-fiscal",
-      "label": "Regularización Fiscal",
-      "url": "/regularizacion-fiscal/view",
+      "id": "defensa-49-bis",
+      "slug": "defensa-49-bis",
+      "label": "49 BIS",
+      "url": "/defensa-49-bis/view",
       "thumbnail": {
         "src": "/servicios/regularizacion-fiscal.jpg",
-        "alt": "Regularización fiscal"
+        "alt": "Defensa ante presunción de CFDI falsos, artículo 49 Bis"
       },
-      "tagline": "Estrategias para poner al día su situación fiscal",
+      "tagline": "Defensa ante presunción de CFDI falsos",
       "about": {
         "heading": "Síntesis",
-        "description": "Prevenir, identificar y corregir irregularidades, fraudes, incumplimientos y riesgos fiscales.",
+        "description": "Estrategia integral para acreditar la realidad de sus operaciones y desvirtuar la presunción.",
         "tags": [
-          "DIAGNÓSTICO",
-          "ANÁLISIS",
-          "CUMPLIMIENTO"
+          "PRESUNCIÓN SAT",
+          "CFDI FALSOS",
+          "PROCEDIMIENTO ACELERADO"
         ]
       },
       "description": {
-        "heading": "Estrategias para poner al día su situación fiscal",
-        "body": "Prevenir, identificar y corregir irregularidades, fraudes, incumplimientos y riesgos fiscales."
+        "heading": "Defensa ante presunción de CFDI falsos",
+        "body": "Estrategia integral para acreditar la realidad de sus operaciones y desvirtuar la presunción."
       },
       "background": {
         "fluxColor": "#3ac9a8"
@@ -534,7 +534,7 @@
     },
     "social": {
       "instagram": {
-        "href": "https://www.instagram.com/yaakobeheart/",
+        "href": "https://www.instagram.com/yaakob_consultores/",
         "label": "Instagram"
       },
       "facebook": {
@@ -542,16 +542,12 @@
         "label": "Facebook"
       },
       "tiktok": {
-        "href": "https://www.tiktok.com/@yaakob_heart",
+        "href": "https://www.tiktok.com/@yaakob_consultores",
         "label": "TikTok"
       },
       "youtube": {
-        "href": "https://www.youtube.com/@YaakobBeHeart",
+        "href": "https://www.youtube.com/@Yaakob_Consultores",
         "label": "YouTube"
-      },
-      "twitter": {
-        "href": "https://x.com/yaakob",
-        "label": "X"
       },
       "whatsapp": {
         "href": "https://wa.me/5215530187711",

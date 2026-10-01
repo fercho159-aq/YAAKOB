@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import content from "@home/data/content.json";
 import legal from "@servicios/data/legal.json";
-import { NIVELES, formatearEntero, formatearPrecio, planDe, type Nivel } from "@pagos/planes";
+import { NIVELES, formatearEntero, planDe, type Nivel } from "@pagos/planes";
 import { SiteHeader } from "@servicios/components/chrome";
 import { CheckoutModal } from "./CheckoutModal";
 import { HeroWaves } from "./HeroWaves";
@@ -123,9 +123,7 @@ function TarjetaPlan({ nivel, onBuy }: { nivel: (typeof NIVELES)[number]; onBuy:
         </strong>
         {anual.ahorro ? <em>{anual.ahorro}</em> : <span className="pl-plan__space" aria-hidden="true" />}
         <small className="pl-plan__billing">
-          Facturado anualmente. Usted paga {formatearEntero(anual.precioBase)} hoy.
-          <br />
-          Con IVA: {formatearPrecio(anual.precio)}
+          o {formatearEntero(anual.precioBase)}/Año
           {anual.ahorro && (
             <>
               <br />
@@ -232,7 +230,7 @@ export function PlanesLanding() {
             <div className="pl-pricing__legal">
               <p>
                 Los precios anteriores no incluyen el Impuesto al Valor Agregado (IVA); el total con IVA se
-                indica junto a cada importe y se confirma en la página de pago. A menos que se especifique lo
+                confirma en la página de pago. A menos que se especifique lo
                 contrario, los precios están en moneda nacional. Todas las suscripciones se renuevan según su
                 ciclo de facturación al precio de lista hasta que usted las cancele.
               </p>

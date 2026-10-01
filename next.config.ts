@@ -81,6 +81,12 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
   // No anunciar la versión del framework.
   poweredByHeader: false,
+  async redirects() {
+    return [
+      // La tarjeta de Regularización Fiscal pasó a ser la de 49 Bis.
+      { source: '/servicios/regularizacion-fiscal', destination: '/servicios/defensa-49-bis', permanent: true },
+    ]
+  },
   async headers() {
     return [
       {

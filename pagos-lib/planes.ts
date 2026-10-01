@@ -138,8 +138,8 @@ type Cargo = {
 
 /**
  * Importes por nivel y periodicidad, antes de IVA, tal como los entregó el
- * cliente. El anual de Único ($23,430) se conserva como vino; el cliente lo
- * confirmó aunque quede debajo del anual de Avanzado.
+ * cliente. Los anuales ($10,989, $21,989 y $28,490) son los que mandó el
+ * cliente el 30 de septiembre de 2026, en sustitución de los anteriores.
  *
  * Las variables de entorno van escritas completas —— nada de armar el nombre
  * con plantillas —— porque Next sólo expone al navegador las `NEXT_PUBLIC_*`
@@ -154,7 +154,7 @@ const CARGOS: Record<Nivel, Cargo[]> = {
     },
     {
       periodicidad: 'anual',
-      precioBase: 11_988,
+      precioBase: 10_989,
       openpayPlanId: process.env.NEXT_PUBLIC_OPENPAY_PLAN_ESENCIAL_ANUAL ?? '',
     },
   ],
@@ -166,7 +166,7 @@ const CARGOS: Record<Nivel, Cargo[]> = {
     },
     {
       periodicidad: 'anual',
-      precioBase: 23_988,
+      precioBase: 21_989,
       openpayPlanId: process.env.NEXT_PUBLIC_OPENPAY_PLAN_AVANZADO_ANUAL ?? '',
     },
   ],
@@ -178,7 +178,7 @@ const CARGOS: Record<Nivel, Cargo[]> = {
     },
     {
       periodicidad: 'anual',
-      precioBase: 23_430,
+      precioBase: 28_490,
       ahorro: 'Ahorra 21%',
       openpayPlanId: process.env.NEXT_PUBLIC_OPENPAY_PLAN_UNICO_ANUAL ?? '',
     },
@@ -229,7 +229,7 @@ export function formatearPrecio(monto: number, moneda: 'MXN' = 'MXN'): string {
   }).format(monto)
 }
 
-/** Importe entero para la tarjeta del plan: «$999», «$11,988». */
+/** Importe entero para la tarjeta del plan: «$999», «$10,989». */
 export function formatearEntero(monto: number): string {
   return new Intl.NumberFormat('es-MX', {
     style: 'currency',

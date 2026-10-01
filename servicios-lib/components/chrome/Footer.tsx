@@ -10,7 +10,6 @@ import {
   SocialIcon,
   TiktokLogo,
   WhatsappLogo,
-  XLogo,
   YoutubeLogo,
 } from '@servicios/components/svg'
 import content from '@servicios/data/content.json'
@@ -62,8 +61,6 @@ const SOCIALS: Array<{
   { key: 'facebook', icon: FacebookLogo },
   { key: 'tiktok', icon: TiktokLogo },
   { key: 'youtube', icon: YoutubeLogo },
-  // X ships a 1200-wide viewBox and needs scaling down to match the rest.
-  { key: 'twitter', icon: XLogo, iconProps: { fill: 'none', transform: 'scale(0.4)' } },
   { key: 'whatsapp', icon: WhatsappLogo, colors: { idle: WHATSAPP, active: WHATSAPP_ACTIVE } },
 ]
 
@@ -78,7 +75,6 @@ const ringVariants: Variants = {
 interface SocialLinkProps extends Omit<MotionCenterProps, 'variants' | 'animate'> {
   href: string
   icon: ComponentType<IconProps>
-  /** Per-brand SVG tweaks — X ships a 1200-wide viewBox and needs scaling down. */
   iconProps?: IconProps
   colors?: { idle: string; active: string }
   ariaLabel: string
