@@ -87,7 +87,10 @@ export function useOpenpay() {
       return
     }
 
-    Promise.all([cargarScript(SCRIPTS_OPENPAY.core), cargarScript(SCRIPTS_OPENPAY.antifraude)])
+    // El recolector depende de OpenPay. Cargarlo en paralelo rompe el checkout
+    // si su descarga termina antes que el SDK principal.
+    cargarScript(SCRIPTS_OPENPAY.core)
+      .then(() => cargarScript(SCRIPTS_OPENPAY.antifraude))
       .then(() => {
         if (!vivo) return
         const openpay = window.OpenPay
