@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { MAX_TARJETAS_POR_CLIENTE, requiere3ds, sitioUrl } from '@pagos/config'
+import { MAX_TARJETAS_POR_CLIENTE, requiere3ds, sitioUrl, esSandbox } from '@pagos/config'
+import { AltaError, cuentasApp } from '@pagos/cuentas-servidor'
 import { mensajeDeDeclinacion, esErrorDeCaptura, DECLINADA_GENERICA } from '@pagos/declinaciones'
 import {
   OpenpayError,
@@ -34,6 +35,7 @@ import { descripcionDeCargo, esReferenciaValida } from '@pagos/referencia'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+export const maxDuration = 60
 
 type Cuerpo = {
   /** Renglones del carrito. Un solo plan viaja como un renglón de cantidad 1. */
@@ -41,7 +43,7 @@ type Cuerpo = {
   token?: string
   deviceSessionId?: string
   referencia?: string
-  cliente?: { nombre?: string; apellido?: string; correo?: string; telefono?: string }
+  cliente?: { rfc?: string; nombre?: string; apellido?: string; correo?: string; telefono?: string }
 }
 
 const error = (mensaje: string, status = 400, extra: Record<string, unknown> = {}) =>
@@ -109,6 +111,7 @@ export async function POST(request: Request) {
   const apellido = cliente?.apellido?.trim()
   const correo = cliente?.correo?.trim().toLowerCase()
   const telefono = cliente?.telefono?.trim()
+  const rfc = cliente?.rfc?.trim().toUpperCase()
 
   if (!nombre || !apellido || !correo || !telefono) {
     return error('Faltan los datos de contacto del titular.')
@@ -117,6 +120,17 @@ export async function POST(request: Request) {
   /* -------------------------------------------------------------- proceso */
 
   try {
+    // La orden queda persistida antes de cualquier cobro. El servidor de la
+    // aplicación valida el RFC y procesa también las notificaciones de Openpay.
+    await cuentasApp('/orden', {
+      referencia, sandbox: esSandbox,
+      cliente: { rfc, nombre, apellido, correo, telefono },
+      planes: lineas.map(linea => {
+        const plan = buscarPlan(linea.planId)!
+        return { id: plan.id, nombre: plan.nombre, openpayPlanId: plan.openpayPlanId,
+          cantidad: linea.cantidad, precio: plan.precio, periodicidad: plan.periodicidad, usuarios: plan.usuarios }
+      }),
+    })
     const clienteOpenpay = await clientes.obtenerOCrear({
       name: nombre,
       last_name: apellido,
@@ -196,6 +210,7 @@ export async function POST(request: Request) {
       corregible: esErrorDeCaptura(cargo.error_code),
     })
   } catch (fallo) {
+    if (fallo instanceof AltaError) return error(fallo.message, fallo.status, { codigo: fallo.codigo })
     if (fallo instanceof OpenpayError) {
       // El texto de Openpay se queda en el log; al navegador va el saneado.
       return error(mensajeDeDeclinacion(fallo.codigo), fallo.httpStatus >= 500 ? 502 : 402, {

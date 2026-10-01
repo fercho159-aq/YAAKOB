@@ -59,6 +59,7 @@ type Respuesta = {
   importe?: string
   suscripcionId?: string
   planes?: PlanContratado[]
+  acceso?: { estado: 'enviado' | 'pendiente'; appUrl: string }
 }
 
 type Vista = 'consultando' | 'activa' | 'pendiente' | 'rechazada' | 'sin-referencia'
@@ -114,8 +115,10 @@ export default function Resultado() {
           vaciarCarrito()
           setVista('activa')
         }
-        else if (cuerpoRespuesta.ok && cuerpoRespuesta.estado === 'pagado_sin_suscripcion')
+        else if (cuerpoRespuesta.ok && cuerpoRespuesta.estado === 'pagado_sin_suscripcion') {
+          vaciarCarrito()
           setVista('pendiente')
+        }
         else if (cuerpoRespuesta.estado === 'pendiente') setVista('pendiente')
         else setVista('rechazada')
       } catch {
@@ -216,8 +219,20 @@ export default function Resultado() {
 
               <Text {...cuerpo} mt="1rem" fontSize="0.75rem">
                 Guarde los folios: junto con su correo son lo que necesita para cancelar desde el
-                sitio. También se los enviamos por correo electrónico.
+                sitio.
               </Text>
+              {datos?.acceso ? (
+                <Box mt="1.25rem" p="1rem" border={HAIRLINE}>
+                  <Text {...cuerpo}>
+                    {datos.acceso.estado === 'enviado'
+                      ? 'Enviamos a su correo los folios y sus datos de acceso a la aplicación. Revise también la carpeta de spam.'
+                      : 'Su cuenta está lista. Estamos enviando los folios y sus datos de acceso por correo; si no llegan en las próximas horas, escríbanos a contacto@yaakob.com.'}
+                  </Text>
+                  <Link href={datos.acceso.appUrl} color="gold" display="inline-block" mt="0.75rem">
+                    Ingresar a la aplicación →
+                  </Link>
+                </Box>
+              ) : null}
             </>
           ) : null}
 

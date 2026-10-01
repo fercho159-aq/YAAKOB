@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { AltaError, cuentasApp } from '@pagos/cuentas-servidor'
 import { mensajeDeDeclinacion, DECLINADA_GENERICA } from '@pagos/declinaciones'
 import {
   OpenpayError,
@@ -30,6 +31,7 @@ import { planesDesdeDescripcion } from '@pagos/referencia'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+export const maxDuration = 60
 
 const error = (mensaje: string, status = 400, extra: Record<string, unknown> = {}) =>
   NextResponse.json({ ok: false, mensaje, ...extra }, { status })
@@ -68,6 +70,19 @@ export async function POST(request: Request) {
     }
 
     /* ------------------------------------------------- cargo confirmado */
+
+    try {
+      return NextResponse.json(await cuentasApp('/confirmar', { cargoId }))
+    } catch (fallo) {
+      // Las compras anteriores conservan su confirmación original. Una orden
+      // nueva pagada nunca se muestra como rechazada por un fallo del alta.
+      if (!(fallo instanceof AltaError && fallo.codigo === 'orden_no_registrada')) {
+        return NextResponse.json({ ok: true, estado: 'pagado_sin_suscripcion',
+          importe: formatearPrecio(cargo.amount),
+          mensaje: 'Su pago quedó confirmado. Estamos preparando su suscripción y acceso; ' +
+            'le enviaremos la confirmación por correo. Si no llega en las próximas horas, escriba a contacto@yaakob.com.' })
+      }
+    }
 
     const renglones = planesDesdeDescripcion(cargo.description)
       .map((renglon) => ({ plan: buscarPlan(renglon.planId), cantidad: renglon.cantidad }))

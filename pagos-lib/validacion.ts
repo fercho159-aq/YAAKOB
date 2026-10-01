@@ -118,6 +118,7 @@ export function hayErrores<T extends object>(errores: T): boolean {
 /* ------------------------------------------------------------ datos cliente */
 
 export type CamposCliente = {
+  rfc: string
   nombre: string
   apellido: string
   correo: string
@@ -134,9 +135,12 @@ export function filtrarTelefono(valor: string): string {
 
 export function validarCliente(campos: CamposCliente): ErroresCliente {
   const errores: ErroresCliente = {}
+  if (!/^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/.test(campos.rfc.trim().toUpperCase()) || /^(CONS|ADV|ADMIN)/.test(campos.rfc.trim().toUpperCase())) {
+    errores.rfc = 'Escriba el RFC del titular con homoclave (12 o 13 caracteres).'
+  }
   if (campos.nombre.trim().length < 2) errores.nombre = 'Escriba su nombre.'
   if (campos.apellido.trim().length < 2) errores.apellido = 'Escriba sus apellidos.'
-  if (!CORREO.test(campos.correo.trim())) errores.correo = 'Escriba un correo electrónico válido.'
+  if (!CORREO.test(campos.correo.trim()) || campos.correo.trim().length > 100) errores.correo = 'Escriba un correo electrónico válido.'
   if (soloDigitos(campos.telefono).length < 10) errores.telefono = 'Escriba un teléfono a 10 dígitos.'
   return errores
 }

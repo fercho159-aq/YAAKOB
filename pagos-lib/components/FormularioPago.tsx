@@ -6,6 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  FormHelperText,
   Input,
   SimpleGrid,
   Text,
@@ -72,7 +73,7 @@ const campo = {
   _placeholder: { color: 'rgba(255,255,255,0.28)' },
 } as const
 
-const CLIENTE_VACIO: CamposCliente = { nombre: '', apellido: '', correo: '', telefono: '' }
+const CLIENTE_VACIO: CamposCliente = { rfc: '', nombre: '', apellido: '', correo: '', telefono: '' }
 const TARJETA_VACIA: CamposTarjeta = { titular: '', numero: '', mes: '', anio: '', cvv: '' }
 
 type Estado = 'capturando' | 'procesando' | 'redirigiendo'
@@ -146,6 +147,7 @@ export function FormularioPago({ lineas }: { lineas: LineaResuelta[] }) {
           deviceSessionId,
           referencia,
           cliente: {
+            rfc: cliente.rfc.trim().toUpperCase(),
             nombre: cliente.nombre.trim(),
             apellido: cliente.apellido.trim(),
             correo: cliente.correo.trim(),
@@ -265,7 +267,7 @@ export function FormularioPago({ lineas }: { lineas: LineaResuelta[] }) {
             inputMode="email"
             value={cliente.correo}
             autoComplete="email"
-            maxLength={120}
+            maxLength={100}
             onChange={(e) => setCliente({ ...cliente, correo: e.target.value })}
           />
           <FormErrorMessage fontSize="0.75rem">{erroresCliente.correo}</FormErrorMessage>
@@ -282,6 +284,20 @@ export function FormularioPago({ lineas }: { lineas: LineaResuelta[] }) {
             onChange={(e) => setCliente({ ...cliente, telefono: filtrarTelefono(e.target.value) })}
           />
           <FormErrorMessage fontSize="0.75rem">{erroresCliente.telefono}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={Boolean(erroresCliente.rfc)}>
+          <FormLabel {...etiqueta}>RFC del titular</FormLabel>
+          <Input
+            {...campo}
+            value={cliente.rfc}
+            maxLength={13}
+            autoCapitalize="characters"
+            onChange={(e) => setCliente({ ...cliente, rfc: e.target.value.toUpperCase().replace(/\s/g, '') })}
+          />
+          <FormErrorMessage fontSize="0.75rem">{erroresCliente.rfc}</FormErrorMessage>
+          <FormHelperText fontSize="0.75rem" color="rgba(255,255,255,0.6)">
+            Será su usuario en la aplicación. Al confirmar el pago recibirá el acceso en su correo.
+          </FormHelperText>
         </FormControl>
       </SimpleGrid>
 
