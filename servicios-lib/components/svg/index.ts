@@ -1,5 +1,6 @@
 export { FacebookLogo } from './FacebookLogo'
 export { InstagramLogo } from './InstagramLogo'
+export { LinkedinLogo } from './LinkedinLogo'
 export { PlaceholderWordmark } from './PlaceholderWordmark'
 export { SocialIcon } from './SocialIcon'
 export { StackedWordmark } from './StackedWordmark'

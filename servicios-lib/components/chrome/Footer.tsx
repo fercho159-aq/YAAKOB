@@ -6,6 +6,7 @@ import { useContactModal } from '@servicios/components/contact'
 import {
   FacebookLogo,
   InstagramLogo,
+  LinkedinLogo,
   PlaceholderWordmark,
   SocialIcon,
   TiktokLogo,
@@ -61,6 +62,7 @@ const SOCIALS: Array<{
   { key: 'facebook', icon: FacebookLogo },
   { key: 'tiktok', icon: TiktokLogo },
   { key: 'youtube', icon: YoutubeLogo },
+  { key: 'linkedin', icon: LinkedinLogo },
   { key: 'whatsapp', icon: WhatsappLogo, colors: { idle: WHATSAPP, active: WHATSAPP_ACTIVE } },
 ]
 
