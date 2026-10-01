@@ -167,6 +167,13 @@ export default function Suscripcion() {
       <>
         <ResumenOrden lineas={lineas} />
 
+        {lineas.some(({ plan }) => plan.id === 'prueba-mensual') && (
+          <Text {...cuerpo} mt="1rem">
+            Suscripción de prueba: $10 MXN con IVA incluido hoy y cada mes. Después del pago recibirá
+            el acceso por correo. Puede cancelar la renovación al terminar su prueba.
+          </Text>
+        )}
+
         <Box mt="0.875rem" display="flex" flexWrap="wrap" gap="1.25rem">
           {planDirecto ? (
             <>

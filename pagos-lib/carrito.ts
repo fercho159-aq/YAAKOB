@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { MAX_POR_LINEA, PLANES, buscarPlan, type Plan } from './planes'
+import { MAX_POR_LINEA, PLANES_CONTRATABLES, buscarPlan, type Plan } from './planes'
 
 export { MAX_POR_LINEA, MAX_UNIDADES } from './planes'
 
@@ -132,7 +132,7 @@ export function resolverCarrito(lineas: LineaCarrito[]): LineaResuelta[] {
   const resueltas: LineaResuelta[] = []
   // Se recorre el catálogo, no el carrito, para que el orden en pantalla sea
   // siempre el mismo que en `/planes`.
-  for (const plan of PLANES) {
+  for (const plan of PLANES_CONTRATABLES) {
     const linea = lineas.find((candidata) => candidata.planId === plan.id)
     if (!linea) continue
     resueltas.push({

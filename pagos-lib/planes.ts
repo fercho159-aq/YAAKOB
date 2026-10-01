@@ -208,9 +208,24 @@ export const PLANES: Plan[] = NIVELES.flatMap((base) =>
   })),
 )
 
+/** Compra de prueba por enlace directo; habilitada sólo con su plan de Openpay. */
+const PLAN_PRUEBA: Plan = {
+  ...PLANES[0],
+  id: 'prueba-mensual',
+  nombre: 'Suscripción de prueba',
+  audiencia: 'Compra de prueba',
+  resumen: 'Prueba del pago y del correo de acceso para un usuario.',
+  ...desdeBase(8.62), // $10.00 MXN con IVA incluido.
+  openpayPlanId: process.env.NEXT_PUBLIC_OPENPAY_PLAN_PRUEBA_MENSUAL ?? '',
+}
+
+export const PLANES_CONTRATABLES: Plan[] = PLAN_PRUEBA.openpayPlanId
+  ? [...PLANES, PLAN_PRUEBA]
+  : PLANES
+
 export function buscarPlan(id: string | undefined): Plan | undefined {
   if (!id) return undefined
-  return PLANES.find((plan) => plan.id === id)
+  return PLANES_CONTRATABLES.find((plan) => plan.id === id)
 }
 
 /** El plan de un nivel en la periodicidad pedida. Siempre existe. */
