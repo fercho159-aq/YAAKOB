@@ -55,25 +55,26 @@ function HebrewSplash({ onDone }: { onDone: () => void }) {
 }
 
 // ─── Pasarela circular de la app (presentación del cliente) ────
-// Orden y títulos de las trece pantallas, tal como los entregó el cliente.
+// Orden y títulos de las trece pantallas, según el póster del cliente.
+// `src` va explícito porque el orden ya no sigue la numeración de archivos.
+// El 01 y el 04 usan la versión "-ajustada" (scripts/normalize-pasarela.mjs):
+// el splash es otro modelo de teléfono y venía más grande, y el registro
+// tenía el bisel derecho más delgado. Los originales se conservan junto a ellas.
 const SLIDES = [
-  "YAAKOB",
-  "INE",
-  "Datos Fiscales",
-  "Registro RFC",
-  "Bienvenido",
-  "Chat Clientes",
-  "Requerimiento SAT",
-  "Recargos y Actualizaciones",
-  "Calculadora RFC",
-  "Diario Oficial",
-  "Marcos Legales",
-  "Cita Presencial",
-  "Próximamente",
-].map((title, i) => ({
-  title,
-  src: `/app/pasarela/${String(i + 1).padStart(2, "0")}.webp`,
-}));
+  { title: "Asesoría Fiscal Integral", src: "/app/pasarela/01-ajustada.webp" },
+  { title: "Registro Fiscal Seguro", src: "/app/pasarela/04-ajustada.webp" },
+  { title: "Acceso Confirmado", src: "/app/pasarela/05.webp" },
+  { title: "Atención Personalizada", src: "/app/pasarela/06.webp" },
+  { title: "Resumen Fiscal", src: "/app/pasarela/07.webp" },
+  { title: "Consulta de RFC", src: "/app/pasarela/03.webp" },
+  { title: "Calcula tu RFC", src: "/app/pasarela/09.webp" },
+  { title: "Calcula tus Adeudos", src: "/app/pasarela/08.webp" },
+  { title: "Identidad Protegida", src: "/app/pasarela/02.webp" },
+  { title: "Consulta en el DOF", src: "/app/pasarela/10.webp" },
+  { title: "Leyes sin tecnicismos", src: "/app/pasarela/11.webp" },
+  { title: "Agenda tu cita", src: "/app/pasarela/12.webp" },
+  { title: "PRÓXIMAMENTE", src: "/app/pasarela/13.webp" },
+];
 
 const SLIDE_COUNT = SLIDES.length;
 const ANGLE_STEP = 360 / SLIDE_COUNT;
