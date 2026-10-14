@@ -115,14 +115,6 @@ export function ItemCopy({ item, detail, animate = true, delay = 0, ...rest }: I
               onClick={openContact}
               delay={loginDelay + 0.6}
             />
-            <ItemButton
-              w={{ base: '100%', xl: 'calc(50% - 0.625rem)' }}
-              minHeight={{ xl: '2.875rem' }}
-              mt={{ base: '0.625rem', xl: 0 }}
-              fontSize={{ xl: '0.75rem' }}
-              label={detail.login.ctas.register.label}
-              delay={loginDelay + 0.8}
-            />
           </Box>
         </CopySection>
       </Box>

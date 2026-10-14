@@ -554,11 +554,8 @@ input:-webkit-autofill:hover {
 		.yk-time, .yk-date { display: none; }
 		.yk-hud-side { flex: 0 0 auto; }
 		.yk-hud-right { justify-content: flex-end; }
-		#yk-social a.yk-soc { width: 24px; height: 24px; }
-	}
-	@media (max-width: 380px) {
-		#yk-social { gap: 0; }
-		#yk-social a.yk-soc { width: 22px; height: 22px; }
+		/* En el teléfono la portada va sin redes. */
+		#yk-social { display: none; }
 	}
 
 	@media (max-width: 480px) {
