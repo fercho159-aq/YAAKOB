@@ -11,7 +11,7 @@ import {
   ListItem,
   UnorderedList,
 } from '@chakra-ui/react'
-import type { ReactNode } from 'react'
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
 import content from '@servicios/data/content.json'
 import { AnimatedWordmark } from './Wordmark'
 import { NavLink } from './motion'
@@ -29,9 +29,96 @@ export interface MenuOverlayProps {
   footer?: ReactNode
 }
 
+/** How long the "copied" tick stays on a share button, in ms. */
+const COPIED_MS = 2000
+
 /**
- * The drawer's only list. The entries are external, so each row
- * opens in its own tab and the drawer stays where the visitor left it.
+ * Opens a note in a centred popup window over the site. The papers refuse
+ * to be framed, so an in-page modal cannot show them. Phones, which have no
+ * popup windows, open it as a new tab.
+ */
+function openPopup(e: MouseEvent<HTMLAnchorElement>, url: string) {
+  e.preventDefault()
+  const w = Math.min(960, window.screen.availWidth - 40)
+  const h = Math.min(820, window.screen.availHeight - 80)
+  const left = Math.round((window.screen.availWidth - w) / 2)
+  const top = Math.round((window.screen.availHeight - h) / 2)
+  window.open(
+    url,
+    'yk-nota',
+    `popup=yes,width=${w},height=${h},left=${left},top=${top},noopener,noreferrer`,
+  )
+}
+
+/** Hands one note to the OS share sheet, or copies its link. */
+function ShareNote({ title, url }: { title: string; url: string }) {
+  const [copied, setCopied] = useState(false)
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => () => {
+    if (timer.current) clearTimeout(timer.current)
+  }, [])
+
+  async function onClick() {
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share({ title, url })
+      } catch {
+        // The visitor closed the share sheet.
+      }
+      return
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      if (timer.current) clearTimeout(timer.current)
+      timer.current = setTimeout(() => setCopied(false), COPIED_MS)
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  return (
+    <Box
+      as="button"
+      type="button"
+      onClick={onClick}
+      aria-label={copied ? 'Enlace copiado' : `Compartir: ${title}`}
+      title={copied ? 'Enlace copiado' : 'Compartir'}
+      flex="0 0 auto"
+      alignSelf="center"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      w="2rem"
+      h="2rem"
+      mr="0.625rem"
+      color={copied ? 'white' : 'gold'}
+      border="1px solid rgba(255,255,255,0.2)"
+      borderRadius="full"
+      transition="color 0.2s linear, background 0.2s linear"
+      _hover={{ color: 'white', bg: HIGHLIGHT }}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {copied ? (
+          <path d="M5 12l5 5L20 7" />
+        ) : (
+          <>
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+          </>
+        )}
+      </svg>
+    </Box>
+  )
+}
+
+/**
+ * The drawer's only list. The entries are external, so each row opens in a
+ * popup window and the drawer stays where the visitor left it; the button
+ * beside it shares the note.
  */
 function NewsSection() {
   return (
@@ -56,14 +143,15 @@ function NewsSection() {
 
       <UnorderedList m={0} p={0} listStyleType="none">
         {content.news.items.map((entry) => (
-          <ListItem key={entry.id}>
+          <ListItem key={entry.id} display="flex" borderTop={HAIRLINE}>
             <Link
               href={entry.href}
               isExternal
+              onClick={(e) => openPopup(e, entry.href)}
+              flex="1 1 auto"
               display="block"
               px="1.125rem"
               py="0.875rem"
-              borderTop={HAIRLINE}
               transition="background 0.2s linear"
               _hover={{ bg: HIGHLIGHT, textDecor: 'none' }}
             >
@@ -80,6 +168,7 @@ function NewsSection() {
                 {entry.title}
               </Box>
             </Link>
+            <ShareNote title={entry.title} url={entry.href} />
           </ListItem>
         ))}
       </UnorderedList>
