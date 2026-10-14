@@ -45,7 +45,9 @@ export function ItemHero({ item, detail, shareText, animate = true, ...rest }: I
         onMouseEnter={() => setCursorType(CURSOR_TYPE.label)}
         onMouseLeave={() => setCursorType(CURSOR_TYPE.hidden)}
       />
+      {/* En celular va al final de la página, bajo ItemCopy. */}
       <ShareButton
+        display={{ base: 'none', xl: 'inline-flex' }}
         w="100%"
         mt={{ base: '0.625rem', xl: '1.3125rem' }}
         label={detail.ctas.share}

@@ -3,6 +3,7 @@ import type { Variants } from 'framer-motion'
 import type { ReactNode } from 'react'
 import { useContactModal } from '@servicios/components/contact'
 import { ItemButton } from './ItemButton'
+import { ShareButton } from './ShareButton'
 import { MotionParagraph } from './motion'
 import { AnimatedHeading, ScrambleText, VARIANTS } from './shared'
 import type { Item, ItemDetail } from './types'
@@ -65,6 +66,8 @@ function CopySection({
 export type ItemCopyProps = BoxProps & {
   item: Item
   detail: ItemDetail
+  /** Sentence handed to the OS share sheet; the phone-only share CTA uses it. */
+  shareText: string
   animate?: boolean
   delay?: number
 }
@@ -74,7 +77,7 @@ export type ItemCopyProps = BoxProps & {
  * signing in. A signed-in player sees personal stats here instead — that half
  * of the original needs the leaderboard API and is not part of this rebuild.
  */
-export function ItemCopy({ item, detail, animate = true, delay = 0, ...rest }: ItemCopyProps) {
+export function ItemCopy({ item, detail, shareText, animate = true, delay = 0, ...rest }: ItemCopyProps) {
   const loginDelay = delay + 0.6
   const { open: openContact } = useContactModal()
 
@@ -117,6 +120,17 @@ export function ItemCopy({ item, detail, animate = true, delay = 0, ...rest }: I
             />
           </Box>
         </CopySection>
+        {/* En escritorio Compartir vive bajo la imagen (ItemHero). */}
+        <ShareButton
+          display={{ base: 'inline-flex', xl: 'none' }}
+          w="100%"
+          mt="2.5rem"
+          label={detail.ctas.share}
+          confirmation={detail.ctas.clipboard}
+          text={shareText}
+          delay={loginDelay + 0.8}
+          ariaLabel={`${detail.ctas.share}: ${item.label}`}
+        />
       </Box>
     </Box>
   )

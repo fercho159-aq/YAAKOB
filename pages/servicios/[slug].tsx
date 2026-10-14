@@ -93,6 +93,7 @@ export default function ItemPage({ data }: ItemPageProps) {
                 mt={{ base: '0.9375rem', xl: 0 }}
                 item={item}
                 detail={detail}
+                shareText={title}
                 delay={1.5}
               />
             </Flex>
