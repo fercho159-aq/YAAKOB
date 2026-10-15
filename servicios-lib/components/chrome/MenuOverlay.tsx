@@ -17,7 +17,7 @@ import {
   ModalOverlay,
   UnorderedList,
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import content from '@servicios/data/content.json'
 import { AnimatedWordmark } from './Wordmark'
 import { NavLink } from './motion'
@@ -38,8 +38,29 @@ export interface MenuOverlayProps {
 /** How long the "copied" tick stays on a share button, in ms. */
 const COPIED_MS = 2000
 
-/** Hands one note to the OS share sheet, or copies its link. */
-function ShareNote({ title, url }: { title: string; url: string }) {
+/** Query parameter that opens a note on arrival: `/servicios?nota=<id>`. */
+const NOTE_PARAM = 'nota'
+
+type NewsEntry = (typeof content.news.items)[number]
+
+/**
+ * The id in `?nota=`. Empty on the server and while hydrating, so the markup
+ * matches; React re-reads it in the browser right after.
+ */
+function useNoteParam() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => new URLSearchParams(window.location.search).get(NOTE_PARAM) ?? '',
+    () => '',
+  )
+}
+
+/**
+ * Hands one note to the OS share sheet, or copies its link. The link is to
+ * this site, which opens the note in its modal — never the paper's own page,
+ * so whoever receives it lands on YAAKOB first.
+ */
+function ShareNote({ title, id }: { title: string; id: string }) {
   const [copied, setCopied] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -48,6 +69,7 @@ function ShareNote({ title, url }: { title: string; url: string }) {
   }, [])
 
   async function onClick() {
+    const url = `${window.location.origin}/servicios?${NOTE_PARAM}=${encodeURIComponent(id)}`
     if (typeof navigator.share === 'function') {
       try {
         await navigator.share({ title, url })
@@ -103,8 +125,6 @@ function ShareNote({ title, url }: { title: string; url: string }) {
   )
 }
 
-type NewsEntry = (typeof content.news.items)[number]
-
 /**
  * A note in a modal over the site. Papers that allow framing (`embed` in
  * content.json, checked against their X-Frame-Options) show inside an iframe;
@@ -144,7 +164,7 @@ function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () =>
                   {entry.title}
                 </Box>
               </Box>
-              <ShareNote title={entry.title} url={entry.href} />
+              <ShareNote title={entry.title} id={entry.id} />
             </ModalHeader>
             <ModalCloseButton top="1.125rem" right="0.75rem" color="gold" _hover={{ color: 'white' }} />
             <ModalBody p={0} flex="1 1 auto" display="flex" flexDir="column">
@@ -199,9 +219,7 @@ function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () =>
  * The drawer's only list. Each row opens its note in a modal (above) so the
  * visitor never leaves the site; the button beside it shares the note.
  */
-function NewsSection() {
-  const [active, setActive] = useState<NewsEntry | null>(null)
-
+function NewsSection({ onOpenNote }: { onOpenNote: (entry: NewsEntry) => void }) {
   return (
     <Box as="section" borderTop={HAIRLINE}>
       <Flex align="center" gap="0.5rem" px="1.125rem" pt="1.5rem" pb="0.875rem" color="gold">
@@ -230,7 +248,7 @@ function NewsSection() {
               isExternal
               onClick={(e) => {
                 e.preventDefault()
-                setActive(entry)
+                onOpenNote(entry)
               }}
               flex="1 1 auto"
               display="block"
@@ -252,76 +270,97 @@ function NewsSection() {
                 {entry.title}
               </Box>
             </Link>
-            <ShareNote title={entry.title} url={entry.href} />
+            <ShareNote title={entry.title} id={entry.id} />
           </ListItem>
         ))}
       </UnorderedList>
-      <NewsModal entry={active} onClose={() => setActive(null)} />
     </Box>
   )
 }
 
 export function MenuOverlay({ isOpen, onClose, footer }: MenuOverlayProps) {
+  // Outside the drawer, so a shared link (`?nota=`) opens its note straight
+  // away without the drawer behind it.
+  const sharedId = useNoteParam()
+  const [picked, setPicked] = useState<NewsEntry | null>(null)
+  const [dismissed, setDismissed] = useState(false)
+  const shared = dismissed ? null : (content.news.items.find((n) => n.id === sharedId) ?? null)
+  const note = picked ?? shared
+
+  function closeNote() {
+    setPicked(null)
+    setDismissed(true)
+    // Drop `?nota=` so a reload does not raise the note again.
+    const url = new URL(window.location.href)
+    if (url.searchParams.has(NOTE_PARAM)) {
+      url.searchParams.delete(NOTE_PARAM)
+      window.history.replaceState(window.history.state, '', url)
+    }
+  }
+
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-      <DrawerOverlay>
-        <DrawerContent
-          maxWidth={{ base: '100%', xl: '21.75rem' }}
-          bg="grey1"
-          borderLeft="1.6px solid rgba(255,255,255,0.2)"
-          color="white"
-        >
-          <DrawerHeader
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            position="relative"
-            p="1.25rem 1rem 1rem"
-            borderBottom={{ base: '1.6px solid rgba(255,255,255,0.2)', xl: 'none' }}
+    <>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+        <DrawerOverlay>
+          <DrawerContent
+            maxWidth={{ base: '100%', xl: '21.75rem' }}
+            bg="grey1"
+            borderLeft="1.6px solid rgba(255,255,255,0.2)"
+            color="white"
           >
-            <NavLink
-              href="/servicios"
-              data-soft=""
-              display={{ base: 'flex', xl: 'none' }}
+            <DrawerHeader
+              display="flex"
               alignItems="center"
-              h="100%"
-              fontSize="0.75rem"
-              letterSpacing="widest"
-              textTransform="uppercase"
-              aria-label="Go to home page"
-              onClick={onClose}
+              justifyContent="space-between"
+              position="relative"
+              p="1.25rem 1rem 1rem"
+              borderBottom={{ base: '1.6px solid rgba(255,255,255,0.2)', xl: 'none' }}
             >
-              <AnimatedWordmark animate={isOpen} label="YAAKOB CONSULTORES SC" title="Yaakob" w="auto" h="22px" />
-            </NavLink>
-            <DrawerCloseButton
-              pos="absolute"
-              top="0.875rem"
-              right="0.75rem"
-              color="gold"
-              _hover={{ color: 'white' }}
-            />
-          </DrawerHeader>
-
-          <DrawerBody p="3px 0 0 0" display="flex" flexDir="column">
-            <NewsSection />
-
-            {footer ? (
-              <Flex
+              <NavLink
+                href="/servicios"
+                data-soft=""
+                display={{ base: 'flex', xl: 'none' }}
+                alignItems="center"
                 h="100%"
-                w="100%"
-                direction="column"
-                justifyContent="flex-end"
-                alignItems="flex-end"
-                minH="4.6875rem"
-                px="1.6875rem"
-                py="0.75rem"
+                fontSize="0.75rem"
+                letterSpacing="widest"
+                textTransform="uppercase"
+                aria-label="Go to home page"
+                onClick={onClose}
               >
-                {footer}
-              </Flex>
-            ) : null}
-          </DrawerBody>
-        </DrawerContent>
-      </DrawerOverlay>
-    </Drawer>
+                <AnimatedWordmark animate={isOpen} label="YAAKOB CONSULTORES SC" title="Yaakob" w="auto" h="22px" />
+              </NavLink>
+              <DrawerCloseButton
+                pos="absolute"
+                top="0.875rem"
+                right="0.75rem"
+                color="gold"
+                _hover={{ color: 'white' }}
+              />
+            </DrawerHeader>
+
+            <DrawerBody p="3px 0 0 0" display="flex" flexDir="column">
+              <NewsSection onOpenNote={setPicked} />
+
+              {footer ? (
+                <Flex
+                  h="100%"
+                  w="100%"
+                  direction="column"
+                  justifyContent="flex-end"
+                  alignItems="flex-end"
+                  minH="4.6875rem"
+                  px="1.6875rem"
+                  py="0.75rem"
+                >
+                  {footer}
+                </Flex>
+              ) : null}
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
+      <NewsModal entry={note} onClose={closeNote} />
+    </>
   )
 }

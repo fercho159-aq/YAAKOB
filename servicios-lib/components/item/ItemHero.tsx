@@ -1,9 +1,6 @@
 import { Box, type BoxProps } from '@chakra-ui/react'
-import { useState } from 'react'
-import { Cursor } from '@servicios/components/chrome'
 import { CornerFrame } from './CornerFrame'
 import { ItemThumbnail } from './ItemThumbnail'
-import { CURSOR_TYPE, type CursorType, useIsTouchDevice } from './shared'
 import { ShareButton } from './ShareButton'
 import type { Item, ItemDetail } from './types'
 
@@ -19,14 +16,10 @@ export type ItemHeroProps = BoxProps & {
 }
 
 /**
- * Left column of the detail page: the thumbnail that doubles as the primary
- * link, the share CTA under it, and the label bubble that follows the pointer
- * while it is over the thumbnail.
+ * Left column of the detail page: the thumbnail and, on desktop, the share
+ * CTA under it.
  */
 export function ItemHero({ item, detail, shareText, animate = true, ...rest }: ItemHeroProps) {
-  const [cursorType, setCursorType] = useState<CursorType>(CURSOR_TYPE.hidden)
-  const isTouch = useIsTouchDevice()
-
   return (
     <Box pos="relative" p={{ base: '1.5rem 1.625rem', xl: 0 }} pt={{ xl: '2rem' }} {...rest}>
       <CornerFrame
@@ -38,12 +31,9 @@ export function ItemHero({ item, detail, shareText, animate = true, ...rest }: I
       <ItemThumbnail
         src={item.thumbnail.src}
         alt={item.thumbnail.alt}
-        href={item.url}
         ratio={THUMBNAIL_RATIO}
         animate={animate}
         delay={0.5}
-        onMouseEnter={() => setCursorType(CURSOR_TYPE.label)}
-        onMouseLeave={() => setCursorType(CURSOR_TYPE.hidden)}
       />
       {/* En celular va al final de la página, bajo ItemCopy. */}
       <ShareButton
@@ -56,7 +46,6 @@ export function ItemHero({ item, detail, shareText, animate = true, ...rest }: I
         delay={1.2}
         ariaLabel={`${detail.ctas.share}: ${item.label}`}
       />
-      {!isTouch && <Cursor type={cursorType} label={detail.ctas.primary} />}
     </Box>
   )
 }

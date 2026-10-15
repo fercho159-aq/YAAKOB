@@ -57,10 +57,11 @@ export default function Home({ data, animate = true }: HomeProps) {
         flexDirection={{ base: 'column', xl: 'row' }}
         mx="auto"
         // Nav's logo/menu button are overlaid, not in flow — this pushes the
-        // carousel clear of them. Below xl the article fills exactly what is
-        // left of the content strip, so the slide can stretch into it.
-        h={{ base: 'calc(100% - 3.75rem)', md: 'calc(100% - 4.6875rem)', xl: '100%' }}
-        mt={{ base: '3.75rem', md: '4.6875rem' }}
+        // carousel clear of them (and, on phones, of the NOTICIAS band). Below
+        // xl the article fills exactly what is left of the content strip, so
+        // the slide can stretch into it.
+        h={{ base: 'calc(100% - 5.25rem)', md: 'calc(100% - 4.6875rem)', xl: '100%' }}
+        mt={{ base: '5.25rem', md: '4.6875rem' }}
         pb={{ base: '0.5rem', md: 0 }}
         variants={articleVariants}
         initial={VARIANTS.hidden}

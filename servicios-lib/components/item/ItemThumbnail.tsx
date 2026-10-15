@@ -2,11 +2,11 @@ import type { BoxProps } from '@chakra-ui/react'
 import type { Variants } from 'framer-motion'
 import Image from 'next/image'
 import { useState } from 'react'
-import { MotionAspectRatio, MotionNextLink } from './motion'
+import { MotionAspectRatio, MotionBox } from './motion'
 import { VARIANTS } from './shared'
 
 /** The frame drops in from above… */
-const linkVariants: Variants = {
+const frameVariants: Variants = {
   [VARIANTS.hidden]: { y: '-100%' },
   [VARIANTS.visible]: (delay: number) => ({
     y: '0%',
@@ -24,42 +24,32 @@ const imageVariants: Variants = {
   }),
 }
 
-export type ItemThumbnailProps = Omit<BoxProps, 'onMouseEnter' | 'onMouseLeave'> & {
+export type ItemThumbnailProps = BoxProps & {
   src: string
   alt: string
-  href: string
   ratio: number
   animate?: boolean
   delay?: number
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
 }
+
+/** The service's picture. Not a link: the detail page is the end of the road. */
 
 export function ItemThumbnail({
   src,
   alt,
-  href,
   ratio,
   animate = true,
   delay = 0,
-  onMouseEnter,
-  onMouseLeave,
   ...rest
 }: ItemThumbnailProps) {
   // Held back until the image is decoded, so it never slides in blank.
   const [loaded, setLoaded] = useState(false)
   const state = animate && loaded ? VARIANTS.visible : VARIANTS.hidden
-  const isExternal = href.startsWith('http://') || href.startsWith('https://')
 
   return (
-    <MotionNextLink
-      href={href}
-      rel="noreferrer"
-      target={isExternal ? '_blank' : '_self'}
-      display="block"
+    <MotionBox
       overflow="hidden"
-      style={{ transition: 'none' }}
-      variants={linkVariants}
+      variants={frameVariants}
       custom={delay}
       initial={VARIANTS.hidden}
       animate={state}
@@ -69,8 +59,6 @@ export function ItemThumbnail({
         ratio={ratio}
         border="1px solid"
         borderColor="rgba(255,255,255,0.2)"
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
         variants={imageVariants}
         custom={delay}
         initial={VARIANTS.hidden}
@@ -85,6 +73,6 @@ export function ItemThumbnail({
           onLoad={() => setLoaded(true)}
         />
       </MotionAspectRatio>
-    </MotionNextLink>
+    </MotionBox>
   )
 }
