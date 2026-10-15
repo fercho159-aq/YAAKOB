@@ -148,7 +148,9 @@ export default function Home() {
           property="og:description"
           content="Despacho especializado en defensa fiscal: diagnóstico, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B y UIF-FGR."
         />
-        <meta property="og:image" content="/logo.png" />
+        <meta property="og:image" content="https://yaakob.com/share-yaakob.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:site_name" content="Yaakob Consultores S.C." />
         <meta property="og:locale" content="es_MX" />
         <meta property="twitter:card" content="summary_large_image" />
@@ -158,7 +160,7 @@ export default function Home() {
           property="twitter:description"
           content="Despacho especializado en defensa fiscal ante el SAT. Diagnóstico, auditorías, créditos fiscales, multas y más."
         />
-        <meta property="twitter:image" content="/logo.png" />
+        <meta property="twitter:image" content="https://yaakob.com/share-yaakob.png" />
         <link rel="icon" type="image/png" href="/favicon-home.png" />
         <link rel="apple-touch-icon" href="/favicon-home.png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     url: "https://yaakob.com/planes",
     title: TITLE,
     description: DESCRIPTION,
-    images: "/logo.png",
+    images: "/share-yaakob.png",
     siteName: "Yaakob Consultores S.C.",
     locale: "es_MX",
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: "/logo.png",
+    images: "/share-yaakob.png",
   },
 };
 

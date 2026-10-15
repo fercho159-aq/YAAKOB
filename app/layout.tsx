@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Yaakob - SAT - Inteligencia fiscal",
     description:
       "Despacho especializado en defensa fiscal: diagnóstico, auditorías del SAT, créditos fiscales, multas, sellos digitales, defensa 69-B y UIF-FGR.",
-    images: "/logo.png",
+    images: "/share-yaakob.png",
     siteName: "Yaakob Consultores S.C.",
     locale: "es_MX",
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: "Yaakob - SAT - Inteligencia fiscal",
     description:
       "Despacho especializado en defensa fiscal ante el SAT. Diagnóstico, auditorías, créditos fiscales, multas y más.",
-    images: "/logo.png",
+    images: "/share-yaakob.png",
   },
   other: {
     "theme-color": "#0a0a0a",
