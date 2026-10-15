@@ -858,13 +858,18 @@ html.pl-modal-open {
 }
 .pl-demo h2 {
   margin: 0 0 18px;
+  padding: 0 40px;
   font: 400 24px/1.25 Georgia, 'Times New Roman', serif;
 }
-.pl-demo img {
+.pl-demo video {
   display: block;
+  width: auto;
   max-width: 100%;
-  max-height: 60vh;
+  height: 62vh;
+  aspect-ratio: 9 / 16;
   margin: 0 auto 22px;
+  border-radius: 14px;
+  background: #0b1020;
 }
 .pl-demo__close,
 .pl-checkout__close {

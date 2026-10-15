@@ -71,12 +71,15 @@ const telHref = (tel: string) => `tel:${tel.replace(/[^+\d]/g, "")}`;
 
 function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
     if (open && !dialog.open) dialog.showModal();
     else if (!open && dialog.open) dialog.close();
+    // Al cerrar, la guía no sigue sonando detrás de la página.
+    if (!open) video.current?.pause();
   }, [open]);
 
   useEffect(() => {
@@ -99,7 +102,15 @@ function DemoModal({ open, onClose }: { open: boolean; onClose: () => void }) {
         ×
       </button>
       <h2 id="pl-demo-title">Pruebe la experiencia YAAKOB</h2>
-      <img src="/planes/registro-demo.webp" alt="Pantalla de registro de la aplicación YAAKOB" loading="lazy" />
+      <video
+        ref={video}
+        src="/planes/guia-app.mp4"
+        poster="/planes/guia-app-poster.webp"
+        controls
+        playsInline
+        preload="none"
+        aria-label="Guía en video: cómo registrarse y usar la aplicación YAAKOB"
+      />
       <Link className="pl-btn pl-btn--primary" href="/contacto">
         Solicitar acceso
       </Link>
