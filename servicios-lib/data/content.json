@@ -350,79 +350,92 @@
         "id": "boquete-isr",
         "title": "Fisco mexicano enfrenta boquete de 118 mil mdp en ISR",
         "source": "La Jornada",
-        "href": "https://share.google/aCkau3gjGJznFmhAU"
+        "href": "https://www.jornada.com.mx/noticia/2026/08/27/economia/sat-fisco-mexicano-enfrenta-boquete-de-118-mil-mdp-en-isr",
+        "embed": false
       },
       {
         "id": "ventas-redes-sociales",
         "title": "SAT refuerza vigilancia y asegura que las ventas en redes sociales también deben pagar impuestos",
         "source": "El Heraldo de México",
-        "href": "https://share.google/Ny1ct7gzxWR7sZ61j"
+        "href": "https://heraldodemexico.com.mx/nacional/2026/8/27/sat-refuerza-vigilancia-asegura-que-las-ventas-en-redes-sociales-tambien-deben-pagar-impuestos-877485.html",
+        "embed": true
       },
       {
         "id": "facturas-falsas-prision",
         "title": "Usar facturas falsas puede llevarte a prisión en México por hasta 9 años: el SAT puede investigar y aplicar sanciones",
-        "source": "Google Noticias",
-        "href": "https://share.google/vAwxg3XwU15ydSad9"
+        "source": "El Imparcial",
+        "href": "https://www.elimparcial.com/dinero/2026/08/27/usar-facturas-falsas-puede-llevarte-a-prision-en-mexico-por-hasta-9-anos-el-sat-puede-investigar-y-aplicar-sanciones/",
+        "embed": true
       },
       {
         "id": "condonacion-multas-recargos",
         "title": "SAT condonará hasta 100% de multas y recargos a contribuyentes con adeudos",
         "source": "Milenio",
-        "href": "https://www.milenio.com/estados/sat-condonara-multas-recargos-programa-regulacion-fiscal"
+        "href": "https://www.milenio.com/estados/sat-condonara-multas-recargos-programa-regulacion-fiscal",
+        "embed": true
       },
       {
         "id": "limite-efectivo-inmueble",
         "title": "SAT confirma el límite de efectivo para comprar un inmueble en agosto 2026",
         "source": "El Informador",
-        "href": "https://www.informador.mx/economia/sat-confirma-el-limite-de-efectivo-para-comprar-un-inmueble-en-agosto-2026-20260814-0083.html"
+        "href": "https://www.informador.mx/economia/sat-confirma-el-limite-de-efectivo-para-comprar-un-inmueble-en-agosto-2026-20260814-0083.html",
+        "embed": false
       },
       {
         "id": "acoso-sat-empresas-eu",
         "title": "Denuncian empresas de EU acoso del SAT",
         "source": "Reforma",
-        "href": "https://share.google/dtRPELB0Re4G0a7dx"
+        "href": "https://www.reforma.com/denuncian-empresas-de-eu-acoso-del-sat/ar3257846",
+        "embed": false
       },
       {
         "id": "visitas-domiciliarias",
         "title": "Ya es oficial: el SAT visitará casa por casa con cámaras especiales y abogados para verificar el cumplimiento de las obligaciones fiscales",
         "source": "El Cronista",
-        "href": "https://www.cronista.com/mexico/finanzas-economia/ya-es-oficial-el-sat-visitara-casa-por-casa-con-camaras-especiales-y-abogados-para-verificar-el-cumplimiento-de-las-obligaciones-fiscales/"
+        "href": "https://www.cronista.com/mexico/finanzas-economia/ya-es-oficial-el-sat-visitara-casa-por-casa-con-camaras-especiales-y-abogados-para-verificar-el-cumplimiento-de-las-obligaciones-fiscales/",
+        "embed": true
       },
       {
         "id": "buzon-tributario",
         "title": "¿No activaste tu Buzón Tributario? El SAT advierte sanciones desde enero de 2026",
-        "source": "Google Noticias",
-        "href": "https://share.google/ZPMBqvkB62SLh6M9u"
+        "source": "3 Minutos Informa",
+        "href": "https://3minutosinforma.com/no-activaste-tu-buzon-tributario-el-sat-advierte-sanciones-desde-enero-de-2026/",
+        "embed": true
       },
       {
         "id": "transferencias-familiares",
         "title": "Oficial | El SAT te puede multar por hacer transferencias a familiares: este es el monto permitido y las sanciones",
-        "source": "Google Noticias",
-        "href": "https://share.google/MHcELoupohGI7YVWA"
+        "source": "Reporte Índigo",
+        "href": "https://www.reporteindigo.com/nacional/sat-multa-por-transferencia-entre-familiares-monto-maximo-y-sanciones-economicas-20260805-0022.html",
+        "embed": false
       },
       {
         "id": "huachicol-fiscal",
         "title": "El SAT le declara la guerra al huachicol fiscal: qué cambia para los transportistas desde el 24 de abril de 2026",
         "source": "Transporte.mx",
-        "href": "https://share.google/d6O8Pdp8RUJsqYk3W"
+        "href": "https://transporte.mx/el-sat-le-declara-la-guerra-al-huachicol-fiscal-que-cambia-para-los-transportistas-desde-el-24-de-abril-de-2026/",
+        "embed": true
       },
       {
         "id": "tarjetas-debito",
         "title": "¿Tienes varias tarjetas de débito? Esto es lo que el SAT revisa en agosto de 2026 para no multarte",
         "source": "El Informador",
-        "href": "https://share.google/XUO1Gu2VfrxoG1ZaO"
+        "href": "https://www.informador.mx/mexico/tienes-varias-tarjetas-de-debito-esto-es-lo-que-el-sat-revisa-en-agosto-de-2026-para-no-multarte-20260807-0161.html",
+        "embed": false
       },
       {
         "id": "gastos-escolares",
         "title": "SAT permite deducir estos gastos escolares: requisitos y monto máximo",
-        "source": "Google Noticias",
-        "href": "https://share.google/ZPtYClBoWl9e0EKEJ"
+        "source": "La Verdad",
+        "href": "https://laverdadnoticias.com/dinero-inteligente/finanzas-personales/sat-deducir-gastos-escolares",
+        "embed": true
       },
       {
         "id": "correo-declaracion-anual",
         "title": "Qué pasa cuando el SAT te envía un correo por no presentar tu Declaración Anual",
-        "source": "Google Noticias",
-        "href": "https://share.google/UEjclZrcsEASdKdMW"
+        "source": "Merca2.0",
+        "href": "https://www.merca20.com/que-pasa-cuando-el-sat-te-envia-un-correo-por-no-presentar-tu-declaracion-anual-explicacion-de-lo-que-significa/",
+        "embed": false
       }
     ]
   },

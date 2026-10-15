@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next'
+import content from './servicios-lib/data/content.json'
 
 /**
  * Hosts de terceros que el sitio carga hoy. Cualquier añadido nuevo (un pixel,
@@ -32,6 +33,15 @@ const ANALYTICS_HOSTS = [
   'https://stats.g.doubleclick.net',
 ]
 
+/**
+ * Periódicos cuyas notas se abren en el modal de Noticias. Salen de
+ * content.json (las marcadas `embed`), así que agregar una nota no exige
+ * tocar la CSP.
+ */
+const NEWS_FRAME_HOSTS = [
+  ...new Set(content.news.items.filter((n) => n.embed).map((n) => new URL(n.href).origin)),
+]
+
 const FONT_HOSTS = ['https://use.typekit.net', 'https://p.typekit.net', 'https://fonts.gstatic.com']
 
 /**
@@ -48,7 +58,8 @@ const csp = [
   `img-src 'self' data: blob: ${[...ANALYTICS_HOSTS, ...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS].join(' ')}`,
   `connect-src 'self' ${[...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS, ...ANALYTICS_HOSTS].join(' ')}`,
   // 3D Secure devuelve al usuario dentro de un marco del emisor en algunos bancos.
-  `frame-src 'self' ${[...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS].join(' ')}`,
+  // …y el modal de Noticias muestra las notas de los periódicos que lo permiten.
+  `frame-src 'self' ${[...OPENPAY_HOSTS, ...ANTIFRAUDE_HOSTS, ...NEWS_FRAME_HOSTS].join(' ')}`,
   "frame-ancestors 'self'",
   "base-uri 'self'",
   "form-action 'self'",

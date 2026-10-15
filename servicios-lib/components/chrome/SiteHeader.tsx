@@ -59,13 +59,11 @@ export interface SiteHeaderProps {
   social?: boolean
   /** Sello XIX-XXIII a la izquierda; la portada no lo lleva. */
   seal?: boolean
-  /** Leyenda XIX-XXIII junto al sello; Servicios lleva solo el sello. */
-  sealLabel?: boolean
   /** El acceso a NOTICIAS solo aparece en la sección de Servicios. */
   news?: boolean
 }
 
-export function SiteHeader({ social = false, seal = true, sealLabel = true, news = false }: SiteHeaderProps) {
+export function SiteHeader({ social = false, seal = true, news = false }: SiteHeaderProps) {
   const { open } = useContactModal()
   const path = usePath()
   const { time, date } = useClock()
@@ -95,11 +93,10 @@ export function SiteHeader({ social = false, seal = true, sealLabel = true, news
   return (
     <div id="yk-hud" {...sfx}>
       <div className="yk-hud-side yk-hud-left">
-        {/* Sello del árbol de la vida con su leyenda, como en /servicios. */}
+        {/* Sello del árbol de la vida. */}
         {seal ? (
           <a className="yk-seal" href="/" aria-label="YAAKOB, inicio">
             <img src="/logo-xix-xxiii.png" alt="" />
-            {sealLabel ? <span>XIX-XXIII</span> : null}
           </a>
         ) : null}
         <div className="yk-time" id="yk-time" suppressHydrationWarning>

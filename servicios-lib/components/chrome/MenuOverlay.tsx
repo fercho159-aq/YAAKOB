@@ -9,9 +9,15 @@ import {
   Flex,
   Link,
   ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   UnorderedList,
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import content from '@servicios/data/content.json'
 import { AnimatedWordmark } from './Wordmark'
 import { NavLink } from './motion'
@@ -31,24 +37,6 @@ export interface MenuOverlayProps {
 
 /** How long the "copied" tick stays on a share button, in ms. */
 const COPIED_MS = 2000
-
-/**
- * Opens a note in a centred popup window over the site. The papers refuse
- * to be framed, so an in-page modal cannot show them. Phones, which have no
- * popup windows, open it as a new tab.
- */
-function openPopup(e: MouseEvent<HTMLAnchorElement>, url: string) {
-  e.preventDefault()
-  const w = Math.min(960, window.screen.availWidth - 40)
-  const h = Math.min(820, window.screen.availHeight - 80)
-  const left = Math.round((window.screen.availWidth - w) / 2)
-  const top = Math.round((window.screen.availHeight - h) / 2)
-  window.open(
-    url,
-    'yk-nota',
-    `popup=yes,width=${w},height=${h},left=${left},top=${top},noopener,noreferrer`,
-  )
-}
 
 /** Hands one note to the OS share sheet, or copies its link. */
 function ShareNote({ title, url }: { title: string; url: string }) {
@@ -115,12 +103,105 @@ function ShareNote({ title, url }: { title: string; url: string }) {
   )
 }
 
+type NewsEntry = (typeof content.news.items)[number]
+
 /**
- * The drawer's only list. The entries are external, so each row opens in a
- * popup window and the drawer stays where the visitor left it; the button
- * beside it shares the note.
+ * A note in a modal over the site. Papers that allow framing (`embed` in
+ * content.json, checked against their X-Frame-Options) show inside an iframe;
+ * the rest refuse to render there, so the modal offers the headline and a
+ * link to read it on the paper's own site.
+ */
+function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () => void }) {
+  return (
+    <Modal isOpen={entry !== null} onClose={onClose} size="6xl" isCentered>
+      <ModalOverlay bg="rgba(0,0,0,0.75)" />
+      <ModalContent
+        bg="grey1"
+        color="white"
+        border={HAIRLINE}
+        borderRadius={0}
+        mx={{ base: '0.5rem', xl: '2rem' }}
+        h={entry?.embed ? { base: '92dvh', xl: '88vh' } : 'auto'}
+        display="flex"
+        flexDir="column"
+        overflow="hidden"
+      >
+        {entry ? (
+          <>
+            <ModalHeader
+              display="flex"
+              alignItems="center"
+              gap="0.75rem"
+              p="0.875rem 3.5rem 0.875rem 1.125rem"
+              borderBottom={HAIRLINE}
+              fontWeight="normal"
+            >
+              <Box flex="1 1 auto" minW={0}>
+                <Box fontSize="0.5625rem" letterSpacing="0.18em" textTransform="uppercase" color="gold" mb="0.25rem">
+                  {entry.source}
+                </Box>
+                <Box fontSize="0.875rem" lineHeight="1.35" noOfLines={2}>
+                  {entry.title}
+                </Box>
+              </Box>
+              <ShareNote title={entry.title} url={entry.href} />
+            </ModalHeader>
+            <ModalCloseButton top="1.125rem" right="0.75rem" color="gold" _hover={{ color: 'white' }} />
+            <ModalBody p={0} flex="1 1 auto" display="flex" flexDir="column">
+              {entry.embed ? (
+                <Box
+                  as="iframe"
+                  src={entry.href}
+                  title={entry.title}
+                  flex="1 1 auto"
+                  w="100%"
+                  border={0}
+                  bg="white"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              ) : null}
+              <Flex
+                align="center"
+                justify={entry.embed ? 'flex-end' : 'flex-start'}
+                gap="1rem"
+                px="1.125rem"
+                py={entry.embed ? '0.625rem' : '1.5rem'}
+                borderTop={entry.embed ? HAIRLINE : undefined}
+                fontSize="0.75rem"
+                flexWrap="wrap"
+              >
+                {entry.embed ? null : (
+                  <Box flex="1 1 16rem" color="rgba(255,255,255,0.7)" lineHeight="1.4">
+                    {entry.source} no permite mostrar sus notas dentro de otros sitios.
+                  </Box>
+                )}
+                <Link
+                  href={entry.href}
+                  isExternal
+                  color="gold"
+                  letterSpacing="0.14em"
+                  textTransform="uppercase"
+                  fontSize="0.6875rem"
+                  _hover={{ color: 'white' }}
+                >
+                  Leer en {entry.source} ↗
+                </Link>
+              </Flex>
+            </ModalBody>
+          </>
+        ) : null}
+      </ModalContent>
+    </Modal>
+  )
+}
+
+/**
+ * The drawer's only list. Each row opens its note in a modal (above) so the
+ * visitor never leaves the site; the button beside it shares the note.
  */
 function NewsSection() {
+  const [active, setActive] = useState<NewsEntry | null>(null)
+
   return (
     <Box as="section" borderTop={HAIRLINE}>
       <Flex align="center" gap="0.5rem" px="1.125rem" pt="1.5rem" pb="0.875rem" color="gold">
@@ -147,7 +228,10 @@ function NewsSection() {
             <Link
               href={entry.href}
               isExternal
-              onClick={(e) => openPopup(e, entry.href)}
+              onClick={(e) => {
+                e.preventDefault()
+                setActive(entry)
+              }}
               flex="1 1 auto"
               display="block"
               px="1.125rem"
@@ -172,6 +256,7 @@ function NewsSection() {
           </ListItem>
         ))}
       </UnorderedList>
+      <NewsModal entry={active} onClose={() => setActive(null)} />
     </Box>
   )
 }
