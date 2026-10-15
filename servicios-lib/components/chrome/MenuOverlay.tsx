@@ -131,9 +131,59 @@ function ShareNote({ title, id }: { title: string; id: string }) {
  * the rest refuse to render there, so the modal offers the headline and a
  * link to read it on the paper's own site.
  */
-function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () => void }) {
+/** `2026-08-27` → `27 de agosto de 2026`, read as a calendar date (no timezone shift). */
+function formatNoteDate(iso: string) {
+  const [y, m, d] = iso.split('-').map(Number)
+  return new Date(y, m - 1, d).toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+/**
+ * Our own write-up of a note whose paper refuses framing: the facts in our
+ * words, a YAAKOB comment set apart, and the original credited at the foot.
+ */
+function NoteArticle({ entry }: { entry: NewsEntry }) {
+  const body = entry.body ?? []
+  const note = entry.note ?? null
+  const date = entry.date ? formatNoteDate(entry.date) : null
+
   return (
-    <Modal isOpen={entry !== null} onClose={onClose} size="6xl" isCentered>
+    <Box maxW="40rem" mx="auto" px={{ base: '1.125rem', xl: '1.5rem' }} py="1.5rem">
+      {body.map((paragraph) => (
+        <Box as="p" key={paragraph} mb="1rem" fontSize="0.9375rem" lineHeight="1.65" color="rgba(255,255,255,0.88)">
+          {paragraph}
+        </Box>
+      ))}
+      {note ? (
+        <Box as="aside" mt="1.5rem" p="1rem 1.125rem" bg="rgba(255,255,255,0.05)" borderLeft="2px solid" borderColor="gold">
+          <Box fontSize="0.5625rem" letterSpacing="0.18em" textTransform="uppercase" color="gold" mb="0.5rem">
+            Comentario YAAKOB
+          </Box>
+          <Box as="p" fontSize="0.875rem" lineHeight="1.6">
+            {note}
+          </Box>
+        </Box>
+      ) : null}
+      <Box mt="1.75rem" pt="1rem" borderTop={HAIRLINE} fontSize="0.75rem" lineHeight="1.5" color="rgba(255,255,255,0.6)">
+        Fuente: {entry.source}
+        {date ? `, ${date}` : ''}.{' '}
+        <Link href={entry.href} isExternal color="gold" _hover={{ color: 'white' }}>
+          Leer la nota original ↗
+        </Link>
+      </Box>
+    </Box>
+  )
+}
+
+function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () => void }) {
+  const isArticle = entry !== null && !entry.embed && Boolean(entry.body)
+  return (
+    <Modal
+      isOpen={entry !== null}
+      onClose={onClose}
+      size={isArticle ? '3xl' : '6xl'}
+      isCentered
+      scrollBehavior="inside"
+    >
       <ModalOverlay bg="rgba(0,0,0,0.75)" />
       <ModalContent
         bg="grey1"
@@ -142,6 +192,7 @@ function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () =>
         borderRadius={0}
         mx={{ base: '0.5rem', xl: '2rem' }}
         h={entry?.embed ? { base: '92dvh', xl: '88vh' } : 'auto'}
+        maxH={{ base: '92dvh', xl: '88vh' }}
         display="flex"
         flexDir="column"
         overflow="hidden"
@@ -167,7 +218,8 @@ function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () =>
               <ShareNote title={entry.title} id={entry.id} />
             </ModalHeader>
             <ModalCloseButton top="1.125rem" right="0.75rem" color="gold" _hover={{ color: 'white' }} />
-            <ModalBody p={0} flex="1 1 auto" display="flex" flexDir="column">
+            <ModalBody p={0} flex="1 1 auto" display="flex" flexDir="column" overflowY="auto">
+              {isArticle ? <NoteArticle entry={entry} /> : null}
               {entry.embed ? (
                 <Box
                   as="iframe"
@@ -180,33 +232,35 @@ function NewsModal({ entry, onClose }: { entry: NewsEntry | null; onClose: () =>
                   referrerPolicy="strict-origin-when-cross-origin"
                 />
               ) : null}
-              <Flex
-                align="center"
-                justify={entry.embed ? 'flex-end' : 'flex-start'}
-                gap="1rem"
-                px="1.125rem"
-                py={entry.embed ? '0.625rem' : '1.5rem'}
-                borderTop={entry.embed ? HAIRLINE : undefined}
-                fontSize="0.75rem"
-                flexWrap="wrap"
-              >
-                {entry.embed ? null : (
-                  <Box flex="1 1 16rem" color="rgba(255,255,255,0.7)" lineHeight="1.4">
-                    {entry.source} no permite mostrar sus notas dentro de otros sitios.
-                  </Box>
-                )}
-                <Link
-                  href={entry.href}
-                  isExternal
-                  color="gold"
-                  letterSpacing="0.14em"
-                  textTransform="uppercase"
-                  fontSize="0.6875rem"
-                  _hover={{ color: 'white' }}
+              {isArticle ? null : (
+                <Flex
+                  align="center"
+                  justify={entry.embed ? 'flex-end' : 'flex-start'}
+                  gap="1rem"
+                  px="1.125rem"
+                  py={entry.embed ? '0.625rem' : '1.5rem'}
+                  borderTop={entry.embed ? HAIRLINE : undefined}
+                  fontSize="0.75rem"
+                  flexWrap="wrap"
                 >
-                  Leer en {entry.source} ↗
-                </Link>
-              </Flex>
+                  {entry.embed ? null : (
+                    <Box flex="1 1 16rem" color="rgba(255,255,255,0.7)" lineHeight="1.4">
+                      {entry.source} no permite mostrar sus notas dentro de otros sitios.
+                    </Box>
+                  )}
+                  <Link
+                    href={entry.href}
+                    isExternal
+                    color="gold"
+                    letterSpacing="0.14em"
+                    textTransform="uppercase"
+                    fontSize="0.6875rem"
+                    _hover={{ color: 'white' }}
+                  >
+                    Leer en {entry.source} ↗
+                  </Link>
+                </Flex>
+              )}
             </ModalBody>
           </>
         ) : null}

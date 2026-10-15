@@ -351,7 +351,14 @@
         "title": "Fisco mexicano enfrenta boquete de 118 mil mdp en ISR",
         "source": "La Jornada",
         "href": "https://www.jornada.com.mx/noticia/2026/08/27/economia/sat-fisco-mexicano-enfrenta-boquete-de-118-mil-mdp-en-isr",
-        "embed": false
+        "embed": false,
+        "date": "2026-08-27",
+        "body": [
+          "Las cifras preliminares del SAT al cierre de julio muestran que la recaudación del impuesto sobre la renta (ISR) va 118 mil 576 millones de pesos por debajo de lo que Hacienda programó para 2026.",
+          "Entre enero y julio los impuestos federales sumaron 3 billones 407 mil 331 millones de pesos, cerca de 95 mil 880 millones menos que la meta del periodo.",
+          "El IVA fue la excepción: superó lo previsto en alrededor de 107 mil 766 millones de pesos, aunque no alcanzó a cubrir el rezago del ISR y del IEPS."
+        ],
+        "note": "Cuando la recaudación se queda corta, la autoridad suele intensificar la fiscalización: más cartas invitación, revisiones electrónicas y auditorías sobre ingresos no declarados. Es buen momento para revisar que sus declaraciones cuadren con sus CFDI y estados de cuenta."
       },
       {
         "id": "ventas-redes-sociales",
@@ -379,14 +386,29 @@
         "title": "SAT confirma el límite de efectivo para comprar un inmueble en agosto 2026",
         "source": "El Informador",
         "href": "https://www.informador.mx/economia/sat-confirma-el-limite-de-efectivo-para-comprar-un-inmueble-en-agosto-2026-20260814-0083.html",
-        "embed": false
+        "embed": false,
+        "date": "2026-08-14",
+        "body": [
+          "La Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita (Ley Antilavado) limita el pago en efectivo al comprar un inmueble a 8 mil 025 UMA, unos 941 mil 412 pesos en 2026.",
+          "Lo que exceda ese tope debe pagarse por transferencia, cheque nominativo u otro medio que deje rastro bancario.",
+          "Para vehículos, joyas, relojes y obras de arte el límite es menor: 3 mil 210 UMA, alrededor de 376 mil 565 pesos.",
+          "Rebasar estos montos puede costar multas de entre 10% y 100% del valor de la operación, y los notarios están obligados a reportar pagos que no correspondan con los ingresos declarados del comprador."
+        ],
+        "note": "Antes de escriturar, reúna los comprobantes del origen de los recursos (estados de cuenta, contratos, declaraciones). Si el pago no es congruente con lo que usted declara, la operación puede detonar una revisión."
       },
       {
         "id": "acoso-sat-empresas-eu",
         "title": "Denuncian empresas de EU acoso del SAT",
         "source": "Reforma",
         "href": "https://www.reforma.com/denuncian-empresas-de-eu-acoso-del-sat/ar3257846",
-        "embed": false
+        "embed": false,
+        "date": "2026-08-15",
+        "body": [
+          "El Consejo Nacional de Comercio Exterior de Estados Unidos (NFTC), que agrupa a cerca de 300 empresas como Amazon, Ford, ExxonMobil, FedEx, Walmart y Visa, llevó al Comité de Finanzas del Senado estadounidense sus quejas contra la fiscalización del SAT, a la que califica de “sin precedentes”.",
+          "En una carta fechada el 30 de julio, el grupo reconoce el acuerdo publicado por Hacienda en mayo para acotar revisiones excesivas, pero sostiene que no resuelve los problemas de fondo.",
+          "Las empresas acusan al SAT de rechazar deducciones legítimas y de practicar auditorías agresivas, y advierten que ese trato desalienta la inversión y la creación de empleo en México."
+        ],
+        "note": "Si las grandes multinacionales enfrentan revisiones más duras, las empresas medianas y pequeñas también. Una defensa sólida empieza por tener documentada la materialidad de cada deducción."
       },
       {
         "id": "visitas-domiciliarias",
@@ -407,7 +429,15 @@
         "title": "Oficial | El SAT te puede multar por hacer transferencias a familiares: este es el monto permitido y las sanciones",
         "source": "Reporte Índigo",
         "href": "https://www.reporteindigo.com/nacional/sat-multa-por-transferencia-entre-familiares-monto-maximo-y-sanciones-economicas-20260805-0022.html",
-        "embed": false
+        "embed": false,
+        "date": "2026-08-05",
+        "body": [
+          "Enviar dinero a familiares por SPEI es legal y cotidiano, pero esos movimientos quedan a la vista del SAT.",
+          "La Ley del ISR obliga a las personas físicas a informar en su declaración anual los préstamos, donativos y premios que, en conjunto, superen 600 mil pesos en el ejercicio.",
+          "Si no se informan, el SAT puede tratar esos depósitos como ingresos omitidos: además de una multa que puede rondar los 35 mil pesos, cobraría el impuesto sobre el monto no declarado.",
+          "El parentesco no exime de la obligación; lo que protege al contribuyente es poder demostrar el origen y la naturaleza de cada transferencia."
+        ],
+        "note": "Si presta o regala dinero a un familiar, documéntelo: contrato de préstamo o de donación, comprobantes de la transferencia y, en su caso, el aviso en la declaración anual."
       },
       {
         "id": "huachicol-fiscal",
@@ -421,7 +451,15 @@
         "title": "¿Tienes varias tarjetas de débito? Esto es lo que el SAT revisa en agosto de 2026 para no multarte",
         "source": "El Informador",
         "href": "https://www.informador.mx/mexico/tienes-varias-tarjetas-de-debito-esto-es-lo-que-el-sat-revisa-en-agosto-de-2026-para-no-multarte-20260807-0161.html",
-        "embed": false
+        "embed": false,
+        "date": "2026-08-07",
+        "body": [
+          "Tener varias cuentas o tarjetas de débito no está prohibido. Lo que revisa el SAT es que el dinero que entra y sale de ellas sea congruente con los ingresos que usted declara.",
+          "Cuando los depósitos o gastos superan lo declarado se configura una discrepancia fiscal, figura prevista en la Ley del ISR que permite a la autoridad presumir ingresos no declarados.",
+          "Los bancos reportan al SAT los depósitos en efectivo que superen 15 mil pesos al mes, y con varias cuentas es fácil rebasar ese monto sin notarlo.",
+          "Las transferencias entre cuentas propias o los apoyos familiares también pueden leerse como ingresos nuevos, por lo que se recomienda concentrar la operación en pocas cuentas."
+        ],
+        "note": "Si recibe una carta invitación por depósitos, no la ignore: hay un plazo para aclarar con pruebas el origen de los recursos. Una respuesta bien armada evita que la revisión escale."
       },
       {
         "id": "gastos-escolares",
@@ -435,7 +473,15 @@
         "title": "Qué pasa cuando el SAT te envía un correo por no presentar tu Declaración Anual",
         "source": "Merca2.0",
         "href": "https://www.merca20.com/que-pasa-cuando-el-sat-te-envia-un-correo-por-no-presentar-tu-declaracion-anual-explicacion-de-lo-que-significa/",
-        "embed": false
+        "embed": false,
+        "date": "2026-08-07",
+        "body": [
+          "Cada año el SAT envía correos a quienes, según sus registros, no presentaron la declaración anual. Es una invitación a revisar y, si corresponde, presentar y pagar; no tiene el peso jurídico de un requerimiento formal.",
+          "Estos avisos forman parte del programa de Vigilancia Profunda, que cruza las declaraciones con los CFDI y otras bases de datos para promover el cumplimiento voluntario antes de ejercer facultades de comprobación.",
+          "Un caso común: personas con nómina de dos o más patrones que están obligadas a declarar. Si presentan tarde y resulta ISR a cargo, pagan el impuesto con actualización y recargos.",
+          "Si la multa procede, el artículo 82 del Código Fiscal de la Federación la fija entre 2 mil 050 y 25 mil 360 pesos por obligación en 2026, y puede llegar a 50 mil 710 pesos si se desatiende un requerimiento."
+        ],
+        "note": "Atender la invitación a tiempo es casi siempre más barato que esperar el requerimiento. Revise qué detectó el SAT y regularícese antes de que inicie una revisión."
       }
     ]
   },
