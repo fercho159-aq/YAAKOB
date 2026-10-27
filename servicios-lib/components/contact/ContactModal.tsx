@@ -227,7 +227,9 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </Grid>
         </ModalBody>
 
+        {/* El aviso legal solo en tableta y computadora: en celular tapaba las tarjetas. */}
         <Box
+          display={['none', null, 'block']}
           px={[4, null, 8]}
           py={5}
           borderTop="1px solid"
