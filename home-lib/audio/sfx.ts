@@ -18,6 +18,14 @@
  *     the moment its picture leaves the screen, it is dropped. A whoosh that
  *     lands after the camera has stopped moving is worse than no whoosh, but
  *     one that lands while it is still travelling is the sound working.
+ *   - the gesture is listened for from mount, not from the first refusal, so a
+ *     tap during the loader counter has already opened the page by the time
+ *     the whoosh is due and it plays on cue instead of being held.
+ *   - that first gesture also primes every one-shot. iOS Safari unlocks media
+ *     per element, not per page: an element that was never played inside a
+ *     gesture stays blocked however many taps came before. So each one is
+ *     played muted inside the handler and parked again, which is enough to
+ *     let it sound later from a timer.
  *
  * That last point is not a corner case in production. Chrome decides autoplay
  * per origin, and a dev machine has spent weeks earning the localhost origin
@@ -33,8 +41,11 @@ type SoundName = keyof typeof SOUNDS
 
 /** Registered sounds, with the level each one sits at. */
 const SOUNDS = {
-  /** Low whoosh under the camera push-in. */
-  zoom: { src: '/assets/audio/landing/sfx/sfx_lvl3_zoomsub.mp3', volume: 0.55 },
+  /**
+   * Low whoosh under the camera push-in. Loud on purpose: it is almost all
+   * sub-bass, which a phone speaker barely reproduces at any lower level.
+   */
+  zoom: { src: '/assets/audio/landing/sfx/sfx_lvl3_zoomsub.mp3', volume: 0.9 },
   /** The hit as the wordmark wipes in. */
   logo: { src: '/assets/audio/landing/sfx/sfx_lvl3_logoAppear.mp3', volume: 0.5 },
   /** Room tone, looped under everything. */
@@ -65,6 +76,20 @@ let ambienceWanted = false
 const pending = new Map<SoundName, number>()
 /** Whether the listener that flushes `pending` is already attached. */
 let waitingOnGesture = false
+/** Whether the one-shots have had their muted play inside a gesture. */
+let primed = false
+/**
+ * One-shots whose priming play is still in flight. A real `play` takes its
+ * name out, which is how the priming callback knows the element now belongs
+ * to a sound someone wants and must not be paused under it.
+ */
+const priming = new Set<SoundName>()
+
+/** The sounds that are fired rather than held. Ambience primes itself by playing. */
+const ONE_SHOTS: SoundName[] = ['zoom', 'logo', 'hover', 'click']
+
+/** Gestures that can carry user activation. iOS grants it on `touchend`, not `touchstart`. */
+const GESTURES = ['pointerdown', 'keydown', 'touchstart', 'touchend', 'click'] as const
 
 function element(name: SoundName): HTMLAudioElement | null {
   if (typeof window === 'undefined') return null
@@ -128,17 +153,84 @@ function flushPending() {
   due.forEach(([name]) => play(name))
 }
 
-/** Attach the one-shot listener that lets a held sound through. */
+/**
+ * Whether the event being handled right now is one the browser will let make
+ * noise.
+ *
+ * Not every listed gesture is: a `touchstart`, or a touch `pointerdown`, comes
+ * before activation is granted, and treating it as the unlock would flush the
+ * held whoosh into a refusal and drop it a few milliseconds before the
+ * `touchend` that could have played it. Browsers without the API get the
+ * benefit of the doubt.
+ */
+function activated() {
+  const ua = (navigator as Navigator & { userActivation?: { isActive: boolean } }).userActivation
+  return ua ? ua.isActive : true
+}
+
+/**
+ * Play each one-shot muted and park it again, from inside the gesture.
+ *
+ * Synchronous on purpose: the `play()` calls must happen in the handler's own
+ * turn for iOS to count them. Anything already sounding, or claimed by a real
+ * `play` before its priming resolves, is left alone.
+ */
+function prime() {
+  if (primed) return
+  primed = true
+  ONE_SHOTS.forEach((name) => {
+    const el = element(name)
+    if (!el || !el.paused) return
+    priming.add(name)
+    el.muted = true
+    const settle = (pause: boolean) => {
+      if (!priming.delete(name)) return
+      if (pause) {
+        el.pause()
+        try {
+          el.currentTime = 0
+        } catch {
+          // Not seekable yet; the next real play resets it anyway.
+        }
+      }
+      el.muted = false
+    }
+    try {
+      void el.play().then(
+        () => settle(true),
+        () => settle(false)
+      )
+    } catch {
+      settle(false)
+    }
+  })
+}
+
+/**
+ * Listen for the gesture that lifts the autoplay block.
+ *
+ * Stays attached until a gesture actually carries activation, then removes
+ * every listener at once.
+ */
 function waitForGesture() {
-  if (waitingOnGesture) return
+  if (waitingOnGesture || typeof window === 'undefined') return
   waitingOnGesture = true
-  const events = ['pointerdown', 'keydown', 'touchstart'] as const
   const onGesture = () => {
+    if (!activated()) return
     waitingOnGesture = false
-    events.forEach((e) => window.removeEventListener(e, onGesture))
+    GESTURES.forEach((e) => window.removeEventListener(e, onGesture))
     markUnlocked()
   }
-  events.forEach((e) => window.addEventListener(e, onGesture, { once: true, passive: true }))
+  GESTURES.forEach((e) => window.addEventListener(e, onGesture, { passive: true }))
+}
+
+/**
+ * Start listening for the unlocking gesture now, before anything has been
+ * refused. Called at mount, so a tap on the loader opens the page ahead of the
+ * intro's first cue rather than rescuing it after.
+ */
+export function armUnlock() {
+  if (!unlocked) waitForGesture()
 }
 
 /**
@@ -157,6 +249,9 @@ export function play(
   const el = element(name)
   if (!el) return
   const target = SOUNDS[name].volume
+  // Claim the element from any priming play still in flight, so that play's
+  // callback does not pause this one.
+  if (priming.delete(name)) el.muted = false
   el.loop = opts.loop ?? false
   // Restart rather than overlap: these are UI sounds, not a music bed.
   try {
@@ -165,7 +260,14 @@ export function play(
     // Safari throws if the media is not seekable yet; not worth handling.
   }
   el.volume = opts.fadeIn ? 0 : target
-  void el.play().then(
+  let started: Promise<void>
+  try {
+    started = el.play()
+  } catch {
+    // Very old engines throw rather than reject; treat it the same.
+    started = Promise.reject()
+  }
+  void started.then(
     () => {
       if (opts.fadeIn) fade(el, target, opts.fadeIn)
     },
@@ -278,8 +380,14 @@ export function armAmbience() {
 /**
  * Note that the user has interacted, so later one-shots are allowed to try,
  * and let through anything held while they had not.
+ *
+ * Must be called from inside the gesture's handler: the priming plays only
+ * count there. A call during an event that has not granted activation is
+ * ignored, so the gesture listener stays armed for the one that does.
  */
 export function markUnlocked() {
+  if (typeof window === 'undefined' || !activated()) return
+  prime()
   unlocked = true
   if (pending.size) flushPending()
   // The gesture that lets the page make noise is also the one the room tone

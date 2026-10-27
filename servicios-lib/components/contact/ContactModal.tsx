@@ -52,20 +52,20 @@ function ContactCard({ field }: { field: ContactField }) {
         align="center"
         justify="center"
         flexShrink={0}
-        w="42px"
-        h="42px"
+        w="46px"
+        h="46px"
         borderRadius="12px"
         bg="rgba(22,183,227,0.09)"
         border="1px solid"
         borderColor="rgba(22,183,227,0.18)"
-        color="gold"
+        color="white"
       >
-        {Glyph ? <Glyph w="20px" h="20px" /> : null}
+        {Glyph ? <Glyph w="22px" h="22px" /> : null}
       </Flex>
       <Box minW={0}>
         <Text
           fontFamily="var(--font-gridnik)"
-          fontSize="0.5625rem"
+          fontSize="0.6875rem"
           letterSpacing="0.22em"
           textTransform="uppercase"
           color={LABEL}
@@ -74,7 +74,7 @@ function ContactCard({ field }: { field: ContactField }) {
           {field.label}
         </Text>
         {field.lines.map((line) => (
-          <Text key={line} fontSize="0.875rem" lineHeight="1.35" color="white">
+          <Text key={line} fontSize={['1rem', null, '1.0625rem']} lineHeight="1.35" color="white">
             {line}
           </Text>
         ))}
@@ -144,7 +144,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           >
             <Image src="/logo-neon.png" alt="" w="26px" h="26px" objectFit="contain" />
           </Flex>
-          <Text fontSize="1rem" fontWeight="medium" letterSpacing="0.01em">
+          <Text fontSize="1.125rem" fontWeight="medium" letterSpacing="0.01em">
             {contact.title}
           </Text>
         </Flex>
@@ -176,6 +176,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </Grid>
 
             <Flex
+              display={['none', null, 'flex']}
               direction="column"
               align="center"
               justify="center"
@@ -219,7 +220,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <WhatsappLogo w="34px" h="34px" background="transparent" />
                 </Flex>
               </Link>
-              <Text fontSize="0.8125rem" color="#B9BDC6" textAlign="center" maxW="14rem">
+              <Text fontSize="0.9375rem" color="#B9BDC6" textAlign="center" maxW="16rem">
                 {contact.qr.caption}
               </Text>
             </Flex>
@@ -238,20 +239,20 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <ScaleIcon w="16px" h="16px" />
             <Text
               fontFamily="var(--font-gridnik)"
-              fontSize="0.5625rem"
+              fontSize="0.6875rem"
               letterSpacing="0.22em"
               textTransform="uppercase"
             >
               {contact.legal.label}
             </Text>
           </Flex>
-          <Text fontSize="0.6875rem" lineHeight="1.7" color={LABEL}>
+          <Text fontSize="0.8125rem" lineHeight="1.7" color={LABEL}>
             {contact.legal.body}
           </Text>
           <Text
             mt={4}
             fontFamily="var(--font-gridnik)"
-            fontSize="0.5625rem"
+            fontSize="0.6875rem"
             letterSpacing="0.18em"
             textTransform="uppercase"
             color="#6C717B"

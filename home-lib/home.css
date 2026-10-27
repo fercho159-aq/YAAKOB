@@ -151,11 +151,6 @@ input:-webkit-autofill:hover {
 		pointer-events: none;
 		will-change: opacity, transform;
 	}
-	#intro-veil canvas {
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
 	/* Dissolving out: the field lifts and swells a touch as it goes, so it
 	   leaves along the axis the camera is about to travel rather than just
 	   dimming in place. */
@@ -487,6 +482,8 @@ input:-webkit-autofill:hover {
 	#yk-nav a.yk-navlink:hover::after { transform: scaleX(1); }
 	#yk-nav a.yk-logo { display: flex; align-items: center; }
 	#yk-nav a.yk-logo img { display: block; height: 26px; width: auto; }
+	/* Phone-only copy of the logo, left of the band; shown below 700px. */
+	.yk-logo-m { display: none; }
 	@media (max-width: 900px) {
 		#yk-nav { gap: 16px; }
 		#yk-nav a.yk-navlink { font-size: 9px; letter-spacing: 0.1em; }
@@ -562,7 +559,12 @@ input:-webkit-autofill:hover {
 			color: rgba(255, 255, 255, 0.75);
 			opacity: 1;
 		}
-		#yk-burger { display: flex; }
+		#yk-burger { display: flex; height: 22px; width: 26px; }
+		/* Logo left, hamburger right, both 22px tall so they read as a pair.
+		   The seal would crowd the logo, so the phone drops it. */
+		.yk-seal { display: none; }
+		.yk-logo-m { display: flex; align-items: center; }
+		.yk-logo-m img { display: block; height: 22px; width: auto; }
 		/* Single row: social icons left, hamburger right — per the client's mock. */
 		.yk-time, .yk-date { display: none; }
 		.yk-hud-side { flex: 0 0 auto; }

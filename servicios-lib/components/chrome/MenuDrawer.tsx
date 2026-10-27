@@ -36,8 +36,8 @@ export interface MenuDrawerProps {
 }
 
 /**
- * Main navigation drawer — the client's "MENU" panel: SERVICIOS / PLANES /
- * CONTACTO / APP over hairline rows, with the logo below.
+ * Main navigation drawer: SERVICIOS / PLANES / CONTACTO / APP over hairline
+ * rows straight under the header (no "[ MENU ]" label), with the logo below.
  */
 export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
   const { open: openContact } = useContactModal()
@@ -82,25 +82,7 @@ export function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
             />
           </DrawerHeader>
 
-          <DrawerBody p="3px 0 0 0" display="flex" flexDir="column">
-            <Flex align="center" gap="0.5rem" px="1.125rem" pt="1.5rem" pb="0.875rem" color="gold">
-              <Box as="span" fontSize="0.75rem" lineHeight={1}>
-                [
-              </Box>
-              <Box
-                as="h2"
-                fontSize="0.625rem"
-                fontWeight="semibold"
-                letterSpacing="0.22em"
-                textTransform="uppercase"
-              >
-                Menu
-              </Box>
-              <Box as="span" fontSize="0.75rem" lineHeight={1}>
-                ]
-              </Box>
-            </Flex>
-
+          <DrawerBody p="0.5rem 0 0 0" display="flex" flexDir="column">
             <Box as="nav" aria-label="Menú principal">
               {ENTRIES.map((entry) => {
                 const inner = (

@@ -55,7 +55,8 @@ function HebrewSplash({ onDone }: { onDone: () => void }) {
 }
 
 // ─── Pasarela circular de la app (presentación del cliente) ────
-// Orden y títulos de las trece pantallas, según el póster del cliente.
+// Orden y títulos de las once pantallas, según el póster del cliente
+// (sin la validación de INE ni el aviso de IMSS).
 // `src` va explícito porque el orden ya no sigue la numeración de archivos.
 // El 01 y el 04 usan la versión "-ajustada" (scripts/normalize-pasarela.mjs):
 // el splash es otro modelo de teléfono y venía más grande, y el registro
@@ -69,21 +70,22 @@ const SLIDES = [
   { title: "Consulta de RFC", src: "/app/pasarela/03.webp" },
   { title: "Calcula tu RFC", src: "/app/pasarela/09.webp" },
   { title: "Calcula tus Adeudos", src: "/app/pasarela/08.webp" },
-  { title: "Identidad Protegida", src: "/app/pasarela/02.webp" },
   { title: "Consulta en el DOF", src: "/app/pasarela/10.webp" },
   { title: "Leyes sin tecnicismos", src: "/app/pasarela/11.webp" },
   { title: "Agenda tu cita", src: "/app/pasarela/12.webp" },
-  { title: "PRÓXIMAMENTE", src: "/app/pasarela/13.webp" },
 ];
 
 const SLIDE_COUNT = SLIDES.length;
 const ANGLE_STEP = 360 / SLIDE_COUNT;
+// La órbita se afinó con trece pantallas; con menos, el ángulo crece y los
+// vecinos se abrirían. Se ajusta el radio para conservar su separación.
+const RADIUS_FIT = Math.sin(Math.PI / 6.5) / Math.sin((ANGLE_STEP * Math.PI) / 180);
 const AUTOPLAY_MS = 4800;
 const MOBILE_BREAKPOINT = 760;
 
 const modulo = (value: number) => ((value % SLIDE_COUNT) + SLIDE_COUNT) % SLIDE_COUNT;
 
-/** Distancia con signo (−6…6) entre una diapositiva y la activa. */
+/** Distancia con signo (−5…5) entre una diapositiva y la activa. */
 function signedDistance(index: number, active: number) {
   let value = index - active;
   if (value > SLIDE_COUNT / 2) value -= SLIDE_COUNT;
@@ -201,7 +203,7 @@ function PhoneCarousel({ onEnlarge, frozen }: { onEnlarge: (index: number) => vo
   };
 
   const { width, height, mobile } = size;
-  const radius = mobile ? width * 1.05 : Math.min(width * 0.43, 660);
+  const radius = (mobile ? width * 1.05 : Math.min(width * 0.43, 660)) * RADIUS_FIT;
 
   return (
     <>

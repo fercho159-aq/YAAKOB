@@ -212,6 +212,12 @@ function AboutPanel({
       bottom="0"
       left={{ base: '-1.625rem', xl: '100%' }}
       mt={{ base: '4.25rem', xl: 0 }}
+      // On phones the thumbnail takes whatever the column leaves over, so every
+      // panel reserves room for the longest copy in the set (five lines of
+      // description, two rows of tags at 375px) — otherwise each image would
+      // be a different height. A panel that still outgrows this only shrinks
+      // its own image; nothing overflows.
+      minH={{ base: '14.5rem', xl: 0 }}
       flexShrink={0}
       pl={{ xl: '4rem' }}
       w={{ base: 'calc(100% + 3.25rem)', xl: slideWidthPct(348) }}

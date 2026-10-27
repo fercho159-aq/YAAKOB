@@ -99,6 +99,11 @@ export function SiteHeader({ social = false, seal = true, news = false }: SiteHe
             <img src="/logo-xix-xxiii.png" alt="" />
           </a>
         ) : null}
+        {/* Phone-only logo: on desktop it lives inside #yk-nav, which the
+            phone hides behind the hamburger. */}
+        <a className="yk-logo-m" href="/" aria-label="YAAKOB, inicio">
+          <img src="/logo-yaakob.png" alt="" />
+        </a>
         <div className="yk-time" id="yk-time" suppressHydrationWarning>
           {time}
         </div>

@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 import { intro, logo } from '@home/scene/config'
 
-import { armAmbience, play, preload } from './sfx'
+import { armAmbience, armUnlock, play, preload } from './sfx'
 
 /**
  * The intro's two one-shots, on the same clock as the visuals.
@@ -20,15 +20,18 @@ import { armAmbience, play, preload } from './sfx'
  * neither can afford to wait on a request at that point.
  *
  * Neither of these can play on a page nobody has touched yet, which on the
- * deployed site is every first visit. Each one carries the length of its own
- * move as a grace window, so a click during the intro still lands the sound
- * over the picture it belongs to, and a click after it lands nothing.
+ * deployed site is every first visit. The unlock listener is armed at mount
+ * too, so a tap while the loader counts has the page open before either cue
+ * comes due. Without one, each carries the length of its own move as a grace
+ * window, so a click during the intro still lands the sound over the picture
+ * it belongs to, and a click after it lands nothing.
  */
 /** `enabled: false` arms nothing — the app splash runs the scene silent. */
 export function useIntroSfx(enabled = true) {
   useEffect(() => {
     if (!enabled) return
     preload()
+    armUnlock()
 
     const timers = [
       // Held while the camera is still travelling: 5800 -> 8400.

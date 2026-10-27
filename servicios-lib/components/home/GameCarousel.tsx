@@ -41,6 +41,8 @@ const swiperSx: SystemStyleObject = {
     transitionTimingFunction: SLIDER_EASING,
   },
   '& .swiper-pagination': {
+    // Eleven bullets crowd a phone; swiping is the navigation there.
+    display: { base: 'none', xl: 'block' },
     position: 'absolute',
     // Sits in the gap between the top of the carousel and the slide image.
     top: 0,
@@ -232,7 +234,9 @@ export function GameCarousel({
           onActiveIndexChange?.(instance.realIndex)
         }}
         onSliderMove={hideCursor}
-        pt={{ base: '2.625rem', xl: '2.5rem' }}
+        // With no bullets on phones the top padding only has to clear the
+        // active slide's corners, which overhang the thumbnail by 1.5rem.
+        pt={{ base: '1.75rem', xl: '2.5rem' }}
         pb={{ base: '0.5rem', xl: '4.375rem' }}
         userSelect="none"
         flex={{ base: '1 1 auto' }}
